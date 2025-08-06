@@ -1,0 +1,23 @@
+.user-students-page-content {
+    margin: 1rem;
+}
+.user-students-page-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    padding: 1rem;
+}
+.student-navigation-list {
+    display: flex;
+}
+.student-navigation-list li {
+    padding: 0.8rem;
+}
+.back-button button {
+    padding: 1rem;
+    background-color: gray;
+}
+.back-button img {
+    width: 1rem;
+    height: 1rem;
+}

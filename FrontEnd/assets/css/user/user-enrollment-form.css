@@ -1,0 +1,341 @@
+/*BASE DESIGNS ADJUSTMENTS (IF ANY)*/
+#subjects, #teachers, #mv, .searchbox-wrapper{
+    display: none;
+}
+/*----START OF MAIN CONTENT----*/
+.responsive-text-break {
+    display: none;
+}
+.enrollment-form-content {
+    margin-top: 1em;
+    font-family: "Barlow";
+    font-weight: 450;
+    font-size: 1em;
+    background-color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 90vw;
+    height: 100%;
+}
+#age.textbox {
+    width: 50%;
+    background: inherit;
+}
+.content-title {
+    font-size: 1.24em;
+    font-family: Arial, Helvetica, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding-left: 1em;
+    height: 50px;
+    align-content: center;
+    background-color: #ffffff;
+    position: sticky;
+    top: 0;
+}
+.textbox {
+    border-radius: 8px;
+    border: 1px solid #616161 ;     
+    background-color: #f7f4f4;
+    width: 13em;
+    height: 1.5rem;     
+    padding: 5px;
+    margin-top: 2%;   
+}
+
+.textbox:focus {
+    border: 2px solid #295077;
+}
+.radio {
+    background-color: initial;
+    cursor: pointer;
+    appearance: auto;
+    box-sizing: border-box;
+    margin: 3px 3px 0px 5px;
+    padding: initial;
+}
+
+input[type="button"], input[type="submit"] {
+    background-color: #f7f4f4;
+    color: #616161;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;  
+    margin-top: 2%;
+}
+label{
+    padding-bottom: .3em;
+    padding-top: 1em;
+}
+
+.select {
+    display: inline-block;
+    text-align: start;
+    appearance: auto;
+    box-sizing: border-box;
+    border-radius: 2px;
+    align-items: center;
+    background-color: #f7f4f4;
+    cursor: default;
+    margin-top: .3em;
+    white-space: pre;
+    border-width: 1px;
+    border-style: solid;
+    border-color: light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+}
+/*ANTAS NG IMPORMASYON NG PAARALAN*/
+.acad-year-tbox {
+    display: flex;
+    justify-content: center;
+}
+.previous-school {
+    margin-top: 2vh;
+}
+
+.previous-school-wrapper,
+.student-information-wrapper,
+.student-disability-wrapper,
+.address-wrapper,
+.parents-guardian-information-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2em;
+    gap: 1.5em;
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.previous-school-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.student-information-wrapper {
+    display: grid;
+    grid-template-rows: auto auto auto;
+}
+
+.student-disability-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.address-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.parents-guardian-information-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.border-75 {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 2em;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.previous-school-title {
+    background-color: #ffffff;
+    padding: 1em 0em 1em 0em;
+}
+.nais-paaralan {
+    padding: 1em;
+}
+.heducation {
+    border-right :1px solid #295077;
+    padding: 1em;
+}
+
+.grade {
+    border-right :1px solid #295077;
+    padding: 1em;
+}
+.school-year,
+.last-year-finished {
+   display: flex;
+   flex-direction: column;
+   flex-wrap: wrap;
+   align-content: flex-start;
+}
+/* dinagdagan ko ng margin because sikip -dabid*/
+.academic-year-input {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+.learner-radio {
+    display: flex;
+    flex-direction: column;
+}
+.lschool-wrapper, .fschool-wrapper {
+    display: flex;
+    gap: 1em;
+}
+
+#lschoolAddress, #fschoolAddress {
+    width: 24rem;
+}
+.lrn-radio-buttons-selections {
+    padding-top: 10px;
+}
+/*IMPORMASYON NG ESTUDYANTE*/
+
+.student-information-title {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 1em 0em 1em 0em;
+}
+.title {
+    font-size: clamp(1em, 8vw, 2em);
+    background-color: #ffffff;
+    padding-left: 2em;
+}       
+.gender-group-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding: 0.5em;
+}       
+.student-info-row-2,
+.student-info-row-3,
+.student-info-row-4 {
+    display: flex;
+    width: 100%;
+}
+.lname,.fname,.mname,.extension,
+.bday, .age, .true-community,
+.native-language, .religion, .email {
+    padding: 0.5em;
+}                       
+.previous-school-row-1,
+.student-info-row-1 {
+    background-color: #fff;
+    padding: 1em 1em 1em 4em;
+    gap: 0.8rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+/*PARA SA MGA MAGAARAL NA MAY KAPANSANAN*/
+.student-disability-title {
+    background-color: #ffffff;
+    padding: 1em 0em 1em 0em;
+}   
+
+/*TIRAHAN*/
+.address select option {
+    font-size: 0.5em;
+}
+.address-title {
+    background-color: #ffffff;
+    padding: 1em 0em 1em 0em;
+}
+
+/*IMPORMASYON NG MAGULANG/TAGAPAGALAGA*/
+.parents-guardian-information-title {
+    background-color: #ffffff;
+    padding: 1em 0em 1em 0em;
+}
+
+.select {
+    display: inline-block;
+    text-align: start;
+    appearance: auto;
+    box-sizing: border-box;
+    border-radius: 2px;
+    align-items: center;
+    background-color: #f7f4f4;
+    cursor: default;
+    width: 13em;
+    height: 2em;
+    white-space: pre;
+    border: 1px solid #616161;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.father {
+    border-right :rgba(0, 51, 102, 0.7) 1px solid;
+}
+
+.mother {
+    border-right :rgba(0, 51, 102, 0.7) 1px solid;
+}
+
+/*4PS, IMAGES AND SUBMIT BUTTON*/     
+.confirmation {
+    display: grid;
+    grid-template-columns:  30% 65%;
+    background-color: #ffffff;
+    padding: 0.5em 2em 0.5em 4em;
+    gap: 1em;
+}     
+
+.fourPS {
+    border-right :rgba(0, 51, 102, 0.7) 1px solid;
+}
+
+.submit-button {
+    cursor: pointer;
+    height: 2.5em;
+    width: 5em;
+    border-radius: .8em;
+    background-color: #0cff04;
+    padding-left: 4%;
+    box-shadow: 1px 1px 1px 1px #059200;
+}
+.success-message {
+    display: none;
+    position: fixed; 
+    top: 20px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    padding: 15px; 
+    border-radius: 4px; 
+    background-color: #d4edda; 
+    color: #155724; 
+    border: 1px solid #c3e6cb; 
+    z-index: 1000;
+}
+.error-message {
+    display: none;
+    position: fixed; 
+    top: 20px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    padding: 15px; border-radius: 4px; 
+    background-color: 
+    #f8d7da; color: #721c24; 
+    border: 1px solid #f5c6cb; 
+    z-index: 1000;
+}
+.submit-button:hover {
+    background-color: #059200;
+    color: rgb(217, 250, 231)
+}
+/*----END OF MAIN CONTENT----*/
+
+.content-wrapper {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.form-main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    box-sizing: border-box;
+}

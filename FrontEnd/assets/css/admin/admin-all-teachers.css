@@ -1,0 +1,60 @@
+.content{
+    height:92vh;
+}
+
+table {
+    font-size: 1.3em;
+    font-family: 'Barlow';
+    border-collapse: collapse;
+    border-spacing: 5px;
+    margin: 1em;
+    cursor: default;
+    margin-left:3em;
+}
+
+.all-teachers-title {
+    font-family: 'Baloo-Thambi-2';
+    font-size: 2em;
+    color: #003366;
+    font-weight: 900;
+    margin: 1em;
+}
+
+table tr:nth-child(even) {
+    background-color: #ebebeb;
+}
+
+table tr:nth-child(odd) {
+    background-color: rgba(216, 198, 146, 0.849);
+}
+
+table th {
+    background-color: rgb(255, 234, 169);
+    font-weight: 900;
+    padding: .5em;
+}
+
+table td{
+    padding: .5em;
+}
+
+.btn-primary {
+    padding: 8px 15px;
+    background-color: #003366;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-primary:hover {
+    background-color: #00509e;
+    color: rgb(218, 216, 216);
+
+}
+
+.register {
+    margin-left: 4em;
+    font-family: 'Barlow';
+}

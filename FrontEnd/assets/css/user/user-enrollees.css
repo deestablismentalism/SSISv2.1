@@ -1,0 +1,101 @@
+.content {
+    width: 45vw;
+    height: 90vh;
+    display: flex;
+    justify-self: center;
+    padding-top: 85px;
+    margin-bottom: 105px;   
+}
+
+.shadow-container {
+    position: relative;
+    display: inline-block; /* Or block, based on layout */
+    padding: 0;
+    border-radius: 1.5em; /* match */
+    background-clip: padding-box;
+
+  }
+  
+  .shadow-container::before {
+    content: "";
+    position: absolute;
+    top: -20px; left: -20px; right: -20px; bottom: -20px;
+    background: linear-gradient(to bottom , #FFF0F5, #FAF0E6);
+    filter: blur(60px);
+    border-radius: 2em;
+  }
+  
+  /* Inner box */
+  .wrapper {
+    position: relative;
+    z-index: 0;
+    background-color: #FAF9F6;
+    padding: 1em;
+    border-radius: 1.25em;
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+.scroll-container::-webkit-scrollbar {
+    display: none;
+}
+table {
+    position: relative;
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 40vw;
+}
+
+.button {
+    width: 30%;
+    align-items: center;
+    justify-content: center;
+    padding: 1em;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+.enrollee-link {
+    text-align: center;
+    display: inline-block;
+    padding: 10px;
+    color: rgb(76, 76, 255);
+    text-decoration: underline;
+    cursor: pointer;
+}
+td a:hover {
+    color: rgb(0, 0, 200);
+}
+.Check-Status {
+    display: block;
+    text-align: center;
+    border-radius: 5px;
+    background-color: #073f88;
+    color: white;
+    width: 100%;
+    padding: .5em;
+    border: #1d421e 1px solid;
+}
+
+.Check-Status:hover {
+    background-color: #327ee2;
+    cursor: pointer;
+    color: rgb(0, 0, 0);
+
+}
+
+
+tr:nth-child(odd) {background-color: #ffffff;}
+
+tr:nth-child(even) {background-color: #f4f4f4;}
+
+.title {
+    text-align: center;
+    color: #225281;
+    font-size: 24px;
+    margin-bottom: 8px;
+    font-weight: bolder ;
+    font-family: var(--main-fonts);
+}

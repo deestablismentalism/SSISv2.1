@@ -1,0 +1,12 @@
+.em-guardian-first-name,
+.em-guardian-last-name,
+.em-guardian-middle-name {
+    display: none;
+}
+
+.em-guardian-first-name.show,
+.em-guardian-last-name.show,
+.em-guardian-middle-name.show {
+    display: block;
+    font-size: 0.8em;
+}

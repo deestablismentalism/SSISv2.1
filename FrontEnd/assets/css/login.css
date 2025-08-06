@@ -1,0 +1,307 @@
+/*style.css*/
+.header { 
+    color: White;
+    font-size: 23.4px;  
+    font-family: "Balthazar";
+    padding: .1em;
+    margin-bottom: 2em;
+    height: 1em;
+    margin-top: 1.7em;
+}
+
+#logo-container {
+    height: 5em;
+    width: 5em;
+    border-radius: 50%;
+    margin: 0 auto;  
+    background-color: #003366;
+    margin-bottom: 2.5em;
+}
+
+#school-logo {
+    border-radius: 21%;
+    height: 4em;
+    width: 4em;
+}
+
+.page-title { 
+    color:#f3f3f3;
+    font-size: 100%;
+    padding-bottom: 0.5em;
+}
+.error-msg {
+    background-color: #e97373b4;
+    padding: 1rem;
+    margin: 0 4rem;
+    visibility: hidden;
+    border: 1px solid #e84646;
+}
+.error-msg.show {
+    visibility: visible;
+}
+hr{
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #E1A23C, #ccc, #E1A23C);
+    width: 8em;
+    margin: 0 auto;
+
+}
+
+.box {
+    width: 17em;
+    height: 12em;
+    background-color: #003366;
+    border-radius: 12px;
+    margin: 1em auto;
+}
+
+input { /* email and password input */
+    display: block;
+    width: 16em;
+    height: 3.5em;
+    padding: 1em;
+    box-sizing: border-box;
+    border-radius: 8px;
+    font-family: Arial;
+    background-color: #8f9fb1;
+    opacity: 70%;
+    color: rgb(0, 0, 0);
+    margin: 0em 2em 0em 3em;
+    justify-content: center;
+}
+
+#phone_number , #password {
+    margin-top: 1em;   
+    font-size: .8em;
+    font-family: Baloo-Thambi-2;
+}
+
+.main {
+    background-color: #003366;
+    text-align: center;
+    min-height: 0%;
+    height: auto;
+    min-height: 100vh;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+html, body {
+    display: flex;
+    align-items: center;
+    font-family: sans-serif;
+    max-height: 100vh;
+    background: #f3f3f3;
+    direction: column;
+    margin: 0;
+    font-family: "Balthazar";
+    overflow: hidden;
+}
+
+::placeholder {
+    color: rgb(243, 228, 228);
+    opacity: 1;
+
+}
+
+button, .admin-login-button  {
+    padding: 15px;
+    border-radius: 78px;
+    color: white;
+    display: block;
+    cursor: pointer;
+    background-color: #E1A23C;
+    width: 12em;
+    font-size: 1em;
+    margin: 0 2%;
+}
+
+.wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    width: 99%;
+    margin: 3% 0;
+}
+
+.register-link {
+    color: #E1A23C;
+    text-decoration: none;
+    font-size: 1em;
+    margin-top: 2em;
+    cursor: pointer;
+}
+
+.vlorange{
+    background-color:  #E1A23C;
+    width: 2em;
+    height: auto;
+    min-height: 100vh;
+}
+
+.vlyellow{
+    background-color:  #CC8B20;
+    height: auto;
+    min-height: 100vh;
+    width: 2em;
+}
+
+#img-container{
+    margin: 0 auto;  
+    height: auto;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 1000px;
+    overflow: hidden;
+}
+
+#student{
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    object-fit: cover;
+    display: block;
+}
+
+#label {
+    font-family: Baloo-Thambi-2;
+    background-color: #8f9fb1;
+}
+
+html, body {
+    height: 100%;    
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+p {
+
+    margin: 5%;
+}
+
+
+/* Extra large screens */
+@media (min-width: 1920px) {
+    .main {
+        max-width: 1000px;
+    }
+}
+
+@media (min-width: 2560px) {
+    .main {
+        max-width: 1200px;
+    }
+     
+}
+
+/* laptops*/
+@media (max-width: 1440px) {
+    .main {
+        max-width: 800px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .main {
+        width: 95%;
+        padding: 10px;
+    }
+    .box, input {
+        width: 70%;
+        margin: 0 auto;
+    }
+    button, .admin-login-button {
+        width: 35%;
+    }
+    .vlorange, .vlyellow {
+        display: none;
+    }
+    
+
+  
+}
+
+@media (max-width: 768px) {
+    .main {
+        width: 100%;
+        padding: 10px;
+    }
+    #student, #img-container {
+        display: none;
+    }
+    button, .admin-login-button {
+    margin: 0 2%;
+    width: 26%;
+    }
+    #wrap {
+        width: 99%;
+    }
+}
+
+@media (max-width: 425px) {
+    .main {
+        width: 100%;
+    }
+    .box, input {
+        width: 70%;
+        margin: -10px auto;
+    }
+    button, .admin-login-button {
+        height: 46px;
+        margin: 2px 2%;
+        width: 37%;
+        font-size: 14px;
+    }
+    #student, #img-container {
+        display: none;
+    }
+}
+
+/* most common px in mobile phones */
+@media (max-width: 375px) {
+    .main {
+        padding: 10px 5px;
+    }
+    h2 {
+        font-size: .9em;
+    }
+    .page-title h3 {
+        font-size: 1em;
+    }
+    .box, input {
+        width: 95%;
+    }
+    button, .admin-login-button {
+        width: 95%; 
+    }
+}
+
+@media (max-width: 320px) {
+    h2 {
+        font-size: .9em;
+    }
+    .box, input {   
+        width: 85%;
+        font-size: 13px ;
+    }
+    button, .admin-login-button {
+        width: 100%;
+    }
+
+  #student, #img-container {
+    display: none;
+  }
+  p{
+    font-size: 13px;
+
+  }
+
+}
+

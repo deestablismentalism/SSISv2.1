@@ -1,0 +1,53 @@
+.status-cell {
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+.status-enrolled {
+    background-color: #6EE7B7;
+    color:  #047857;
+}
+.status-pending {
+    background-color: #A5B4FC;
+    color:  #4338CA;
+}
+.status-denied {
+    background-color: #FCA5A5;
+    color: #B91C1C;
+}
+.status-to-follow {
+    background-color:#f0c986;
+    color:  #b39843;
+}
+.count-display {
+    margin: 10px 0;
+    font-size: 1rem;
+}
+.count-number {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+table {
+    background-color: white;
+    width: 100%;
+    table-layout: fixed;
+}
+.enrollments th, td {
+    padding: 1rem;
+}
+.admin-all-enrollees-header {
+    padding: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    margin: 1rem 0;
+}
+.modal-content {
+    background-color: white;
+    margin: auto;
+    padding: 0.4em;
+    border-radius: 10px;
+    width: 60%;
+    position: relative;
+}

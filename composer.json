@@ -1,0 +1,20 @@
+{
+    "name": "zenturi/fcking-enrollment-system",
+    "autoload": {
+        "psr-4": {
+            "Zenturi\\FckingEnrollmentSystem\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ben-10-Tech",
+            "email": "llorin.221571@lucena.sti.edu.ph"
+        }
+    ],
+    "require": {},
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}

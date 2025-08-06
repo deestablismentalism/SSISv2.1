@@ -1,0 +1,392 @@
+/*----START OF BASE DESIGNS----*/
+:root {
+    --main-fonts: 'Barlow', Arial;
+    --title-fonts: 'Caladea', sans-serif;
+    --link-fonts: 'Roboto', sans-serif;
+}
+body {
+    display: flex;
+    background-color: rgb(235, 231, 231);
+}
+.content {
+    margin: 2em auto;
+}
+p {
+    cursor: default;
+}
+/*--HEADER DESIGNS--*/
+.main-content {
+    background-color:antiquewhite;
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+}
+.header-title-text {
+    padding: .2em;
+    font-family: var(--title-fonts); 
+    padding-left: 1em;
+    background: linear-gradient(to right, #595112, #634312);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.8rem;
+    position: relative;
+}
+.header-title-text::before {
+    content: '';
+    bottom: 1rem;
+    left: 0.9rem;
+    position: absolute;
+    background-image: url('../../imgs/graduation-cap.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 1.5rem;
+    height: 1.5rem;
+    transform: rotate(-45deg);
+}
+.header-wrapper {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    background: linear-gradient(to right,  #Fff, #fff5ee, #F3e5ab, #e2dfd2, #E2DFD2 );
+    height: 3rem;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.account {
+    display: flex;
+    padding-right: 2em;
+}
+.nav-list {
+    display: flex;
+    gap: 1rem;
+}
+.nav-item a {
+    cursor: pointer;
+    padding: 1rem;
+}
+.nav-item {
+    list-style: none;
+}
+.nav-item a:hover {
+    background-color: #CDA434;
+}
+.nav-item a:is(:link, :visited, :active).active {
+    background-color: #CDA434;
+}
+.nav-link-text {
+    display: inline-block;
+    background: linear-gradient(to bottom right, #191970, #3d1970, #611970);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+   
+}
+.nav-item span {
+    font-family: var(--link-fonts);
+    font-size: 1rem;
+    font-weight: 600;
+}
+.account button {
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    margin-right: 1em;
+    cursor: pointer;
+}
+
+.account img {
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    margin-right: 1em;
+}
+
+.account #account-drop {
+    width: 1.3em;
+    height: 1.3em;
+    padding-left: .4em;
+}
+
+.account-settings-btn {
+    position: relative;
+    display: inline-block;
+}
+
+.account-settings-btn-content-wrapper {
+    display: none;
+    position: absolute;
+    top: 120%;
+    right:10px;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.account-settings-btn-content-wrapper a{
+    cursor: pointer;
+}
+
+.account-link-wrapper, .account-logout-wrapper{
+    display: flex;
+}
+
+.account-link-wrapper:hover, .account-logout-wrapper:hover{
+    background-color: #a7a39d;
+}
+
+.user-icon, .change-pass-icon, .account .logout-icon {
+    padding: .4em;
+    margin: .5em;
+    background-color: #cfcbc4;
+    border: #a7a39d 1px solid;
+}
+
+.logout-text, .update-password, .account-type {
+    width: 100%;
+    height: 100%;
+    padding: 1em;
+    margin: auto;
+    margin-left: .2em;
+}
+
+.user-info-wrapper {
+    display: flex;
+    border-bottom: 2px solid #e1a23c;
+}
+
+.show {
+    display: block;
+}
+.mobile-header-wrapper {
+    display: none;
+}
+.mobile-sidebar-wrapper {
+    display: none;
+}
+/*--END OF HEADER DESIGNS--*/
+/*MEDIA QUERIES*/
+@media (max-width: 1510px) {
+    .sidebar {
+        font-size: .85em;
+    }
+
+    .header-title {
+        font-size: 1.1em;
+    }
+
+    .account {
+        padding-right: 0em;
+        font-size: .8em;
+    }
+
+    .searchbox {
+        width: 20em;
+        font-size: .8em;
+    }
+}
+
+
+@media (max-width: 1205px) {
+    .sidebar {
+        min-width: 4.5vw;
+    }
+
+    .sidebar.active {
+        min-width: 12vw;
+        font-size: .7em;
+        transition: all .2s ease-out;
+    }
+
+}
+
+@media (max-width: 1045px) {
+    .sidebar {
+        font-size: .8em;
+    }
+
+    .header-title {
+        font-size: 1em;
+    }
+
+}
+@media (max-width: 940px) {
+    .sidebar {
+        min-width: 5vw;
+    }
+}
+
+/*----END OF THE BASE DESIGNS----*/
+
+
+/*----START OF MAIN CONTENT----*/
+/*----END OF MAIN CONTENT----*/
+
+/*MOBILE VERSION OF HEADER & SIDEBAR*/
+@media (max-width: 768px ) {
+    .sidebar ~ .main-content {
+        margin-left: 0vh;
+    }
+    .content {
+        overflow-x: hidden;
+    }
+
+    .sidebar, .header-wrapper, .sidebar-wrapper,.mobile-sidebar-wrapper    {
+        display: none;
+    }
+
+    .mobile-sidebar-wrapper.active {
+        display: block;
+        position: absolute;
+        background-color: #003366;
+        width: 100%;
+        height: 100vh;
+        z-index: 1;
+        animation-duration: 1s;
+        animation-name: slidein;
+    }
+
+    .mobile-header-wrapper {
+        position:absolute;
+        z-index: 0;
+        display: grid;
+        width: 100%;
+        background-color: #fff;
+        grid-template-columns: 10% 70% 20%;
+    }
+
+    .mobile-mob-wrapper {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .dashboard-wrapper-mob  {
+        border-bottom: 1px solid #fff;
+    }
+    .menu-button-wrapper {
+        display: flex;
+        justify-content: center;
+    }
+    .arrow-mob {
+        z-index: 1;
+        margin: 10px;
+        width: 20px;
+        height: 20px;
+        background-image: url(../imgs/chevron-down.svg);
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .icon-title-mob {
+        margin: 10px;
+        z-index: 1;
+        width: 20px;
+        height: 20px;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .menu-title-mob  {
+        padding: 10px;
+        color: #fff;
+    }
+    .dashboard-mob-ul, .subjects-mob-ul, .teachers-mob-ul {
+        background-color: rgb(5,31,62);
+        max-height: 0;
+        opacity: 0;
+        transition: all .5s linear;
+    }
+    .sidebar-show-mob{
+        width: 100%;
+        height: 40px;
+        background-color: #F1BD22;
+        display: flex;
+    }
+    .ssis-title {
+        color: #fff;
+        font-weight: 600;
+        font-size: 20px;
+        padding: 10px;
+        display: flex;
+        width: calc(100% - 40px);
+        justify-content: center;
+    }
+    .bar-btn-show-mob {
+        z-index: 1;
+        display: block;
+        width: 40px;
+        height: 40px;
+        background-color: #F1BD22;
+        background-image: url(../imgs/bar.svg);
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .bar-btn-mob {
+        z-index: 0;
+        display: block;
+        width: 40px;
+        height: 40px;
+        background-color: #F1BD22;
+        background-image: url(../imgs/bar.svg);
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .title-search-mob {
+        z-index: 0;
+        margin-left: 5px;
+        padding: 5px;
+        display: grid;
+        grid-template-rows: 50% 50%;
+    }
+    .title-mob {
+        z-index: 0;
+        color:#F1BD22;
+        font-size: 9px;
+    }
+    .user-btn-mob {
+        z-index: 0;
+        width: 40px;
+        height: 40px;
+        background-image: url(../imgs/check2-circle.svg);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .dashboard-icon-mob {
+        background-image: url(../imgs/easel.svg);
+    }
+
+    .subjects-icon-mob {
+        background-image: url(../imgs/book.svg);
+    }
+
+    .teachers-icon-mob {
+        background-image: url(../imgs/people-fill.svg);
+    }
+    .mv-icon-mob {
+        background-image: url(../imgs/check2-circle.svg);
+    }
+    /* slide animation ng sidebar */
+    @keyframes slidein {
+        from {
+            left: -82%;
+        }
+        to {
+            left: 0;
+        }
+    }   
+    .dashboard-mob-ul.active, .subjects-mob-ul.active, .teachers-mob-ul.active {
+        max-height: 100vh;
+        opacity: 1;
+        margin: .1em 20vh .5em 20vh;
+        text-align: center;
+        padding: .5em;
+    }
+    
+    .mobile-sidebar-wrapper a {
+        display: block; 
+        color: #CC8B20;
+        text-decoration: none;
+    }
+}
