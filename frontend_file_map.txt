@@ -1,0 +1,226 @@
+admin[
+    admin_all_enrollees.php{
+        "FrontEnd/pages/admin" => {
+            admin_base_designs.php
+        }
+        "FrontEnd/assets" => {
+            admin-enrollees.css
+        }
+        "BackEnd/admin/" => {
+            adminAllEnrolleesView.php
+            adminEnrolleeStatusView.php
+        }
+    }
+    admin_all_students.php{
+        "FrontEnd/assets" => {
+            admin-all-students.css
+            admin-students.js<
+                fetchStudentDetails.php
+            >
+            plus-solid.svg
+        }
+        "BackEnd/admin/" => {
+            adminStudentsView.php
+            Admin_Edit_student.php
+            deleteStudent.php
+        }
+    }
+    admin_all_teachers.php{
+        "FrontEnd/pages/admin" => {
+            admin_staff_registration.php
+            admin_base_designs.php
+        }
+        "FrontEnd/assets" => {
+            admin-all-teachers.css
+        }
+        "BackEnd/admin" => {
+            adminTeacherView.php
+        }
+    }
+    admin_base_designs.php{
+        "FrontEnd/assets" => {
+            admin-base-designs.css
+            fonts.css
+            reset.css
+            admin-base-designs.js
+            bar.svg
+            easel.svg
+            student.svg
+            chevron-down.svg
+            teachers.svg
+            enrolls.svg
+            chevron-down-black.svg
+            check2-circle.svg
+        }
+        "BackEnd/common" => {
+            userTypeView.php
+        }
+        "FrontEnd/pages/admin" => {
+            admin_dashboard.php
+            admin_all_students.php
+            admin_subjects.php
+            admin_sections.php
+            admin_all_teachers.php
+            admin_all_enrollees.php
+            enrollment_pending.php
+            admin_denied_followup.php
+            edit_information_links.php
+            change_password.php
+            logout.php
+        }
+    }
+    admin_dashboard.php{
+        "FrontEnd/assets" => {
+            admin-dashboard.css
+            admin-dashboard-json-fetcher.js<
+                fetchDashboardChart.php
+                fetchAdminEnrolleesByDay.php
+            >
+        }
+        "FrontEnd/pages" => {
+            admin_all_students.php
+            admin_denied_followup.php
+            dashboardView.php
+            admin_subjects.php
+            admin_sections.php
+            admin_schedules.php
+            admin_base_designs.php
+            admin_all_enrollees.php
+        }
+        "BackEnd/admin/models" => {
+            dashboardModel.php
+        } 
+    }
+    admin_denied_followup.php{
+        "FrontEnd/assets" => {
+            admin-denied-followup.css
+            admin-denied-followup.js<
+                adminEnrolleeStatusView.php
+                fetchEnrolleeTransactions.php
+                postUpdateFollowedUpEnrolleeStatus.php
+            >
+        }
+        "BackEnd/admin" => {
+            adminDeniedFollowUpView.php
+        }
+        "FronetEnd/pages/admin" => {
+            admin_base_designs.php
+        }
+    }
+    admin_edit_student.php{
+        "BackEnd/admin" => {
+            adminDeniedFollowUpView.php
+        }
+        "BackEnd/admin/models" => {
+            studentsModel.php
+        }
+        "FrontEnd/assets/" => {
+            admin-edit-student.css
+            arrow-left-solid.svg
+        }
+        "FrontEnd/pages/admin" => {
+            admin_all_students.php
+            admin_base_designs.php
+        }
+    }
+    admin_schedules.php{
+
+    }
+    admin_sections.php{
+        "FrontEnd/pages/admin" => {
+            admin_base_designs.php
+        }
+        "FrontEnd/assets/" => {
+            admin-sections.css
+        }
+        "BackEnd/common" => {
+            getGradeLevels.php
+        }
+        "BackEnd/admin" => {
+            adminSectionsView.php
+        }
+    }
+    admin_student_per_section.php{
+
+    }
+    admin_subjects.php{
+
+    }
+    admin_teacher_info.php{
+
+    }
+]
+staff[]
+student[]
+teacher[]
+user[
+    enrollment_form.php{
+        "FrontEnd/assets" => {
+            enrollment-form.css
+            enrollment-form-errors.css
+            enrollment-form-mq.css
+            unified-enrollment-validation.js
+        }
+        "FrontEnd/user" => {
+            user_base_designs.php
+        }
+        "BackEnd/api/user" => {
+            postEnrollmentFormData.php
+        }
+        "BackEnd/common/" => {
+            getGradeLevels.php
+        }
+    }
+    user_all_enrolled.php{
+
+    }
+    user_base_designs.php{
+        "FrontEnd/assets" => {
+            user-base-designs.css
+            reset.css
+            fonts.css
+            chevron-down-black.svg
+            check2-circle.svg
+            lock-solid.svg
+            logout.svg
+        }
+        "BackEnd/common" => {
+            userTypeView.php
+        }
+        "FrontEnd/pages/user" => {
+            user_enrollees.php
+            enrollment_form.php
+            user_all_enrolled.php
+        }
+        "FrontEnd" => {
+            change_password.php
+            logout.php
+        }
+    }
+    user_enrollees.php{
+        "FrontEnd/assets" => {
+            user-enrollees.css
+            user-enrollees.js
+        }
+        "FrontEnd/pages/user" => {
+            user_base_designs.php
+        }
+        "BackEnd/user" => {
+            userEnrolleesView.php
+        }
+    }
+    user_enrollment_status.php{
+        "FrontEnd/assets" => {
+            user-enrollment-status.css
+            user-enrollment-status.js<
+                postUpdateUserForm.php
+            >
+        }
+        "FrontEnd/pages/user" => {
+            user_base_designs.php
+        }
+        "BackEnd/user" => {
+            userEnrollmentStatusView.php
+        }
+    }
+]

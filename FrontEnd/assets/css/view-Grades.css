@@ -1,0 +1,49 @@
+.main-content {
+    background-color: #F4F4F4;
+}
+
+.grade-page {
+    margin: 10px;
+    font-family: "Baloo-Thambi-2";
+    background-color: #FFFFFF;
+    gap: 8px;
+    padding: 10px;
+    color: #003366;
+    margin-top: 45px;
+    margin-left: 1.3em;
+    margin-right: 1.3em;
+    margin-bottom: 30px;
+}
+
+.grades td {
+    text-align: center;
+    border-top: 1px solid transparent; 
+    border-left: 1px solid transparent; 
+    border-right: 1px solid transparent; 
+    border-bottom: 2px solid rgba(241, 189, 34, 0.5); 
+    padding: 10px;
+    background-color: #FFFFFF;
+}
+
+.grades th {
+    text-align: center;
+    background-color: rgba(255, 233, 169, 0.45);
+    padding: 10px;
+    font-weight: bold;
+}
+
+.grades {
+    width: 100%;
+    font-family: Barlow, sans-serif;
+    font-size: 17px;
+    border-collapse: collapse;
+    margin-top: 25px;
+}
+
+.header {
+    background-color: #F4F4F4;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 30px;
+}
+

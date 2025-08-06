@@ -1,0 +1,152 @@
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+table {
+    width: 100%;
+    table-layout: fixed;
+}
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 8px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.denied-followup-content {
+    margin: 2rem;
+}
+.enrollments {
+    background-color: white;
+    margin: 0.2rem;
+}
+.enrollments th,td {
+    padding: 1rem;
+}
+.enrollments tr:nth-child(odd) {
+    background-color:  #fff;
+}
+.enrollments tr:nth-child(even) {
+    background-color: #f4f4f4;
+}
+
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Status cell styles */
+.status-cell {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.status-denied {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.status-to-follow {
+    background-color: #fff3e0;
+    color: #ef6c00;
+}
+.status-enrolled {
+    background-color: #6EE7B7;
+    color:  #047857;
+}
+
+/* popup Button styles */
+.action-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+.remarks, .resubmission {
+    margin-top: 0.8rem;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    color: white;
+}
+.remarks.resubmission-btn.disabled, .remarks.consultation-btn.disabled , .remarks.accept-btn.disabled {
+    opacity: 0.3;
+}
+.remarks.resubmission-btn {
+    background-color: #af714c;
+}
+.remarks.consultation-btn {
+    background-color: #4c69af;
+}
+.remarks.to-follow-btn {
+    background-color: #af9a4c;
+}
+.remarks.accept-btn, .resubmission.accept-btn {
+    background-color: #4caf50;
+}
+.remarks.deny-btn, .resubmission.deny-btn {
+    background-color: #f44336;
+}
+.accept-btn:hover {
+    background-color: #388e3c;
+}
+.deny-btn:hover {
+    background-color: #d32f2f;
+}
+
+.view-resubmission, .view-reason {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #2196f3;
+    color: white;
+    margin: 0 5px;
+    transition: background-color 0.2s;
+}
+
+.view-resubmission:hover, .view-reason:hover {
+    background-color: #1976d2;
+}
+
+/* Loading state */
+#modal-body p {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+/* Error state */
+#modal-body p.error {
+    color: #f44336;
+} 

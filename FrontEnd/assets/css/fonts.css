@@ -1,0 +1,17 @@
+@font-face {
+    font-family: 'Barlow';
+    src: url('../fonts/Barlow-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Baloo-Thambi-2';
+    src: url('../fonts/BalooThambi2-Medium.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Caladea';
+    src: url('../fonts/Caladea-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+}

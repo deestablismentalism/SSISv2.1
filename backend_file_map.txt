@@ -1,0 +1,111 @@
+admin [
+    adminLogin.php{
+        "BackEnd/core" => {
+            dbconnection.php
+        }
+    }
+    adminAllEnrolleesView.php{
+        "BackEnd/core" => {
+            dbconnection.php
+        }
+        "admin/models" => {
+            adminEnrolleesModel.php
+        }
+    }
+     adminDashboardView.php{
+        "admin/models"=> {
+            adminDashboardModel.php
+        }
+    }
+    adminDeniedFollowUpView.php{
+        "admin/models" => {
+            adminDeniedFollowUpModel.php
+        }
+    }
+    adminEditStaffInfo.php{
+
+    }
+    adminEditTeacherInfo.php{
+
+    }
+    adminEnrolledView.php{
+        "BackEnd/core" => {
+            dbconnection.php
+        }
+        "admin/models" => {
+            adminEnrolleesModel.php
+        }
+    }
+    adminEnrolleeFollowup.php {
+        "admin/models" => {
+            adminEnrolleesModel.php
+        }
+    }
+    adminEnrolleeStatus.php{
+        "admin/models" => {
+            adminEnrolleesModel.php
+        }
+    }
+    adminEnrolleeInfo.php {
+        "BackEnd/core" => {
+            dbconnection.php
+        }
+        "admin/models" => {
+            adminEnrolleesModel.php
+        }
+    }
+    adminEnrolleeInfoView.php{
+        "admin" => {
+            adminEnrolleeStatus.php
+        }
+    }
+    adminSectionsView.php{
+        "admin/models" => {
+            adminSectionsModel.php
+        }
+        "FrontEnd/assets" => {
+            plus-solid.svg
+            trash-solid.svg
+        }
+    }
+    adminStudentsView.php{
+        "admin/models" => {
+            adminStudentsModel.php
+        }
+    }
+    adminSubjectsView.php{
+        "admin/models" => {
+            adminSubjectsModel.php
+        }
+    }
+    adminTeacherInfoView.php {
+        "admin/models" => {
+            adminTeacherInfoModel.php
+        }
+        "BackEnd/core" => {
+            encryptionAndDecryption.php
+        }
+    }
+    adminTeacherView.php{
+         "admin/models" => {
+            adminTeacherInfoModel.php
+        }
+    }  
+]
+staff[]
+student[]
+teacher[]
+user[
+    userEnrolleesView.php{
+        "user/models" => {
+            userEnrolleesModel
+        }
+    }
+    userEnrollmentStatusView.php{
+        "user/models" => {
+            userEnrolleesModel 
+        }
+    }
+]
+
+

@@ -1,0 +1,72 @@
+.main-content {
+    background-color: #F4F4F4;
+}
+
+.mission-vision-page {
+    display: grid;
+    grid-template-areas:
+        "history mission"
+        "history vision";
+    grid-template-columns: 1.65fr 1fr;
+    gap: 8px;
+    padding: 10px;
+    color: #003366;
+    margin-top: 25px;
+}
+
+.mission-vision-page > .history-container, .mission-container, .vision-container {
+    padding: 10px;
+}
+
+.mission-vision-page > .history-container {
+    grid-area: history;
+} 
+
+.mission-vision-page > .mission-container {
+    grid-area: mission;
+}
+
+.mission-vision-page > .vision-container {
+    grid-area: vision;
+}
+
+.history-container, .mission-container, .vision-container {
+    margin: 10px;
+    font-family: "Baloo-Thambi-2";
+    background-color: #FFFFFF;
+}
+
+.header-text {
+    background-color: #F4F4F4;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 30px;
+}
+
+.body-text {
+    margin: 5px;
+    padding: 3px;
+    text-align: justify;
+}
+
+.container-box {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid rgba(140, 138, 138, 0.5);
+    background-color: #F4F4F4;
+    color: #003366;
+    border-radius: 1em;
+    margin-top: 25px;
+}
+
+.school-image {
+    width: 75%;  /* Adjust this value as needed */
+    height: auto;  /* Keeps the aspect ratio */
+    display: block;
+    margin: 0 auto; /* Optional: centers the image */
+    border-radius: 1em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -1,0 +1,20 @@
+# Environment Files
+.env
+
+# Vendor directory
+/vendor/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# PHP specific
+*.phar
+.phpunit.result.cache

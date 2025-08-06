@@ -1,0 +1,10 @@
+/* ANTAS NG IMPORMASYON*/
+.error-msg{ 
+    font-size: 0.8em;
+    visibility: hidden;
+    min-height: 1.2em;
+ }
+ .error-msg.show {
+    visibility: visible;
+ }
+

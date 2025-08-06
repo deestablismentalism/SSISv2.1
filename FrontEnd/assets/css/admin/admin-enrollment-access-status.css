@@ -1,0 +1,250 @@
+.main-content {
+    background-color: #F4F4F4;
+}
+
+.student-status-start {
+    gap: 5px;
+    padding: 20px;
+    margin-top: 25px;
+    width: 99%; 
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+.status {
+    display: flex;
+    justify-content: flex-end; 
+    gap: 10px; 
+  }
+
+.status button {
+    padding: 8px 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Barlow, sans-serif;
+    font-size: 18px;
+}
+
+.officially-enrolled {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+.temporarily-enrolled {
+    background-color: #ffc107;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+.pending {
+    background-color: #007bff; 
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+.rejected {
+    background-color: #dc3545; 
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+.header {
+    background-color: #FFFFFF;
+    margin-bottom: 20px;
+    margin-top: 15px;
+    padding: 20px;
+}
+
+.header h2 {
+    font-family: Barlow, sans-serif;
+    font-size: 24px;
+    font-style: italic;
+    font-weight: bold;
+    color: #000000;
+}
+
+.menu-content {
+    font-family: Barlow, sans-serif;
+    padding: 10px;
+    width: 100%; 
+    background-color: #FFFFFF;
+}
+
+.enrollment-info-content {
+    background-color: #FFFFFF;
+    padding: 20px;
+}
+
+.school-info, .student-info, .disability-info {
+    font-size: 20px;
+}
+
+.school-info-table, .student-info-table, .disability-info-table {
+    width: 70%;
+    font-family: Barlow, sans-serif;
+    font-size: 14px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+}
+
+.school-info-table th, .student-info-table th, .disability-info-table th {
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #000000;
+}
+
+.school-info-table td, .student-info-table td, .disability-info-table td {
+    padding: 0.2em;
+    vertical-align: top;
+}
+
+.question {
+    text-align: left;
+    font-weight: bold;
+}
+
+.answer {
+    text-align: center;
+}
+
+.answer img {
+    max-width: 100%; 
+    height: auto; 
+    display: block; 
+    margin: 0 auto; 
+}
+.psa-img {
+    width: 300px;
+    height: 500px;
+}
+.psa-img:hover {
+    width: 400px;
+    height: 600px;
+}
+/* For screens smaller than 600px (typically mobile devices) */
+@media (max-width: 600px) {
+    .student-status-start {
+        padding: 10px;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .status {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .status button {
+        width: 50%; 
+        font-size: 16px;
+        padding: 12px 0;
+    }
+
+    .school-info-table, .student-info-table, .disability-info-table {
+        width: 90%; 
+        vertical-align: top;
+    }
+
+    
+    .school-info, .student-info, .disability-info {
+        font-size: 18px; 
+    }
+
+    .answer img {
+        max-width: 100%; 
+        height: auto; 
+        display: block;  
+        margin: 0 auto;  
+    }
+    .psa-img {
+        width: 200px;
+        height: 400px;
+    }
+}
+
+/* For screens between 601px and 1024px (tablets) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .student-status-start {
+        padding: 15px;
+        margin-top: 15px;
+        width: 95%;
+    }
+
+    .status {
+        gap: 15px; 
+        justify-content: center;
+    }
+
+    .status button {
+        padding: 10px 15px;
+        font-size: 18px;
+    }
+
+    .school-info-table, .student-info-table, .disability-info-table {
+        vertical-align: top;
+    }
+
+    .school-info, .student-info, .disability-info {
+        font-size: 18px;
+    }
+
+    .answer img {
+        max-width: 100%; 
+        height: auto;   
+        display: block; 
+        margin: 0 auto; 
+    }
+}
+
+/* For screens larger than 1024px (desktop) */
+@media (min-width: 1025px) {
+    .student-status-start {
+        padding: 20px;
+        margin-top: 25px;
+        width: 99%;
+    }
+
+    .status {
+        justify-content: flex-end;
+        gap: 10px; 
+    }
+
+    .status button {
+        padding: 10px 10px;
+        font-size: 20px;
+    }
+
+    .school-info-table, .student-info-table, .disability-info-table {
+        width: 70%;
+        vertical-align: top;
+    }
+
+    .school-info, .student-info, .disability-info {
+        font-size: 20px;
+    }
+
+    .answer img {
+        max-width: 100%; 
+        height: auto; 
+        display: block; 
+        margin: 0 auto; 
+    }
+}
