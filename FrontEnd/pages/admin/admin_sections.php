@@ -2,45 +2,45 @@
 <?php 
 ob_start();
 $pageTitle = "Admin Sections";
-$pageJs = "../../assets/js/admin/admin-sections.js"; 
-$pageCss = "../../assets/css/admin/admin-sections.css";
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-sections.css">'; 
+$pageJs= '<script src="../../assets/js/admin/admin-sections.js" defer></script>';
     
 ?>
 
 <div class="admin-sections-content">
-    <div class="sections-form"> 
-        <form action="../../../BackEnd/api/admin/postSections.php" method="post" class="form"> 
-            <input type="text" name="section-name" placeholder="Enter Section Name..." required>
-            <select name="section-level">
-                <?php
-                    include_once __DIR__ . '/../../../BackEnd/common/getGradeLevels.php';
-                    $gradeLevels = new getGradeLevels();
-                    $gradeLevels->createSelectValues();
-                ?>
-            </select>
-            <button type="submit" class="submit-btn">Add Section</button>
-        </form>
+    <div class="sections-title-wrapper"> 
+            <h1 class="page-title"> Sections</h1>
+            <button class="submit-btn" id="add-section-btn">Add Section</button>
     </div>
-    <div class="sections-list">
+    <div class="sections-list-wrapper">
         <div class="sections-list-header">
             <h2> Sections List </h2>
-            <a href="Admin_Student_Per_Section.php"> Assign Students to Section </a>
+            <input type="text" name="search" id="search-section" placeholder="Search section...">        
         </div>
-        <table class="admin-sections-table" id="admin-sections-table">
-            <thead> 
-                <tr>
-                    <th> Section Name </th>
-                    <th> Grade Level </th>
-                </tr>
-            </thead>
-            <tbody> 
-                <?php 
-                    include_once __DIR__ . '/../../../BackEnd/admin/adminSectionsView.php';
-                    $view = new adminSectionsView();
-                    $view->displayAdminSections();
-                ?>
-            </tbody>
-        </table>
+
+      <template id="sections-list-template">
+        <div class="sections-list">
+            <div class="section-major-information">
+                <div class="section-name"><h1 class="section">Sampaguita</h1> <div class="section-grade-level">Grade 10</div></div>
+                <a class="edit-section" href=""><img src="../../assets/imgs/eye-regular.svg"></a>
+            </div>
+            <div class="section-minor-information">
+                <div class="adviser">
+                    <span class="adviser-title">Adviser: </span>
+                    <span class="adviser-value"> No adviser yet</span>
+                </div>
+                <div class="students">
+                    <span class="students-title"> Students: </span>
+                    <span class="students-value"> No students yet</span>
+                </div>
+            </div>
+        </div>
+      </template>
+
+    <div class="sections-list-container"></div>
+    </div>
+    <div id="add-section-modal"class="modal">
+        <div class="modal-content"></div>
     </div>
 </div>
 <?php

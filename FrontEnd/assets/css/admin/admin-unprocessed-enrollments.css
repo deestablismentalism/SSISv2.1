@@ -13,19 +13,6 @@ table {
     width: 100%;
     table-layout: fixed;
 }
-.modal-content {
-    position: relative;
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 800px;
-    border-radius: 8px;
-    max-height: 80vh;
-    overflow-y: auto;
-}
-
 .denied-followup-content {
     margin: 2rem;
 }
@@ -41,24 +28,6 @@ table {
 }
 .enrollments tr:nth-child(even) {
     background-color: #f4f4f4;
-}
-
-
-.close {
-    position: absolute;
-    right: 20px;
-    top: 10px;
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
 }
 
 /* Status cell styles */

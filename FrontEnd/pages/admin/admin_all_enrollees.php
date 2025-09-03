@@ -1,10 +1,11 @@
+<?php
+ob_start(); 
+require_once __DIR__ . '/../../../BackEnd/admin/adminAllEnrolleesView.php';
 
-    <?php 
-        include_once './admin_base_designs.php';
-        require_once __DIR__ . '/../../../BackEnd/admin/adminAllEnrolleesView.php';
-    ?>
-      <title>SSIS-Admin All Enrollees</title>
-      <link rel="stylesheet" href="../../assets/css/admin/admin-all-enrollees.css">
+$pageTitle = 'SSIS-Admin All Enrollees'; 
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-all-enrollees.css">';
+$pageJs = '<script src="../../assets/js/admin/admin-all-enrollees.js" defer></script>';
+?>
 </head>
 <body>
             <div class="admin-all-enrollees-content">
@@ -52,6 +53,7 @@
                 </div>
             </div>
 </div>  
-</body>
-<script src="../../assets/js/admin/admin-all-enrollees.js" defer></script>
-</html>
+<? 
+$pageContent = ob_get_clean();
+require_once __DIR__ . '/./admin_base_designs.php';
+?>

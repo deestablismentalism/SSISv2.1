@@ -1,18 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Create enrollee modal
-    const modal = document.createElement('div');
-    modal.id = 'enrolleeModal';
-    modal.className = 'modal';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div id="modal-body"></div>
-        </div>
-    `;
-    document.body.appendChild(modal);
 
-    document.body.appendChild(reasonModal);
-     
+    function attachCloseButton(modal) {
+        const closeBtn = modal.querySelector('.close');
+        console.log(closeBtn);
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        })
+    }
+    function closeModal(modal) {
+        modal.style.display = 'none';
+    } 
     // Style status cells
     const rows = document.querySelectorAll('.denied-followup-row');
     rows.forEach(row => {
@@ -23,46 +20,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Function to close modals
-    function closeModal(modalElement) {
-        if (modalElement) {
-            modalElement.style.display = 'none';
-        }
-    }
-
-    // Function to reattach close button listeners
-    function attachCloseButtonListeners() {
-        document.querySelectorAll('.modal .close').forEach(closeBtn => {
-            // Remove existing listeners
-            closeBtn.replaceWith(closeBtn.cloneNode(true));
-            // Add new listener
-            closeBtn.onclick = function() {
-                const parentModal = this.closest('.modal');
-                if (parentModal) {
-                    closeModal(parentModal);
-                }
-            };
-        });
-    }
-
-    // Initial attachment of close button listeners
-    attachCloseButtonListeners();
-
     // Handle view resubmission and view reason buttons
     document.addEventListener('click', function(e) {
         if (e.target.classList.contains('view-resubmission')) {
+            const enrolleeModal = document.getElementById('enrolleeModal');
             const enrolleeId = e.target.getAttribute('data-id');
-            const modalBody = document.getElementById('modal-body');
+            const content = document.getElementById('enrollee-modal-content');
             
-            modal.style.display = 'block';
-            modalBody.innerHTML = '<p>Loading...</p>';
+            enrolleeModal.style.display = 'block';
+            content.innerHTML = '<p>Loading...</p>';
 
-            fetch('../../../BackEnd/admin/adminEnrolleeInfoView.php?id=' + encodeURIComponent(enrolleeId))
+            fetch('../../../BackEnd/api/admin/fetchEnrolleeInfo.php?id=' + encodeURIComponent(enrolleeId))
                 .then(response => response.text())
                 .then(data => {
-                    const modalContent = document.querySelector('#enrolleeModal .modal-content');
-                    modalContent.innerHTML = `
-                        <span class="close">&times;</span>
+                    content.innerHTML = `
                         <div id="modal-body">
                             ${data}
                             <div class="action-buttons">
@@ -71,12 +42,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </div>
                     `;
-                    attachCloseButtonListeners();
+                    attachCloseButton(enrolleeModal);
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    modalBody.innerHTML = '<p>Error loading data. Please try again.</p>';
-                    attachCloseButtonListeners();
+                    content.innerHTML = '<p>Error loading data. Please try again.</p>';
+                    attachCloseButton(enrolleeModal);
                 });
         } 
          
@@ -101,7 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => {
                 console.log('Response:', response); // Debug log
                 
-                content.innerHTML = response.data[0].Remarks;
+                content.innerHTML = `<span class="close"> &times; </span>`;
+                content.innerHTML += response.data[0].Remarks;
                 enrollmentStatus = parseInt(response.data[0].Enrollment_Status);
                 const transactionId = parseInt(response.data[0].Enrollment_Transaction_Id);
 
@@ -125,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     content.innerHTML+= `<div><button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="deny" class="remarks deny-btn">Finalize Denial</button>
                                         <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="toFollow" class="remarks to-follow-btn">To Follow</button></div>`;    
                 }
+                attachCloseButton(reasonModal);
             })
             .catch(error => {
                 console.error('Error:', error);

@@ -10,40 +10,31 @@ class adminStudentsModel {
         $db = new Connect();
         $this->conn = $db->getConnection();
     }
-    public function getEnrollingGradeLevel($id) {
-        $sql = "SELECT Enrolling_Grade_Level FROM enrollee 
-        INNER JOIN educational_information AS ei ON enrollee.Educational_Information_Id = ei.Educational_Information_Id
-        WHERE Enrollee_Id = :id ";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['Enrolling_Grade_Level'];
-    }
     public function insertEnrolleeToStudent($enrolleeId) {
         try {
             $this->conn->beginTransaction();
-            $initialStatus = 1;
-            $gradeLevel = $this->getEnrollingGradeLevel($enrolleeId);
-            $sql = "INSERT INTO students(Enrollee_Id, Grade_Level_Id, Student_Status) VALUES(:enrollee_id, :grade_level, :initial_status)";
+            $sql = "INSERT INTO students(Enrollee_Id, First_Name, Last_Name, Middle_Name, Age, Sex, LRN, Grade_Level_Id, Student_Status)
+                    SELECT e.Enrollee_Id, e.Student_First_Name, e.Student_Last_Name, 
+                    e.Student_Middle_Name, e.Age, e.Sex, e.Learner_Reference_Number, Enrolling_Grade_Level, 1 AS Status FROM enrollee AS e
+                     JOIN educational_information AS ei ON e.Educational_Information_Id = ei.Educational_Information_Id
+                     WHERE e.Enrollee_Id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':enrollee_id', $enrolleeId);
-            $stmt->bindParam(':grade_level', $gradeLevel);
-            $stmt->bindParam(':initial_status', $initialStatus);
-            if($stmt->execute()) {
+            $result = $stmt->execute();
+
+            if($result) {
                 $this->conn->commit();
-                return ['success'=> true, 'message'=> 'query executed'];
+                return ['success'=> true];
             }
             else {
                 $this->conn->rollBack();
                 return ['success'=> false, 'message'=> 'query failed'];
-            }
+          }
             
         }
         catch(PDOException $e) {
             $this->conn->rollBack();
-            return ['query'=> false, 'message'=> $e->getMessage()];
+            return ['success'=> false, 'message'=> $e->getMessage()];
         }
     }
     public function getAllStudents() {
@@ -286,7 +277,34 @@ class adminStudentsModel {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         catch(PDOException $e) {
-            return [];
+            return ['success'=> false, 'message' => $e->getMessage()];
+        }
+    }
+    public function updateStudentSection($studentId,$sectionId) {
+        $sql = "UPDATE students SET Section_Id = :sectionId WHERE Student_Id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $studentId);
+        $stmt->bindParam(':sectionId', $sectionId);
+        $result = $stmt->execute();
+
+        if($result) {
+            return $result;
+        }
+        else {
+            return false;
+        }
+    }
+    public function updateUncheckedStudents($studentId) {
+        $sql = "UPDATE students SET Section_Id = null WHERE Student_Id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $studentId);
+        $result = $stmt->execute();
+
+        if($result) {
+            return $result;
+        }
+        else {
+            return false;
         }
     }
 }

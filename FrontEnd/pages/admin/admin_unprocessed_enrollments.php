@@ -1,8 +1,8 @@
 <?php
 ob_start();
 $pageTitle = "Admin Unhandled Enrollments";
-$pageJs = "../../assets/js/admin/admin-unhandled-enrollments.js";
-$pageCss = "../../assets/css/admin/admin-unprocessed-enrollments.css";
+$pageJs = '<script src="../../assets/js/admin/admin-unhandled-enrollments.js" defer></script>';
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-unprocessed-enrollments.css">';
     require_once __DIR__ . '/../../../BackEnd/admin/adminUnhandledEnrollmentsView.php';
     $view = new adminUnhandledEnrollmentsView();
 ?>
@@ -71,6 +71,9 @@ $pageCss = "../../assets/css/admin/admin-unprocessed-enrollments.css";
                 ?>
             </tbody>
         </table>
+    </div>
+    <div id="enrolleeModal" class="modal">
+        <div class="modal-content" id="enrollee-modal-content"></div>
     </div>
     <div id="reasonModal" class="modal">
         <div class="modal-content">

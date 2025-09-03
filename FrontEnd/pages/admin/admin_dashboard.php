@@ -5,8 +5,8 @@ ob_start();
 // Optionally set page metadata
 $pageTitle = "Admin Dashboard";
 $currentPage = "dashboard";
-$pageCss = '../../assets/css/admin/admin-dashboard.css';
-$pageJs = '../../assets/js/admin/admin-dashboard-json-fetcher.js';
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-dashboard.css">';
+$pageJs = '<script src="../../assets/js/admin/admin-dashboard.js" defer></script>';
 ?>
 <div class="enrollee-data-wrapper">
 <div class="gradient-background">
@@ -104,7 +104,10 @@ $pageJs = '../../assets/js/admin/admin-dashboard-json-fetcher.js';
  <div class="big-card-wrapper">
  <!--PENDING ENROLLMENTS BIG-->
  <div class="pending-enrollments-wrapper">
-     <h3 class="big-card-title"><a href="../staff/staff_enrollment_pending.php"> View All Pending Enrollees</a></h3>
+     <div class="pending-enrollments-header">
+        <h3 class="big-card-title"> Recently Submitted</h3> 
+        <a class="big-card-hyperlink" href="../staff/staff_enrollment_pending.php"> View All Pending Enrollees</a>
+     </div>
      <table class="pending-enrollments-table">
          <tr>
              <th>LRN</th>
@@ -131,6 +134,7 @@ $pageJs = '../../assets/js/admin/admin-dashboard-json-fetcher.js';
 </div>
 </div>
 
-<?php $pageContent = ob_get_clean(); 
-    require_once __DIR__ . '/admin_base_designs.php';
+<?php 
+$pageContent = ob_get_clean(); 
+require_once __DIR__ . '/admin_base_designs.php';
 ?>

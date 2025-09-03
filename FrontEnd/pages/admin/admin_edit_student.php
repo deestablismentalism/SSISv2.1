@@ -1,6 +1,6 @@
-<!DOCTYPE html>
 <?php 
-    include_once __DIR__ . '/./admin_base_designs.php';
+ob_start();
+$pageCss= '<link rel="stylesheet" href="../../assets/css/admin/admin-edit-student.css">';
     require_once __DIR__ . '/../../../BackEnd/admin/models/adminStudentsModel.php';
     
     // Check if student ID is provided
@@ -40,9 +40,6 @@
     // Get additional student data (assuming these fields exist in your database)
     $additionalInfo = $studentModel->getAdditionalStudentInfo($studentId);
 ?>
-<link rel="stylesheet" href="../../assets/css/admin/admin-edit-student.css">
-</head>
-<body>
     <div class="main-content">
         <div class="content">
             <div class="page-title">
@@ -291,5 +288,7 @@
             document.getElementById('age').value = age;
         });
     </script>
-</body>
-</html> 
+<?php 
+    $pageContent = ob_get_clean();
+    require_once __DIR__ . '/./admin_base_designs.php';
+?>

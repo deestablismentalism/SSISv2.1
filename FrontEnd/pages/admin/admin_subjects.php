@@ -1,8 +1,8 @@
 <?php 
 ob_start();
-$pageJs = "../../assets/js/admin/admin-subjects-validation.js";
+$pageJs = '<script src="../../assets/js/admin/admin-subjects-validation.js" defer></script>';
 $pageTitle = "Admin Subjects";
-$pageCss = "../../assets/css/admin/admin-subjects.css";
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-subjects.css">';
     require_once __DIR__ . '/../../../BackEnd/common/getGradeLevels.php';
 ?>
 <div class="admin-subjects-content">
