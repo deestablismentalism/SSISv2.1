@@ -1,8 +1,8 @@
 <?php
 ob_start(); 
     $pageTitle = "Admin Students";
-    $pageCss = "../../assets/css/admin/admin-all-students.css";
-    $pageJs = "../../assets/js/admin/admin-students.js";
+    $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-all-students.css">';
+    $pageJs = '<script src="../../assets/js/admin/admin-all-students.js" defer></script>';
 ?>
    <div class="admin-all-students-content">
         <div class="table-title">

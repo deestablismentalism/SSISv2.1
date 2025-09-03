@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./assets/css/footer.css">
     <link rel="stylesheet" href="./assets/css/reset.css">
     <title>Document</title>
+    <link rel="icon" href="../favicon.ico" > 
 </head>
 <body>
     <div class = "header">

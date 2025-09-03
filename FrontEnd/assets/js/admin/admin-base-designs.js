@@ -4,15 +4,20 @@ document.addEventListener('DOMContentLoaded', function() {
     sidebarToggleBtn.addEventListener('click', function() {
         sidebar.classList.toggle('active');
     });
-
+    const path = window.location.pathname;
+    const page = path.split("/").pop();
+    const viewSection = document.querySelector('.sections-ul');
+    if(page == 'admin_view_section.php') {
+        viewSection.classList.add('show');
+        const section = viewSection.querySelector('span');
+        section.classList.add('active');
+    }
     //check the non drop down links
     let currentPath = window.location.pathname.toLowerCase();
-    const adminNavigations = document.querySelectorAll('admin-nav-links');
-    console.log(adminNavigations);
+    const adminNavigations = document.querySelectorAll('.admin-nav-links');
 
     adminNavigations.forEach(link=> {
         const linkPath = new URL(link.href).pathname.toLowerCase();
-
         if(linkPath == currentPath) {
             link.classList.toggle('active');
         }

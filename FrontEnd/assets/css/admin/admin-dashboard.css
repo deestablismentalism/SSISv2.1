@@ -9,7 +9,6 @@ h1 {
 .radio-container {
     display: flex;
 }
-
 .enrollees-by-day-container {
     padding: 1rem;
     background-color: #fff;
@@ -56,7 +55,6 @@ h1 {
 .enrollee-data-wrapper {
     background: linear-gradient(to right, #d9ccbb, #baae9f, #9b9185, #7d756b, #615b52, #46413b );
     padding: 1rem;
-    margin: 2rem;
 }
 .border-50::after {
     content: '';
@@ -104,7 +102,6 @@ h1 {
     display: none;
     background-color: white;
     padding: 1em;
-    justify-content: center;
     border-radius: 1.5em;
     width: 100%;
     height: 25em;
@@ -146,24 +143,29 @@ h1 {
     height: 3em;
     font-size: 1.7em;
 }
-
-.big-card-wrapper {
+.pending-enrollments-header {
     display: flex;
+    justify-content: space-between;
+    border-bottom:1px rgba(241, 189, 34, 0.3) solid ;
+    padding: 0.5rem;
 }
-
 .big-card-title {
     font-weight: 900;
-    font-size: 1.5em;
+    font-size: 1.5rem;
     font-family: 'Baloo-Thambi-2';
-    padding: .5em;
+    padding: .5rem;
     color: rgb(0,51,102);
-    border-bottom:1px rgba(241, 189, 34, 0.3) solid ;
 }
-.big-card-title a {
+.big-card-hyperlink {
+    background-color: #007bff;
+    border-radius: 0.5rem;
+    color: white;
+    padding: 0.5rem;
     cursor: pointer;
+    height: 50%;
 }
-.big-card-title a:hover {
-    color: rgb(0,51,102);
+.big-card-hyperlink:hover {
+    background-color: rgb(0,51,102);
 }
 .post-announcements-title {
     border: none;
@@ -206,4 +208,11 @@ tr:nth-child(even) {
     height: 4em;
     object-fit: cover;
 }
-
+@media(max-width: 1920px) {
+    .card {
+        width: 90%;
+    }
+    .enrollee-data-wrapper {
+        margin: 1rem;
+    }
+}

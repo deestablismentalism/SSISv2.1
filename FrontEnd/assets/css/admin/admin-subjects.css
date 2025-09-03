@@ -87,7 +87,6 @@
     width: 1.2em;
     height: 1.2em;
     border-radius: 50%;
-    display: inline-block;
     position: relative;
     margin-right: 0.5em;
     vertical-align: middle;
@@ -96,18 +95,19 @@
 }
 .form input[type="radio"]:checked {
     border-color: #0056b3;
-    background-color: #007bff;
+    background-color: #fff
 }
 .form input[type="radio"]:checked::after {
     content: '';
     display: block;
     width: 0.6em;
     height: 0.6em;
-    background: #fff;
+    background: #007bff;
     border-radius: 50%;
     position: absolute;
-    top: 0.25em;
-    left: 0.25em;
+    top: 50%;
+    left: 50%; 
+    transform: translate(-50%, -50%);
 }
 
 /* Modern checkboxes */

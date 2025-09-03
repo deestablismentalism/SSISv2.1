@@ -1,0 +1,127 @@
+.section-details-container {
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 0.6rem;
+    min-height: 100vh;
+    height: 100%;
+}
+.students-list {
+    padding: 2rem;
+}
+.admin-view-section-content {
+    margin: 1rem;
+}
+.section-name,
+.students-list-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.adviser-name {
+    padding: 2rem;
+    font-size: 1.3rem;
+}
+.section-name-container,
+.adviser-name-container {
+    text-align: center;
+}
+.edit-section{
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.75em 2em;
+    border-radius: 0.5em;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+/*No students design*/
+.no-students-container {
+    text-align: center;
+    font-size: 1.5rem;
+}
+.no-students-container h1 {
+    color: #333;
+}
+.no-students-container a {
+    color: blue;
+    text-decoration: underline;
+}
+.no-students-container a:hover {
+    color: #007bff;
+    cursor: pointer;
+}
+.students-list {
+    table-layout: fixed;
+    width: 100%;
+}
+.students-list th,td{
+    border: 0.05rem solid black;  
+    padding: 0.5rem;  
+}
+/*edit section form*/
+.edit-section-details {
+    display: flex;
+    flex-direction: column;
+}
+.edit-section-details input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    border: 2px solid #007bff;
+    width: 1.2em;
+    height: 1.2em;
+    border-radius: 0.3em;
+    display: inline-block;
+    position: relative;
+    margin-right: 0.5em;
+    vertical-align: middle;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+.edit-section-details input[type="checkbox"]:checked {
+    border-color: #0056b3;
+    background-color: #007bff;
+}
+.edit-section-details input[type="checkbox"]:checked::after {
+    content: '';
+    display: block;
+    width: 0.4em;
+    height: 0.8em;
+    border: solid #fff;
+    border-width: 0 0.2em 0.2em 0;
+    position: absolute;
+    left: 0.35em;
+    top: 0.1em;
+    transform: rotate(45deg);
+}
+.edit-section-details input[type="text"] {
+    width: 30%;
+    padding: 0.5em;
+    margin-bottom: 1em;
+    border: 1px solid #ccc;
+    border-radius: 0.5em;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+.edit-section-details select {
+    padding: 0.5em;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 30%;
+}
+.edit-section-details button[type="submit"] {
+    margin: 0.3rem;
+    background-color: #4caf50;
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.3rem;
+    width: fit-content;
+    cursor: pointer;
+}
+.cancel-btn {
+    margin: 0.3rem;
+    background-color: #f44336;
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.3rem;
+    width: fit-content;
+    cursor: pointer;
+}

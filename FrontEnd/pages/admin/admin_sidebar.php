@@ -25,11 +25,19 @@
                             <img src="../../assets/imgs/sections-logo.png" class="bi">
                             <span id="sections-spn" class="menu-title"> <a href="./admin_sections.php" class="admin-nav-links"> Sections </a></span>
                         </div>
+                            <ul class="sections-ul">
+                                <li> <span class="sub-nav"> View Section Details </span> </li>
+                            </ul>
                         <!--SUBJECTS-->
                         <div class="menu border-100sb">
                             <img src="../../assets/imgs/subjects-logo.png" class="bi">
                             <span id="sections-spn" class="menu-title"> <a href="./admin_subjects.php" class="admin-nav-links"> Subjects</a></span>
                         </div>
+                            <ul class="subjects-ul">
+                                <li>
+                                    <span class="sub-nav"> View Subject Details</span>
+                                </li>
+                            </ul>
                     </nav>
                     <!--TEACHERS-->
                     <div class="menu border-100sb" id="teachers">

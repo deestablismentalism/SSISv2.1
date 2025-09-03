@@ -1,5 +1,5 @@
 <?php
-    require_once __DIR__ . '/./adminEnrolleeInfo.php';
+    require_once __DIR__ . '/../../admin/adminEnrolleeInfo.php';
 
     $view = new adminEnrolleeInfo();
 ?>

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./assets/css/login.css">
     <link rel="stylesheet" href="./assets/css/fonts.css">
     <script src="./assets/js/login-validation.js"></script> 
+    <link rel="icon" href="../favicon.ico">
 </head>
 
 <body>  

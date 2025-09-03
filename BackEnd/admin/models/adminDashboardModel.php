@@ -204,7 +204,7 @@ class adminDashboardModel {
         try {
             $sql = "SELECT SUM(CASE WHEN Sex = 'Male' THEN 1 ELSE 0 END) AS Male,
                            SUM(CASE WHEN Sex = 'Female' THEN 1 ELSE 0 END) AS Female
-                    FROM students JOIN enrollee on enrollee.Enrollee_Id = students.Enrollee_Id;";
+                    FROM students;";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);

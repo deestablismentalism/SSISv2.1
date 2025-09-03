@@ -11,10 +11,12 @@
             "email": "llorin.221571@lucena.sti.edu.ph"
         }
     ],
-    "require": {},
     "config": {
         "allow-plugins": {
             "php-http/discovery": true
         }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
     }
 }

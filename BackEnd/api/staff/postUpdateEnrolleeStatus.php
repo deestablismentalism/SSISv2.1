@@ -7,9 +7,13 @@ require_once __DIR__ . '/../../admin/models/adminEnrolleesModel.php';
 require_once __DIR__ . '/../../admin/models/adminStudentsModel.php';
 require_once __DIR__ . '/../../staff/models/staffEnrolleesModel.php';
 header("Content-Type: application/json");
-if($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    if($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        echo json_encode(['success' => false, 'message'=> 'Invalid request method']);
+        exit();
+    }
     //TODO: update this file to also handle the to follow and denied status
-    try {
+try {
 
     $transactionsModel = new staffEnrollmentTransactionsModel();
     $enrolleesModel = new adminEnrolleesModel();
@@ -39,93 +43,88 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $transactionCode = $statusCode . "-" . $date . "-" . $time; //generate unique transaction code
     $validStatuses = [1, 2, 3, 4];
 
-    if(isset($_SESSION['Staff']['Staff-Id']) && $_SESSION['Staff']['Staff-Type'] == 1) {
-        $staffId = $_SESSION['Staff']['Staff-Id'];
-
-        if(isset($enrolleeId) && in_array($status, $validStatuses)) {
-            $update = $enrolleesModel->updateEnrollee($enrolleeId, $status);
-            //execute only if update successful
-            if($update) {
-                 // Only attempt to insert into students table if status is 1 (Enrolled)
-                if ($status == 1) {
-                    $isApproved = 1;
-                    $insertToEnrolleeTransactions = $transactionsModel->insertEnrolleeTransaction($enrolleeId,$transactionCode, $status, $staffId, $remarks, $isApproved);
-                    if($insertToEnrolleeTransactions) {
-                        $insert = $students->insertEnrolleeToStudent($enrolleeId);
-                        if($insert) {
-                            $isHandledSuccess = $staffEnrolleeModel->setIsHandledStatus($enrolleeId, $isHandled);
-                            if($isHandledSuccess) {
-                                echo json_encode($insert);
-                                exit();
-                            }
-                        }
-                        else {
-                            echo json_encode(['success' => false, 'message'=> 'inserting enrollee failed']);
-                            exit();
-                        }
-                    }
-                }
-                else if ($status == 4 || $status == 3){
-                    $insertToEnrolleeTransactions = $transactionsModel->insertEnrolleeTransaction($enrolleeId,$transactionCode, $status, $staffId, $remarks, $isApproved);
-    
-                    if($insertToEnrolleeTransactions) {
-                        $isHandledSuccess = $staffEnrolleeModel->setIsHandledStatus($enrolleeId, $isHandled);
-                        if($isHandledSuccess) {
-                            echo json_encode($insert);
-                            exit();
-                        }
-                    }
-                    else {
-                        echo json_encode(['success'=> false, 'message' => 'insert failed']);
-                        exit();
-                    }
-                } 
-                else {
-                    echo json_encode(['success'=> false, 'message'=> 'invalid status']);
-                    exit();
-                }
-            }
-            echo json_encode(['success' => true, 'message'=> "Update successful"]);
-            exit();
-        }
-        else {
-            echo json_encode(['success' => false, 'message' => 'Invalid input: enrolleeId or status is invalid']);
-            exit();
-        }
-    }
-    //only insert the transaction if not an admin
-    //no updates allowed for non admin
-    else if(isset($_SESSION['Staff']['Staff-Id']) && $_SESSION['Staff']['Staff-Type'] == 2) {
-        $staffId = $_SESSION['Staff']['Staff-Id'];
-        if(isset($enrolleeId) && in_array($status, $validStatuses)) {
-            $insert = $transactionsModel->insertEnrolleeTransaction($enrolleeId,$transactionCode, $status, $staffId, $remarks, $isApproved); //isApproved will be false if handled by teacher
-            if(!$insert) {
-                echo json_encode(['success' => false, 'message' => 'Insert failed']);
-                exit();
-            }
-            $isHandledSuccess = $staffEnrolleeModel->setIsHandledStatus($enrolleeId, $isHandled);
-            if($isHandledSuccess) {
-                echo json_encode($insert);
-                exit();
-            }
-        }
-        else {
-            echo json_encode(['success' => false, 'message' => 'Invalid input: enrollee Id or status is invalid']);
-            exit();
-        }
-    }
-    else {
-        //do not accept if accessed without any valid session id
+    if(!isset($_SESSION['Staff']) || !in_array($_SESSION['Staff']['Staff-Type'], [1,2])) {
         echo json_encode(['success' => false, 'message' => 'Unauthorized access']);
         exit();
     }
+
+        $staffId = $_SESSION['Staff']['Staff-Id'];
+        $staffType = $_SESSION['Staff']['Staff-Type'];
+        if(!isset($enrolleeId) || !in_array($status, $validStatuses)) {
+            echo json_encode(['success'=> false, 'message'=> 'Invalid Id!']);
+            exit();
+        }
+        if($staffType == 1) {
+            $update = $enrolleesModel->updateEnrollee($enrolleeId, $status);
+            //execute only if update successful
+            if(!$update) {
+                echo json_encode(['success'=> false, 'message'=> 'Update failed']);
+                exit();
+            }
+            // Only attempt to insert into students table if status is 1 (Enrolled)
+            if ($status == 1) {
+                $isApproved = 1;
+
+                $insertToEnrolleeTransactions = $transactionsModel->insertEnrolleeTransaction($enrolleeId,$transactionCode, $status, $staffId, $remarks, $isApproved);
+                if(!$insertToEnrolleeTransactions) {
+                    echo json_encode(['success' => false, 'message'=> 'Transaction insertion failed']);
+                    exit();
+                }
+                $insert = $students->insertEnrolleeToStudent($enrolleeId);
+                if(!$insert) {
+                    echo json_encode(['success'=> false, 'message'=> 'There was a problem with inserting student information']);
+                    exit();
+                }
+                $isHandledSuccess = $staffEnrolleeModel->setIsHandledStatus($enrolleeId, $isHandled);
+                if(!$isHandledSuccess) {
+                    echo json_encode(['success'=> false, 'message'=> 'Handling did not update']);
+                    exit();
+                }
+                echo json_encode($insert);
+                exit();
+            }
+            else if ($status == 4 || $status == 3){
+                $insertToEnrolleeTransactions = $transactionsModel->insertEnrolleeTransaction($enrolleeId,$transactionCode, $status, $staffId, $remarks, $isApproved);
+
+                if(!$insertToEnrolleeTransactions) {
+                    echo json_encode(['success'=> false, 'message' => 'Transaction insertion failed']);
+                    exit();
+                }
+                $isHandledSuccess = $staffEnrolleeModel->setIsHandledStatus($enrolleeId, $isHandled);
+                if(!$isHandledSuccess) {
+                    echo json_encode(['success'=> false, 'message'=> 'Handling did not update']);
+                    exit();
+                }
+                echo json_encode($insertToEnrolleeTransactions);
+                exit();
+            }  
+        }
+    //only insert the transaction if not an admin
+    //no updates allowed for non admin
+    else if($staffType== 2) {
+        if(empty($enrolleeId) || !in_array($status, $validStatuses)) {
+            echo json_encode(['success'=> false, 'message'=> 'Invalid ID!']);
+            exit();
+        }
+        $insert = $transactionsModel->insertEnrolleeTransaction($enrolleeId,$transactionCode, $status, $staffId, $remarks, $isApproved); //isApproved will be false if handled by teacher
+        if(!$insert) {
+            echo json_encode(['success' => false, 'message' => 'Insert failed']);
+            exit();
+        }
+        $isHandledSuccess = $staffEnrolleeModel->setIsHandledStatus($enrolleeId, $isHandled);
+        if(!$isHandledSuccess) {
+            echo json_encode(['success'=> false, 'message'=> 'Handling did not update']);
+            exit();
+        }
+        echo json_encode($insert);
+        exit();
     }
-    catch(Exception $e) {
-        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    else {
+        echo json_encode(['success'=> false, 'message'=> 'Unknown Staff type']);
         exit();
     }
 }
-else {
-    echo json_encode(['success' => false, 'message'=> 'Invalid request method']);
+catch(Exception $e) {
+    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     exit();
 }

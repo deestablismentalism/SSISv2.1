@@ -4,7 +4,7 @@
     --title-fonts: 'Caladea', sans-serif;
     --link-fonts: 'Roboto', sans-serif;
     --sidebar-width: 60px;
-    --sidebar-expanded-width: 25vw;
+    --sidebar-expanded-width: 20dvw;
 }
 body {
     background-color: rgb(235, 231, 231);
@@ -28,6 +28,10 @@ p {
     background-color: #003366;
     transition: width 0.3s ease;
     font-family: 'Barlow', 'Arial';
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 100;
 }
 .main-content {
     flex-grow: 1;
@@ -56,6 +60,9 @@ p {
     transition: max-height 0.5s ease-out, opacity 0.3s ease-out;
 }    
 
+.admin-nav-links:is(:link, :active, :visited).active {
+    color: #E1A23C;
+}
 .sidebar a {
     display: block; 
     color: white;
@@ -157,17 +164,6 @@ p {
 .dashboard-ul a:hover {
     color: white;
 }
-/*STUDENTS*/
-.students-ul a:hover {
-    color: white;
-}
-
-.students-ul {
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-height .2s ease-in, opacity .0005s ease-in;
-}
 
 /*TEACHERS*/
 
@@ -175,7 +171,9 @@ p {
     color: white;
 }
 
-.teachers-ul {
+.teachers-ul, 
+.subjects-ul,
+.sections-ul {
     max-height: 0;
     opacity: 0;
     overflow: hidden;
@@ -200,6 +198,7 @@ p {
 .sidebar.active {
     width: var(--sidebar-expanded-width); 
     transition: width 0.2s ease-in, opacity 0.15s ease-out;
+    position: sticky;
 }
 
 /*SIDEBAR TITLE*/
@@ -220,7 +219,9 @@ p {
     opacity: 1;
     transition: max-height .5s ease-out, opacity .5s ease-out;
 }
-
+.sub-nav.active {
+    color: #E1A23C;
+}
 .sidebar.active .menu-btn {
     grid-column: 2/2;
     justify-self: right;
@@ -237,7 +238,7 @@ p {
     transition: max-height .5s ease-in, opacity .3s ease-in;
 }
 
-.students-ul.show, .teachers-ul.show, .enrolls-ul.show {
+.sections-ul.show, .teachers-ul.show, .enrolls-ul.show, subjects-ul.show {
     max-height: 100vh;
     opacity: 1;
     background-color: #051F3E;
@@ -381,8 +382,45 @@ p {
     overflow: auto;
     background-color: rgba(0,0,0,0.4);
 }
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 8px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+.close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
 /*--END OF HEADER DESIGNS--*/
 /*MEDIA QUERIES*/
+@media(max-width: 1920px) {
+    .content {
+        width: 100%;
+        transition: width 0.3s ease;
+    }
+    .sidebar.active ~ .content{
+        width: 92%;
+    }
+}
 @media (max-width: 1510px) {
     sidebar.active {
         min-width: 20vw;

@@ -71,9 +71,6 @@ document.addEventListener('DOMContentLoaded', function (){
                 submitButton.disabled = true;
                 submitButton.style.backgroundColor = 'gray';
                 const formData = new FormData(form);
-                for (const [key, value] of formData.entries()) {
-                    console.log(`${key}: ${value}`);
-                }
                 fetch('../../../BackEnd/api/staff/postUpdateEnrolleeStatus.php', { //TODO: update this function to handle all enrollee status updates
                     method: 'POST',
                     body: formData
@@ -81,8 +78,8 @@ document.addEventListener('DOMContentLoaded', function (){
                 .then(response => response.json())
                 .then(data =>{
                     if (data.success) {
-                        alert(data.message);
-                        location.reload();
+                        alert('Update Successful');
+                        setInterval(()=>{location.reload()}, 1000);
                     }
                     else {
                         alert("ERROR: " + data.message);

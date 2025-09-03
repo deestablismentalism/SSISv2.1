@@ -1,5 +1,13 @@
 body {
+    background-color: rgb(235, 231, 231);
     display: flex;
+    margin: 0;
+    min-height: 100vh;
+}
+.main-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
 }
 .sidebar {
     position: sticky;
@@ -13,7 +21,14 @@ body {
     overflow: hidden;
     font-family: 'Barlow', Arial;
 }
-
+.content {
+    display: flex;
+    flex-direction: column;
+    background-color:antiquewhite;
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+}
 .sidebar button {
     border: none;   
     background: none;
@@ -22,9 +37,9 @@ body {
     max-height: 0;
     transition: max-height 0.5s ease-out, opacity 0.3s ease-out;
 }  
-.sidebar a {
+.sidebar a:hover {
     display: block; 
-    color: #CC8B20;
+    color: #E1a23c;
     text-decoration: none;
     cursor: pointer !important;
 }  

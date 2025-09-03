@@ -1,18 +1,20 @@
 .admin-sections-content {
    padding: 1rem;
 }
-.sections-form {
-    padding: 1em;
-    background-color: #ffffff;
-    padding: 2em;
-    border-radius: 1.5em;
+.page-title {
+    font-size: 1.5rem;
+}
+.sections-title-wrapper {
+    display: flex;
+    justify-content: space-between;
 }
 .form {
     display: flex;
     gap: 1em;
 }
-.sections-form input[type="text"],
-.sections-form select {
+.add-section-form input[type="text"],
+.add-section-form select,
+input[type="text"] {
     width: 30%;
     padding: 0.75em;
     margin-bottom: 1em;
@@ -22,7 +24,8 @@
     box-sizing: border-box;
 }
 
-.sections-form .submit-btn {
+.add-section-form button[type="submit"], 
+.sections-title-wrapper button{
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -33,16 +36,63 @@
     transition: background 0.2s;
     height: 50%;
 }
-.sections-form .submit-btn:hover {
+.sections-form button[type="submit"]:hover {
     background-color: #0056b3;
 }
 
-.sections-list {
+.sections-list-wrapper {
     margin-top: 2em;
     background: #fff;
     padding: 2em;
     border-radius: 1.5em;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    min-height: 100vh;
+}
+/*sections lists uniform design*/
+.section {
+    font-size: 1.2rem;
+}
+.sections-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.section-grade-level {
+    width: fit-content;
+    padding: 0.2rem;
+    border-radius: 0.6rem;
+    background: linear-gradient(to bottom right,#f0e6ee, #e1cede, #d2b6ce, #c39fbe);
+    box-shadow: 0 0 0 0.06rem  rgba(0, 0, 0, 0.5);
+}
+.edit-section {
+    padding: 0.2rem;
+    box-shadow: 0 0 0 0.06rem  rgba(0, 0, 0, 0.5);
+    border-radius: 0.3rem;
+    height: fit-content;
+    cursor: pointer;
+}
+.sections-list {
+    padding: 0.5rem;
+    background: linear-gradient(to bottom right, #f0e6ee, #e4dbe2, #d9d1d7);
+    border-radius: 1rem;
+    width: 25%;
+}
+.section-major-information {
+    padding: 0.2rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+}
+.section-major-information img {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+.adviser, .students {
+    display: flex;
+    justify-content: space-between;
+}
+.adviser-value, .students-value {
+    color:#3e3e3e;
 }
 .admin-sections-table {
     width: 100%;
