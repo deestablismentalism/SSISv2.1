@@ -82,7 +82,7 @@
         .school-name {
         font-size: 21px;
         font-weight: bold;
-        margin: 7px;
+        margin: 18px 3px;;
         color: #ffd700;
         }
 
@@ -304,7 +304,7 @@
                 <div class="school-name">
                     <img src="assets/imgs/logo.jpg" alt="Lucena South II Elementary School Logo" style="width: 44px; height: auto; border-radius: 70%; margin-right: 10px;">
                     Lucena South II Elementary School
-                    <img src="assets/imgs/deped_logo.png    " style="width: 44px; height: auto; border-radius: 70%; margin-right: 10px;">
+                    <img src="assets/imgs/deped_logo.png    " style="width: 44px; height: auto; border-radius: 70%; margin: 10px 10px;">
                 </div>
             </div>
 
@@ -317,30 +317,34 @@
                         <div class="contact-icon email-icon">✉️</div>
                         <div class="contact-text">
                             <div class="contact-title">109732@deped.gov.ph</div>
-                            <div class="contact-detail">Email</div>
+                            <div class="contact-detail">Email Address</div>
                         </div>
                     </a>
 
-                    <!-- Location Link (Google Maps) -->
-                    <a href="https://maps.app.goo.gl/94YUjoaVeRsRGcUX6" target="_blank" class="contact-link">
-                        <div class="contact-icon location-icon">📍</div>
-                        <div class="contact-text">
-                            <div class="contact-title">Teody Street, Capitol Homesite, Brgy. Cotta, Lucena, Philippines</div>
-                            <div class="contact-detail">Location</div>
-                        </div>
-                    </a>
 
                     <!-- Facebook Link -->
-                    <a href="https://www.facebook.com/DepEdTayoLS2ES109732/about" target="_blank" class="contact-link">
-                        <div class="contact-icon facebook-icon">👥</div>
-                        <div class="contact-text">
-                            <div class="contact-title">DepEd Tayo Lucena South II ES - Calabarzon</div>
-                            <div class="contact-detail">Visit Our Facebook Page</div>
-                        </div>
-                    </a>
-                
-                    <!-- Schedule (non-clickable) -->
+                    <div class="contact-item">
+                        <a href="https://www.facebook.com/DepEdTayoLS2ES109732/about" target="_blank" class="contact-link">
+                            <div class="contact-icon facebook-icon">👥</div>
+                            <div class="contact-text">
+                                <div class="contact-title">DepEd Tayo Lucena South II ES - Calabarzon</div>
+                                <div class="contact-detail">Visit Our Facebook Page</div>
+                            </div>
+                        </a>
+                    </div>
 
+                    <!-- Location Link (Google Maps) -->
+                    <div class="contact-item">
+                        <a href="https://maps.app.goo.gl/94YUjoaVeRsRGcUX6" target="_blank" class="contact-link">
+                            <div class="contact-icon location-icon">📍</div>
+                            <div class="contact-text">
+                                <div class="contact-title">Teody Street, Capitol Homesite, <br> Brgy. Cotta, Lucena, Philippines</div>
+                                <div class="contact-detail">Location</div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Schedule (non-clickable) -->
                     <div class="contact-item">
                         <div class="contact-icon schedule-icon">📅</div>
                         <div class="contact-text">

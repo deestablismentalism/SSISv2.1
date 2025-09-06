@@ -3,13 +3,34 @@
     font-size: 2em;
 }
 
-.html, body {
+html, body {
     margin: 0;
     padding: 0;
     height: 100%;
     font-family: Arial, sans-serif;
     background-color: #f3fffe;
 }
+
+/* Add default header style */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: white; /* fallback before scroll */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+    transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+/* Adjust body to prevent content hiding behind fixed header */
+body {
+    padding-top: 70px; /* match header height */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 /* Hero Section */
         .hero {
             background: #000; /* just a plain dark background */

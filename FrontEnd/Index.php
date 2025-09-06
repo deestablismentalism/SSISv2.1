@@ -203,17 +203,6 @@
             </div>
         </div>
 
-        <style> 
-            body {
-            font-family: Arial, sans-serif;
-            background-color: #f3fffe;
-            display: flex;
-            min-height: 100vh;  
-            flex-direction: column;
-            justify-content: flex-end;
-            }
-        </style>
-
         <div>
             <?php
                 include './Footer.php';
