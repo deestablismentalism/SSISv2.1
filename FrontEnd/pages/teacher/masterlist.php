@@ -10,6 +10,7 @@ try {
         $pdf->Cell(60,10, 'No Section found');
         $pdf->Output();
     }
+
     $sectionId = $_GET['section'];
     $sectionAdviserModel = new teacherSectionAdvisersModel();
 
@@ -18,38 +19,12 @@ try {
 
     $sectionMale = $sectionAdviserModel->getSectionMaleStudents($sectionId);
     $sectionFemale = $sectionAdviserModel->getSectionFemaleStudents($sectionId);
-    //all students array
-    $rows = [
-        'male' => [],
-        'female' => []
-    ];
-    //TODO: handle empty query
-    foreach($sectionMale as $male) {
-        $firstName = htmlspecialchars($male['Student_First_Name']);
-        $lastName = htmlspecialchars($male['Student_Last_Name']);
-        $middleName = (!empty($male['Student_Middle_Name'])) ? htmlspecialchars($male['Student_Middle_Name']) : '';
-        $fullName = $lastName . ', ' . $firstName . ' ' . $middleName;
-
-        $rows['male'][] = $fullName;
+    if(empty($sectionMale) && empty($sectionFemale)) {
+        throw new Exception('No Students Yet');
     }
-    foreach($sectionFemale as $female) {
-        $firstName = htmlspecialchars($female['Student_First_Name']);
-        $lastName = htmlspecialchars($female['Student_Last_Name']);
-        $middleName = (!empty($female['Student_Middle_Name'])) ? htmlspecialchars($female['Student_Middle_Name']) : '';
-        $fullName = $lastName . ', ' . $firstName . ' ' . $middleName;
-
-        $rows['female'][]   = $fullName;
-    }
-
-    $maleCount = count($sectionMale);
-    $femaleCount = count($sectionFemale);
-
-    //table cell decider
-    $higherIndex = max($maleCount, $femaleCount);
-
+    $currentSection = htmlspecialchars($sectionName['Grade_Level']) . ' - ' .htmlspecialchars($sectionName['Section_Name']);
     $adviserHasMiddleInitial = (!empty($adviserName['Staff_Middle_Name'])) ? htmlspecialchars($adviserName['Staff_Middle_Name']) : '';
     $currentAdviser = htmlspecialchars($adviserName['Staff_Last_Name']) . ', ' . htmlspecialchars($adviserName['Staff_First_Name']) .' ' . $adviserHasMiddleInitial;
-    $currentSection = htmlspecialchars($sectionName['Grade_Level']) . ' - ' .htmlspecialchars($sectionName['Section_Name']);
     //title
     $pdf->setTitle( $currentSection . ' Masterlist');
     $pdf->ln();
@@ -74,9 +49,37 @@ try {
     $pdf->Cell(95, 10, 'Male',1,0,'C');
     $pdf->Cell(95, 10, 'Female',1,0,'C');
     $pdf->ln();
+    //students list array
+    $rows = [
+        'male' => [],
+        'female' => []
+    ];
+    //TODO: handle empty query
+    $maleCount = count($sectionMale);
+    $femaleCount = count($sectionFemale);
+    //table cell decider
+    $higherIndex = max($maleCount, $femaleCount);
 
-    if($higherIndex > 0) {
-        
+    foreach($sectionMale as $male) {
+        $firstName = htmlspecialchars($male['Student_First_Name']);
+        $lastName = htmlspecialchars($male['Student_Last_Name']);
+        $middleName = (!empty($male['Student_Middle_Name'])) ? htmlspecialchars($male['Student_Middle_Name']) : '';
+        $fullName = $lastName . ', ' . $firstName . ' ' . $middleName;
+
+        $rows['male'][] = $fullName;
+    }
+    foreach($sectionFemale as $female) {
+        $firstName = htmlspecialchars($female['Student_First_Name']);
+        $lastName = htmlspecialchars($female['Student_Last_Name']);
+        $middleName = (!empty($female['Student_Middle_Name'])) ? htmlspecialchars($female['Student_Middle_Name']) : '';
+        $fullName = $lastName . ', ' . $firstName . ' ' . $middleName;
+
+        $rows['female'][]   = $fullName;
+    }
+    if($higherIndex == 0) {
+        $pdf->Cell(210,10,'No Students to display',1,0,'C');
+    }
+    else {
         for ($i = 0; $i < $higherIndex; $i++) {
             $pdf->Cell(15,10, $i+1,1,0,'C');
             $pdf->Cell(80,10,isset($rows['male'][$i]) ? $rows['male'][$i] : '',1,0,'C');
@@ -88,9 +91,11 @@ try {
     $pdf->Output();
 
 }
-catch(Exeption $e) {
-    $pdf->SetFont('Arial', 'B', 20);
-    $pdf->Cell(210, 20, $e->getMessage());
-    $pdf->Output();
+catch(Exception $e) {
+    $errorPdf = new FPDF();
+    $errorPdf->AddPage();
+    $errorPdf->SetFont('Arial', 'B', 20);
+    $errorPdf->Cell(190, 20, $e->getMessage(),1,0,'C');
+    $errorPdf->Output();
 }
 

@@ -13,7 +13,7 @@ $id = (int) $_POST['id'];
 try {
     $db = new Connect();
     $conn = $db->getConnection();
-    $sql = "SELECT Enrollment_Transaction_Id, Remarks, Enrollment_Status, Can_Resubmit, Need_Consultation FROM enrollment_transactions WHERE Enrollee_Id = :id";
+    $sql = "SELECT Enrollment_Transaction_Id, Remarks, Enrollment_Status, Transaction_Status FROM enrollment_transactions WHERE Enrollee_Id = :id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':id', $id);
     $stmt->execute();

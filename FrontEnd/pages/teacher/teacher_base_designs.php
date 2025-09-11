@@ -16,6 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../assets/css/teacher/teacher-base-designs.css">
     <link rel="stylesheet" href="../../assets/css/reset.css">
+    <link rel="icon" href="../../../favicon.ico">
     <script src="../../assets/js/teacher/teacher-base-designs.js" defer></script>
     <?php if(isset($pageCss)) {echo $pageCss;} else { echo '';} ?>
 </head>
@@ -24,8 +25,8 @@
         <?php require_once __DIR__ . '/./teacher_sidebar.php';?> 
         <div class="content">
             <?php require_once __DIR__ . '/./teacher_header.php'; 
-                if(isset($PageContent)) {
-                    echo $PageContent;
+                if(isset($pageContent)) {
+                    echo $pageContent;
                 }
             ?>
         </div>
