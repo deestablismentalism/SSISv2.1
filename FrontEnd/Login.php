@@ -35,7 +35,7 @@
             <div class="error-msg">
                 <span id="em-login"> Error Message Here </span>
             </div>
-           <form id="login-form" action="../server_side/common/post_login_verify.php" method="post">
+           <form id="login-form" action="..\BackEnd\common\postLoginVerify.php" method="post">
                <div class="box">
                    <BR>
                    <label for="phone_number" style="color: white;  font-family: Baloo-Thambi-2;  font-size: .8em;" > Phone Number</label>
