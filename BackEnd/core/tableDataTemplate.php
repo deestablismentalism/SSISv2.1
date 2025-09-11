@@ -3,21 +3,24 @@
     require_once __DIR__ . '/dbconnection.php'; 
 
     class TableCreator {
-
-        public function generateHorizontalTitles( $id, string $rowName, array $titles) {
+        //direct echo functions
+        public function generateHorizontalTitles(string $rowName, array $titles) {
+            echo '<thead>';
+            echo '<tr class="'.$rowName.'">';
             foreach($titles as $rows) {
-                echo '<tr>
-                        <th> ' .htmlspecialchars($rows) . '</th>
-                        </tr>';
+                echo '<th> ' .htmlspecialchars($rows) . '</th>';
             }
-        }
-        public function generateHorizontalRows(array $values) {
-            echo '<tr>';
-                foreach($values as $rows) {
-                    echo '<td>' . htmlspecialchars($rows) . '</td>';
-                }
-
             echo '</tr>';
+            echo '</thead>';
+        }
+        public function generateHorizontalRows(string $className, array $values) {
+            echo '<tbody>';
+                foreach($values as $rows) {
+                    echo '<tr class="'.$className.'">';
+                    echo '<td>' . htmlspecialchars($rows) . '</td>';
+                    echo '</tr>';
+                }
+            echo '</tbody>';
         }
         public function generateVerticalTables(array $keys, array $values) {
             $assoc = array_combine($keys, $values); 
@@ -27,5 +30,18 @@
                         <td>' . htmlspecialchars($value) . '</td>
                     </tr>';
             }
+        }
+        //return only functions
+        public function returnHorizontalTitles(string $rowName, array $titles) {
+            $html = '';
+            $html .= '<thead>';
+            $html .= '<tr class="'.$rowName.'">';
+            foreach($titles as $rows) {
+                $html .= '<th> ' .htmlspecialchars($rows) . '</th>';
+            }
+            $html .= '</tr>';
+            $html .= '</thead>';
+
+            return $html;
         }
     }
