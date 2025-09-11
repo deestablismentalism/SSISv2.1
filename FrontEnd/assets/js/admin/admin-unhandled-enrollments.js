@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
             enrolleeModal.style.display = 'block';
             content.innerHTML = '<p>Loading...</p>';
 
-            fetch('../../../BackEnd/api/admin/fetchEnrolleeInfo.php?id=' + encodeURIComponent(enrolleeId))
+            fetch('../../../BackEnd/templates/admin/fetchEnrolleeInfo.php?id=' + encodeURIComponent(enrolleeId))
                 .then(response => response.text())
                 .then(data => {
                     content.innerHTML = `
@@ -84,10 +84,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="toFollow" class="remarks to-follow-btn">To Follow</button></div>`;    
                 }
                 else if (enrollmentStatus == 4) {
-                    const isResubmitted = parseInt(response.data[0].Can_Resubmit);
-                    const isNeedConsult = parseInt(response.data[0].Need_Consultation);
-                    const isConsultationDisabled = isNeedConsult == 1? 'disabled' : '';
-                    const isResubmissionDisabled = isResubmitted == 1 ? 'disabled' : '';
+                    const transactionStatus = parseInt(response.data[0].Transaction_Status);
+                    const isConsultationDisabled = transactionStatus == 2? 'disabled' : '';
+                    const isResubmissionDisabled = transactionStatus == 1 ? 'disabled' : '';
                     content.innerHTML+= `<div><button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="enroll" class="remarks accept-btn ${isResubmissionDisabled}" ${isResubmissionDisabled}>Enroll</button>
                                         <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="resubmit" class="remarks resubmission-btn ${isResubmissionDisabled}" ${isResubmissionDisabled}>Allow Resubmission</button>
                                         <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="consult" class="remarks consultation-btn ${isConsultationDisabled}"${isConsultationDisabled}> Needs Consultation </button>
@@ -177,27 +176,24 @@ document.addEventListener('DOMContentLoaded', function() {
             })
           }
           else {
-            //initialize boolean flags if 5 = isResubmit, if 6 = isConsult
-            let isResubmit = 0;
-            let isConsult = 0;
+            //initialize transactionFlag 1 if resubmit(5) 2 if cosultation(6) 
+            let transactionType = 0;
             const status = 4;
             if(actionNumber == 5) {
-                isResubmit = 1;
+                transactionType = 1;
             }
             else if(actionNumber == 6) {
-                isConsult = 1;
+                transactionType = 2;
             }
             console.log(isResubmit);
             console.log(isConsult);
-            console.log(transactionId);
             fetch(`../../../BackEnd/api/admin/postUpdateEnrollmentTransaction.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: new URLSearchParams({
-                    'isResubmit': isResubmit,
-                    'isConsult' : isConsult,
+                    'transactionType': transactionType,
                     'id' : transactionId,
                     'status' : status,
                     'enrolleeId' : enrolleeId 

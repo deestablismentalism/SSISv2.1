@@ -16,7 +16,7 @@
                 </div>
                 <div class="menu border-100sb" id="subjects">
                     <img src="../../assets/imgs/subjects-logo.png" alt="newspaper" class="bi">
-                    <span class="menu-title"> <a href="#"> Subjects Handled </a></span>
+                    <span class="menu-title"> <a href="./teacher_subjects_handled.php"> Subjects Handled </a></span>
                 </div>
                 <div class="menu border-100sb" id="grading">
                     <img src="../../assets/imgs/a-plus.png" alt="grade-students" class="bi">

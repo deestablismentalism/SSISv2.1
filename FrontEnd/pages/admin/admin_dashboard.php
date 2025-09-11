@@ -106,7 +106,7 @@ $pageJs = '<script src="../../assets/js/admin/admin-dashboard.js" defer></script
  <div class="pending-enrollments-wrapper">
      <div class="pending-enrollments-header">
         <h3 class="big-card-title"> Recently Submitted</h3> 
-        <a class="big-card-hyperlink" href="../staff/staff_enrollment_pending.php"> View All Pending Enrollees</a>
+        <a class="big-card-hyperlink" href="../staff/staff_pending_enrollments.php"> View All Pending Enrollees</a>
      </div>
      <table class="pending-enrollments-table">
          <tr>
