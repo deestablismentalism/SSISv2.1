@@ -46,6 +46,8 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-subjects.c
             <thead> 
                 <th> Subject Name </th>
                 <th> Grade Level </th>
+                <th> Teacher Assigned </th>
+                <th> Assign </th>
             </thead>
             <tbody> 
                 <?php 

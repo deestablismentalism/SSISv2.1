@@ -2,19 +2,25 @@
 
 declare(strict_types=1);
 require_once __DIR__ . '/./models/teacherSectionAdvisersModel.php';
+require_once __DIR__ . '/./models/teacherSubjectsModel.php';
+require_once __DIR__ . '/../core/tableDataTemplate.php';
 session_start();
 
 class teacherAdvisoryView {
     protected $conn;
     protected $sectionsModel;
+    protected $subjectsModel;
     protected $id;
     protected $staffId;
+    protected $tableTemplate;
 
     public function __construct() {
         $db = new Connect();
         $this->conn = $db->getConnection();
         $this->sectionsModel = new teacherSectionAdvisersModel();
-        if(isset($_GET['adv_id'])) $this->id = $_GET['adv_id'];
+        $this->subjectsModel = new teacherSubjectsModel();
+        $this->tableTemplate = new TableCreator();
+        if(isset($_GET['adv_id'])) $this->id = $_GET['adv_id']; //this is the section id
         if(isset($_SESSION['Staff']['Staff-Id'])) $this->staffId = $_SESSION['Staff']['Staff-Id'];
     }
 
@@ -47,7 +53,7 @@ class teacherAdvisoryView {
 
         if($students) {
             $html = '<table class="students-list">';
-            $html .= "<tr><thead><th>Student Name</th></thead></tr>";
+            $html .= $this->tableTemplate->returnHorizontalTitles('students-title', ['Student Name']);
             $html .= '<tbody>';
             foreach($students as $index =>$student) {
                 $lastName =  htmlspecialchars($student['Last_Name'] ?? '');
@@ -83,6 +89,37 @@ class teacherAdvisoryView {
         }
         catch(Exception  $e) {
             return 'Something went wrong. Please try again Later.';
+        }
+    }
+
+    public function displaySectionSubjects() {
+        try {
+            $sectionSubjectsData = $this->subjectsModel->getSectionSubjects($this->id);
+
+            if($sectionSubjectsData === false) {
+                throw new Exception('There was an error in fetching the subjects list. Try again Later');
+            }
+            else if(empty($sectionSubjectsData)) {
+                echo '<table class="empty-subjects-list">';
+                $this->tableTemplate->generateHorizontalRows('empty-content', ['No Subjects found']);
+                echo '</table>';
+            }
+            else {
+                echo '<table class="section-subjects-list">';
+                foreach($sectionSubjectsData as $rows) {
+                    
+                    $this->tableTemplate->generateHorizontalTitles('subjects-header', ['Subject Name', 'Day', 'Time',]);
+                    $this->tableTemplate->generateHorizontalRows('subjects-list', [htmlspecialchars($rows['Subject_Name']),
+                                                                                   htmlspecialchars($rows['Schedule_Day']),
+                                                                                   htmlspecialchars($rows['Time_Start']) .'-'. htmlspecialchars($rows['Time_End'])]);
+                }
+                echo '</table>';
+            }
+        }
+        catch(Exception $e) {
+            echo '<table class="exception-row">';
+            $this->tableTemplate->generateHorizontalRows('exception-content', [$e->getMessage()]);
+            echo '</table>';
         }
     }
 }
