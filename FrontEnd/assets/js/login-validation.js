@@ -32,14 +32,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 const ifUser = data.session.User?.['User-Type'];
                 const ifStaff = data.session.Staff?.['Staff-Type']; 
 
-                if (ifUser && ifUser === 3) {
+                if (ifUser && ifUser === "3") {
                     window.location.href =  './pages/user/user_enrollees.php';
                 }
                 else  {
-                    if (ifStaff && ifStaff === 2) {
+                    if (ifStaff && ifStaff === "2") {
                         window.location.href = './pages/teacher/Teacher_Dashboard.php';
                     }
-                    else if (ifStaff && ifStaff === 1){
+                    else if (ifStaff && ifStaff === "1"){
                         window.location.href = './pages/admin/admin_dashboard.php';
                     }
                     else {
