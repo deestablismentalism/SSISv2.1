@@ -7,7 +7,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
             min-height: 100vh;
             display: sticky;
             flex-direction: column;
@@ -28,7 +27,7 @@
             content: '';            
             position: absolute;
             inset: 0;   
-            background: linear-gradient(rgb(56 135 148 / 84%), rgb(6 76 106));  
+            background: linear-gradient(rgb(4 108 116 / 84%), rgb(15 71 124));
             backdrop-filter: blur(10px);
             background-color: rgba(255, 255, 255, 0.1); /* Optional: add some transparency */
             background-size: cover;
@@ -37,7 +36,6 @@
 
         .footer::after {
             content: '';
-
             top: 0;
             left: 0;
             right: 0;
@@ -80,10 +78,12 @@
         }
             
         .school-name {
-        font-size: 21px;
-        font-weight: bold;
-        margin: 18px 3px;;
-        color: #ffd700;
+            font-family: "PT Serif", serif;
+            color: #faf9e6; 
+            font-weight: 900;
+            font-size: 33px;
+            text-shadow: 2px 4px 10px rgb(190 194 131);
+            margin: 9px 0px 3px;
         }
 
         .school-description {
@@ -108,9 +108,9 @@
         }
 
         .connect-title {
-            font-size: 20px;
+            font-size: 25px;
             font-weight: bold;
-            color: #ffd700;
+            color: #fff5c1;
             margin: 6px 31px 17px;
         }
 
@@ -236,7 +236,7 @@
         .contact-container {
             display:grid;
             grid-template-columns: auto auto;
-            gap: 10px;
+            gap: 3px;
         }
 
         @keyframes fadeInUp {
