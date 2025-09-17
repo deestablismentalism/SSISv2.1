@@ -190,7 +190,7 @@
                 <!-- Sample repeated cards with varying AOS effects -->
                 <div class="team-card" data-aos="zoom-in">
                     <div class="image-wrapper">
-                        <img src="./assets/imgs/prcpl.jpg" alt="Team Member" />
+                        <img src="./assets/imgs/prcpll.jpeg" alt="Team Member" />
                     </div>
                         <h4>Jefferson Riano Alojado</h4>
                         <p class="position">Principal I</p>

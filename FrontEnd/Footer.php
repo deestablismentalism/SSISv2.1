@@ -5,14 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Footer</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-            display: sticky;
-            flex-direction: column;
-            justify-content: flex-end;
-            }
-
         .footer {
             background-repeat: no-repeat;
             color: white;
