@@ -25,7 +25,7 @@ p {
     min-height: 100vh;
     height: 100%;
     width: 60px; /* collapsed width */
-    background-color: #003366;
+    background-image: linear-gradient(to bottom right, #003366, #123b69, #20436c, #2c4b6f);
     transition: width 0.3s ease;
     font-family: 'Barlow', 'Arial';
     position: sticky;

@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/./models/adminSubjectsModel.php';
-require_once __DIR__ . '/../common/getGradeLevels.php';
-require_once __DIR__ . '/../core/tableDataTemplate.php';
+require_once __DIR__ . '/../models/adminSubjectsModel.php';
+require_once __DIR__ . '/../../common/getGradeLevels.php';
+require_once __DIR__ . '/../../core/tableDataTemplate.php';
 
 class adminSubjectsView {
     protected $subjectsModel;

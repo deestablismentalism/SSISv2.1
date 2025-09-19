@@ -1,10 +1,10 @@
 <?php
 
 declare(strict_types=1);
-require_once __DIR__ . '/../../admin/models/adminSectionsModel.php';
+require_once __DIR__ . '/../../admin/models/adminTeachersModel.php';
 header('Content-Type: application/json');
 
-$sectionsModel = new adminSectionsModel();
+$sectionsModel = new adminTeachersModel();
 
 if(empty($sectionsModel)) {
     echo json_encode(['message' => 'No Teachers found.']);
@@ -15,7 +15,7 @@ if(!$sectionsModel) {
     exit();
 }
 
-$fetchTeachers = $sectionsModel->getAllTeachers();
+$fetchTeachers = $sectionsModel->selectAllTeachers();
 
 if(!$fetchTeachers) {
     echo json_encode(['success'=> false, 'message' => 'An error occured']);

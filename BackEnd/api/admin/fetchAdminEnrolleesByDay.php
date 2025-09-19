@@ -1,30 +1,20 @@
 <?php
 
 declare(strict_types=1);
-require_once __DIR__ . '/../../admin/models/adminDashboardModel.php';
+require_once __DIR__ . '/../../admin/controller/adminDashboardController.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
     $days =(int)$input['day'] ?? null;
-    $enrolleeCount = new adminDashboardModel();
 
-    $enrolleeByDay = $enrolleeCount->EnrolleesByDays($days);
+    $controller= new adminDashboardController();
+    $response = $controller->apiEnrolleesByDays($days);
 
-    if(empty($days)) {
-        echo json_encode(['success' => false, 'message' => 'Empty input']);
-        exit();
-    }
+    $enrolleeByDay = $response['data'];
 
-    if(!$enrolleeByDay) {
-        echo json_encode(['success'=> false, 'message' => 'failed to fetch']);
-        exit();
-    }
-    $result = [];
-    foreach($enrolleeByDay as $days => $rows) {
-        $result[] = 
-            ['label' => $days, 'value' => $rows];
-    }
-    echo json_encode($result);
+    http_response_code($response['httpcode']);
+
+    echo json_encode($response);
     exit();
 }

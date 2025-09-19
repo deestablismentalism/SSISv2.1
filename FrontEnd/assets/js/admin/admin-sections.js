@@ -57,17 +57,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         })
     });
-    const sectionsListContainer = document.querySelector('.sections-list-wrapper');
-    //fetching sections lists
-    fetch(`../../../BackEnd/api/admin/fetchSectionsListDetails.php`)
-    .then(response=> response.json())
-    .then(data=>{
-       if (data.success == false) {
-            sectionsListContainer.innerHTML = data.message || 'No sections found';
-       }
-       else {
-            const template = document.getElementById('sections-list-template');
-            const container = document.querySelector('.sections-list-container');
+    //fetch section detals
+    fetchSectionDetails().then(data=>{
+        const template = document.getElementById('sections-list-template');
+        const container = document.querySelector('.sections-list-container');
+        if(data) {
             data.forEach(section=> {
                 const clone = template.content.cloneNode(true);
 
@@ -81,10 +75,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 container.appendChild(clone);
 
             });
-       }
+        }
     })
-    .catch(error=> {
-        alert(error.message || 'Something went wrong. Please try again later');
-    })
-
 });
+
+async function fetchSectionDetails() {
+    try {
+        let response = await fetch(`../../../BackEnd/api/admin/fetchSectionsListDetails.php`);
+        let data = await response.json()
+        if(!response.ok) {
+            console.error(`Error ${data.htppcode}`);
+            console.error(`There was a problem: ${data.message}`);
+            return null;
+        }
+        if(!data.success) {
+            alert(data.message || 'Something went wrong');
+            return null;
+        }
+        return data.data
+    }
+    catch(err) {
+        alert('There was an unexpected problem');
+        console.error(error);
+        return null;
+    }
+}
