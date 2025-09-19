@@ -28,9 +28,9 @@ $pageJs = '<script src="../../assets/js/admin/admin-dashboard.js" defer></script
          <div class="all-enrollees-count">
              <h1 class="data-link-title"> All Enrollees </h1>
              <?php 
-                 include_once __DIR__.'/../../../BackEnd/admin/models/adminDashboardModel.php';
-                 $dashboard = new adminDashboardModel();
-                 $total_enrollees = $dashboard->TotalEnrollees();
+                 include_once __DIR__.'/../../../BackEnd/admin/view/adminDashboardView.php';
+                 $dashboard = new adminDashboardView();
+                 $total_enrollees = $dashboard->displayEnrolleesCount();
              ?>
              <span id="total-enrollees" class="total-count"><?php echo $total_enrollees; ?></span> 
          </div>
@@ -39,7 +39,7 @@ $pageJs = '<script src="../../assets/js/admin/admin-dashboard.js" defer></script
          <div class="all-students-count">
              <h1 class="data-link-title"> All Students </h1>
              <?php 
-                 $total_students = $dashboard->countTotalStudents();
+                 $total_students = $dashboard->displayStudentsCount();
              ?>
              <span id="total-students" class="total-count"><?php echo $total_students; ?></span>
          </div>
@@ -48,7 +48,7 @@ $pageJs = '<script src="../../assets/js/admin/admin-dashboard.js" defer></script
          <div class="all-denied-follow-up-count">
              <h1 class="data-link-title"> Denied Follow Up </h1>
              <?php
-                 $total_denied_follow_up = $dashboard->TotalDeniedFollowUp();
+                 $total_denied_follow_up = $dashboard->displayDeniedAndToFollowUpCount();
              ?>
              <span id="total-denied-follow-up" class="total-count"><?php echo $total_denied_follow_up; ?></span>
          </div>
@@ -115,7 +115,7 @@ $pageJs = '<script src="../../assets/js/admin/admin-dashboard.js" defer></script
              <th>Level</th>
          </tr>
          <?php
-             include_once __DIR__ . '/../../../BackEnd/admin/adminDashboardView.php';
+             include_once __DIR__ . '/../../../BackEnd/admin/view/adminDashboardView.php';
              $dashboard = new adminDashboardView();
              $dashboard->displayPendingEnrolleesInformation();
          ?>

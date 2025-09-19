@@ -2,18 +2,22 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/./models/adminStudentsModel.php';
+require_once __DIR__ . '/../controller/adminStudentsController.php';
 
 class adminStudentsView {
-    protected $studentsModel;
+    protected $studentsController;
 
     public function __construct() {
-        $students = new adminStudentsModel();
-        $this->studentsModel = $students;
+        $this->studentsController = new adminStudentsController();
     }
 
     public function displayStudents() {
-        $data = $this->studentsModel->getAllStudents();
+        $response = $this->studentsController->viewStudents();
+
+        if(!$response['success']) {
+            echo '<div class="error-message"> <p>'.htmlspecialchars($response['message']). '</p></div>';
+        }
+        $data = $response['data'];
         foreach($data as $rows) {
             $section = $rows['Section_Name'] === null ? 'Section is not set' : htmlspecialchars($rows['Section_Name']);
             $middleInitial = $rows['Student_Middle_Name'] === null ? '' : substr($rows['Student_Middle_Name'], 0, 1) . ".";

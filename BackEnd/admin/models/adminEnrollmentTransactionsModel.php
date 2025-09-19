@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ .'/../../core/dbconnection.php';
+require_once __DIR__ . '/../../Exception/DatabaseException.php';
 
 class adminEnrollmentTransactionsModel {
     protected $conn;
@@ -11,8 +12,9 @@ class adminEnrollmentTransactionsModel {
         $this->conn = $db->getConnection();
     }
 
-    public function getFollowedUpTransactions() {
-        $sql_get_data = "SELECT et.*,
+    public function getFollowedUpTransactions() : array {
+        try {
+            $sql = "SELECT et.*,
                               e.Student_First_Name,
                               e.Student_Last_Name,
                               e.Student_Middle_Name,
@@ -25,13 +27,18 @@ class adminEnrollmentTransactionsModel {
                         JOIN enrollee e ON et.Enrollee_Id = e.Enrollee_Id
                         JOIN staffs s ON et.Staff_Id = s.Staff_Id
                         WHERE et.Enrollment_Status = 4 AND Is_Approved = 0;";
-        $get_get_data = $this->conn->prepare($sql_get_data);
-        $get_get_data->execute();
-        $result = $get_get_data->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }
-    public function getDeniedTransactions() {
-        $sql = "SELECT et.*, 
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to get all the followed up transactions',0,$e);
+        }
+    } 
+    public function getDeniedTransactions() : array{
+        try {
+            $sql = "SELECT et.*, 
                         e.Student_First_Name,
                         e.Student_Last_Name,
                         e.Student_Middle_Name,
@@ -44,14 +51,19 @@ class adminEnrollmentTransactionsModel {
                         JOIN enrollee e ON et.Enrollee_Id = e.Enrollee_Id
                         JOIN staffs s ON et.Staff_Id = s.Staff_Id
                         WHERE et.Enrollment_Status = 2 AND Is_Approved = 0;";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
-        return $result;
+            return $result;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to get all the denied transactions',0,$e);
+        }
     }
-    public function getEnrolledTransactions() {
-        $sql = "SELECT et.*, 
+    public function getEnrolledTransactions() : array {
+        try {
+            $sql = "SELECT et.*, 
                         e.Student_First_Name,
                         e.Student_Last_Name,
                         e.Student_Middle_Name,
@@ -64,24 +76,28 @@ class adminEnrollmentTransactionsModel {
                         JOIN enrollee e ON et.Enrollee_Id = e.Enrollee_Id
                         JOIN staffs s ON et.Staff_Id = s.Staff_Id
                         WHERE et.Enrollment_Status = 1 AND Is_Approved = 0;";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
-        return $result;
-    }
-    public function updateNeededAction($id, $transaction) {
-        $sql = "UPDATE enrollment_transactions SET Transaction_Status = :transaction WHERE Enrollment_Transaction_Id = :id";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':transaction', $transaction);
-        $stmt->bindParam(':id', $id);
-        $result = $stmt->execute();
-
-        if($result) {
-            return['success' => true];
+            return $result;
         }
-        else {
-            return['success'=> false];
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to fetch the enrolled transactions',0,$e);
+        }
+    }
+    public function updateNeededAction($id, $transaction) : bool{
+        try {
+            $sql = "UPDATE enrollment_transactions SET Transaction_Status = :transaction WHERE Enrollment_Transaction_Id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':transaction', $transaction);
+            $stmt->bindParam(':id', $id);
+            $result = $stmt->execute();
+
+            return $result;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to update the transaction status',0,$e);
         }
     }
 }

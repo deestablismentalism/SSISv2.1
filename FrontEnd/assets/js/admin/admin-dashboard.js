@@ -31,58 +31,67 @@ document.addEventListener('DOMContentLoaded', function(){
     studentBiologicalSexContainer.style.display = 'none';
 
     fetch('../../../BackEnd/api/admin/fetchDashboardChart.php')
-    .then(response => response.json())
+    .then(response => {
+        if(!response.ok) {
+            console.error(`Failed to load Status: ${data.httpcode}`);
+            console.error(`Error: ${data.message}`);
+        }
+        return response.json();
+    })
     .then(data=> {
-        console.log(data);
-        
-        if(data.success === false) {
+        if(!data.success) {
             alert(data.message);
         }
+        if (data.failed && data.failed > 0) {
+            data.failed.forEach(message =>{
+                console.error(`failed fetches ${message[0]}`);
+            })
+        }
         else {
+            const {chart1, chart2, chart3, chart4, chart5, chart6} = data.data;
             // Update counters
             
             // Display enrollment charts
-            if (canva && data.chart1) {
+            if (canva && chart1.success) {
                 enrolleeLoading.style.display = 'none';
                 pieChartContainer.style.display = 'block';
-                EnrollmentsPieChart(data.chart1);
+                EnrollmentsPieChart(chart1.data, canva);
             }
             
-            if (canva2 && data.chart2) {
+            if (canva2 && chart2.success) {
                 GradeLevelDistributionLoading.style.display = 'none';
                 gradeLevelDistributionContainer.style.display = 'block';
-                barGraph(data.chart2); 
+                barGraph(chart2.data, canva2); 
             }
             
-            if (canva3 && data.chart3) {
+            if (canva3 && chart3.success) {
                 BiologicalSexLoading.style.display = 'none';
                 biologicalSexContainer.style.display = 'block';
-                BiologicalSexPieGraph(data.chart3);
+                BiologicalSexPieGraph(chart3.data, canva3);
             }
             
             // Display student charts
-            if (canva4 && data.chart4) {
+            if (canva4 && chart4.success) {
                 studentPieChartLoading.style.display = 'none';
                 studentPieChartContainer.style.display = 'block';
-                StudentsPieChart(data.chart4);
+                StudentsPieChart(chart4.data, canva4);
             }
             
-            if (canva5 && data.chart5) {
+            if (canva5 && chart5.success) {
                 studentGradeLevelDistributionLoading.style.display = 'none';
                 studentGradeLevelDistributionContainer.style.display = 'block';
-                StudentGradeLevelDistribution(data.chart5);
+                StudentGradeLevelDistribution(chart5.data, canva5);
             }
             
-            if (canva6 && data.chart6) {
+            if (canva6 && chart6.success) {
                 studentBiologicalSexLoading.style.display = 'none';
                 studentBiologicalSexContainer.style.display = 'block';
-                StudentBiologicalSexPieGraph(data.chart6);
+                StudentBiologicalSexPieGraph(chart6.data, canva6);
             }
         }
     })
     .catch(error=>{
-        console.log("Error fetching dashboard data:", error);
-        
+        console.error("Error fetching dashboard data:", error);
         // Set loading elements to show "No data found" message
         const loadingElements = [enrolleeLoading, GradeLevelDistributionLoading, BiologicalSexLoading, 
             studentPieChartLoading, studentGradeLevelDistributionLoading, studentBiologicalSexLoading];
@@ -91,215 +100,6 @@ document.addEventListener('DOMContentLoaded', function(){
             if (element) element.innerHTML = "<p>No data found</p>";
         });
     });
-
-    function StudentsPieChart(data) {
-        const ctx = canva4.getContext('2d');
-        const labels = data.map(item=> item.label);
-        const values = data.map(item=> item.value);
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: values,
-                    backgroundColor: [
-                        '#36A2EB',
-                        '#FFCE56',
-                        '#FF6384',
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Student Status Distribution',
-                        font: {
-                            size: 16
-                        }
-                    }
-                }
-            }
-        });
-    }
-    
-    function EnrollmentsPieChart(data) {
-        const ctx = canva.getContext('2d');
-        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0, 'rgba(255, 99, 132, 0.5)');
-        gradient.addColorStop(1, 'rgba(54, 162, 235, 0.5)');
-        const labels = data.map(item=> item.label);
-        const values = data.map(item=> item.value);
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: values,
-                    backgroundColor: [
-                        '#6581a3',
-                        '#00142f',
-                        '#005c66',
-                        '#000866'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Enrollment Status Distribution',
-                        font: {
-                            size: 16
-                        }
-                    }
-                }
-            }
-        });
-    }
-    
-    function barGraph(data) {
-        const ctx = canva2.getContext('2d');
-        const labels = data.map(item=> item.label);
-        const values = data.map(item=> item.value);
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Grade Level Count',
-                    data: values,
-                    backgroundColor: '#36A2EB'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Enrollee Grade Level Distribution',
-                        font: {
-                            size: 16
-                        }
-                    }
-                }
-            }
-        });
-    } 
-    
-    function BiologicalSexPieGraph(data) {
-        const ctx = canva3.getContext('2d');
-        const labels = data.map(item=> item.label);
-        const values = data.map(item=> item.value);
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: values,
-                    backgroundColor: [
-                        '#36A2EB',
-                        '#FFCE56',
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Enrollee Biological Sex Distribution',
-                        font: {
-                            size: 16
-                        }
-                    }
-                }
-            }
-        });
-    }
-    
-    // New functions for student charts
-    function StudentGradeLevelDistribution(data) {
-        const ctx = canva5.getContext('2d');
-        const labels = data.map(item=> item.label);
-        const values = data.map(item=> item.value);
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Student Grade Level Count',
-                    data: values,
-                    backgroundColor: '#FF6384'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Student Grade Level Distribution',
-                        font: {
-                            size: 16
-                        }
-                    }
-                }
-            }
-        });
-    }
-    
-    function StudentBiologicalSexPieGraph(data) {
-        const ctx = canva6.getContext('2d');
-        const labels = data.map(item=> item.label);
-        const values = data.map(item=> item.value);
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: values,
-                    backgroundColor: [
-                        '#36A2EB',
-                        '#FF6384'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Student Biological Sex Distribution',
-                        font: {
-                            size: 16
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    
     //dashboard clock
     let hours = document.getElementById('Hours');
     let mins = document.getElementById('Minutes');
@@ -315,84 +115,284 @@ document.addEventListener('DOMContentLoaded', function(){
         secs.innerHTML = (currentTime.getSeconds()<10 ? '0' : '') + currentTime.getSeconds();
     }, 1000);
 
-    //enrollee counts by day
-    const radio = document.querySelectorAll("input[name='days-filter']");
+    //initial enrollee by day 
+    const enrolleeByDayCanva = document.getElementById('enrollee-by-day');
     const currentSelected = document.querySelector("input[name='days-filter']:checked").value;
-    fetch('../../../BackEnd/api/admin/fetchAdminEnrolleesByDay.php', {
-        method: 'POST',
-        header: {'Content-type' : 'application/json'},
-        body: JSON.stringify({day: currentSelected})
-    })
-    .then(response => response.json())
-    .then(data=> {
-        if(data.success === false) {
-            alert(data.message);
+    enrolleeByDay(currentSelected).then(data=>{
+        if(data) {
+            EnrolleeByDaybarGraph(data, enrolleeByDayCanva);
         }
-        else {
-            EnrolleeByDaybarGraph(data);
-        }
-    })
-    .catch(error => {
-        console.error(error);
-    })
+    });
+    //change depending on button input
+    const radio = document.querySelectorAll('input[type="radio"]');
     radio.forEach(element=> {
         element.addEventListener('change', function() {
-           const currentSelected = document.querySelector("input[name=days-filter]:checked").value;
-           console.log(currentSelected);
-           fetch('../../../BackEnd/api/admin/fetchAdminEnrolleesByDay.php', {
-                method: 'POST',
-                header: {'Content-type' : 'application/json'},
-                body: JSON.stringify({day: currentSelected})
-            })
-            .then(response => response.json())
-            .then(data=> {
-                if(data.success === false) {
-                    alert(data.message);
-                }
-                else {
-                    EnrolleeByDaybarGraph(data);
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            })
-            });
+            const currentSelected = document.querySelector("input[name=days-filter]:checked").value;
+            enrolleeByDay(currentSelected);
+        });
     });
-
-    const enrolleeByDayCanva = document.getElementById('enrollee-by-day');
-    let Enrollmentchart = null;
-    function EnrolleeByDaybarGraph(data) {
-        const ctx = enrolleeByDayCanva.getContext('2d');
-        const labels = data.map(item=> item.label);
-        const values = data.map(item=> item.value);
-        if (Enrollmentchart) {
-            Enrollmentchart.destroy();
-        }
-        Enrollmentchart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Submitted Enrollment Forms',
-                    data: values,
-                    backgroundColor: '#000d23'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Submitted Enrollment Forms Distribution',
-                        font: {
-                            size: 20
-                        }
+});
+//outside DOM event listener
+function StudentsPieChart(data, title) {
+    const ctx = title.getContext('2d');
+    const labels = data.map(item=> item.label);
+    const values = data.map(item=> item.value);
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: [
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#FF6384',
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'Student Status Distribution',
+                    font: {
+                        size: 16
                     }
                 }
             }
+        }
+    });
+}
+async function enrolleeByDay(day) {
+    try {
+        day = parseInt(day);
+
+        let response = await fetch('../../../BackEnd/api/admin/fetchAdminEnrolleesByDay.php', {
+            method: 'POST',
+            headers : {'Content-type' : 'application/json'},
+            body: JSON.stringify({day})
         });
-    } 
-});
+        let data = await response.json();
+
+        if(!response.ok) {
+            console.error(`Failed to load Status: ${data.httpcode}`);
+            console.error(`Error ${data.message}`);
+            return null;
+        }
+        if(!data.success) {
+            alert(data.message || 'Something went wrong');
+            return null;
+        }
+        
+        return data.data;
+    }
+    catch(error) {
+        console.error(error);
+        return null;
+    }
+}
+function EnrollmentsPieChart(data, title) {
+    const ctx = title.getContext('2d');
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(255, 99, 132, 0.5)');
+    gradient.addColorStop(1, 'rgba(54, 162, 235, 0.5)');
+    const labels = data.map(item=> item.label);
+    const values = data.map(item=> item.value);
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: [
+                    '#6581a3',
+                    '#00142f',
+                    '#005c66',
+                    '#000866'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'Enrollment Status Distribution',
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        }
+    });
+}
+function barGraph(data, title) {
+    const ctx = title.getContext('2d');
+    const labels = data.map(item=> item.label);
+    const values = data.map(item=> item.value);
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Grade Level Count',
+                data: values,
+                backgroundColor: '#36A2EB'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'Enrollee Grade Level Distribution',
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        }
+    });
+}
+function BiologicalSexPieGraph(data, title) {
+    const ctx = title.getContext('2d');
+    const labels = data.map(item=> item.label);
+    const values = data.map(item=> item.value);
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: [
+                    '#36A2EB',
+                    '#FFCE56',
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'Enrollee Biological Sex Distribution',
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        }
+    });
+}
+function StudentGradeLevelDistribution(data, title) {
+    const ctx = title.getContext('2d');
+    const labels = data.map(item=> item.label);
+    const values = data.map(item=> item.value);
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Student Grade Level Count',
+                data: values,
+                backgroundColor: '#FF6384'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'Student Grade Level Distribution',
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        }
+    });
+}
+ function StudentBiologicalSexPieGraph(data, title) {
+    const ctx = title.getContext('2d');
+    const labels = data.map(item=> item.label);
+    const values = data.map(item=> item.value);
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: [
+                    '#36A2EB',
+                    '#FF6384'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'Student Biological Sex Distribution',
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        }
+    });
+}
+let Enrollmentchart = null
+function EnrolleeByDaybarGraph(data, title) {
+    const ctx = title.getContext('2d');
+    const labels = data.map(item=> item.label);
+    const values = data.map(item=> item.value);
+    if (Enrollmentchart) {
+        Enrollmentchart.destroy();
+    }
+    Enrollmentchart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Submitted Enrollment Forms',
+                data: values,
+                backgroundColor: '#000d23'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'Submitted Enrollment Forms Distribution',
+                    font: {
+                        size: 20
+                    }
+                }
+            }
+        }
+    });
+} 

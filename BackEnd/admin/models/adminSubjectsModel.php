@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
 
-include_once __DIR__ . '/../../core/dbconnection.php';
+require_once __DIR__ . '/../../core/dbconnection.php';
+require_once __DIR__ . '/../../Exceptions/DatabaseException.php';
 
 class adminSubjectsModel {
 
@@ -11,55 +12,75 @@ class adminSubjectsModel {
         $db = new Connect();
         $this->conn = $db->getConnection();
     }
+    //insertSubjectAndLevel helper function 1
+    private function insertSubject($subject) : int {
+        try {
+            $sql = "INSERT INTO subjects(Subject_Name) VALUES (:subjects)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':subjects', $subject);
+            $result = $stmt->execute();
+            if(!$result) {
+                throw new Exception('Insert subject failed');
+            }
 
-    public function insertSubject($subject) {
-        $sql = "INSERT INTO subjects(Subject_Name) VALUES (:subjects)";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':subjects', $subject);
-        if($stmt->execute()) {
-            return $this->conn->lastInsertId();
+            return (int) $this->conn->lastInsertId();
         }
-        else {
-            return "error ";
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to insert subject', 0,$e);
         }
 
     }
-    public function insertGradeLevelSubjects($subjectId, $gradeLevelId) {
-        $sql = "INSERT INTO grade_level_subjects(Subject_Id, Grade_Level_Id) VALUES (:subjectId, :gradeLevelId)";
+    //insertSubjectAndLevel helper function 2
+    private function insertGradeLevelSubjects($subjectId, $gradeLevelId) : bool  {
+        try {
+            $sql = "INSERT INTO grade_level_subjects(Subject_Id, Grade_Level_Id) VALUES (:subjectId, :gradeLevelId)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':subjectId', $subjectId);
+            $stmt->bindParam(':gradeLevelId', $gradeLevelId, PDO::PARAM_INT);
+            $result = $stmt->execute();
 
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':subjectId', $subjectId);
-        $stmt->bindParam(':gradeLevelId', $gradeLevelId, PDO::PARAM_INT);
-        return $stmt->execute();
+            return $result;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to insert the subject for grade level',0,$e);
+        }
     }
-    public function insertSubjectAndLevel($subjectName, $gradeLevelId) {
+    public function insertSubjectAndLevel($subjectName, array $gradeLevelId) : array {
+        $results = [
+            'success'=> [],
+            'failed'=> []
+        ];
         try {
             $this->conn->beginTransaction();
-
+            //helper function subject insert
             $subjectId = $this->insertSubject($subjectName);
             
             if (!is_numeric($subjectId)) {
-                throw new PDOException("Failed to insert subject: " . $subjectId);
+                throw new DatabaseException("Failed to insert subject: " . $subjectId);
             }
 
-            $result = $this->insertGradeLevelSubjects($subjectId, $gradeLevelId);
-            
-            if (!$result) {
-                throw new PDOException("Failed to associate subject with grade level");
+            foreach($gradeLevelId as $ids) {
+                try {
+                    $result = $this->insertGradeLevelSubjects($subjectId, $ids);
+                    if (!$result) {
+                        $results['failed'][] = $ids;
+                    }
+                    $results['success'][] = $ids;
+                }
+                catch(PDOException $e) {
+                    $results['failed'][] = $ids;
+                }
             }
-
             $this->conn->commit();
 
-            return "succesfully inserted";
+            return $results;
         }
         catch(PDOException $e) {
             $this->conn->rollBack();
-            return "Error: " . $e->getMessage();
+            throw new DatabaseException('Failed to update the subject and level',0,$e);
         }
     }
-
-    public function getSubjectsPerGradeLevel() {
+    public function getSubjectsPerGradeLevel() : array{
         try {
             $sql = "SELECT
                     s.Subject_Id,
@@ -78,8 +99,10 @@ class adminSubjectsModel {
             return $result;
         }
         catch(PDOException $e) {
-            return "Error" . $e->getMessage();
+            throw new DatabaseException('Failed to fetch the subjects per level',0,$e);
         }
     }
-
+    public function insertSubjectTeacher($subjectId, $staffId) : bool {
+        $sql = "INSERT INTO section_subjects()";
+    }
 }
