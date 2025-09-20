@@ -1,4 +1,4 @@
-import{close} from '../utils.js';
+import{close, loadingText} from '../utils.js';
 document.addEventListener('DOMContentLoaded', function() {
 
     //popup for  subject's teachers
@@ -9,9 +9,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const formButton = document.getElementById('add-subject-button');
     //Add section event listener
     formButton.addEventListener('click', function(){
+        modal.style.display = 'block';
+        modalContent.innerHTML = '';
+        modalContent.innerHTML = loadingText;
         fetchAddSubjectForm().then(data=>{
-            modal.style.display = 'block';
-            modalContent.innerHTML = '';
             modalContent.innerHTML = data;
 
             const radioInput = document.querySelectorAll('input[name="subject"]');
@@ -41,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
             close(modal);
             
             const form = document.getElementById('add-subject-form');
-            console.log(form);
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const submitButton = form.querySelector('.submit-button');
@@ -54,6 +54,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if(result === null) {
                     form.reset();
+                    submitButton.disabled = false;
+                    submitButton.style.backgroundColor = '#007bff';
+                }
+                else {
+                    setTimeout(()=>{
+                        alert(result.message);
+                        window.location.reload();
+                    },1000);
                 }
             })
         });
@@ -64,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const subjectId = this.getAttribute('data-id');
             modalContent.innerHTML = '';
             modal.style.display = 'block';
-            modalContent.innerHTML = '...Loading';
+            modalContent.innerHTML = loadingText;
 
             let data = await fetch(`../../../BackEnd/api/admin/fetchAllTeachers.php`)
             let teachers = await data.json();
@@ -101,17 +109,58 @@ document.addEventListener('DOMContentLoaded', function() {
     })
 });
 function updateDisplay(modal, selectContainer, checkboxContainer) {
-        
-    const currentSelected = modal.querySelector('input[name="subject"]:checked');
-    if (currentSelected && currentSelected.value == "Yes") {
-        selectContainer.style.display = "none";
-        checkboxContainer.style.display = "block";
-    }
-    else {
-        selectContainer.style.display = "block";
-        checkboxContainer.style.display = "none";
-    }
+  const currentSelected = modal.querySelector('input[name="subject"]:checked');
+
+  // select the controls regardless of whether they have a name now
+  const selectControls = selectContainer.querySelectorAll('select, input, textarea');
+  const checkboxControls = checkboxContainer.querySelectorAll('input, select, textarea');
+
+  if (currentSelected && currentSelected.value === "Yes") {
+    // Show checkboxes, hide select
+    selectContainer.style.display = "none";
+    checkboxContainer.style.display = "block";
+
+    // Remove name from select controls (but save original)
+    selectControls.forEach(el => {
+      if (el.hasAttribute('name')) {
+        if (!el.hasAttribute('data-original-name')) {
+          el.setAttribute('data-original-name', el.getAttribute('name'));
+        }
+        el.removeAttribute('name');
+      }
+    });
+
+    // Restore names for checkboxes from data-original-name (if present)
+    checkboxControls.forEach(el => {
+      if (el.hasAttribute('data-original-name')) {
+        el.setAttribute('name', el.getAttribute('data-original-name'));
+      }
+    });
+
+  } else {
+    // Show select, hide checkboxes
+    selectContainer.style.display = "block";
+    checkboxContainer.style.display = "none";
+
+    // Remove names from checkboxes (save original first)
+    checkboxControls.forEach(el => {
+      if (el.hasAttribute('name')) {
+        if (!el.hasAttribute('data-original-name')) {
+          el.setAttribute('data-original-name', el.getAttribute('name'));
+        }
+        el.removeAttribute('name');
+      }
+    });
+
+    // Restore names for select controls from data-original-name
+    selectControls.forEach(el => {
+      if (el.hasAttribute('data-original-name')) {
+        el.setAttribute('name', el.getAttribute('data-original-name'));
+      }
+    });
+  }
 }
+
 //form template
 async function fetchAddSubjectForm() {
     try {
