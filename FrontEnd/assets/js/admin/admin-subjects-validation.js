@@ -100,9 +100,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitButton.style.backgroundColor = 'gray';
 
                 const formData = new FormData(form);    
-                formData.append('subjectId', subjectId);
+                formData.append('section-subject-id', subjectId);
+                if(!formData.has('subject-teacher')) {
+                    formData.append('subject-teacher','');
+                }
 
-                postAssignTeacherForm(formData);
+                postAssignTeacherForm(formData).then(data=>{
+                    setTimeout(()=>{
+                        alert(data.message);
+                        window.location.reload();
+                    },1000);
+                }).catch(error=>{
+                    alert(error);
+                    form.reset();
+                    submitButton.disabled = false;
+                    submitButton.style.backgroundColor = '#007bff';
+                });
             })
 
         });
@@ -202,25 +215,28 @@ async function postAddSubject(formData) {
     }
 }
 async function postAssignTeacherForm(formData) {
+    const response = await fetch("../../../BackEnd/api/admin/postAssignSubjectTeacher.php", {
+        method: "POST",
+        body: formData,
+    });
+
+    // Try parsing JSON response
+    let data;
     try {
-        let response = await fetch(`../../../BackEnd/api/admin/postAssignSubjectTeacher.php`,{
-            method: 'POST',
-            body: formData,
-        });
-        let data = await response.json();
-        if(!response.ok) {
-            console.error(`Error: ${data.message}`);
-            return null;
-        }
-        if(!data.success) {
-            alert(data.message || 'Something went wrong');
-            return null;
-        }
-        return data;
+        data = await response.json();
+    } catch {
+        throw new Error("Invalid JSON response from server");
     }
-    catch(error) {
-        alert('There was an unexpected problem. Please try again later');
-        console.error(error);
-        return null;
+
+    // HTTP-level error
+    if (!response.ok) {
+        throw new Error(data.message || `HTTP error: ${response.status}`);
     }
+
+    // API-level error
+    if (!data.success) {
+        throw new Error(data.message || "Something went wrong");
+    }
+
+    return data;
 }
