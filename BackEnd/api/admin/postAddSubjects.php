@@ -9,16 +9,16 @@ try {
         $controller = new adminSubjectsController();
         $subjectName = $_POST['subject-name'];
 
-        if (isset($_POST['levels']) && is_array($_POST['levels'])) {
+        if (isset($_POST['levels']) && is_array($_POST['levels']) && !empty($_POST['levels'])) {
             $subjectIds = $_POST['levels'];
             $response = $controller->apiPostAddSubject($subjectName, $subjectIds);
+            
             http_response_code($response['httpcode']);
-
             echo json_encode($response);
             exit();
         }
         // Single grade level from select dropdown
-        if (isset($_POST['subject-level'])) {
+        if (isset($_POST['subject-level']) && !empty($_POST['subject-level'])) {
             $subjectLevel = (int)$_POST['subject-level'];
             $response = $controller->apiPostAddSubject($subjectName, $subjectLevel);
             

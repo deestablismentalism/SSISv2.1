@@ -13,7 +13,7 @@ class adminSubjectsController {
     //API
     public function apiGetSubjectsPerGradeLevel() : array {
         try {
-            $data = $this->subjectsModel->getSubjectsPerGradeLevel();
+            $data = $this->subjectsModel->getSubjectsPerSection();
 
             if (empty($data)) {
                 return [
@@ -48,7 +48,7 @@ class adminSubjectsController {
             ];
         }
     }
-    public function apiPostAddSubject(string $subjectName, $subjectId) : array {
+    public function apiPostAddSubject(string $subjectName, $gradeLevelId) : array {
         try {
             if(empty($subjectName)) {
                 return [
@@ -58,54 +58,65 @@ class adminSubjectsController {
                     'data'=> []
                 ];
             }
+            if(empty($gradeLevelId)) {
+                return [
+                    'httpcode'=> 400,
+                    'success'=> false,
+                    'message'=> 'Please select grade levels',
+                    'data'=> []
+                ];
+            }
             $upperCaseName = strtoupper($subjectName);
-            if(is_array($subjectId)) {
-                if(empty($subjectId)) {
+            if(is_array($gradeLevelId)) {
+                if(is_numeric($gradeLevelId)) {
                     return [
                         'httpcode'=> 400,
                         'success'=> false,
-                        'message'=> 'Please select grade levels',
+                        'message'=> 'Invalid ID',
                         'data'=> []
                     ];
                 }
-                $failedCount = [];
-                $insertCount = [];
-                foreach($subjectId as $values) {
-                    $insert = $this->subjectsModel->insertSubjectAndLevel($upperCaseName, $values);
-                    if(!$insert) {
-                        $failedCount[] = [
-                            'ID'=> $values
-                        ];
-                    }
-                    $insertCount[] = [
-                        'ID'=> $values
-                    ];
-                }
-                if(count($failedCount) === count($insertCount)) {
+                $insert = $this->subjectsModel->insertSubjectAndLevel($upperCaseName, $gradeLevelId);
+                if(empty($insert['success'])) {
                     return [
                         'httpcode'=> 400,
                         'success'=> false,
                         'message'=> 'All subjects failed to insert',
-                        'data'=> $failedCount
+                        'data'=> [
+                            'failed'=> $insert['failed']
+                        ]
                     ];
                 }
-                if(!empty($failedCount) && empty($failedCount) < empty($insertCount)) {
+                if(!empty($insert['failed']) &&  count($insert['failed']) < count($insert['success'])) {
                     return [
                         'httpcode'=> 207,
                         'success'=> true,
                         'message'=> 'Some subjects failed to insert',
-                        'data'=> $failedCount
+                        'data'=> [
+                            'success'=> $insert['success'],
+                            'failed'=> $insert['failed']
+                        ]
                     ];
+                }
+                if(!empty($insert['existing']) && count($insert['existing']) < count($gradeLevelId)) {
+                    return [
+                        'httpcode'=> 207,
+                        'success'=> true,
+                        'message'=> 'Some subjects failed to insert due to conflicts with other subjects',
+                        'data'=> [
+                            'failed'=> $insert['existing']
+                        ]
+                        ];
                 }
                 return [
                     'httpcode'=> 201,
                     'success'=> true,
                     'message'=> 'All subjects inserted successfully',
-                    'data'=> $insertCount
+                    'data'=> $insert['success']
                 ];
-            }
+            }   
             else {
-                if(!is_numeric($subjectId)) {
+                if(!is_numeric($gradeLevelId)) {
                     return [
                         'httpcode'=> 409,
                         'success'=> false,
@@ -113,23 +124,32 @@ class adminSubjectsController {
                         'data'=> []
                     ];
                 }
-                $insert = $this->subjectsModel->insertSubjectAndLevel($upperCaseName, $subjectId);
-                if(!$insert) {
+                $insert = $this->subjectsModel->insertSubjectAndLevel($upperCaseName, [$gradeLevelId]);
+                if(!empty($insert['failed'])) {
                     return [
                         'httpcode'=> 500,
                         'success'=> false,
-                        'message'=> 'Subject failed to insert',
-                        'data'=> $insert
+                        'message'=> 'Subject failed to insert. Make sure the input does not exist',
+                        'data'=> $insert['failed']
+                    ];
+                }
+                 if(!empty($insert['existing'])) {
+                    return [
+                        'httpcode'=> 400,
+                        'success'=> true,
+                        'message'=> 'subjects failed to insert due to conflicts with other subjects',
+                        'data'=> [
+                            'failed'=> $insert['existing']
+                        ]
                     ];
                 }
                 return [
                     'httpcode'=> 201,
                     'success'=> true,
                     'message'=> 'Subject inserted successfully',
-                    'data'=> $insert
+                    'data'=> $insert['success']
                 ];
-            }
-            
+            }   
         }
         catch(DatabaseException $e) {
             return [
@@ -165,6 +185,38 @@ class adminSubjectsController {
                 'httpcode'=> '400',
                 'success'=> false,
                 'message'=> 'Error: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+    }
+    //VIEW 
+    public function viewSubjectsPerSection() : array {
+        try {
+            $data = $this->subjectsModel->getSubjectsPerSection();
+            if(empty($data)) {
+                return [
+                    'success'=> false,
+                    'message'=> 'No subject found',
+                    'data'=> []
+                ];
+            }
+            return [
+                'success'=> true,
+                'message'=> 'Subjects successfully fetched',
+                'data'=>  $data
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was a problem on our side' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+        catch(Exception $e)  {
+            return [
+                'success'=> false,
+                'message'=> 'There was an unexpected problem: ' . $e->getMessage(),
                 'data'=> []
             ];
         }

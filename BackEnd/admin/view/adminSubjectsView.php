@@ -1,32 +1,29 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/../models/adminSubjectsModel.php';
+require_once __DIR__ . '/../controller/adminSubjectsController.php';
 require_once __DIR__ . '/../../common/getGradeLevels.php';
 require_once __DIR__ . '/../../core/tableDataTemplate.php';
 
 class adminSubjectsView {
-    protected $subjectsModel;
+    protected $subjectsController;
     protected $getGradeLevels;
     protected $tableTemplate;
 
     public function __construct() {
-        $this->subjectsModel = new adminSubjectsModel();
+        $this->subjectsController = new adminSubjectsController();
         $this->getGradeLevels = new getGradeLevels();
         $this->tableTemplate = new TableCreator();
     }
 
     public function displaySubjects() {
         try {
-            $data = $this->subjectsModel->getSubjectsPerGradeLevel();
+            $response = $this->subjectsController->viewSubjectsPerSection();
 
-            if($data == false) {
-                throw new Exception('An error occurewd while fetching the subjects');
-            }
-            if(empty($data)) {
-                $this->tableTempalte('empty-content', ['No subjects found']);
+            if(!$response['success']) {
+                echo '<div>' .htmlspecialchars($response['message']).'</div>';
             }
             else {
-                foreach($data as $rows) {
+                foreach($response['data'] as $rows) {
                     $firstName = !empty($rows['Staff_First_Name']) ? htmlspecialchars($rows['Staff_First_Name']) : '';
                     $lastName = !empty($rows['Staff_Last_Name']) ? htmlspecialchars($rows['Staff_Last_Name']) : '';
                     $middleName = !empty($rows['Staff_Middle_Name']) ? htmlspecialchars($rows['Staff_Middle_Name']) : '';
@@ -36,9 +33,10 @@ class adminSubjectsView {
 
                     echo '<tr> 
                                 <td>'. htmlspecialchars($rows['Subject_Name']) .'</td>
+                                <td>'. htmlspecialchars($rows['Section_Name']) .'</td>
                                 <td>'. htmlspecialchars($rows['Grade_Level']) .'</td>
                                 <td>'. $fullName.'</td>
-                                <td> <button data-id="'.$rows['Subject_Id'].'" class="assign-teacher"> <img src="../../assets/imgs/edit-white.png" loading="lazy" alt="edit"></button></td>
+                                <td> <button data-id="'.$rows['Section_Subjects_Id'].'" class="assign-teacher"> <img src="../../assets/imgs/edit-white.png" loading="lazy" alt="edit"></button></td>
                         </tr>';
                 }
             }

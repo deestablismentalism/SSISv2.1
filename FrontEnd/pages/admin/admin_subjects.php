@@ -13,6 +13,7 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-subjects.c
         <table class="subjects-table">
             <thead> 
                 <th> Subject Name </th>
+                <th> Section Name</th>
                 <th> Grade Level </th>
                 <th> Teacher Assigned </th>
                 <th> Assign </th>

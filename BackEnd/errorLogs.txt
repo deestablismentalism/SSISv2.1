@@ -1,0 +1,1 @@
+[2025-09-20 18:25:44]SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`ssis-test_database`.`section_subjects`, CONSTRAINT `section_subjects_to_staffs` FOREIGN KEY (`Staff_Id`) REFERENCES `staffs` (`Staff_Id`))
