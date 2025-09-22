@@ -11,6 +11,58 @@ class adminTeacherController {
         $this->teacherModel = new adminTeachersModel();
     }
     //API
+    public function apiFetchCurrentlyAssignedTeacher(int $sectionSubjectId) : array {
+        try {
+            if(empty($sectionSubjectId)) {
+                return [
+                    'httpcode'=> 400,
+                    'success'=> false,
+                    'message'=> 'No ID found',
+                    'data'=>[]
+                ];
+            }
+            $data = $this->teacherModel->selectAllTeachers();
+            if(empty($data)) {
+                return [
+                    'httpcode'=> 200,
+                    'success'=> false,
+                    'message'=> 'There are no Teachers found',
+                    'data'=> []
+                ];
+            }
+            //return the staff id of matching section subject id
+            $isCurrentlyAssigned = $this->teacherModel->checkCurrentSubjectTeacherOfSectionSubject($sectionSubjectId);
+            //append an isChecked row in the data array
+            foreach ($data as &$teacher) {
+                $teacherId = (int)$teacher['Staff_Id'];
+                $teacher['isChecked'] = ($teacherId === (int)$isCurrentlyAssigned);
+            }
+            unset($teacher);
+
+            return [
+                'httpcode'=> 200,
+                'success'=> true,
+                'message'=> 'successfully fetched',
+                'data'=> $data
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'httpcode'=> 500,
+                'success'=> false,
+                'message'=> 'There was a problem on our side: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'httpcode'=> 500,
+                'success'=> false,
+                'message'=> 'There was an unexpected problem: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+    }
     public function apiPostAssignTeacher(int $staffId, int $sectionSubjectId) : array {
         try {
             if($staffId <= 0) {
@@ -41,7 +93,7 @@ class adminTeacherController {
             return [
                 'httpcode'=> 500,
                 'success'=> false,
-                'message'=> 'There was a problem on our side: ' . $e->getMesage(),
+                'message'=> 'There was a problem on our side: ' . $e->getMessage(),
                 'data'=> []
             ];
         }
@@ -49,7 +101,7 @@ class adminTeacherController {
             return [
                 'httpcode'=> 500,
                 'success'=> false,
-                'message'=> 'There was an unexpected problem: ' . $e->getMesage(),
+                'message'=> 'There was an unexpected problem: ' . $e->getMessage(),
                 'data'=> []
             ];
         }

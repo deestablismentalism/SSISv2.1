@@ -50,9 +50,9 @@ class adminStudentsView {
                 <td>' .htmlspecialchars($rows['Student_Email']) .' </td>
                 <td>' . $statusText . '</td>
                 <td> 
-                    <button class="view-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="/SSISv2.1/FrontEnd/assets/imgs/eye-regular.svg" alt="View Student Information"></button> 
-                    <button class="edit-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="/SSISv2.1/FrontEnd/assets/imgs/edit.svg" alt="Edit Student Information"></button>
-                    <button class="delete-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="/SSISv2.1/FrontEnd/assets/imgs/trash-solid.svg" alt="Delete Student Information"></button>
+                    <button class="view-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="../../assets/imgs/eye-regular.svg" alt="View Student Information"></button> 
+                    <button class="edit-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="../../assets/imgs/edit.svg" alt="Edit Student Information"></button>
+                    <button class="delete-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="../../assets/imgs/trash-solid.svg" alt="Delete Student Information"></button>
                 </td>
             </tr>';
         }

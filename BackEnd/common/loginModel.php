@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . '/../core/dbconnection.php';
 
-Class VerifyLogin {
+Class loginModel {
     protected $conn;
     
     public function __construct() {
@@ -10,7 +10,7 @@ Class VerifyLogin {
         $this->conn = $db->getConnection();
     }
 
-    public function verify_login($User_Typed_Phone_Number, $User_Typed_Password) {
+    public function verify_login($User_Typed_Phone_Number, $User_Typed_Password) : array {
         $User_Password = null;
         $User_Typed_Password = trim($User_Typed_Password);
         $User_Typed_Phone_Number = trim($User_Typed_Phone_Number);
@@ -45,6 +45,7 @@ Class VerifyLogin {
                 'Staff-Type' => $staffResult['Staff_Type']
             ];
             return[
+                'httpcode'=> 201,
                 'success' => true,
                 'message' => 'Staff found',
                 'session' => $_SESSION
@@ -71,6 +72,7 @@ Class VerifyLogin {
                 'User-Type' => $user['User_Type']
             ];
             return [
+                'httpcode'=> 201,
                 'success' => true,
                 'message' => 'User found',
                 'session' => $_SESSION
@@ -78,12 +80,14 @@ Class VerifyLogin {
         }
         if($staffResult || $user) {
             return[
+                'httpcode'=> 400,
                 'success' => false,
                 'message' => 'Incorrect password. Check your password and try again'
             ];
         }
         else {
             return [
+                'httpcode'=> 400,
                 'success'=> false,
                 'message'=> 'No account found. Check your number'
             ];
