@@ -1,16 +1,13 @@
+import {close, loadingText} from '../utils.js';
 document.addEventListener('DOMContentLoaded', function() {
     const addSectionBtn = document.getElementById('add-section-btn');
     const modal = document.querySelector('.modal');
     const content = document.querySelector('.modal-content');
 
-    function closeModal(modal) {
-        modal.style.display = 'none';
-    }
-
     //modal handler
     addSectionBtn.addEventListener('click', function() {
         modal.style.display = 'block';
-        content.innerHTML = `Loading...`;
+        content.innerHTML = loadingText;
         fetch(`../../../BackEnd/templates/admin/fetchAddSectionForm.php`)
         .then(response => response.text())
         .then(data => {
@@ -51,10 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.log(error.message);
                  })
             })
-            const closeBtn = document.querySelector('.close-btn');
-            closeBtn.addEventListener('click', function() {
-                closeModal(modal);
-            });
+            close(modal);
         })
     });
     //fetch section detals
@@ -92,7 +86,7 @@ async function fetchSectionDetails() {
             alert(data.message || 'Something went wrong');
             return null;
         }
-        return data.data
+        return data.data;
     }
     catch(err) {
         alert('There was an unexpected problem');

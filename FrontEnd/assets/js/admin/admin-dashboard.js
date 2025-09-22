@@ -1,3 +1,4 @@
+import {loadingText} from '../utils.js';
 document.addEventListener('DOMContentLoaded', function(){
     const canva = document.getElementById('enrollee-pie-chart');
     const canva2 = document.getElementById('enrollee-grade-level-distribution');
@@ -30,6 +31,8 @@ document.addEventListener('DOMContentLoaded', function(){
     studentGradeLevelDistributionContainer.style.display = 'none';
     studentBiologicalSexContainer.style.display = 'none';
 
+    const loaders = document.querySelectorAll('.chart-loading');
+    console.log(loaders);
     fetch('../../../BackEnd/api/admin/fetchDashboardChart.php')
     .then(response => {
         if(!response.ok) {
@@ -39,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function(){
         return response.json();
     })
     .then(data=> {
+        loaders.forEach(load=>{load.innerHTML = loadingText});
         if(!data.success) {
             alert(data.message);
         }
@@ -50,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function(){
         else {
             const {chart1, chart2, chart3, chart4, chart5, chart6} = data.data;
             // Update counters
-            
+            loaders.forEach(load=>{load.style.display = 'none'});
             // Display enrollment charts
             if (canva && chart1.success) {
                 enrolleeLoading.style.display = 'none';
@@ -248,7 +252,6 @@ function barGraph(data, title) {
             }]
         },
         options: {
-            responsive: true,
             plugins: {
                 legend: {
                     position: 'top'
