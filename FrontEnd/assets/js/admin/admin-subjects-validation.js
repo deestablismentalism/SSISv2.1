@@ -74,53 +74,78 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.style.display = 'block';
             modalContent.innerHTML = loadingText;
 
-            let data = await fetch(`../../../BackEnd/api/admin/fetchAllTeachers.php`)
-            let teachers = await data.json();
+            try {
+                let radioValues = ``;
+                const response = await fetchAllTeachers(subjectId);
+                const data = response.data;
+                data.forEach(teacher=>{
+                    const isChecked = !teacher.isChecked ? '' : 'checked';
+                   radioValues += `<label> <input type="radio" name="subject-teacher" value="${teacher.Staff_Id}" ${isChecked}> 
+                            ${teacher.Staff_Last_Name}, ${teacher.Staff_First_Name} </label><br>`;
+                })
+                
+                modalContent.innerHTML = `<span class="close">&times;</span>
+                    <form class="form popup" id="assign-subject-teacher-form">
+                        ${radioValues}
+                        <button type="submit" class="submit-button"> Save </button>
+                    </form>`;
+                close(modal);
 
-            let teacherRadio =
-            teachers.map(t=> `<label> <input type="radio" name="subject-teacher" value="${t.Staff_Id}"> 
-                ${t.Staff_Last_Name}, ${t.Staff_First_Name} </label><br>`).join(``);
-
-            modalContent.innerHTML = `<span class="close"> &times; </span><br>
-            <form class="form popup" id="assign-subject-teacher-form">
-                ${teacherRadio}
-                <button type="submit" class="submit-button"> Save </button>
-            </form>`;
-
-            close(modal);
-            
-            const form = document.getElementById('assign-subject-teacher-form');
-            const submitButton = modal.querySelector('button[type="submit"]');
-            
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                console.log(submitButton);
-
-                submitButton.disabled = true;
-                submitButton.style.backgroundColor = 'gray';
-
-                const formData = new FormData(form);    
-                formData.append('section-subject-id', subjectId);
-                if(!formData.has('subject-teacher')) {
-                    formData.append('subject-teacher','');
-                }
-
-                postAssignTeacherForm(formData).then(data=>{
-                    setTimeout(()=>{
-                        alert(data.message);
-                        window.location.reload();
-                    },1000);
-                }).catch(error=>{
-                    alert(error);
-                    form.reset();
-                    submitButton.disabled = false;
-                    submitButton.style.backgroundColor = '#007bff';
-                });
-            })
+                const form = document.getElementById('assign-subject-teacher-form');
+                const submitButton = form.querySelector('.submit-button');
+                console.log(submitButton)
+                form.onsubmit = async (e)=>{
+                    e.preventDefault();
+                    try {
+                        submitButton.disabled = true;
+                        submitButton.style.backgroundColor = 'gray';
+                        const formData = new FormData(form);
+                        formData.append('section-subject-id', subjectId);
+                         if(!formData.has('subject-teacher')) {
+                            formData.append('subject-teacher','');
+                        }
+                        postAssignTeacherForm(formData).then(data=>{
+                            setTimeout(()=>{
+                                alert(data.message);
+                                window.location.reload();
+                            },1000);
+                        }).catch(error=>{
+                            alert(error);
+                            form.reset();
+                            submitButton.disabled = false;
+                            submitButton.style.backgroundColor = '#007bff';
+                        });
+                    }
+                    catch(error){
+                        alert(error);
+                    }
+            }
+            }catch(err){
+                alert(err);
+            }
 
         });
     })
 });
+async function fetchAllTeachers(subjectId) {
+    const response = await fetch(`../../../BackEnd/api/admin/fetchAllTeachers.php?sec-sub-id=${subjectId}`);
+
+    let data;
+    try {
+        data = await response.json();
+    }
+    catch {
+        throw new Error('Invalid response');
+    }
+
+    if(!response.ok) {
+        throw new Error(data.message || `HTTP error: ${response.status}`);
+    }
+    if(!data.success) {
+        throw new Error(data.message);
+    }
+    return data;
+}
 function updateDisplay(modal, selectContainer, checkboxContainer) {
   const currentSelected = modal.querySelector('input[name="subject"]:checked');
 
@@ -191,28 +216,25 @@ async function fetchAddSubjectForm() {
     }
 }
 async function postAddSubject(formData) {
+    const response = await fetch(`../../../BackEnd/api/admin/postAddSubjects.php`, {
+        method: 'POST',
+        body: formData
+    });
+    let data;
     try {
-        let response = await fetch(`../../../BackEnd/api/admin/postAddSubjects.php`, {
-            method: 'POST',
-            body: formData
-        });
-        let data = await response.json();
-        if(!response.ok) {
-            console.error(`Error: ${data.message}`);
-            alert(data.message || 'Something went wrong');
-            return null;
-        }
-        if(!data.success) {
-            alert(data.message);
-            return null;
-        }
-        return data;
+        data = await response.json();
     }
-    catch(error) {
-        alert('There was an unexpected problem');
-        console.error(error);
-        return null;
+    catch{
+        throw new Error("Invalid JSON response");
     }
+    if (!response.ok){
+        throw new Error(data.message || `HTTP error: ${response.status}`);
+    }
+
+    if(!data.success) {
+        throw new Error(data.message || 'Something went wrong');
+    }
+    return data;
 }
 async function postAssignTeacherForm(formData) {
     const response = await fetch("../../../BackEnd/api/admin/postAssignSubjectTeacher.php", {
