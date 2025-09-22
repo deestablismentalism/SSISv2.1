@@ -6,7 +6,7 @@ ob_start();
 $pageTitle = "Admin Dashboard";
 $currentPage = "dashboard";
 $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-dashboard.css">';
-$pageJs = '<script src="../../assets/js/admin/admin-dashboard.js" defer></script>';
+$pageJs = '<script type="module" src="../../assets/js/admin/admin-dashboard.js" defer></script>';
 ?>
 <div class="enrollee-data-wrapper">
 <div class="gradient-background">
@@ -63,21 +63,22 @@ $pageJs = '<script src="../../assets/js/admin/admin-dashboard.js" defer></script
          <label for="5-days">  <input type="radio" id="5-days" name="days-filter" value="5"> 5 days </label>
          <label for="3-days"> <input type="radio" id="3-days" name="days-filter" value="3"> 3 days </label>
     </div>
+    <div class="chart-loading"></div>
     <canvas id="enrollee-by-day" class="enrollee-by-day"></canvas>
  </div>
  <div class="card-container">
  <!--Enrolled-->
- <p class="chart-loading" id="enrollee-pie-chart-loading"> Waiting for the data to load...</p>
+ <p class="chart-loading" id="enrollee-pie-chart-loading"></p>
  <div class="card card-1" id="pie-chart-container">
      <canvas id="enrollee-pie-chart" ></canvas>
  </div>
  <!--Pending Enrollees-->
- <p class="chart-loading" id="enrollee-grade-level-distribution-loading"> Waiting for the data to load...</p>
+ <p class="chart-loading" id="enrollee-grade-level-distribution-loading"></p>
  <div class="card card-2" id="grade-level-distribution-container">
      <canvas id="enrollee-grade-level-distribution"></canvas>
  </div>
  <!--To Follow Up-->
- <p class="chart-loading" id="enrollee-biological-sex-loading"> Waiting for the data to load...</p>
+ <p class="chart-loading" id="enrollee-biological-sex-loading"></p>
  <div class="card card-3" id="biological-sex-container">
       <canvas id="enrollee-biological-sex"></canvas>
  </div>
@@ -86,15 +87,15 @@ $pageJs = '<script src="../../assets/js/admin/admin-dashboard.js" defer></script
      <h1 class="data-title"> Student data</h1>
          <div class="card-container">
 
-             <p class="chart-loading" id="student-pie-chart-loading"> Waiting for the data to load...</p>
+             <p class="chart-loading" id="student-pie-chart-loading"></p>
              <div class="card card-4" id="student-pie-chart-container">
                  <canvas id="student-pie-chart"></canvas>
              </div>
-             <p class="chart-loading" id="student-grade-level-distribution-loading"> Waiting for the data to load...</p>
+             <p class="chart-loading" id="student-grade-level-distribution-loading"></p>
              <div class="card card-5" id="student-grade-level-distribution-container">
                  <canvas id="student-grade-level-distribution"></canvas>
              </div>
-             <p class="chart-loading" id="student-biological-sex-loading"> Waiting for the data to load...</p>
+             <p class="chart-loading" id="student-biological-sex-loading"></p>
              <div class="card card-6" id="student-biological-sex-container">
                  <canvas id="student-biological-sex"></canvas>
              </div>
