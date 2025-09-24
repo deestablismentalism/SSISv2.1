@@ -6,7 +6,7 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-subjects.c
 ?>
 <div class="admin-subjects-content">
     <div class="admin-subject-header">    
-        <h2> Subjects List </h2>
+        <h1 class="admin-subject-title"> Subjects List </h1>
         <button id="add-subject-button" class="submit-button"> Add Subject </button>  
     </div>
     <div class="subjects-list">
