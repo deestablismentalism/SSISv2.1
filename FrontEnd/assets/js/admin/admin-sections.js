@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     else {
                         alert('Section added successfully.');
                         console.log(data);
-                        setInterval(()=> {
+                        setTimeout(()=> {
                             window.location.reload();
                         }, 1000);
                     }

@@ -6,11 +6,16 @@
     font-family: Arial, sans-serif;
     margin-bottom: 510px;
 }
-
 .subjects-container {
     margin: 2em;
 }
-
+.admin-subject-header {
+    display: flex;
+    justify-content: space-between;
+}
+.admin-subject-title {
+    font-size: var(--title-font-size);
+}
 .add-subject {
     background-color: #ffffff;
     color: #333;
@@ -27,7 +32,6 @@
     border-radius: 1.5em;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
-
 .subjects-list h2 {
     margin-bottom: 1em;
     color: #333;
