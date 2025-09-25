@@ -9,14 +9,14 @@
             
             <ul class="nav-menu" id="navMenu">
                 <div class="nav-links">
-                    <li><a href="./index.php">Home</a></li>
+                    <li><a href="./Index.php">Home</a></li>
                     <li><a href="./About_Page.php">About</a></li>
                     <li><a href="./Learn_More_Page.php">Learn More </a></li>
-                    <li><a href="./client_Side/login_form.php">Log In</a></li>
+                    <li><a href="./Login.php">Log In</a></li>
                 </div>
             </ul>
             
-            <button class="join-btn" onclick="location.href='./client_side/Registration.php'">Sign Up</button>
+            <button class="join-btn" onclick="location.href='./Registration.php'">Sign Up</button>
             
             <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
         </nav>

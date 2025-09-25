@@ -1,6 +1,6 @@
 <?php
 ob_start(); 
-require_once __DIR__ . '/../../../BackEnd/admin/adminAllEnrolleesView.php';
+require_once __DIR__ . '/../../../BackEnd/admin/view/adminAllEnrolleesView.php';
 
 $pageTitle = 'SSIS-Admin All Enrollees'; 
 $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-all-enrollees.css">';

@@ -7,28 +7,9 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         
         const formData = new FormData(form);
-        
-        fetch("../BackEnd/common/postLoginVerify.php", {
-            method: "POST", 
-            body: formData,
-            headers: {
-                'Accept' : 'application/json'
-            }
-        })
-        .then(response => {
-            return response.text().then(text => {
-                console.log('Raw response:', text);
-                try {
-                    return JSON.parse(text);
-                } catch (e) {
-                    throw new Error('Invalid JSON response: ' + text);
-                }
-            });
-        })
-        .then(data => {
-            if (data.success) {
-                console.log(data);
-                form.reset();
+
+        //TODO: use the async function below 
+        postLoginVerify(formData).then(data=>{
                 const ifUser = data.session.User?.['User-Type'];
                 const ifStaff = data.session.Staff?.['Staff-Type']; 
 
@@ -46,15 +27,36 @@ document.addEventListener("DOMContentLoaded", function() {
                         window.location.href = '../pages/No_Page.php';
                     }
                 }
-            } 
-            else if (!data.success){
-                errorMessageContainer.classList.add('show');
-                errorMessage.innerHTML = data.message;
-            }
+        }).catch(err=>{
+            errorMessageContainer.classList.add('show');
+            errorMessage.innerHTML = err.message;
+            console.error(err);
         })
-        .catch(error => {
-            console.error("Fetch Error:", error);
-            alert("An error occured. Please try again.");
-        });
     });
 });
+
+async function postLoginVerify(formData) {
+
+    const response = await fetch(`../BackEnd/api/postLoginVerify.php`, {
+        method: 'POST',
+        body: formData
+    });
+    let data;
+    try {
+        data = await response.json();
+    }
+    catch {
+        throw new Error('Invalid response');
+    }
+    // HTTP-level error
+    if (!response.ok) {
+        throw new Error(data.message || `HTTP error: ${response.status}`);
+    }
+
+    // API-level error
+    if (!data.success) {
+        throw new Error(data.message || "Something went wrong");
+    }
+
+    return data;
+}
