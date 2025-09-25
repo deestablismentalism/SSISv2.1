@@ -24,6 +24,11 @@
 .students-list tbody tr:nth-child(even) {
     background-color:#bebebe;
 }
+.section-subjects-wrapper {
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
 .advisory-button-wrapper {
     margin-bottom: 1rem;
 }
@@ -47,4 +52,15 @@
     color: white;
     border-radius: 0.5rem;
     cursor: pointer;
+}
+.modal h1 {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+.modal-table {
+    width: 100%;
+}
+.modal-table tr {
+    display: flex;
+    justify-content: space-between;
 }

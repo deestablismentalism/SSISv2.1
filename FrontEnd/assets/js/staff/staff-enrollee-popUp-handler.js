@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function (){
             console.log(enrolleeId);
             modal.style.display = 'block';
             modalContent.innerHTML = '<p> Wait for data to load... </p>'; // Show loader while fetching data
-            fetch('../../../BackEnd/admin/adminEnrolleeInfoView.php?id=' + encodeURIComponent(enrolleeId)) 
+            fetch('../../../BackEnd/templates/staff/fetchEnrolleeInfo.php?id=' + encodeURIComponent(enrolleeId)) 
             .then(response => response.text())
             .then(data => {
                 modalContent.innerHTML = data;

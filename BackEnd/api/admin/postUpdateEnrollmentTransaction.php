@@ -5,8 +5,7 @@ header('Content-Type: application/json');
 require_once __DIR__ . '/../../admin/models/adminEnrollmentTransactionsModel.php';
 require_once __DIR__ . '/../../admin/models/adminEnrolleesModel.php';
 
-$isResubmit = (int)$_POST['isResubmit'];
-$isConsult = (int)$_POST['isConsult'];
+$transactionType = (int)$_POST['transactionType']; 
 $id = (int)$_POST['id'];
 $enrolleeId = (int)$_POST['enrolleeId'];
 $status = (int)$_POST['status'];
@@ -20,7 +19,7 @@ if(!isset($isResubmit) && !isset($enrolleeId) && !isset($id)) {
     echo json_encode(['success'=> false, 'message' => 'No status or id found']);
     exit();
 }
-$update = $adminTransactionsModel->updateNeededAction($id, $isResubmit, $isConsult);
+$update = $adminTransactionsModel->updateNeededAction($id, $transactionType);
 
 if(!$update) {
     echo json_encode(['success'=> false, 'message' => 'Update failed']);

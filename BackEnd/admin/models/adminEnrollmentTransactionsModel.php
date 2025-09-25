@@ -70,11 +70,10 @@ class adminEnrollmentTransactionsModel {
 
         return $result;
     }
-    public function updateNeededAction($id, $isResubmit, $isConsult) {
-        $sql = "UPDATE enrollment_transactions SET Can_Resubmit = :isResubmit, Need_Consultation = :isConsult WHERE Enrollment_Transaction_Id = :id";
+    public function updateNeededAction($id, $transaction) {
+        $sql = "UPDATE enrollment_transactions SET Transaction_Status = :transaction WHERE Enrollment_Transaction_Id = :id";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':isResubmit', $isResubmit);
-        $stmt->bindParam(':isConsult', $isConsult);
+        $stmt->bindParam(':transaction', $transaction);
         $stmt->bindParam(':id', $id);
         $result = $stmt->execute();
 

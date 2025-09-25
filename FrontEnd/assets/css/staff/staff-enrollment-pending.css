@@ -150,6 +150,18 @@ body {
     font-size: 1em;
     font-weight: bold;
 }
+.modal {
+    display: none;
+    left: 0;
+    top: 0;
+    padding-top: 4rem;
+    position: fixed;
+    z-index: 1000;
+    background-color: rgba(0,0,0,0.4);
+    width: 100%;
+    overflow: auto;
+    height: 100%;
+}
 .modal-content {
     background-color: white;
     margin: auto;
