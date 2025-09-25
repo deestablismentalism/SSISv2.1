@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../core/dbconnection.php';
+require_once __DIR__ . '/../../Exceptions/DatabaseException.php';
 date_default_timezone_set('Asia/Manila');
 class adminDashboardModel {
     protected $conn;
@@ -8,77 +9,79 @@ class adminDashboardModel {
         $db = new Connect();
         $this->conn = $db->getConnection();
     }
-    public function EnrolleesByDays(int $days) {
-        $sql = "SELECT DATE(Enrolled_At) as day, COUNT(*) as count 
+    public function EnrolleesByDays(int $days) : array {
+        try {
+            $sql = "SELECT DATE(Enrolled_At) as day, COUNT(*) as count 
                 FROM enrollee 
                 WHERE Enrolled_At >= DATE_SUB(CURDATE(), INTERVAL $days DAY) 
                 GROUP BY DATE(Enrolled_At) 
                 ORDER BY day DESC";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
-
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $count = [];
-        for($i = 0; $i < $days; $i++) {
-            $day = date('Y-m-d', strtotime("-$i days"));
-            $count[$day] = 0;
-        }
-        foreach($result as $rows) {
-            $count[$rows['day']] = (int)$rows['count'];
-        }
-        return $count;
-    }
-    public function TotalEnrollees() {
-        try {
-            $sql_get_total_enrollees = "SELECT COUNT(*) AS enrollee_count FROM enrollee;";
-            $get_total_enrollees = $this->conn->prepare($sql_get_total_enrollees);
-            $get_total_enrollees->execute();
-            $total_enrollees = $get_total_enrollees->fetch(PDO::FETCH_ASSOC);
-
-            return (int)$total_enrollees['enrollee_count'];
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $count = [];
+            for($i = 0; $i < $days; $i++) {
+                $day = date('Y-m-d', strtotime("-$i days"));
+                $count[$day] = 0;
+            }
+            foreach($result as $rows) {
+                $count[$rows['day']] = (int)$rows['count'];
+            }
+            return $count;
         }
         catch(PDOException $e) {
-            return['success'=> false, 'message'=> $e->getMessage()];
+            throw new DatabaseException('Failed to fetch enrollees count by day', 0, $e);
         }
     }
-    public function TotalDeniedFollowUp() {
+    public function countTotalEnrollees() : int {
         try {
-            $sql_get_total_denied_follow_up = "SELECT COUNT(*) AS total_count FROM enrollment_transactions et JOIN (
+            $sql = "SELECT COUNT(*) AS enrollee_count FROM enrollee;";
+            $stmt= $this->conn->prepare($sql);
+            $stmt->execute();
+            $totalEnrollees = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return (int)$totalEnrollees['enrollee_count'];
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to count total enrollees', 0, $e);
+        }
+    }
+    public function countTotalDeniedFollowUp() : int {
+        try {
+            $sql = "SELECT COUNT(*) AS total_count FROM enrollment_transactions et JOIN (
                               SELECT Enrollee_Id, MIN(Enrollment_Transaction_Id) AS LatestTransaction
                               FROM enrollment_transactions
                               GROUP BY Enrollee_Id
                               ) latest_et ON et.Enrollee_Id = latest_et.Enrollee_Id
                               AND et.Enrollment_Transaction_Id = latest_et.LatestTransaction;";
-            $get_total_denied_follow_up = $this->conn->prepare($sql_get_total_denied_follow_up);
-            $get_total_denied_follow_up->execute();
-            $total_denied_follow_up = $get_total_denied_follow_up->fetch(PDO::FETCH_ASSOC);
-            return (int)$total_denied_follow_up['total_count'];
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $totalDeniedFollowedUp = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return (int)$totalDeniedFollowedUp['total_count'];
         }
         catch(PDOException $e) {
-            return['success'=> false, 'message'=> $e->getMessage()];
+            throw new DatabaseException('Failed to count denied and followed up',0,$e);
         }
     }
-    public function EnrolleeStatuses(){
+    public function EnrolleeStatuses() : ?array {
         try {
-            $sql_get_enrolled = "SELECT SUM(CASE WHEN Enrollment_Status = 1 THEN 1 ELSE 0 END)AS enrolled_count, 
+            $sql = "SELECT SUM(CASE WHEN Enrollment_Status = 1 THEN 1 ELSE 0 END)AS enrolled_count, 
                                         SUM(CASE WHEN Enrollment_Status = 2 THEN 2 ELSE 0 END) AS denied_count,
                                         SUM(CASE WHEN Enrollment_Status = 3 THEN 3 ELSE 0 END) AS pending_count,
                                         SUM(CASE WHEN Enrollment_Status = 4 THEN 4 ELSE 0 END) AS follow_up_count
                                   FROM enrollee;";
-            $get_enrolled = $this->conn->prepare($sql_get_enrolled);
-            $get_enrolled->execute();
-            $enrollee_count = $get_enrolled->fetch(PDO::FETCH_ASSOC);
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $enrolleeCount = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if(!$enrollee_count) {
-                throw new PDOException('enrollee statuses not found');
-            }
-            return $enrollee_count;
+            return $enrolleeCount ?: null;
         }
         catch(PDOException  $e) {
-            return['succes'=> false ,'message' => $e->getMessage()];
+            throw new DatabaseException('Failed to count enrollee statuses');
         }
     }
-    public function EnrolleeGradeLevels() {
+    public function EnrolleeGradeLevels() : ?array {
         try {
             $sql = "SELECT SUM(CASE WHEN grade_level.Grade_Level = 'Kinder I' THEN 1 ELSE 0 END ) AS Kinder1,
                            SUM(CASE WHEN grade_level.Grade_Level = 'Kinder II' THEN 1 ELSE 0 END ) AS Kinder2,
@@ -94,16 +97,13 @@ class adminDashboardModel {
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if(!$result) {
-                throw new PDOException('enrollee grade levels not found');
-            }
-            return $result;
+            return $result ?: null;
         }
         catch(PDOException $e) {
-            return ['success'=> false, 'message' => $e->getMessage()];
+            throw new DatabaseException('Failed to fetch counts per grade level', 0 , $e);
         }
     }
-    public function EnrolleeBiologicalSex() {
+    public function EnrolleeBiologicalSex() : ?array {
         try {
             $sql = "SELECT SUM(CASE WHEN Sex = 'Male' THEN 1 ELSE 0 END) AS Male,
                            SUM(CASE WHEN Sex = 'Female' THEN 1 ELSE 0 END) AS Female
@@ -112,16 +112,13 @@ class adminDashboardModel {
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if(!$result) {
-                throw new PDOException('enrollee biological sex not found');
-            }
-            return $result;
+            return $result ?: null ;
         }
         catch(PDOException $e) {
-            return ['success'=> false, 'message'=> $e->getMessage()];
+            throw new DatabaseException('Failed to fetch counts per biological sex', 0 ,$e);
         }
     }
-    public function countTotalStudents() {
+    public function countTotalStudents() : int {
         try {
             $sql = "SELECT COUNT(*) AS TotalStudents FROM students;";
             $stmt = $this->conn->prepare($sql);
@@ -131,10 +128,10 @@ class adminDashboardModel {
             return (int)$result['TotalStudents'];
         }
         catch(PDOException $e) {
-            return ['success'=> false, 'message'=> $e->getMessage()];
+            throw new DatabaseException('Failed to count total students', 0 ,$e);
         }
     }
-    public function StudentStatuses() {
+    public function StudentStatuses() : ?array {
         try {
             $sql = "SELECT SUM(CASE WHEN Student_Status = 1 THEN 1 ELSE 0 END) AS ActiveStudents,
                            SUM(CASE WHEN Student_Status = 2 THEN 2 ELSE 0 END) AS InactiveStudents,
@@ -144,17 +141,15 @@ class adminDashboardModel {
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if(!$result) {
-                throw new PDOException('student statuses not found');
-            }
-            return $result;
+            return $result ?: null;
         }
         catch(PDOException $e) {
-            return ['success'=> false, 'message'=> $e->getMessage()];
+            throw new DatabaseException('Failed to fetch counts per student status', 0 ,$e);
         }
     }
-    public function PendingEnrolleesInformation() {
-        $sql_get_pending_enrollees = "SELECT enrollee.Enrollee_Id,
+    public function PendingEnrolleesInformation() : array {
+        try {
+            $sql_get_pending_enrollees = "SELECT enrollee.Enrollee_Id,
                                         enrollee.Learner_Reference_Number,
                                         enrollee.Student_First_Name,
                                         enrollee.Student_Middle_Name,
@@ -165,17 +160,21 @@ class adminDashboardModel {
                                         FROM enrollee
                                         JOIN educational_information ON enrollee.Educational_Information_Id = educational_information.Educational_Information_Id
                                         INNER JOIN grade_level as enrolling_level ON enrolling_level.Grade_Level_Id = educational_information.Enrolling_Grade_Level
-                                        WHERE Enrollment_Status = 3 AND Is_Handled = 0;
+                                        WHERE Enrollment_Status = 3 AND Is_Handled = 0
                                         ORDER BY Enrollee_Id DESC
                                         LIMIT 5";
-        $get_pending_enrollees = $this->conn->prepare($sql_get_pending_enrollees);
-        $get_pending_enrollees->execute();
-        $pending_enrollees = $get_pending_enrollees->fetchAll(PDO::FETCH_ASSOC);
-        return $pending_enrollees;
+            $get_pending_enrollees = $this->conn->prepare($sql_get_pending_enrollees);
+            $get_pending_enrollees->execute();
+            $pending_enrollees = $get_pending_enrollees->fetchAll(PDO::FETCH_ASSOC);
+            return $pending_enrollees;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to fetch pending enrollees information', 0 , $e);
+        }
     }
     
     // New methods for student grade level distribution
-    public function StudentGradeLevels() {
+    public function StudentGradeLevels() : ?array {
         try {
             $sql = "SELECT SUM(CASE WHEN Grade_Level_Id = 1 THEN 1 ELSE 0 END) AS Kinder1,
                            SUM(CASE WHEN Grade_Level_Id = 2 THEN 2 ELSE 0 END) AS Kinder2,
@@ -190,17 +189,14 @@ class adminDashboardModel {
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if(!$result) {
-                throw new PDOException('student grade levels not found');
-            }
             return $result;
         }
         catch(PDOException $e) {
-            return ['success'=> false, 'message' => $e->getMessage()];
+            throw new DatabaseException('Failed to count student per grade level', 0 ,$e);
         }
     }
     
-    public function StudentsBiologicalSex() {
+    public function StudentsBiologicalSex() : ?array {
         try {
             $sql = "SELECT SUM(CASE WHEN Sex = 'Male' THEN 1 ELSE 0 END) AS Male,
                            SUM(CASE WHEN Sex = 'Female' THEN 1 ELSE 0 END) AS Female
@@ -209,13 +205,10 @@ class adminDashboardModel {
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if(!$result) {
-                throw new PDOException('students biological sex not found');
-            }
-            return $result; 
+            return $result ?: null; 
         }
         catch(PDOException $e) {
-            return ['success'=> false, 'message'=> $e->getMessage()];
+            throw new DatabaseException('Failed to count students per biological sex', 0 ,$e);
         }
     }
     

@@ -15,11 +15,12 @@
         }
         public function generateHorizontalRows(string $className, array $values) {
             echo '<tbody>';
+            echo '<tr class="'.$className.'">';
                 foreach($values as $rows) {
-                    echo '<tr class="'.$className.'">';
-                    echo '<td>' . htmlspecialchars($rows) . '</td>';
-                    echo '</tr>';
+                    
+                    echo '<td>' . $rows . '</td>';
                 }
+            echo '</tr>';
             echo '</tbody>';
         }
         public function generateVerticalTables(array $keys, array $values) {

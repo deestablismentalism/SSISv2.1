@@ -26,7 +26,7 @@ ob_start();
                 </thead>
                 <tbody class="student-info">
                     <?php 
-                        include_once __DIR__ . '/../../../BackEnd/admin/adminStudentsView.php';
+                        include_once __DIR__ . '/../../../BackEnd/admin/view/adminStudentsView.php';
                         $view = new adminStudentsView();
                         $view->displayStudents();
                     ?>

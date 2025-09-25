@@ -1,26 +1,20 @@
 <?php
 
 declare(strict_types=1);
-require_once __DIR__ . '/../../admin/models/adminSectionsModel.php';
+require_once __DIR__ . '/../../admin/controller/adminTeacherController.php';
 header('Content-Type: application/json');
 
-$sectionsModel = new adminSectionsModel();
+try {
+    $controller = new adminTeacherController();
+    $sectionSubjectId = isset($_GET['sec-sub-id']) ? (int)$_GET['sec-sub-id'] : 0;
+    $response = $controller->apiFetchCurrentlyAssignedTeacher($sectionSubjectId);
 
-if(empty($sectionsModel)) {
-    echo json_encode(['message' => 'No Teachers found.']);
+    http_response_code($response['httpcode']);
+
+    echo json_encode($response);
     exit();
 }
-if(!$sectionsModel) {
-    echo json_encode(['success' => false, 'message' => 'There was a failure during fetch']);
+catch(Exception $e) {
+    echo json_encode(['success'=> false, 'message'=> 'There is a problem']);
     exit();
 }
-
-$fetchTeachers = $sectionsModel->getAllTeachers();
-
-if(!$fetchTeachers) {
-    echo json_encode(['success'=> false, 'message' => 'An error occured']);
-    exit();
-}
-
-echo json_encode($fetchTeachers);
-exit();

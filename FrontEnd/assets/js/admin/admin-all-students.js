@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function viewStudentDetails(studentId) {
     // Create a modal to display student details
     //TODO: create the php script for fetchStudentDetails.php
-    fetch(`../server_side/students/fetchStudentDetails.php?id=${studentId}`) //non existent API endpoint
+    fetch(`../../../BackEnd/api/admin/fetchStudentDetails.php?id=${encodeURIComponent(studentId)}`) 
         .then(response => response.json())
         .then(data => {
             if (data.success) {
