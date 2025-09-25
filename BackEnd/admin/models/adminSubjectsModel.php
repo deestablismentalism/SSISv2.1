@@ -62,11 +62,14 @@ class adminSubjectsModel {
     public function getSubjectsPerGradeLevel() {
         try {
             $sql = "SELECT
+                    s.Subject_Id,
                     s.Subject_Name,
-                    g.Grade_Level
-                    FROM grade_level_subjects
-                    JOIN subjects s ON grade_level_subjects.Subject_Id = s.Subject_Id
-                    JOIN grade_level g ON grade_level_subjects.Grade_Level_Id = g.Grade_Level_Id";
+                    g.Grade_Level,
+                    st.Staff_First_Name, st.Staff_Last_Name, st.Staff_Middle_Name FROM grade_level_subjects AS gl
+                    LEFT JOIN section_subjects AS ss ON gl.Subject_Id = ss.Subject_Id
+                    LEFT JOIN grade_level AS g ON gl.Grade_Level_Id = g.Grade_Level_Id 
+                    LEFT JOIN subjects AS s ON gl.Subject_Id = s.Subject_Id
+                    LEFT JOIN staffs AS st ON ss.Staff_Id = st.Staff_Id";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
 
