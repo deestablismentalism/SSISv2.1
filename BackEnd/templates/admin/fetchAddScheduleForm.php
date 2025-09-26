@@ -1,9 +1,9 @@
 <form id="add-schedule-form" class="schedule-form">
 <label for="time-start"> Time start</label>
-<input type="time" name="time-start" id="time-start">
+<input type="time" name="time-start" id="time-start" class="input">
 <label for="time-end"> Time end</label>
-<input type="time" name="time-end" id="time-end">
-<select name="schedule-day">
+<input type="time" name="time-end" id="time-end" class="input">
+<select name="schedule-day" class="select">
     <option value="1">Monday</option>
     <option value="2">Tuesday</option>
     <option value="3">Wednesday</option>
