@@ -7,26 +7,108 @@ require_once __DIR__ . '/../../Exceptions/DatabaseException.php';
 class adminSectionsModel {
     protected $conn;
 
-    //TODO: 
-    // IMPROVE MODEL TYPE DECLARATION
-    //Handle PDOExceptions(try catch)
-
     public function __construct() {
         $db = new Connect();
         $this->conn = $db->getConnection();
     }
-    public function insertSections($sectionName, $gradeLevel) : bool {
+    //private helper1
+    private function insertSection($sectionName, $gradeLevel) : int {
         try {
-             $sql = "INSERT INTO sections(Section_Name, Grade_Level_Id) VALUES (:section_name, :grade_level)";
+            $sql = "INSERT INTO sections(Section_Name, Grade_Level_Id) VALUES (:section_name, :grade_level)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':section_name', $sectionName);
             $stmt->bindParam(':grade_level', $gradeLevel);
+            $stmt->execute();
 
+            return (int)$this->conn->lastInsertId();
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Inserting sections failed', 0, $e);
+        }
+    }
+    //checker for all sections in the same grade level
+    private function getAllRelatedSubjectsByGradeLevel(int $gradeLevelId) : array {
+        try {
+            $sql = "SELECT Subject_Id FROM grade_level_subjects Where Grade_Level_Id = :gradeLevelId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':gradeLevelId', $gradeLevelId);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $result;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch related subjects',0,$e);
+        }
+    }
+    //helper 2
+    private function insertToSectionSubjects(int $subjectId, int $sectionId) :bool { //insert to section_subjects for each grade level section if successful insert section
+        try {
+            $sql = "INSERT INTO section_subjects(Subject_Id, Section_Id) VALUES(:subjectId, :sectionId)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':subjectId', $subjectId);
+            $stmt->bindParam(':sectionId', $sectionId);
             $result = $stmt->execute();
             return $result;
         }
         catch(PDOException $e) {
-            throw new DatabaseException('Inserting sections failed', 0, $e);
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to assocciate subject to section',0,$e);
+        }
+    }
+    private function checkIfSectionNameExists($sectionName, ?int $id = null) : bool {
+        try {
+            $sql = "SELECT 1 FROM sections WHERE Section_Name = :sectionName";
+            if($id !== null) {
+                $sql .= " AND Section_Id != :id";
+            }
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':sectionName', $sectionName);
+            if($id !== null) {
+                $stmt->bindParam(':id', $id);
+            }
+            $stmt->execute();
+            $result = $stmt->fetchColumn();
+
+            return (bool) $result;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to check if section name exists', 0, $e);
+        }    
+    }
+    public function insertSectionAndSectionSubjects(string $sectionName, int $gradeLevelId) : array {
+        $results = [
+            'success'=> [],
+            'failed'=>[],
+            'existing'=> false
+        ];
+        try {
+            $hasExistingName = $this->checkIfSectionNameExists($sectionName);
+
+            //return early if existing
+            if($hasExistingName) {
+                $results['existing'] = true;
+                return $results;
+            }
+            $sectionId = $this->insertSection($sectionName, $gradeLevelId);
+            
+            $subjects = $this->getAllRelatedSubjectsByGradeLevel($gradeLevelId);
+            foreach($subjects as $subjectId) {
+                $subjectIds = (int)$subjectId;
+                $insert = $this->insertToSectionSubjects($subjectIds, $sectionId);
+                if(!$insert) {
+                    $results['failed'][] = $subjectIds;
+                }
+                else {
+                    $results['success'][] = $subjectIds;
+                }
+            }
+            
+            return $results;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to insert section', 0 ,$e);
         }
     }
     public function getAllTeachers() : array {
@@ -163,26 +245,6 @@ class adminSectionsModel {
         catch(PDOExceptin $e) {
             throw new DatabaseException('Failed to fetch section list information', 0, $e);
         }
-    }
-    public function checkIfSectionNameExists($sectionName, ?int $id = null) : bool {
-        try {
-            $sql = "SELECT 1 FROM sections WHERE Section_Name = :sectionName";
-            if($id !== null) {
-                $sql .= " AND Section_Id != :id";
-            }
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':sectionName', $sectionName);
-            if($id !== null) {
-                $stmt->bindParam(':id', $id);
-            }
-            $stmt->execute();
-            $result = $stmt->fetchColumn();
-
-            return (bool) $result;
-        }
-        catch(PDOException $e) {
-            throw new DatabaseException('Failed to check if section name exists', 0, $e);
-        }    
     }
     public function updateSectionName($id, $sectionName) : bool {
         try {

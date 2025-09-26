@@ -74,6 +74,7 @@ input[type="text"] {
     background: linear-gradient(to bottom right, #f0e6ee, #e4dbe2, #d9d1d7);
     border-radius: 1rem;
     width: 25%;
+    flex: 0 1 20rem;
 }
 .section-major-information {
     padding: 0.2rem;
