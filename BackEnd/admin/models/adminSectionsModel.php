@@ -124,45 +124,15 @@ class adminSectionsModel {
             throw new DatabaseException('Fetching all the teachers failed', 0, $e);
         }
     }
-    public function getAvailableStudents($id) : array {
-        try {
-            $sql = "SELECT s.Student_Id, s.First_Name, s.Last_Name, s.Middle_Name FROM students AS s 
-                INNER JOIN sections AS sec ON s.Grade_Level_Id = sec.Grade_Level_Id
-                WHERE sec.Section_Id = :id";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-            $result =$stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            return $result;
-        }    
-        catch(PDOException $e) {
-            throw new DatabaseException('Fetching available students failed', 0, $e);
-        }
-    }
-    public function getCheckedStudents($id) : array { //gets the id of all students from an array of students that are checked
-        try {
-            $sql = "SELECT Student_Id FROM students WHERE Section_Id = :id";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            return $result;
-        }
-        catch(PDOException $e) {
-            throw new DatabaseException('Fetching checked students failed', 0, $e);
-        }
-    }
-    public function checkCurrentAdviser($id) : ?array{
+    public function checkCurrentAdviser(int $sectionId) : ?int {
         try {
             $sql = "SELECT Staff_Id FROM section_advisers WHERE Section_Id = :id";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':id', $sectionId);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            return $result ?: null;  
+            return $result ? (int)$result['Staff_Id'] : null;  
         }
         catch(PDOException $e) {
             throw new DatabaseException('Fetching current adviser failed', 0, $e);
@@ -246,11 +216,11 @@ class adminSectionsModel {
             throw new DatabaseException('Failed to fetch section list information', 0, $e);
         }
     }
-    public function updateSectionName($id, $sectionName) : bool {
+    private function updateSectionName(string $sectionName, int $sectionId) : bool {
         try {
             $sql = "UPDATE sections SET Section_Name = :sectionName WHERE Section_Id = :id";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':id', $sectionId);
             $stmt->bindParam(':sectionName', $sectionName);
             $result = $stmt->execute();
 
@@ -260,12 +230,33 @@ class adminSectionsModel {
             throw new DatabaseException('Failed to update section name', 0 ,$e);
         }
     }
-    public function updateAdviser($id, $staffId) : bool{
+    public function updateSectionNameResult(string $sectionName, int $sectionId) : array {
+        $result = [
+            'success'=> true,
+            'existing'=> false
+        ];
         try {
-             $sql = "INSERT INTO section_advisers(Section_Id, Staff_Id) VALUES(:id, :staffId) 
+            $isExisting = $this->checkIfSectionNameExists($sectionName, $sectionId);
+            if($isExisting) {
+                $result['existing'] = true;
+            }
+            $update = $this->updateSectionName($sectionName, $sectionId);
+            if(!$update) {
+                $result['success']=false;
+            }
+
+            return $result;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to execute update of section name',0,$e);
+        }
+    }
+    public function updateAdviser(int $sectionId, int $staffId) : bool{
+        try {
+            $sql = "INSERT INTO section_advisers(Section_Id, Staff_Id) VALUES(:id, :staffId) 
                 ON DUPLICATE KEY UPDATE Staff_Id = VALUES(Staff_Id)";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':id', $sectionId);
             $stmt->bindParam(':staffId', $staffId);
             $result = $stmt->execute();
 
