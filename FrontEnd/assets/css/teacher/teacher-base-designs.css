@@ -279,6 +279,11 @@ body {
 .show {
     display: block;
 }
+/*global error message*/
+.error-message {
+    padding: 0.8rem;
+    text-align: center;
+}
 /*GLOBAL CONTENT*/
 .content {
     background-color: antiquewhite;
