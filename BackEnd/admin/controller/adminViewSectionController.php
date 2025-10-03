@@ -4,7 +4,7 @@ require_once __DIR__ . '/../models/adminSectionsModel.php';
 require_once __DIR__ . '/../models/adminStudentsModel.php';
 require_once __DIR__ . '/../../Exceptions/DatabaseException.php';
 
-class adminSectionDetailsController {
+class adminViewSectionController {
     protected $studentsModel;
     protected $sectionsModel;
 
@@ -77,114 +77,6 @@ class adminSectionDetailsController {
                 'partialSuccess'=> false,
                 'message'=> 'Error: '.$e->getMessage(),
                 'data'=>[]
-            ];
-        }
-    }
-    //VIEW
-    public function viewEditSectionFormStudents(int $sectionId) : array {
-        try {
-            $students = $this->studentsModel->getAvailableStudents($sectionId);
-            $getChecked = $this->studentsModel->getCheckedStudents($sectionId);
-            $isChecked = array_column($getChecked, 'Student_Id');
-            if(empty($students)) {
-                return [
-                    'success'=> false,
-                    'message'=> 'No students Found for this section yet',
-                    'data'=> []
-                ];
-            }
-            foreach($students as &$student) {
-                $student['isChecked'] = in_array($student['Student_Id'], $isChecked);
-            }
-            unset($student);
-            return [
-                'success'=> true,
-                'message'=> 'Students successfully fetched',
-                'data'=> $students
-            ];
-
-        }
-        catch(DatabaseException $e) {
-            return [
-                'success'=> false,
-                'message'=> 'There was a problem on our side: ' . $e->getMessage(),
-                'data'=> []
-            ];
-        }
-        catch(Exception $e) {
-            return [
-                'success'=> false,
-                'message'=> 'There was an unexpected problem: ' . $e->getMessage(),
-                'data'=> []
-            ];
-        }
-    } 
-    public function viewEditSectionFormTeachers(int $sectionId) : array {
-        try {
-            $teachers = $this->sectionsModel->getAllTeachers();
-            $currentAdviser = $this->sectionsModel->checkCurrentAdviser($sectionId);
-
-            if(empty($teachers)) {
-                return [
-                    'success'=> false,
-                    'message'=> 'No teachers found',
-                    'data'=> []
-                ];
-            }
-            foreach($teachers as &$teacher) {
-                $teacherIds = (int)$teacher['Staff_Id'];
-                $teacher['isSelected'] = ($currentAdviser!== null && $currentAdviser === $teacherIds);
-            }
-            unset($teacher);
-            return [
-                'success'=> true,
-                'message'=> 'Teachers successfully fetched',
-                'data'=> $teachers
-            ];
-        }
-        catch(DatabaseException $e) {
-            return [
-                'success'=> false,
-                'message'=> 'There was a problem on our side: ' . $e->getMessage(),
-                'data'=> []
-            ];
-        }
-        catch(Exception $e) {
-            return [
-                'success'=> false,
-                'message'=> 'There was an unexpected problem: ' . $e->getMessage(),
-                'data'=> []
-            ];
-        }
-    }    
-    public function viewEditSectionFormSectionName(int $sectionId) : array {
-        try {
-            $sectionName = $this->sectionsModel->getSectionName($sectionId);
-            if(empty($sectionName)) {
-                return [
-                    'success'=> false,
-                    'message'=> 'No section name yet',
-                    'data'=> []
-                ];
-            }
-            return [
-                'success'=> true,
-                'message'=> 'Section name found',
-                'data'=> $sectionName
-            ];
-        }
-        catch(DatabaseException $e) {
-            return [
-                'success'=> false,
-                'message'=> 'There was a problem on our side: ' . $e->getMessage(),
-                'data'=> []
-            ];
-        }
-        catch(Exception $e) {
-            return [
-                'success'=> false,
-                'message'=> 'There was an unexpected problem: ' . $e->getMessage(),
-                'data'=> []
             ];
         }
     }
@@ -305,6 +197,153 @@ class adminSectionDetailsController {
             return [
                 'success'=> false,
                 'message'=> 'There was an unexpected problem ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+    }
+    //VIEW
+    public function viewEditSectionFormStudents(int $sectionId) : array {
+        try {
+            $students = $this->studentsModel->getAvailableStudents($sectionId);
+            $getChecked = $this->studentsModel->getCheckedStudents($sectionId);
+            $isChecked = array_column($getChecked, 'Student_Id');
+            if(empty($students)) {
+                return [
+                    'success'=> false,
+                    'message'=> 'No students Found for this section yet',
+                    'data'=> []
+                ];
+            }
+            foreach($students as &$student) {
+                $student['isChecked'] = in_array($student['Student_Id'], $isChecked);
+            }
+            unset($student);
+            return [
+                'success'=> true,
+                'message'=> 'Students successfully fetched',
+                'data'=> $students
+            ];
+
+        }
+        catch(DatabaseException $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was a problem on our side: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was an unexpected problem: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+    } 
+    public function viewEditSectionFormTeachers(int $sectionId) : array {
+        try {
+            $teachers = $this->sectionsModel->getAllTeachers();
+            $currentAdviser = $this->sectionsModel->checkCurrentAdviser($sectionId);
+
+            if(empty($teachers)) {
+                return [
+                    'success'=> false,
+                    'message'=> 'No teachers found',
+                    'data'=> []
+                ];
+            }
+            foreach($teachers as &$teacher) {
+                $teacherIds = (int)$teacher['Staff_Id'];
+                $teacher['isSelected'] = ($currentAdviser!== null && $currentAdviser === $teacherIds);
+            }
+            unset($teacher);
+            return [
+                'success'=> true,
+                'message'=> 'Teachers successfully fetched',
+                'data'=> $teachers
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was a problem on our side: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was an unexpected problem: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+    }    
+    public function viewEditSectionFormSectionName(int $sectionId) : array {
+        try {
+            $sectionName = $this->sectionsModel->getSectionName($sectionId);
+            if(empty($sectionName)) {
+                return [
+                    'success'=> false,
+                    'message'=> 'No section name yet',
+                    'data'=> []
+                ];
+            }
+            return [
+                'success'=> true,
+                'message'=> 'Section name found',
+                'data'=> $sectionName
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was a problem on our side: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was an unexpected problem: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+    }
+    public function viewSectionSubjectDetails(int $sectionId) : array {
+        try {
+            $data = $this->sectionsModel->getApplicableSubjectsByGradeLevel($sectionId);
+
+            if(empty($data)) {
+                return [
+                    'success'=> false,
+                    'message'=> 'No subject details yet',
+                    'data' => []
+                ];
+            }
+            if(!$data) {
+                return [
+                    'success'=> false,
+                    'message'=> 'Failed to get section subjects',
+                    'data'=> []
+                ];
+            }
+            return [
+                'success'=> true,
+                'message'=> 'Subject details successfully fetched',
+                'data'=> $data
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was a problem on our side: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was an unexpected problem: ' . $e->getMessage(),
                 'data'=> []
             ];
         }

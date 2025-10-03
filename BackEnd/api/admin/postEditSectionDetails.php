@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require_once __DIR__ . '/../../admin/controller/adminSectionDetailsController.php';
+require_once __DIR__ . '/../../admin/controller/adminViewSectionController.php';
 
 header('Content-Type: application/json');
 
@@ -15,7 +15,7 @@ $adviserId = isset($_POST['select-adviser']) ? (int)$_POST['select-adviser']  : 
 $sectionId = (int)$_POST['section-id'] ?? null;
 $studentIds = $_POST['students'] ?? [];
 
-$controller = new adminSectionDetailsController();
+$controller = new adminViewSectionController();
 $response = $controller->apiPostEditSectionDetails($sectionName, $adviserId, $sectionId, $studentIds);
 
 http_response_code($response['httpcode']);
