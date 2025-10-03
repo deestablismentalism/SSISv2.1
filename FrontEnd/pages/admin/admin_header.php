@@ -40,14 +40,14 @@
 
                             <div class="account-link-wrapper">
                                 <!-- <a href=""><img src="" alt="">Edit Profile</a><br> -->
-                                <a href="../Change_Password.php"><img src="../../assets/imgs/lock-solid.svg" class="change-pass-icon" alt=""></a>
-                                <a href="../Change_Password.php" class="update-password">Update Password</a><br>
+                                <a href="../../Change_Password.php"><img src="../../assets/imgs/lock-solid.svg" class="change-pass-icon" alt=""></a>
+                                <a href="../../Change_Password.php" class="update-password">Update Password</a><br>
                             <!-- end of account-link-wrapper  -->
                             </div>
 
                             <div class="account-logout-wrapper">
-                                <a href="../../../BackEnd/common/logout.php" id="logout"><img src="../../assets/imgs/logout.svg" class="logout-icon" alt=""></a>
-                                <a href="../../../BackEnd/common/logout.php" class="logout-text">Logout</a>
+                                <a href="\SSISV2.1\BackEnd\common\logout.php" id="logout"><img src="../../assets/imgs/logout.svg" class="logout-icon" alt=""></a>
+                                <a href="\SSISV2.1\BackEnd\common\logout.php" class="logout-text">Logout</a>
                             <!-- end of account-logout-wrapper  -->
                             </div>
                     <!-- end of account-settings-button-content-wrapper -->

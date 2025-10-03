@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function() {
         
         const formData = new FormData(form);
 
-        //TODO: use the async function below 
         postLoginVerify(formData).then(data=>{
                 const ifUser = data.session.User?.['User-Type'];
                 const ifStaff = data.session.Staff?.['Staff-Type']; 

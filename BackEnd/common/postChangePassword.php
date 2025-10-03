@@ -1,5 +1,5 @@
 <?php
-require_once 'change_password.php';
+require_once 'changePassword.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 header('Content-Type: application/json');
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode($response);
         exit;
     } 
-    else if (isset($_SESSION['Admin']) && in_array($_SESSION['Admin']['User-Type'], [1, 2, 3])){
+    else if (isset($_SESSION['Staff'])){
         $User_Typed_Password = $_POST['old-password'];
         $User_New_Password = $_POST['new-password'];
         $User_New_Password_Confirm = $_POST['confirm-password'];
