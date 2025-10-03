@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function (){
                 .then(data =>{
                     if (data.success) {
                         alert('Update Successful');
-                        setInterval(()=>{location.reload()}, 1000);
+                        setTimeout(()=>{location.reload()}, 1000);
                     }
                     else {
                         alert("ERROR: " + data.message);

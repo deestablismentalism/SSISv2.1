@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/../../core/dbconnection.php';
+require_once __DIR__ . '/../../Exceptions/DatabaseException.php';
 
 class teacherSubjectsModel {
     protected $conn;
@@ -10,28 +11,42 @@ class teacherSubjectsModel {
         $this->conn = $db->getConnection();
     }
 
-    public function getTeacherSubjectsHandled($id) {
-        $sql = "SELECT su.Subject_Name, s.Section_Name FROM section_subjects AS ss 
-                INNER JOIN sections AS s ON ss.Section_Id = s.Section_Id
-                INNER JOIN subjects AS su ON ss.Subject_Id = su.Subject_Id WHERE Staff_Id = :id";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function getTeacherSubjectsHandled(int $staffId) : array {
+        try {
+            $sql = "SELECT su.Subject_Name, s.Section_Name , ssc.Schedule_Day,
+                DATE_FORMAT(ssc.Time_Start, '%H:%i') AS Time_Start, 
+                DATE_FORMAT(ssc.Time_End, '%H:%i') AS Time_End 
+                FROM section_subjects AS ss
+                LEFT JOIN section_schedules AS ssc ON ssc.Section_Subjects_Id = ss.Section_Subjects_Id
+                LEFT JOIN sections AS s ON ss.Section_Id = s.Section_Id
+                LEFT JOIN subjects AS su ON ss.Subject_Id = su.Subject_Id WHERE Staff_Id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $staffId);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-       return $result;
+            return $result;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to fetch subjects handled',0,$e);
+        }
     }
 
-    public function getSectionSubjects($id) {
-        $sql = "SELECT su.Subject_Name, s.Section_Name, ss.*, ssc.* FROM section_subjects AS ss
-                JOIN section_schedules AS ssc ON ss.Section_Subjects_Id = ssc.Section_Subjects_Id
-                JOIN sections AS s ON ss.Section_Id = s.Section_Id
+    public function getSectionSubjects(int $sectionId) : array {
+        try {
+            $sql = "SELECT su.Subject_Name, s.Section_Name, ss.*, ssc.* FROM section_subjects AS ss
+                LEFT JOIN section_schedules AS ssc ON ss.Section_Subjects_Id = ssc.Section_Subjects_Id
+                LEFT JOIN sections AS s ON ss.Section_Id = s.Section_Id
                 JOIN subjects AS su ON ss.Subject_Id = su.Subject_Id WHERE ss.Section_Id = :id";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $sectionId);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        return $result;
+            return $result;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to fetch section subjects',0,$e);
+        }
     }
 }

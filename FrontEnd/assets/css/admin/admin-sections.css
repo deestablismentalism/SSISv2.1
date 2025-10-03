@@ -2,7 +2,7 @@
    padding: 1rem;
 }
 .page-title {
-    font-size: 1.5rem;
+    font-size: var(--title-font-size);
 }
 .sections-title-wrapper {
     display: flex;
@@ -23,7 +23,6 @@ input[type="text"] {
     font-size: 1em;
     box-sizing: border-box;
 }
-
 .add-section-form button[type="submit"], 
 .sections-title-wrapper button{
     background-color: #007bff;
@@ -39,7 +38,6 @@ input[type="text"] {
 .sections-form button[type="submit"]:hover {
     background-color: #0056b3;
 }
-
 .sections-list-wrapper {
     margin-top: 2em;
     background: #fff;
@@ -76,6 +74,7 @@ input[type="text"] {
     background: linear-gradient(to bottom right, #f0e6ee, #e4dbe2, #d9d1d7);
     border-radius: 1rem;
     width: 25%;
+    flex: 0 1 20rem;
 }
 .section-major-information {
     padding: 0.2rem;
