@@ -10,18 +10,18 @@ $pageJs = '<script type="module" src="../../assets/js/admin/admin-dashboard.js" 
 ?>
 <div class="enrollee-data-wrapper">
 <div class="gradient-background">
-     <div class="clock-container">
-         <div class="time">
-             <span id='Hours'> 00 </span>
-             <span> : </span>
-             <span id='Minutes'> 00 </span>
-             <span> : </span>
-             <span id='Seconds'> 00</span>
-         </div>
-         <div class="date">
-             <span id="date"></span> 
-         </div>
-     </div>
+    <div class="clock-container">
+        <div class="time">
+            <span id='Hours'> 00 </span>
+            <span> : </span>
+            <span id='Minutes'> 00 </span>
+            <span> : </span>
+            <span id='Seconds'> 00</span>
+        </div>
+        <div class="date">
+            <span id="date"></span> 
+        </div>
+    </div>
 </div>
  <div class="dashboard-hyperlinks">
      <a href="admin_all_enrollees.php" class="all-hyperlinks-wrapper"> 
