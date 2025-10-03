@@ -20,6 +20,10 @@ if (!isset($_SESSION['Staff']['User-Id']) && $_SESSION['Staff']['Staff-Type'] !=
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
+        <?php
+            include '../loader.php';
+        ?>
+
         <div class="main-wrapper">
         <?php require_once __DIR__ . '/./admin_sidebar.php'; ?>
         <div class="content">

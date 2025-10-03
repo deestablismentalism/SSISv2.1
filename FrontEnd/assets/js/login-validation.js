@@ -1,10 +1,11 @@
 document.addEventListener("DOMContentLoaded", function() {
     const form = document.getElementById("login-form");
-    
     const errorMessageContainer = document.querySelector('.error-msg');
     const errorMessage = document.getElementById('em-login');
+    
     form.addEventListener("submit", function(event) {
         event.preventDefault();
+        Loader.show();
         
         const formData = new FormData(form);
         
@@ -55,6 +56,9 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => {
             console.error("Fetch Error:", error);
             alert("An error occured. Please try again.");
+        })
+        .finally(() => {
+            Loader.hide();
         });
     });
 });
