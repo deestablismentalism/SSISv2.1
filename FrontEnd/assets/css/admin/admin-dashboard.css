@@ -3,8 +3,11 @@ h1 {
 }
 .data-title {
     font-weight: bold;
-    font-size: 2em;
+    font-size: 3em;
     color: rgb(0,51,102);
+    margin-top: 1em;
+    font-family: var(--main-fonts);
+
 }
 .radio-container {
     display: flex;
@@ -28,7 +31,7 @@ h1 {
     color: white;
     background: #123b69;
     width: 100%;
-    border-radius: 15px;
+    border-radius: 5px;
 }
 .enrollee-by-day {
     width: 100% !important;
@@ -82,7 +85,7 @@ h1 {
     transition: background-color 0.3s ease;
     width: 100%;
     box-shadow: -.1px -.1px 5px .1px #d0caca;
-    border-radius: 15px;
+    border-radius: 5px;
 }
 .all-enrollees-count:hover, .all-students-count:hover, .all-denied-follow-up-count:hover {
     background-color: #e0e0e0;
@@ -107,7 +110,7 @@ h1 {
     width: 100%;
     height: 25em;
     box-shadow: -.1px -.1px 5px .1px #d0caca;
-    border-radius: 15px;
+    border-radius: 5px;
 }
 .card-4 {
     flex-wrap: wrap;
@@ -136,8 +139,10 @@ h1 {
     padding: 1em 0em;
 }
 .total-count {
-    font-size: 1.3em;
-    color: #090909;
+    font-size: 3em;
+    font-weight: bold;
+    font-family: "Baloo-Thambi-2";
+    color: #123b69;
 }
 .number {
     font-weight: 900;
@@ -148,9 +153,17 @@ h1 {
 .pending-enrollments-header {
     display: flex;
     justify-content: space-between;
-    border-bottom:1px rgba(241, 189, 34, 0.3) solid ;
     padding: 0.5rem;
 }
+
+.big-card-wrapper {
+    display: flex;
+    background: #f7f5f5;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+
 .big-card-title {
     font-weight: 900;
     font-size: 1.5rem;
@@ -159,12 +172,13 @@ h1 {
     color: rgb(0,51,102);
 }
 .big-card-hyperlink {
-    background-color: #007bff;
+    background-color: #123b69;
     border-radius: 0.5rem;
     color: white;
     padding: 0.5rem;
     cursor: pointer;
     height: 50%;
+    margin-top: .6em;
 }
 .big-card-hyperlink:hover {
     background-color: rgb(0,51,102);
@@ -175,14 +189,17 @@ h1 {
 
 .pending-enrollments-wrapper, .quick-actions-wrapper {
     background-color: white;
-    margin: 5vh;
+    margin: 1em;
     width: 40em;
+    box-shadow: -.1px -.1px 5px .1px #d0caca;
+    border-radius: 5px;
 }
 
 .pending-enrollments-table {
     width: 100%;
     border-spacing: 3em;
-    gap: 2em;
+    border-top: 3px rgba(241, 189, 34, 0.3) solid;
+
 }
 
 tr:nth-child(even) {
@@ -190,9 +207,9 @@ tr:nth-child(even) {
 }
 
 .pending-enrollments-table, th, tr, td {
-    border-top: 3px rgba(241, 189, 34, 0.3) solid;
     font-size: 1.05em;
     padding: .5em;
+    font-family: var(--main-fonts);
 }
 
 .big-card-header {
@@ -205,12 +222,7 @@ tr:nth-child(even) {
     left: 50%;
 }
 
-.data-title {
-    font-style: var(--main-fonts);
-    font-size: 4em;
-    font-weight: 900;
 
-}
 
 
 .quick-actions-wrapper li {
@@ -225,6 +237,19 @@ tr:nth-child(even) {
     color: wheat;
     background-color: #46413b;
     cursor: pointer;
+}
+
+.quick-action-card h3 {
+    font-family: "Baloo-Thambi-2";
+    font-size: 1.5em;
+    font-weight: 900;
+    padding: 1em;
+    color: rgb(0,51,102);
+    padding: .7em;
+}
+
+.quick-actions-wrapper ul {
+    border-top: 3px rgba(241, 189, 34, 0.3) solid;
 }
 
 #img {
