@@ -2,26 +2,28 @@
 declare(strict_types=1);
 
 class UserTypeView {
-    
-    public function __construct() {
-        $this->display();
+    private $userType;
+    private $sessionValue;
+    public function __construct(int $session) {
+        $this->sessionValue = $session;
     }
-    private function display() {
-        $userType = "";
-        if (isset($_SESSION['User']['User-Type'])  && $_SESSION['User']['User-Type'] == 3) {
-            $userType = "User";
+    private function display() : string { 
+        $this->userType = "";
+        if(!isset($this->sessionValue) || empty($this->sessionValue)) {
+            $this->userType = 'Unknown';
         }
-        else if(isset($_SESSION['Staff']['Staff-Type']) && $_SESSION['Staff']['Staff-Type'] == 2) {
-            $userType = "Teacher";
+        if (isset($_SESSION['User']['User-Type']) && $this->sessionValue === 3) {
+            $this->userType = "User";
         }
-        else if(isset($_SESSION['Staff']['Staff-Type']) && $_SESSION['Staff']['Staff-Type'] == 1) {
-            $userType = "Admin";
+        else if(isset($_SESSION['Staff']['Staff-Type']) && $this->sessionValue === 2) {
+            $this->userType = "Teacher";
         }
-        if (!empty($userType)) {
-            echo $userType;
+        else if(isset($_SESSION['Staff']['Staff-Type']) && $this->sessionValue === 1) {
+            $this->userType = "Admin";
         }
-        else {
-            echo "Unknown";
-        }
+        return $this->userType;
+    }
+    public function __toString() : string {
+        return $this->display();
     }
 }
