@@ -2,18 +2,22 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/./models/adminStudentsModel.php';
+require_once __DIR__ . '/../controller/adminStudentsController.php';
 
 class adminStudentsView {
-    protected $studentsModel;
+    protected $studentsController;
 
     public function __construct() {
-        $students = new adminStudentsModel();
-        $this->studentsModel = $students;
+        $this->studentsController = new adminStudentsController();
     }
 
     public function displayStudents() {
-        $data = $this->studentsModel->getAllStudents();
+        $response = $this->studentsController->viewStudents();
+
+        if(!$response['success']) {
+            echo '<div class="error-message"> <p>'.htmlspecialchars($response['message']). '</p></div>';
+        }
+        $data = $response['data'];
         foreach($data as $rows) {
             $section = $rows['Section_Name'] === null ? 'Section is not set' : htmlspecialchars($rows['Section_Name']);
             $middleInitial = $rows['Student_Middle_Name'] === null ? '' : substr($rows['Student_Middle_Name'], 0, 1) . ".";
@@ -46,9 +50,9 @@ class adminStudentsView {
                 <td>' .htmlspecialchars($rows['Student_Email']) .' </td>
                 <td>' . $statusText . '</td>
                 <td> 
-                    <button class="view-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="/SSISv2.1/FrontEnd/assets/imgs/eye-regular.svg" alt="View Student Information"></button> 
-                    <button class="edit-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="/SSISv2.1/FrontEnd/assets/imgs/edit.svg" alt="Edit Student Information"></button>
-                    <button class="delete-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="/SSISv2.1/FrontEnd/assets/imgs/trash-solid.svg" alt="Delete Student Information"></button>
+                    <button class="view-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="../../assets/imgs/eye-regular.svg" alt="View Student Information"></button> 
+                    <button class="edit-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="../../assets/imgs/edit.svg" alt="Edit Student Information"></button>
+                    <button class="delete-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="../../assets/imgs/trash-solid.svg" alt="Delete Student Information"></button>
                 </td>
             </tr>';
         }

@@ -3,7 +3,7 @@
 ob_start();
 $pageTitle = "Admin Sections";
 $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-sections.css">'; 
-$pageJs= '<script src="../../assets/js/admin/admin-sections.js" defer></script>';
+$pageJs= '<script type="module" src="../../assets/js/admin/admin-sections.js" defer></script>';
     
 ?>
 

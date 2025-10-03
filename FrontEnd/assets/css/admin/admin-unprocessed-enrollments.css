@@ -23,11 +23,12 @@ table {
 .enrollments th,td {
     padding: 1rem;
 }
-.enrollments tr:nth-child(odd) {
-    background-color:  #fff;
+.enrollments tbody tr:nth-child(odd) {
+    
+    background-color: #f4f4f4 ;
 }
-.enrollments tr:nth-child(even) {
-    background-color: #f4f4f4;
+.enrollments tbody tr:nth-child(even) {
+    background-color: #fff;
 }
 
 /* Status cell styles */

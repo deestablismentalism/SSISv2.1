@@ -17,7 +17,8 @@
                         }
                     ?>   
                     <h2 class="name"> <?php echo $name; ?></h2>
-                    <span>  <?php $viewType = new UserTypeView(); ?> </span>
+                    <span>  <?php $viewType = new UserTypeView((int)$_SESSION['Staff']['Staff-Type']); 
+                            echo $viewType; ?> </span>
                     <!-- end of account-settings-wrapper -->
                 </div>
                     <div class="account-settings-btn">

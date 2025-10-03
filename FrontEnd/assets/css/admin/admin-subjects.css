@@ -6,11 +6,16 @@
     font-family: Arial, sans-serif;
     margin-bottom: 510px;
 }
-
 .subjects-container {
     margin: 2em;
 }
-
+.admin-subject-header {
+    display: flex;
+    justify-content: space-between;
+}
+.admin-subject-title {
+    font-size: var(--title-font-size);
+}
 .add-subject {
     background-color: #ffffff;
     color: #333;
@@ -27,7 +32,6 @@
     border-radius: 1.5em;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
-
 .subjects-list h2 {
     margin-bottom: 1em;
     color: #333;
@@ -63,7 +67,12 @@
     display: flex;
     gap: 1em;
     flex-wrap: wrap;
+    flex-direction: column;
     align-items: flex-start;
+}
+.form.popup {
+    flex-direction: column;
+    gap: 0;
 }
 
 /* Input fields */
@@ -179,6 +188,7 @@
     border-radius: 4px;
     margin-top: 0.5em;
     flex-direction: column;
+    z-index: 1002;
 }
 .checkboxes.show {
     display: flex;
@@ -194,7 +204,7 @@
     border-radius: 0.5em;
     font-size: 1em;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background-ease 0.2s;
     height: 50%;
     align-self: flex-start;
 }

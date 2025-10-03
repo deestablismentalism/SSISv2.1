@@ -1,16 +1,13 @@
+import {close, loadingText} from '../utils.js';
 document.addEventListener('DOMContentLoaded', function() {
     const addSectionBtn = document.getElementById('add-section-btn');
     const modal = document.querySelector('.modal');
     const content = document.querySelector('.modal-content');
 
-    function closeModal(modal) {
-        modal.style.display = 'none';
-    }
-
     //modal handler
     addSectionBtn.addEventListener('click', function() {
         modal.style.display = 'block';
-        content.innerHTML = `Loading...`;
+        content.innerHTML = loadingText;
         fetch(`../../../BackEnd/templates/admin/fetchAddSectionForm.php`)
         .then(response => response.text())
         .then(data => {
@@ -42,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     else {
                         alert('Section added successfully.');
                         console.log(data);
-                        setInterval(()=> {
+                        setTimeout(()=> {
                             window.location.reload();
                         }, 1000);
                     }
@@ -51,23 +48,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.log(error.message);
                  })
             })
-            const closeBtn = document.querySelector('.close-btn');
-            closeBtn.addEventListener('click', function() {
-                closeModal(modal);
-            });
+            close(modal);
         })
     });
-    const sectionsListContainer = document.querySelector('.sections-list-wrapper');
-    //fetching sections lists
-    fetch(`../../../BackEnd/api/admin/fetchSectionsListDetails.php`)
-    .then(response=> response.json())
-    .then(data=>{
-       if (data.success == false) {
-            sectionsListContainer.innerHTML = data.message || 'No sections found';
-       }
-       else {
-            const template = document.getElementById('sections-list-template');
-            const container = document.querySelector('.sections-list-container');
+    //fetch section detals
+    fetchSectionDetails().then(data=>{
+        const template = document.getElementById('sections-list-template');
+        const container = document.querySelector('.sections-list-container');
+        if(data) {
             data.forEach(section=> {
                 const clone = template.content.cloneNode(true);
 
@@ -81,10 +69,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 container.appendChild(clone);
 
             });
-       }
+        }
     })
-    .catch(error=> {
-        alert(error.message || 'Something went wrong. Please try again later');
-    })
-
 });
+
+async function fetchSectionDetails() {
+    try {
+        let response = await fetch(`../../../BackEnd/api/admin/fetchSectionsListDetails.php`);
+        let data = await response.json()
+        if(!response.ok) {
+            console.error(`Error ${data.htppcode}`);
+            console.error(`There was a problem: ${data.message}`);
+            return null;
+        }
+        if(!data.success) {
+            alert(data.message || 'Something went wrong');
+            return null;
+        }
+        return data.data;
+    }
+    catch(err) {
+        alert('There was an unexpected problem');
+        console.error(error);
+        return null;
+    }
+}
