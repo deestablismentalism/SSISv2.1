@@ -27,6 +27,16 @@ $adminViewSectionView = new adminViewSectionView();
                         $adminViewSectionView->displaySectionStudents();
                     ?>
                 </div>
+                <div class="subject-details-container">
+                    <div class="subject-details-title-container">
+                        <h1 class="subject-details-title"> Subject Details</h1>
+                    </div>
+                    <div class="subject-details-list">
+                        <?php 
+                            $adminViewSectionView->displaySubjectDetails();
+                        ?>
+                    </div>
+                </div>
            </div>
         </div>
 

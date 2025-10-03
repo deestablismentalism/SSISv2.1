@@ -338,6 +338,11 @@ p {
 .show {
     display: block;
 }
+/*Global error message*/
+.error-message {
+    padding: 0.8rem;
+    text-align: center;
+}
 /* Global pop up modal design*/
 .modal-header .back-button {
     padding: 0.3rem  0.8rem;

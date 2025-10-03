@@ -124,6 +124,26 @@ class adminSectionsModel {
             throw new DatabaseException('Fetching all the teachers failed', 0, $e);
         }
     }
+    public function getApplicableSubjectsByGradeLevel(int $sectionId) : array {
+        try {
+            $sql = "SELECT s.Subject_Name, ss.Schedule_Day, 
+                    DATE_FORMAT(ss.Time_Start, '%H:%i') AS Time_Start, DATE_FORMAT(ss.Time_End, '%H:%i') AS Time_End FROM grade_level_subjects AS gls
+                    JOIN sections AS se ON se.Grade_Level_Id = gls.Grade_Level_Id
+                    JOIN subjects AS s ON s.Subject_Id = gls.Subject_Id
+                    LEFT JOIN section_subjects AS ssu ON ssu.Subject_Id = gls.Subject_Id
+                    LEFT JOIN section_schedules AS ss ON ss.Section_Subjects_Id = ssu.Section_Subjects_Id
+                    WHERE se.Section_Id = :id GROUP BY s.Subject_Name";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $sectionId);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $result;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to fetch applicable subjects',0,$e);
+        }
+    }
     public function checkCurrentAdviser(int $sectionId) : ?int {
         try {
             $sql = "SELECT Staff_Id FROM section_advisers WHERE Section_Id = :id";
