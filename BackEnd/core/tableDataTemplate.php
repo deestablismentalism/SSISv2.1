@@ -1,6 +1,6 @@
 <?php
     declare(strict_types=1);
-    require_once __DIR__ . '/dbconnection.php'; 
+    require_once __DIR__ . '/./safeHTML.php'; 
 
     class TableCreator {
         //direct echo functions
@@ -14,14 +14,20 @@
             echo '</thead>';
         }
         public function generateHorizontalRows(string $className, array $values) {
-            echo '<tbody>';
             echo '<tr class="'.$className.'">';
-                foreach($values as $rows) {
-                    
-                    echo '<td>' . $rows . '</td>';
+                foreach($values as $rows) { 
+                    if(is_numeric($rows)) {
+                        $cleanedRow = $rows;
+                    }
+                    elseif($rows instanceof safeHTML) {
+                        $cleanedRow = $rows;
+                    } 
+                    else {
+                        $cleanedRow = htmlspecialchars($rows);
+                    }
+                    echo '<td>' . $cleanedRow . '</td>';
                 }
             echo '</tr>';
-            echo '</tbody>';
         }
         public function generateVerticalTables(array $keys, array $values) {
             $assoc = array_combine($keys, $values); 
@@ -32,7 +38,7 @@
                     </tr>';
             }
         }
-        //return only functions
+        //Used for concatenating directly
         public function returnHorizontalTitles(string $rowName, array $titles) {
             $html = '';
             $html .= '<thead>';
@@ -42,6 +48,22 @@
             }
             $html .= '</tr>';
             $html .= '</thead>';
+
+            return $html;
+        }
+        public function returnHorizontalRows(string $className, array $values) {
+            $html = '';
+            $html .= '<tr class="'.$className.'">';
+            foreach($values as $rows) {
+                if(is_numeric($rows) || $rows instanceof safeHTML) {
+                    $cleanedRow = $rows;
+                }
+                else {
+                    $cleanedRow = htmlspecialchars($rows);
+                }
+                $html .= '<td>' .$cleanedRow. '</td>';
+            }
+            $html .= '</tr>';
 
             return $html;
         }
