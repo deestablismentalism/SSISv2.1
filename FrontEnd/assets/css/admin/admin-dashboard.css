@@ -58,7 +58,7 @@ h1 {
     position: relative;
 }
 .enrollee-data-wrapper {
-    background: #f7f5f5;
+    background: #fffdfdf5;
     padding: 1rem;
 }
 .border-50::after {
@@ -158,7 +158,7 @@ h1 {
 
 .big-card-wrapper {
     display: flex;
-    background: #f7f5f5;
+    background: #fffdfdf5;
     padding: 1rem;
     margin: 1rem;
 }
