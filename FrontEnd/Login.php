@@ -8,11 +8,16 @@
     <link rel="stylesheet" href="./assets/css/reset.css">
     <link rel="stylesheet" href="./assets/css/login.css">
     <link rel="stylesheet" href="./assets/css/fonts.css">
+    <link rel="stylesheet" href="./assets/css/loader.css">
+    <script src="./assets/js/loader.js"></script>
     <script src="./assets/js/login-validation.js"></script> 
     <link rel="icon" href="../favicon.ico">
 </head>
 
 <body>  
+    <?php
+        include './pages/loader.php';
+    ?>
     <div class="main"> 
 
         <div class="header">
@@ -30,6 +35,7 @@
              <hr>
         </div>
 
+        
        <div class="form-container">
             <br>
             <div class="error-msg">
