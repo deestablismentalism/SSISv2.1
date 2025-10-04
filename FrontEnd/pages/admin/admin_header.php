@@ -46,8 +46,8 @@
                             </div>
 
                             <div class="account-logout-wrapper">
-                                <a href="\SSISV2.1\BackEnd\common\logout.php" id="logout"><img src="../../assets/imgs/logout.svg" class="logout-icon" alt=""></a>
-                                <a href="\SSISV2.1\BackEnd\common\logout.php" class="logout-text">Logout</a>
+                                <a href="../../../BackEnd/common/logout.php" id="logout"><img src="../../assets/imgs/logout.svg" class="logout-icon" alt=""></a>
+                                <a href="../../../BackEnd/common/logout.php" class="logout-text">Logout</a>
                             <!-- end of account-logout-wrapper  -->
                             </div>
                     <!-- end of account-settings-button-content-wrapper -->
