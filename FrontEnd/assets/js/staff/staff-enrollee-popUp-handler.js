@@ -1,3 +1,4 @@
+import {close, modalHeader, loadingText} from '../utils.js';
 document.addEventListener('DOMContentLoaded', function (){ 
         const modal = document.getElementById('enrolleeModal');
         const modalContent = document.querySelector('.modal-content');
@@ -7,20 +8,18 @@ document.addEventListener('DOMContentLoaded', function (){
             const enrolleeId = e.target.getAttribute('data-id');
             console.log(enrolleeId);
             modal.style.display = 'block';
-            modalContent.innerHTML = '<p> Wait for data to load... </p>'; // Show loader while fetching data
+            modalContent.innerHTML = loadingText; // Show loader while fetching data
             fetch('../../../BackEnd/templates/staff/fetchEnrolleeInfo.php?id=' + encodeURIComponent(enrolleeId)) 
             .then(response => response.text())
             .then(data => {
-                modalContent.innerHTML = data;
+                modalContent.innerHTML = modalHeader();
+                modalContent.innerHTML += data;
                 modalContent.innerHTML += `
                     <button class="accept-btn" data-action="accept"data-id="${enrolleeId}">Accept</button>
                     <button class="reject-btn" data-action="deny" data-id="${enrolleeId}">Deny</button>
                     <button class="toFollow-btn" data-action="toFollow" data-id="${enrolleeId}">To Follow</button>
                 `;
-                const close = document.querySelector('.close');
-                close.addEventListener('click', function(){
-                    modal.style.display = 'none';
-                });
+                close(modal);
             })
             .catch(error => {
                 console.error("Fetch error:", error);
