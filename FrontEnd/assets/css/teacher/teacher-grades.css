@@ -1,0 +1,12 @@
+.teacher-grades-content {
+    margin: 1rem;
+}
+.subjects-to-grade-wrapper {
+    padding: 1rem;
+    background: #fff;
+    border-radius: 0.5rem;
+}
+.subjects-to-grade {
+    width: 100%;
+    table-layout: fixed;
+}
