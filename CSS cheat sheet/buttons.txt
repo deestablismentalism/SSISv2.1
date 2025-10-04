@@ -7,7 +7,7 @@ button {
     cursor: pointer;
     text-align: center;
     transition: ease-out 0.5s;
-    
+    font-family: var(--button-fonts);
 
     /* Feel Free to adjust */
     border-radius: 0.5rem;

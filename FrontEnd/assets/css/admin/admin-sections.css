@@ -97,13 +97,14 @@ input[type="text"] {
 }
 .sections-list {
     padding: 0.5rem;
-    background-color: white;
     width: 25%;
     flex: 0 1 20rem;
     border-radius: 5px;
-    box-shadow: -.1px -1px 5px .1px #d0caca;
-    font-family: var(--main-fonts);
+    
     cursor: default;
+    background-color: white;
+    font-family: var(--main-fonts);
+    box-shadow: -.1px -1px 5px .1px #d0caca;
 }
 .section-major-information {
     padding: 0.2rem;
