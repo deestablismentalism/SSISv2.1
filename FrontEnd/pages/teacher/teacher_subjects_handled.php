@@ -5,6 +5,7 @@ if(session_status() === PHP_SESSION_NONE) {
 ob_start();
 require_once __DIR__ . '/../../../BackEnd/teacher/view/teacherSubjectsHandledView.php';
 $view = new teacherSubjectsHandledView();
+$pageTitle = 'Subjects Handled';
 $pageCss = '<link rel="stylesheet" href="../../assets/css/teacher/teacher-subjects-handled.css">';
 $pageJs = '<script src="../../assets/js/teacher/teacher-subjects-handled.js" defer></script>';
 
