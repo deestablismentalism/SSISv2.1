@@ -1,11 +1,16 @@
 /*----START OF BASE DESIGNS----*/
 :root {
-    --main-fonts: 'Barlow', Arial;
-    --title-fonts: 'Caladea', sans-serif;
+    --main-fonts: 'Baloo', Arial;
+    --title-fonts: 'Baloo-Thambi-2', sans-serif;
     --link-fonts: 'Roboto', sans-serif;
     --sidebar-width: 60px;
     --sidebar-expanded-width: 20dvw;
     --title-font-size: 1.5rem;
+    --main-color: #123b69;
+    --secondary-color: #F1BD22;
+    --wrapper-bg-color: #fffdfdf5;
+    --button-color: ;
+    --button-hover-color: ;
 }
 body {
     background-color: rgb(235, 231, 231);
