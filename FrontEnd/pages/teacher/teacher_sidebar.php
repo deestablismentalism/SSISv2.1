@@ -20,7 +20,7 @@
                 </div>
                 <div class="menu border-100sb" id="grading">
                     <img src="../../assets/imgs/a-plus.png" alt="grade-students" class="bi">
-                    <span class="menu-title"> <a href="#"> Grade Students </a> </span>
+                    <span class="menu-title"> <a href="./teacher_grades.php"> Grade Students </a> </span>
                 </div>
                 <?php
                     $teacherIsAnAdviser->displayAdvisoryHyperLink();
