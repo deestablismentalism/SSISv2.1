@@ -1,0 +1,4 @@
+.wrapper {
+    background: var(--wrapper-bg-color);
+    margin: 1em;
+}
