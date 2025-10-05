@@ -22,6 +22,10 @@ if (!isset($_SESSION['Staff']) && $_SESSION['Staff']['Staff-Type'] !== 1) {
     <img src="../../assets/imgs/graduation-cap.png" alt="graduation-cap" fetchpriority="high" aria-hidden="true" hidden>
 </head>
 <body>
+        <?php
+            include '../loader.php';
+        ?>
+
         <div class="main-wrapper">
         <?php require_once __DIR__ . '/./admin_sidebar.php'; ?>
         <div class="content">

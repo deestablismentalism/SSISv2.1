@@ -188,6 +188,10 @@ tr:nth-child(odd) {background-color: #f4f4f4;}
     color: #333;
 }
 
+.student-info tr {
+    cursor: default;
+}
+
 @media (min-width: 768px) {
     .details-grid {
         grid-template-columns: repeat(2, 1fr);

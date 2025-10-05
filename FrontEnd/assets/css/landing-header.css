@@ -139,7 +139,7 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: white;
+    color: #f3fffe;
     position: relative;
     overflow: hidden;
 }
@@ -242,7 +242,7 @@ body {
 }
 
 .wave .shape-fill {
-    fill: #FFFFFF;
+    fill: #f3fffe;
 }
 
 /* Animations */
