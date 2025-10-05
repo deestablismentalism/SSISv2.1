@@ -8,11 +8,16 @@
     <link rel="stylesheet" href="./assets/css/reset.css">
     <link rel="stylesheet" href="./assets/css/login.css">
     <link rel="stylesheet" href="./assets/css/fonts.css">
+    <link rel="stylesheet" href="./assets/css/loader.css">
+    <script src="./assets/js/loader.js"></script>
     <script src="./assets/js/login-validation.js"></script> 
     <link rel="icon" href="../favicon.ico">
 </head>
 
 <body>  
+    <?php
+        include './pages/loader.php';
+    ?>
     <div class="main"> 
 
         <div class="header">
@@ -30,12 +35,13 @@
              <hr>
         </div>
 
+        
        <div class="form-container">
             <br>
             <div class="error-msg">
                 <span id="em-login"> Error Message Here </span>
             </div>
-           <form id="login-form" action="../server_side/common/post_login_verify.php" method="post">
+           <form id="login-form" action="..\BackEnd\common\postLoginVerify.php" method="post">
                <div class="box">
                    <BR>
                    <label for="phone_number" style="color: white;  font-family: Baloo-Thambi-2;  font-size: .8em;" > Phone Number</label>

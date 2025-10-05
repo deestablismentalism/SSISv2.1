@@ -10,48 +10,54 @@ $pageJs = '<script type="module" src="../../assets/js/admin/admin-dashboard.js" 
 ?>
 <div class="enrollee-data-wrapper">
 <div class="gradient-background">
-     <div class="clock-container">
-         <div class="time">
-             <span id='Hours'> 00 </span>
-             <span> : </span>
-             <span id='Minutes'> 00 </span>
-             <span> : </span>
-             <span id='Seconds'> 00</span>
-         </div>
-         <div class="date">
-             <span id="date"></span> 
-         </div>
-     </div>
+    <div class="clock-container">
+        <div class="time">
+            <span id='Hours'> 00 </span>
+            <span> : </span>
+            <span id='Minutes'> 00 </span>
+            <span> : </span>
+            <span id='Seconds'> 00</span>
+        </div>
+        <div class="date">
+            <span id="date"></span> 
+        </div>
+    </div>
 </div>
  <div class="dashboard-hyperlinks">
      <a href="admin_all_enrollees.php" class="all-hyperlinks-wrapper"> 
-         <div class="all-enrollees-count">
-             <h1 class="data-link-title"> All Enrollees </h1>
-             <?php 
-                 include_once __DIR__.'/../../../BackEnd/admin/view/adminDashboardView.php';
-                 $dashboard = new adminDashboardView();
-                 $total_enrollees = $dashboard->displayEnrolleesCount();
-             ?>
-             <span id="total-enrollees" class="total-count"><?php echo $total_enrollees; ?></span> 
-         </div>
+        <div class="all-enrollees-count">
+            <h1 class="data-link-title"> All Enrollees </h1>
+            <span id="total-enrollees" class="total-count">
+                <?php 
+                include_once __DIR__.'/../../../BackEnd/admin/view/adminDashboardView.php';
+                $dashboard = new adminDashboardView();
+                $total_enrollees = $dashboard->displayEnrolleesCount();
+                echo $total_enrollees;
+                ?>
+            </span> 
+        </div>
      </a>
      <a href="admin_all_students.php" class="all-hyperlinks-wrapper">
-         <div class="all-students-count">
-             <h1 class="data-link-title"> All Students </h1>
-             <?php 
-                 $total_students = $dashboard->displayStudentsCount();
-             ?>
-             <span id="total-students" class="total-count"><?php echo $total_students; ?></span>
-         </div>
+        <div class="all-students-count">
+            <h1 class="data-link-title"> All Students </h1>
+            <span id="total-students" class="total-count">
+                <?php 
+                    $total_students = $dashboard->displayStudentsCount();
+                    echo $total_students;
+                ?>
+            </span>
+        </div>
      </a>
      <a href="admin_denied_followup.php" class="all-hyperlinks-wrapper">
-         <div class="all-denied-follow-up-count">
-             <h1 class="data-link-title"> Denied Follow Up </h1>
-             <?php
-                 $total_denied_follow_up = $dashboard->displayDeniedAndToFollowUpCount();
-             ?>
-             <span id="total-denied-follow-up" class="total-count"><?php echo $total_denied_follow_up; ?></span>
-         </div>
+        <div class="all-denied-follow-up-count">
+            <h1 class="data-link-title"> Denied Follow Up </h1>
+            <span id="total-denied-follow-up" class="total-count">
+                <?php
+                    $total_denied_follow_up = $dashboard->displayDeniedAndToFollowUpCount();
+                    echo $total_denied_follow_up;
+                ?>
+            </span>
+        </div>
      </a>
  </div>
  

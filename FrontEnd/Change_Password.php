@@ -10,6 +10,9 @@
     <script src="./assets/js/change-password.js" defer></script>
 </head>
 <body>
+    <?php
+        include_once "pages/loader.php";
+    ?>
     <div class="bg-image">
         <div class="blurred-background"></div>
             <div class="form">

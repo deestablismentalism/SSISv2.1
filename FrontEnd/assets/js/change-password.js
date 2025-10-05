@@ -3,10 +3,11 @@ document.addEventListener("DOMContentLoaded", function() {
     
     form.addEventListener("submit", function(event) {
         event.preventDefault();
-        
+        Loader.show();
+
         const formData = new FormData(form);
         
-        fetch("../server_side/post_change_password.php", {
+        fetch("./../BackEnd/common/postChangePassword.php", {
             method: "POST", 
             body: formData,
         })
@@ -31,6 +32,9 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => {
             console.error("Fetch Error:", error);
             alert("Change Password failed. Please check the console for details.");
+        })
+        .finally(() => {
+            Loader.hide();
         });
     });
 });

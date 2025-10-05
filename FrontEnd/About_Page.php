@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="./assets/css/landing-header.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@900&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
     <title>SSIS-About Page</title>
@@ -20,9 +24,9 @@
         <!-- Hero Section -->
         <section class="hero">
             <div class="hero-slideshow">
-                <div class="hero-slide active"
+                <!-- <div class="hero-slide active"
                     style="background-image: linear-gradient(rgba(104, 165, 184, 0.32), rgba(44, 130, 156, 0.6)), url('./assets/imgs/test.png')">
-                </div>
+                </div> -->
                 <div class="hero-slide"
                     style="background-image: linear-gradient(rgba(104, 165, 184, 0.32), rgba(44, 130, 156, 0.6)), url('./assets/imgs/teacher.jpg')">
                 </div>
@@ -186,7 +190,7 @@
                 <!-- Sample repeated cards with varying AOS effects -->
                 <div class="team-card" data-aos="zoom-in">
                     <div class="image-wrapper">
-                        <img src="./assets/imgs/prcpl.jpg" alt="Team Member" />
+                        <img src="./assets/imgs/prcpll.jpeg" alt="Team Member" />
                     </div>
                         <h4>Jefferson Riano Alojado</h4>
                         <p class="position">Principal I</p>

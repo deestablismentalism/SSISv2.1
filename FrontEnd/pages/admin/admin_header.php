@@ -40,8 +40,8 @@
 
                             <div class="account-link-wrapper">
                                 <!-- <a href=""><img src="" alt="">Edit Profile</a><br> -->
-                                <a href="../Change_Password.php"><img src="../../assets/imgs/lock-solid.svg" class="change-pass-icon" alt=""></a>
-                                <a href="../Change_Password.php" class="update-password">Update Password</a><br>
+                                <a href="../../Change_Password.php"><img src="../../assets/imgs/lock-solid.svg" class="change-pass-icon" alt=""></a>
+                                <a href="../../Change_Password.php" class="update-password">Update Password</a><br>
                             <!-- end of account-link-wrapper  -->
                             </div>
 
