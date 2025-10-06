@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./assets/css/learn-more.css">
     <link rel="stylesheet" href="./assets/css/landing-header.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
     
     <title>SSIS-Learn More Page</title>
@@ -20,9 +19,9 @@
         <!-- Hero Section -->
         <section class="hero">
             <div class="hero-slideshow">
-                <div class="hero-slide active"
+                <!-- <div class="hero-slide active"
                     style="background-image: linear-gradient(rgba(104, 165, 184, 0.32), rgba(44, 130, 156, 0.6)), url('./assets/imgs/test.png')">
-                </div>
+                </div> -->
                 <div class="hero-slide"
                     style="background-image: linear-gradient(rgba(104, 165, 184, 0.32), rgba(44, 130, 156, 0.6)), url('./assets/imgs/teacher.jpg')">
                 </div>
@@ -36,16 +35,16 @@
                     Republic of the Philippines Department of Education
                 </p>
                 <br>
-            <h1 class="hero-title">
-                <span class="word">Learn More</span> 
-            </h1>
+                <h1 class="hero-title">
+                    <span class="word">Learn More</span>
+                </h1>
+            </div>
 
-        
-        <!-- Hero Content script -->
-        <script>
-            // Hero Slideshow
-            let slideIndex = 0;
-            const slides = document.querySelectorAll('.hero-slide');
+            <!-- Hero Content script -->
+            <script>
+                // Hero Slideshow
+                let slideIndex = 0;
+                const slides = document.querySelectorAll('.hero-slide');
 
             function showSlides() {
                 slides.forEach((slide, i) => {
@@ -125,7 +124,7 @@
             <div class="learn-more-container">
                 <div class="learn-more-content">
                     <div class="image-text-container">
-                        <img src="./assets/imgs/students.jp" alt="Image 1" class="image">
+                        <!-- <img src="./assets/imgs/student.jpg" alt="Image 1" class="image"> -->
                         <div class="text-container">
                             <h3>Our Beloved School</h3>
                             <p>Lucena South II Elementary School is dedicated to improving teaching and learning through 
@@ -138,12 +137,36 @@
                 </div>
                 <div class="learn-more-content">
                     <div class="image-text-container">
-                        <img src="./assets/imgs/grad.jp" alt="Image 1" class="image">
+                        <!-- <img src="./assets/imgs/teacher.jpg" alt="Image 1" class="image"> -->
+                        <div class="text-container">
+                            <h3>Our Teachers</h3>
+                            <p>Our dedicated teachers are committed to providing quality education and support to all students.
+                              They go beyond teaching basic subjects by instilling confidence in their students, encouraging them to 
+                              believe in their abilities. Through everyday lessons and meaningful guidance, 
+                              they shape future leaders with strong values and a sense of responsibility. These educators 
+                              create a supportive environment where children feel empowered to strive for excellence in everything they do.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="learn-more-content">
+                    <div class="image-text-container">
+                        <!-- <img src="./assets/imgs/grad.jpg" alt="Image 1" class="image"> -->
                         <div class="text-container">
                             <h3>History</h3>
                             <p>Lucena South II Elementary School was established in 1963 and has since played a vital 
                                 role in providing quality education in Lucena City. Over the decades, it has evolved to 
                                 meet the growing needs of learners and the demands of modern education.
+                        </div>
+                    </div>
+                </div>
+                <div class="learn-more-content">
+                    <div class="image-text-container">
+                        <!-- <img src="./assets/imgs/planting.jp" alt="Image 1" class="image"> -->
+                        <div class="text-container">
+                             <h3>Community</h3>
+                            <p>The school thrives through the strong support of its local community. Parents, stakeholders, 
+                                and nearby organizations actively participate in school programs, fostering a collaborative and 
+                                nurturing learning environment.</p>
                         </div>
                     </div>
                 </div>

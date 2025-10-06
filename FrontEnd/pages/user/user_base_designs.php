@@ -64,9 +64,10 @@ if (!isset($_SESSION['User']['User-Id']) || !isset($_SESSION['User']['Registrati
                         if (isset($_SESSION['User']) && isset($_SESSION['User']['First-Name']) && isset($_SESSION['User']['Last-Name']) && isset($_SESSION['User']['User-Type'])) {
                             $name = $_SESSION['User']['First-Name'] . ", " . $_SESSION['User']['Last-Name'];
                             echo "<p class='user-name'>$name</p>";
-                            $viewType = new UserTypeView();
+                            $viewType = new UserTypeView((int)$_SESSION['User']['User-Type']);
                         }
                     ?>
+                    <span> <?php echo $viewType; ?></span>
                 </div>
                 <div class="account-settings-btn">
                     <button class="account-btn"><img src="../../assets/imgs/chevron-down-black.svg" id="account-drop" alt=""></button>

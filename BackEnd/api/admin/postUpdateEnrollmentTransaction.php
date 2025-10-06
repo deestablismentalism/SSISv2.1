@@ -25,7 +25,7 @@ if(!$update) {
     echo json_encode(['success'=> false, 'message' => 'Update failed']);
     exit();
 }
-$updateEnrollee = adminEnrolleesModel->updateEnrollee($enrolleeId, $status);
+$updateEnrollee = $adminEnrolleesModel->updateEnrollee($enrolleeId, $status);
 
 if($updateEnrollee) {
     echo json_encode($update);

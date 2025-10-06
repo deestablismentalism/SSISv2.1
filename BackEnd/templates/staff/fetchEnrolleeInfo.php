@@ -1,10 +1,9 @@
 <?php
-    require_once __DIR__ . '/../../admin/adminEnrolleeInfo.php';
+    require_once __DIR__ . '/../../admin/view/adminEnrolleeInfo.php';
 
     $view = new adminEnrolleeInfo();
 ?>
 
-    <span class="close">&times;</span>
                         
 <!-- 🧍‍♂️ Student Info Section -->
 <h1>I. Impormasyon ng Mag-aaral</h1>

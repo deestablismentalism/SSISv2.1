@@ -1,0 +1,29 @@
+button {
+    /*DO NOT CHANGE*/
+    border: 2px solid var(--main-color);
+    color: var(--main-color);
+    background: transparent;
+    box-shadow: inset 0 0 0 0 var(--main-color);
+    cursor: pointer;
+    text-align: center;
+    transition: ease-out 0.5s;
+    
+
+    /* Feel Free to adjust */
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    height: 50%;
+    margin-top: .6em;
+}
+
+button:hover {
+    /*DO NOT CHANGE*/
+    color: white;
+    box-shadow: inset 0 -100px 0 0 var(--main-color);
+}
+
+button:active {
+    /*DO NOT CHANGE*/
+    transform: scale(0.9);
+}
+

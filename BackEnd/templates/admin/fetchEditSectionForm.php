@@ -1,33 +1,34 @@
 <?php
 
-require_once __DIR__ . '/../../admin/models/adminSectionsModel.php';
+require_once __DIR__ . '/../../admin/controller/adminSectionDetailsController.php';
 
-$sectionsModel = new adminSectionsModel();
+$controller = new adminSectionDetailsController();
 ?>
-<span class="close"> &times; </span>
 <form id="edit-section-details" class="edit-section-details"> 
     <?php 
-        $teachers = $sectionsModel->getAllTeachers();
         if(isset($_GET['section_id'])) $id = $_GET['section_id'];
-        $getSection = $sectionsModel->getSectionName($id);
-        $sectionName = htmlspecialchars($getSection['Section_Name']);
+        $teachersResponse = $controller->viewEditSectionFormTeachers($id);
+        $sectionNameResponse = $controller->viewEditSectionFormSectionName($id);
+        $studentsResponse = $controller->viewEditSectionFormStudents($id);
+        //section name value
+        $sectionName = $sectionNameResponse['success'] ? htmlspecialchars($sectionNameResponse['data']['Section_Name']) : '';
     ?>
     <span> Section Name </span>
-    <input type="hidden" name="section-id" value="<?php echo $id ?>">
     <input type="text" name="section-name" value="<?php echo $sectionName; ?>">
     <span> Please Select an Adviser </span>
     <select name="select-adviser">
+        <option value=""> Select an Adviser </option>
         <?php 
             if(isset($_GET['section_id'])) {
                 $id = $_GET['section_id'];
-                $currentAdviser = $sectionsModel->checkCurrentAdviser($id);
-                $students = $sectionsModel->getAvailableStudents($id);
-                $checkStudents = $sectionsModel->getCheckedStudents($id);
+                if(!$teachersResponse['success']) {
+                    echo '<option value="">'.htmlspecialchars($teachersResponse['message']). '</option>';
+                }
             }
-            foreach($teachers as $options) {
+            foreach($teachersResponse['data'] as $options) {
                 $name = htmlspecialchars($options['Staff_Last_Name']) . ', '. htmlspecialchars($options['Staff_First_Name']) 
                         .' '. htmlspecialchars($options['Staff_Middle_Name']);
-                $flagSelected = ($currentAdviser == $options['Staff_Id'] && !empty($currentAdviser)) ? 'selected' : '';
+                $flagSelected = $options['isSelected'] ? 'selected' : '';
                 echo '<option value="'. htmlspecialchars($options['Staff_Id']).'" '. $flagSelected.'> 
                     '.  $name .'
                     </option>';
@@ -36,21 +37,18 @@ $sectionsModel = new adminSectionsModel();
     </select>
     <span> Grade level students list </span>
     <?php 
-        if(!empty($students)) {
-            $checkedIds = array_column($checkStudents, 'Student_Id');
-            foreach($students as $checkboxes) {
-                $isChecked = (in_array($checkboxes['Student_Id'], $checkedIds)) ? 'checked' : '';
-                
-                echo '<div class="checkbox-container"> <input type="checkbox" name="students[]" value="'.$checkboxes['Student_Id'].'" '.$isChecked.'>    
-                        '. htmlspecialchars($checkboxes['Last_Name']) .','. htmlspecialchars($checkboxes['First_Name']) .' '.
-                            htmlspecialchars($checkboxes['Middle_Name']).
-                    '</div>';
-            }
+        if(!$studentsResponse['success']) {
+            echo '<p>'.htmlspecialchars($studentsResponse['message']).'</p>';
         }
-        else {
-            echo '<p> No students available yet. </p>';
+        foreach($studentsResponse['data'] as $checkboxes) {
+            $isChecked = $checkboxes['isChecked'] ? 'checked' : '';
+            
+            echo '<div class="checkbox-container"> <input type="checkbox" name="students[]" value="'.$checkboxes['Student_Id'].'" '.$isChecked.'>    
+                    '. htmlspecialchars($checkboxes['Last_Name']) .','. htmlspecialchars($checkboxes['First_Name']) .' '.
+                        htmlspecialchars($checkboxes['Middle_Name']).
+                '</div>';
         }
+    
     ?>
     <button type="submit"> Save </button>
 </form>
-    <button class="cancel-btn"> Cancel </button>

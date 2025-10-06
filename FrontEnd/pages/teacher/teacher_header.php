@@ -16,7 +16,8 @@
                         }
                     ?>   
                     <h2 class="name"> <?php echo $name; ?></h2>
-                    <span>  <?php $viewType = new UserTypeView(); ?> </span>
+                    <span>  <?php $viewType = new UserTypeView((int)$_SESSION['Staff']['Staff-Type']);
+                                echo $viewType; ?> </span>
                 </div>
                 <div class="account-settings-btn">
                     <button class="account-btn" onclick="accountDrop()"><img src="../../assets/imgs/chevron-down-black.svg" id="account-drop" alt=""></button>

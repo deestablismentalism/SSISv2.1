@@ -4,7 +4,7 @@ $getGradeLevels = new getGradeLevels();
 
 ?>
 <form id="add-section-form" class="add-section-form"> 
-    <div class="close"> <span class="close-btn"> &times; </span></div>
+    <span class="close"> &times; </span><br>
     <input type="text" name="section-name">
     <select name="section-grade-level"> 
         <?php $getGradeLevels->createSelectValues(); ?>

@@ -1,10 +1,18 @@
 /*----START OF BASE DESIGNS----*/
 :root {
-    --main-fonts: 'Barlow', Arial;
-    --title-fonts: 'Caladea', sans-serif;
+    --main-fonts: 'Baloo', Arial;
+    --title-fonts: 'Baloo-Thambi-2', sans-serif;
+    --button-fonts: 'Baloo-Thambi-2';
     --link-fonts: 'Roboto', sans-serif;
     --sidebar-width: 60px;
     --sidebar-expanded-width: 20dvw;
+    --title-font-size: 1.5rem;
+    --main-color: #123b69;
+    --secondary-color: #F1BD22;
+    --wrapper-bg-color: #fffdfdf5;
+    --button-color: ;
+    --button-hover-color: ;
+    --button-click: scale(.9);
 }
 body {
     background-color: rgb(235, 231, 231);
@@ -12,7 +20,6 @@ body {
     margin: 0;
     min-height: 100vh;
 }
-
 p {
     cursor: default;
 }
@@ -25,7 +32,7 @@ p {
     min-height: 100vh;
     height: 100%;
     width: 60px; /* collapsed width */
-    background-color: #003366;
+    background-image: linear-gradient(to bottom right, #003366, #123b69, #20436c, #2c4b6f);
     transition: width 0.3s ease;
     font-family: 'Barlow', 'Arial';
     position: sticky;
@@ -75,33 +82,27 @@ p {
 .sidebar ul {
     list-style: none;
 }
-
 .sidebar span {
     opacity: 0;
     max-height: 0;
     transition: max-height .1s ease-out, opacity .1s ease-out;
 }
-
 .menu {
     padding: 2em 1em 1em 1em; 
     display: grid;
     grid-template-columns: 15% 70% 15%;
 }
-
 .menu-title {
     color: #FFF8F8;
     padding: 0em 1em;
 }
-
 .menu img {
     width: 1.3em;
     max-width: 2em;
 }
-
 .border-75 {
     position: relative;
 }
-
 .border-75::after {
     content: '';
     position: absolute;
@@ -113,7 +114,6 @@ p {
 .border-100sb {
     position: relative;
 }
-
 .border-100sb::after {
     content: '';
     position: absolute;
@@ -122,7 +122,6 @@ p {
     width: 100%;
     border-bottom: 1px solid #295077;
 }
-
 /*SIDEBAR TITLE*/
 .sidebar-title {
     color: white;
@@ -152,7 +151,6 @@ p {
     width: 100%;
 }
 /*--MENU--*/
-
 /*DASHBOARD*/
 .dashboard-ul {
     max-height: 0;
@@ -160,17 +158,13 @@ p {
     overflow: hidden;
     transition: max-height .2s ease-in, opacity .0005s ease-in;
 }
-
 .dashboard-ul a:hover {
     color: white;
 }
-
 /*TEACHERS*/
-
 .teachers-ul a:hover {
     color: white;
 }
-
 .teachers-ul, 
 .subjects-ul,
 .sections-ul {
@@ -179,28 +173,23 @@ p {
     overflow: hidden;
     transition: max-height .2s ease-in, opacity .0005s ease-in;
 }
-
 /*ENROLL*/
 .enrolls-ul a:hover {
     color: white;
 }
-
 .enrolls-ul {
     max-height: 0;
     opacity: 0;
     overflow: hidden;
     transition: max-height .2s ease-in, opacity .0005s ease-in;
 }
-
 /*--END OF MENU--*/
-
 /*----TRANSITIONS----*/
 .sidebar.active {
     width: var(--sidebar-expanded-width); 
     transition: width 0.2s ease-in, opacity 0.15s ease-out;
     position: sticky;
 }
-
 /*SIDEBAR TITLE*/
 .sidebar.active .SSIS {
     display: block;
@@ -213,7 +202,6 @@ p {
 .sidebar.active .sidebar-title  {
     justify-content: space-between;
 }
-
 .sidebar.active span, .sidebar.active button {
     max-height: 100%;
     opacity: 1;
@@ -227,7 +215,6 @@ p {
     justify-self: right;
     margin-right: 1em;
 }
-
 .dashboard-ul.active {
     max-height: 100vh;
     opacity: 1;
@@ -237,7 +224,6 @@ p {
     grid-column: 1 / 3;
     transition: max-height .5s ease-in, opacity .3s ease-in;
 }
-
 .sections-ul.show, .teachers-ul.show, .enrolls-ul.show, subjects-ul.show {
     max-height: 100vh;
     opacity: 1;
@@ -262,8 +248,8 @@ p {
 }
 .header-title::before {
     content: '';
-    bottom: 1rem;
-    left: 0.9rem;
+    bottom: clamp(0.8rem, 1vh, 1rem);
+    left: clamp(0.5rem, 1vw, 0.9rem);
     position: absolute;
     background-image: url('../../imgs/graduation-cap.png');
     background-size: contain;
@@ -289,7 +275,6 @@ p {
     padding-right: 2em;
     font-family: 'Arial';
 }
-
 .account button {
     width: 2em;
     height: 2em;
@@ -297,29 +282,24 @@ p {
     margin-right: 1em;
     cursor: pointer;
 }
-
 .account img {
     width: 2em;
     height: 2em;
     border-radius: 50%;
     margin-right: 1em;
 }
-
 .account #account-drop {
     width: 1.3em;
     height: 1.3em;
     padding-left: .4em;
 }
-
 .account-settings-btn {
     position: relative;
     display: inline-block;
 }
-
 .account-settings-wrapper{
     font-weight: 700;
 }
-
 .account-settings-btn-content-wrapper {
     display: none;
     position: absolute;
@@ -342,11 +322,9 @@ p {
 .account-link-wrapper, .account-logout-wrapper, .account-edit-info-wrapper{
     display: flex;
 }
-
 .update-password {
     margin: auto 0px;
 }
-
 .account .change-pass-icon, .account .logout-icon, .account .edit-info-icon{
     padding: .4em;
     margin: .5em;
@@ -354,7 +332,6 @@ p {
     background-color: #cfcbc4;
     border: #a7a39d 1px solid;
 }
-
 .logout-text, .edit-info-text {
     width: 100%;
     height: 100%;
@@ -362,14 +339,27 @@ p {
     margin: auto;
     margin-left: .2em;
 }
-
 .user-info-wrapper {
     display: flex;
 }
 .show {
     display: block;
 }
+/*Global error message*/
+.error-message {
+    padding: 0.8rem;
+    text-align: center;
+}
 /* Global pop up modal design*/
+.modal-header .back-button {
+    padding: 0.3rem  0.8rem;
+    background-color: gray ;
+    border-radius: 0.3rem;
+}
+.modal-header .back-button img {
+    width: 1rem;
+    height: 1rem;
+}
 .modal {
     display: none;
     position: fixed;
@@ -409,6 +399,27 @@ p {
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+/*global error messages view*/
+.error-message {
+    text-align: center;
+    width: 100%;
+}
+/* global loading animation*/
+.loading {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #666;
+}
+.loading::after {
+    content: '...';
+    animation: dots 1.5s steps(5, end) infinite;
+}
+@keyframes dots {
+    0%, 20% {content: '.';}
+    40%{content: '..';}
+    100%{content: '...';}
 }
 /*--END OF HEADER DESIGNS--*/
 /*MEDIA QUERIES*/

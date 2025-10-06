@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <?php 
-    if(session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
+    require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
+    require_once __DIR__ . '/../session_init.php';
     if(!isset($_SESSION['Staff']['User-Id']) || !isset($_SESSION['Staff']['Staff-Type']) || 
     ($_SESSION['Staff']['Staff-Type'] != 1 && $_SESSION['Staff']['Staff-Type'] != 2)) {
         session_destroy();
         header("Location: ../../Login.php");
         exit();
     }
+    $view = new UserTypeView((int)$_SESSION['Staff']['Staff-Type']);
 ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSIS-Admin Enrollment Access</title>
+    <title> <?php echo $view?> - Pending Enrollments </title>
     <link rel="stylesheet" href="../../assets/css/staff/staff-enrollment-pending.css">
     <link rel="stylesheet" href="../../assets/css/reset.css">
     <link rel="stylesheet" href="../../assets/css/fonts.css">
@@ -27,7 +27,6 @@
             </div>
             <div class="user-name">
                 <?php 
-                    require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
                     $name = '';
                     if(isset($_SESSION['Admin'])) {
                         $name = $_SESSION['Admin']['First-Name'] . ' ' . $_SESSION['Admin']['Last-Name'];
@@ -40,7 +39,7 @@
                     }
                     ?>
                     <h2 class='name'> <?php echo $name; ?> </h2>
-                    <span class='user-type'> <?php $view = new UserTypeView(); ?> </span>
+                    <span class='user-type'> <?php echo $view?> </span>
                     <button id="back-button"> Go Back </button>
             </div>
 
@@ -90,7 +89,7 @@
             </div>
         </div>
     </div>   
-    <script src="../../assets/js/staff/staff-enrollee-popUp-handler.js" defer></script>
+    <script type="module" src="../../assets/js/staff/staff-enrollee-popUp-handler.js" defer></script>
     <script src="../../assets/js/admin/admin-searchPendingEnrollees.js" defer></script>
 </body>    
 </html>

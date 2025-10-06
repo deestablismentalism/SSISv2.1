@@ -38,6 +38,10 @@
                                     <span class="sub-nav"> View Subject Details</span>
                                 </li>
                             </ul>
+                        <div class="menu border-100sb">
+                            <img src="../../assets/imgs/calendar.png" class="bi">
+                            <span id="sections-spn" class="menu-title"> <a href="./admin_schedules.php" class="admin-nav-links"> Schedules</a></span>
+                        </div>
                     </nav>
                     <!--TEACHERS-->
                     <div class="menu border-100sb" id="teachers">
