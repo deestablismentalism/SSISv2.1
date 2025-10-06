@@ -383,10 +383,15 @@ p {
     border-radius: 8px;
     max-height: 80vh;
     overflow-y: auto;
+    font-family: var(--main-fonts);
 }
+
+
 .close {
     position: absolute;
     right: 20px;
+
+
     top: 10px;
     color: #aaa;
     font-size: 28px;

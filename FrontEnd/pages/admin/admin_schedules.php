@@ -24,7 +24,9 @@ $view = new adminSchedulesView();
     </div>
 </div>
 <div class="modal" id="schedule-modal">
-    <div class="modal-content" id="schedule-modal-content"></div>
+    <div class="modal-content" id="schedule-modal-content">
+        
+    </div>
 </div>
 <?php
 $pageContent = ob_get_clean();
