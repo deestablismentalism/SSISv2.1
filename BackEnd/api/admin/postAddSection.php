@@ -1,38 +1,24 @@
 <?php
 declare(strict_types = 1);
-require_once __DIR__ . '/../../admin/models/adminSectionsModel.php';
+require_once __DIR__ . '/../../admin/controller/adminSectionsController.php';
 
 header('Content-Type: application/json');
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success'=> false, 'message'=> 'Not the appropriate request!']);
-    exit();
-}
 try {
-
-    $sectionsModel = new adminSectionsModel();
-
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        echo json_encode(['success'=> false, 'message'=> 'Not the appropriate request!']);
+        exit();
+    }
     $sectionName = $_POST['section-name'] ?? null;
-    $sectionGradeLevel =$_POST['section-grade-level'] ?? null;
+    $sectionGradeLevel = (int)$_POST['section-grade-level'] ?? null;
 
-    if(empty($sectionName)) {
-        echo json_encode(['success'=> false, 'message'=> 'Section name cannot be empty!']);
-        exit();
-    }
-    $isExistingSectionName = $sectionsModel->checkIfSectionNameExists($sectionName);
-    if($isExistingSectionName) {
-        echo json_encode($isExistingSectionName);
-        exit();
-    }
-    $update = $sectionsModel->insertSections($sectionName, $sectionGradeLevel);
+    $controller = new adminSectionsController();
+    $response = $controller->apiAddSectionForm($sectionName, $sectionGradeLevel);
 
-    if(!$update) {
-        echo json_encode(['success'=> false, 'message'=> 'update failed']);
-        exit();
-    }
-    echo json_encode($update);
+    http_response_code($response['httpcode']);
+    echo json_encode($response);
     exit();
 }
-catch(PDOException $e) {
+catch(Exception $e) {
     echo json_encode(['success'=> false, 'message' => $e->getMessage()]);
     exit();
 }

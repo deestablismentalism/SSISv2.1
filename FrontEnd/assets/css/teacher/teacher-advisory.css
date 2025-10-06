@@ -15,7 +15,7 @@
 .students-list {
     width: 100%;
 }
-.students-list th, td {
+.students-list th td {
     padding: 0.8rem;
 }
 .students-list tbody tr:nth-child(odd) {
@@ -37,6 +37,10 @@
     background-color: #007bff;
     color: white;
     border-radius: 0.5rem;
+}
+.advisory-name-wrapper {
+    display: flex;
+    justify-content: center;
 }
 .advisory-name {
     font-size: 1.5rem;

@@ -3,8 +3,11 @@ h1 {
 }
 .data-title {
     font-weight: bold;
-    font-size: 2em;
+    font-size: 3em;
     color: rgb(0,51,102);
+    margin-top: 1em;
+    font-family: var(--title-fonts);
+
 }
 .radio-container {
     display: flex;
@@ -12,8 +15,8 @@ h1 {
 .enrollees-by-day-container {
     padding: 1rem;
     background-color: #fff;
-    border-radius: 0.5rem;
-    box-shadow: 3px solid black ;
+    border-radius: 1.5em;
+    box-shadow: -.1px -.1px 5px .1px #d0caca;
     margin-bottom: 1rem;
 }
 .clock-container {
@@ -21,12 +24,14 @@ h1 {
     justify-content: space-between;
     margin: 0.5rem;
     padding: 0.8rem;
-    background:  transparent;
     -webkit-backdrop-filter: blur(60px);
     backdrop-filter:  blur(100px);
     font-size: 1.5rem;
     font-weight: bold;
     color: white;
+    background: var(--main-color);
+    width: 100%;
+    border-radius: 5px;
 }
 .enrollee-by-day {
     width: 100% !important;
@@ -53,7 +58,7 @@ h1 {
     position: relative;
 }
 .enrollee-data-wrapper {
-    background: linear-gradient(to right, #d9ccbb, #baae9f, #9b9185, #7d756b, #615b52, #46413b );
+    background: var(--wrapper-bg-color);
     padding: 1rem;
 }
 .border-50::after {
@@ -75,12 +80,12 @@ h1 {
     color: inherit;
 }
 .all-enrollees-count, .all-students-count, .all-denied-follow-up-count {
-    border: 1px solid #ccc;
-    border-radius: 10px;
     padding: 20px;
     background-color: white;
     transition: background-color 0.3s ease;
     width: 100%;
+    box-shadow: -.1px -.1px 5px .1px #d0caca;
+    border-radius: 5px;
 }
 .all-enrollees-count:hover, .all-students-count:hover, .all-denied-follow-up-count:hover {
     background-color: #e0e0e0;
@@ -102,11 +107,11 @@ h1 {
     display: none;
     background-color: white;
     padding: 1em;
-    border-radius: 1.5em;
     width: 100%;
     height: 25em;
+    box-shadow: -.1px -.1px 5px .1px #d0caca;
+    border-radius: 5px;
 }
-
 .card-4 {
     flex-wrap: wrap;
 }
@@ -134,8 +139,10 @@ h1 {
     padding: 1em 0em;
 }
 .total-count {
-    font-size: 1.3em;
-    color: #090909;
+    font-size: 3em;
+    font-weight: bold;
+    font-family: "Baloo-Thambi-2";
+    color: var(--main-color);
 }
 .number {
     font-weight: 900;
@@ -146,41 +153,67 @@ h1 {
 .pending-enrollments-header {
     display: flex;
     justify-content: space-between;
-    border-bottom:1px rgba(241, 189, 34, 0.3) solid ;
     padding: 0.5rem;
 }
+
+.big-card-wrapper {
+    display: flex;
+    background: var(--wrapper-bg-color);
+    padding: 1rem;
+    margin: 1rem;
+}
+
+
 .big-card-title {
     font-weight: 900;
     font-size: 1.5rem;
     font-family: 'Baloo-Thambi-2';
     padding: .5rem;
-    color: rgb(0,51,102);
+    color: var(--main-color);
 }
+
 .big-card-hyperlink {
-    background-color: #007bff;
-    border-radius: 0.5rem;
-    color: white;
-    padding: 0.5rem;
+    border: 2px solid var(--main-color);
+    color: var(--main-color);
+    background: transparent;
+    box-shadow: inset 0 0 0 0 var(--main-color);
     cursor: pointer;
+    text-align: center;
+    transition: ease-out 0.5s;
+    font-family: var(--button-fonts);
+    
+    border-radius: 0.5rem;
+    padding: 0.5rem;
     height: 50%;
+    margin-top: .6em;
 }
+
 .big-card-hyperlink:hover {
-    background-color: rgb(0,51,102);
+    color: white;
+    box-shadow: inset 0 -100px 0 0 var(--main-color);
 }
+
+.big-card-hyperlink:active {
+    transform: scale(0.9);
+}
+
 .post-announcements-title {
     border: none;
 }
 
 .pending-enrollments-wrapper, .quick-actions-wrapper {
     background-color: white;
-    margin: 5vh;
+    margin: 1em;
     width: 40em;
+    box-shadow: -.1px -.1px 5px .1px #d0caca;
+    border-radius: 5px;
 }
 
 .pending-enrollments-table {
     width: 100%;
     border-spacing: 3em;
-    gap: 2em;
+    border-top: 3px rgba(241, 189, 34, 0.3) solid;
+
 }
 
 tr:nth-child(even) {
@@ -188,9 +221,9 @@ tr:nth-child(even) {
 }
 
 .pending-enrollments-table, th, tr, td {
-    border-top: 3px rgba(241, 189, 34, 0.3) solid;
     font-size: 1.05em;
     padding: .5em;
+    font-family: var(--main-fonts);
 }
 
 .big-card-header {
@@ -201,6 +234,36 @@ tr:nth-child(even) {
 .edit-btn {
     position: relative;
     left: 50%;
+}
+
+
+
+
+.quick-actions-wrapper li {
+    font-family: var(--main-fonts);
+    list-style: none;
+    font-size: 1.2em;
+    padding: 0.5em;
+    border-bottom: #000;
+}
+
+.quick-actions-wrapper li:hover {
+    color: wheat;
+    background-color: #46413b;
+    cursor: pointer;
+}
+
+.quick-action-card h3 {
+    font-family: "Baloo-Thambi-2";
+    font-size: 1.5em;
+    font-weight: 900;
+    padding: 1em;
+    color: var(--main-color);
+    padding: .7em;
+}
+
+.quick-actions-wrapper ul {
+    border-top: 3px rgba(241, 189, 34, 0.3) solid;
 }
 
 #img {

@@ -1,7 +1,13 @@
+.teacher-subjects-handled-content {
+    margin: 1rem;
+}
 .subjects-list-wrapper {
     background-color: #ffffff;
-    margin: 1rem; 
     padding: 1rem;
     border-radius: 0.5rem;
     text-align: center;
+}
+.subjects-list {
+    width: 100%;
+    table-layout: fixed;
 }

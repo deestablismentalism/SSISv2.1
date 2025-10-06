@@ -27,7 +27,9 @@ html{
 
 /* Hero Section */
         .hero {
-            background: #000; /* just a plain dark background */
+            background: 
+                linear-gradient(135deg, rgba(66, 133, 244, 0.3) 0%, rgba(52, 168, 83, 0.3) 100%),
+                url("../imgs/students.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -46,8 +48,6 @@ html{
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
             right: 0;
             bottom: 0;
             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.1)" points="0,1000 1000,800 1000,1000"/></svg>');
@@ -119,11 +119,12 @@ html{
             animation: slideInUp 1s ease 0.6s forwards;
         }
 
-        .hero-title .word {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(50px) rotateX(90deg);
-            animation: flipInWord 0.8s ease forwards;
+        .hero-title .word { 
+        display: inline-block;
+        animation: flipInWord 0.8s ease forwards;
+        font-family: "PT Serif", serif;
+        font-weight: 900;
+        text-shadow: 2px 4px 10px rgb(190 194 131);
         }
 
         .hero-title .word:nth-child(1) {
@@ -161,6 +162,8 @@ html{
             overflow: hidden;
             line-height: 0;
             transform: rotate(180deg);
+            z-index: 100;
+            color: #f3fffe;
         }
 
         .wave svg {
@@ -292,21 +295,61 @@ html{
 }
 
 .learn-more-container > .learn-more-content {
-    background:#7cc5fa;
+    background-color: #d3f5ff;
+    border: 1px solid rgb(107 255 192 / 26%);
     padding: 30px;
     text-align: center;
-    border-radius: 12px;
-    height: 30em;
+    border-radius: 142px;
+    height: 35em;
+    width: 36em;
+
 }
 
-h5 {
-    color: #0e9f6e;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-size: 1.9rem;
-    text-align: left;
-    margin: 3rem 104px 1.5rem;
-    position: relative;
+.learn-more-text {
+    font-size: 31px;
+    margin-top: 40px;
+    text-align: center;
+    width: 100%;
+    color: #ffcc00;
+    margin: 30px 0px 30px 0px;
+    font-family: "PT Serif", light;
+    text-shadow: 1px 1px 7px rgb(222 222 163);
+    font-weight: 500;
+
+
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns */
+    gap: 20px; /* Space between items */
+    align-items: stretch; /* Make all items equal in height */
+    padding: 20px; /* Padding around the grid */
+    
+}
+
+/* Section styles */
+.about-section, .mission-section, .vision-section {
+    background-color: #f4f4f4;
+    padding: 35px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.about-section h2, .mission-section h2, .vision-section h2 {
+    color: #000000;
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.about-section p, .mission-section p, .vision-section p {
+    color: #000000;
+    line-height: 1.6;
+    text-align: justify;
 }
 
 .learn-more-container p {
@@ -432,14 +475,19 @@ h5 {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 15px;
+        gap: 3px;
+        width: 40px;
+        margin: 0 auto;
     }
-    
+        
     .image {
-        max-width: 80%;
-        height: auto;
+        width: 300px;   /* set width */
+        height: 300px;   /* keeps aspect ratio */
+        border-radius: 12px; /* optional: rounded corners */
+        object-fit: cover;   /* makes sure it crops nicely */
+        display: block;      /* removes bottom whitespace */
     }
-    
+        
     .text-container {
         text-align: center;
     }

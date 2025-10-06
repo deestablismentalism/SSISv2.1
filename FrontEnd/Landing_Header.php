@@ -9,7 +9,7 @@
             
             <ul class="nav-menu" id="navMenu">
                 <div class="nav-links">
-                    <li><a href="./index.php">Home</a></li>
+                    <li><a href="./Index.php">Home</a></li>
                     <li><a href="./About_Page.php">About</a></li>
                     <li><a href="./Learn_More_Page.php">Learn More </a></li>
                 </div>
