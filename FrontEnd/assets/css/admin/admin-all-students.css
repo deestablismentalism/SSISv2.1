@@ -25,7 +25,7 @@
 }
 tr:nth-child(odd) {background-color: #ffffff;}
 
-tr:nth-child(even) {background-color: #F0f0f0;}
+tr:nth-child(even) {background-color: #f9f9f9;}
 .view-student  {
     background-color: yellow; /* Dark blue */
     padding: 6px 12px;
@@ -71,6 +71,7 @@ tr:nth-child(even) {background-color: #F0f0f0;}
 }
 
 .students th {
+    background-color:#f0f0f0;
     text-align: center;
     padding: 12px;
     border-bottom: 2px solid #ddd;
