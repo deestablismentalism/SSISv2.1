@@ -63,9 +63,9 @@ class adminTeacherController {
             ];
         }
     }
-    public function apiPostAssignTeacher(int $staffId, int $sectionSubjectId) : array {
+    public function apiPostAssignTeacher(?int $staffId, int $sectionSubjectId) : array {
         try {
-            if($staffId <= 0) {
+            if(empty($staffId)) {
                 return [
                     'httpcode'=> 400,
                     'success'=>false,

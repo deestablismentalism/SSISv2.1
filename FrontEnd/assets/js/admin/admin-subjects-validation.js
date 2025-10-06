@@ -101,9 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         submitButton.style.backgroundColor = 'gray';
                         const formData = new FormData(form);
                         formData.append('section-subject-id', subjectId);
-                         if(!formData.has('subject-teacher')) {
-                            formData.append('subject-teacher','');
-                        }
                         postAssignTeacherForm(formData).then(data=>{
                             setTimeout(()=>{
                                 alert(data.message);

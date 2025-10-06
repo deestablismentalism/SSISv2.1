@@ -1,11 +1,18 @@
 /*----START OF BASE DESIGNS----*/
 :root {
-    --main-fonts: 'Barlow', Arial;
-    --title-fonts: 'Caladea', sans-serif;
+    --main-fonts: 'Baloo', Arial;
+    --title-fonts: 'Baloo-Thambi-2', sans-serif;
+    --button-fonts: 'Baloo-Thambi-2';
     --link-fonts: 'Roboto', sans-serif;
     --sidebar-width: 60px;
     --sidebar-expanded-width: 20dvw;
     --title-font-size: 1.5rem;
+    --main-color: #123b69;
+    --secondary-color: #F1BD22;
+    --wrapper-bg-color: #fffdfdf5;
+    --button-color: ;
+    --button-hover-color: ;
+    --button-click: scale(.9);
 }
 body {
     background-color: rgb(235, 231, 231);
@@ -337,6 +344,11 @@ p {
 }
 .show {
     display: block;
+}
+/*Global error message*/
+.error-message {
+    padding: 0.8rem;
+    text-align: center;
 }
 /* Global pop up modal design*/
 .modal-header .back-button {

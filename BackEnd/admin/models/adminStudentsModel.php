@@ -285,7 +285,55 @@ class adminStudentsModel {
             throw new DatabaseException('Failed to fetch sections per grade level', 0,$e);
         }
     }
-    public function updateStudentSection($studentId,$sectionId) : bool {
+    public function getAvailableStudents($sectionId) : array {
+        try {
+            $sql = "SELECT s.Student_Id, s.First_Name, s.Last_Name, s.Middle_Name FROM students AS s 
+                INNER JOIN sections AS sec ON s.Grade_Level_Id = sec.Grade_Level_Id
+                WHERE sec.Section_Id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $sectionId);
+            $stmt->execute();
+            $result =$stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $result;
+        }    
+        catch(PDOException $e) {
+            throw new DatabaseException('Fetching available students failed', 0, $e);
+        }
+    }
+    public function getCheckedStudents($id) : array { //gets the id of all students from an array of students that are checked
+        try {
+            $sql = "SELECT Student_Id FROM students WHERE Section_Id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $result;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Fetching checked students failed', 0, $e);
+        }
+    }
+    //update students section helper function 1
+    private function getAvailableStudentIds($sectionId) : array {
+        try {
+            $sql = "SELECT s.Student_Id FROM students AS s 
+                INNER JOIN sections AS sec ON s.Grade_Level_Id = sec.Grade_Level_Id
+                WHERE sec.Section_Id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $sectionId);
+            $stmt->execute();
+            $result =$stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $result;
+        }    
+        catch(PDOException $e) {
+            throw new DatabaseException('Fetching available students failed', 0, $e);
+        }
+    }
+    //helper 2
+    private function updateStudentSection($studentId,$sectionId) : bool {
         try {
             $sql = "UPDATE students SET Section_Id = :sectionId WHERE Student_Id = :id";
             $stmt = $this->conn->prepare($sql);
@@ -299,7 +347,8 @@ class adminStudentsModel {
             throw new DatabaseException('Failed to update section',0,$e);
         }
     }
-    public function updateUncheckedStudents($studentId) : bool {
+    //helper 3
+    private function updateUncheckedStudents($studentId) : bool {
         try {
             $sql = "UPDATE students SET Section_Id = null WHERE Student_Id = :id";
             $stmt = $this->conn->prepare($sql);
@@ -310,6 +359,43 @@ class adminStudentsModel {
         }
         catch(PDOException $e) {
             throw new DatabaseException('Failed to update the unchecked students',0,$e);
+        }
+    }
+    public function updateStudentSectionChanges(int $sectionId, array $studentIds) : array {
+        $results = [
+            'success'=> [],
+            'failed'=> []
+        ];
+        try {
+            //get all available student ids
+            $studentId = $this->getAvailableStudentIds($sectionId); 
+            foreach($studentId as $ids) {
+                $students = (int)$ids['Student_Id'];
+                $isChecked = in_array($students, $studentIds);
+                if($isChecked) {
+                    $check = $this->updateStudentSection($students, $sectionId);
+                    if(!$check) {
+                        $results['failed'][] = $students;
+                    }
+                    else {
+                        $results['success'][] = $students;
+                    }
+                }
+                else {
+                    $uncheck = $this->updateUncheckedStudents($students);
+                    if(!$uncheck) {
+                        $results['failed'][] = $students;
+                    }
+                    else {
+                        $results['success'][] = $students;
+                    }
+                }
+            }
+
+            return $results;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to update student changes',0,$e);
         }
     }
     public function searchStudents($query) : array{

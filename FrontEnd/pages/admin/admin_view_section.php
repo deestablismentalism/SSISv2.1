@@ -4,7 +4,7 @@ ob_start();
 
 $pageTitle = 'Admin view section';
 $pageCss = '<link rel="stylesheet" href= "../../assets/css/admin/admin-view-section.css">';
-$pageJs = '<script src="../../assets/js/admin/admin-view-section.js" defer></script>';
+$pageJs = '<script type="module" src="../../assets/js/admin/admin-view-section.js" defer></script>';
 require_once __DIR__ . '/../../../BackEnd/admin/view/adminViewSectionView.php';
 $adminViewSectionView = new adminViewSectionView();
 ?>
@@ -26,6 +26,16 @@ $adminViewSectionView = new adminViewSectionView();
                     <?php 
                         $adminViewSectionView->displaySectionStudents();
                     ?>
+                </div>
+                <div class="subject-details-container">
+                    <div class="subject-details-title-container">
+                        <h1 class="subject-details-title"> Subject Details</h1>
+                    </div>
+                    <div class="subject-details-list">
+                        <?php 
+                            $adminViewSectionView->displaySubjectDetails();
+                        ?>
+                    </div>
                 </div>
            </div>
         </div>

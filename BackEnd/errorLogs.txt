@@ -2,3 +2,5 @@
 [2025-09-22 07:16:35] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Section_Subject_Id' in 'WHERE'
 [2025-09-22 07:19:24] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Section_Subject_Id' in 'WHERE'
 [2025-09-24 22:24:59]SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ssis-test_database.section_schedule' doesn't exist
+[2025-09-26 20:53:03]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Grade_Level_Id' in 'SELECT'
+[2025-10-04 15:36:24]SQLSTATE[HY000]: General error: 2006 MySQL server has gone away

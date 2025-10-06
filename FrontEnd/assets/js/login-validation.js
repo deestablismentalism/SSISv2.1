@@ -1,17 +1,17 @@
 document.addEventListener("DOMContentLoaded", function() {
     const form = document.getElementById("login-form");
-    
     const errorMessageContainer = document.querySelector('.error-msg');
     const errorMessage = document.getElementById('em-login');
+    
     form.addEventListener("submit", function(event) {
         event.preventDefault();
+        Loader.show();
         
         const formData = new FormData(form);
 
-        //TODO: use the async function below 
         postLoginVerify(formData).then(data=>{
-                const ifUser = data.session.User?.['User-Type'];
-                const ifStaff = data.session.Staff?.['Staff-Type']; 
+                const ifUser = parseInt(data.session.User?.['User-Type']);
+                const ifStaff = parseInt(data.session.Staff?.['Staff-Type']); 
 
                 if (ifUser && ifUser === 3) {
                     window.location.href =  './pages/user/user_enrollees.php';
@@ -32,6 +32,13 @@ document.addEventListener("DOMContentLoaded", function() {
             errorMessage.innerHTML = err.message;
             console.error(err);
         })
+        .catch(error => {
+            console.error("Fetch Error:", error);
+            alert("An error occured. Please try again.");
+        })
+        .finally(() => {
+            Loader.hide();
+        });
     });
 });
 
