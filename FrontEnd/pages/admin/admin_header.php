@@ -17,7 +17,8 @@
                         }
                     ?>   
                     <h2 class="name"> <?php echo $name; ?></h2>
-                    <span>  <?php $viewType = new UserTypeView(); ?> </span>
+                    <span>  <?php $viewType = new UserTypeView((int)$_SESSION['Staff']['Staff-Type']); 
+                            echo $viewType; ?> </span>
                     <!-- end of account-settings-wrapper -->
                 </div>
                     <div class="account-settings-btn">
@@ -39,8 +40,8 @@
 
                             <div class="account-link-wrapper">
                                 <!-- <a href=""><img src="" alt="">Edit Profile</a><br> -->
-                                <a href="../Change_Password.php"><img src="../../assets/imgs/lock-solid.svg" class="change-pass-icon" alt=""></a>
-                                <a href="../Change_Password.php" class="update-password">Update Password</a><br>
+                                <a href="../../Change_Password.php"><img src="../../assets/imgs/lock-solid.svg" class="change-pass-icon" alt=""></a>
+                                <a href="../../Change_Password.php" class="update-password">Update Password</a><br>
                             <!-- end of account-link-wrapper  -->
                             </div>
 

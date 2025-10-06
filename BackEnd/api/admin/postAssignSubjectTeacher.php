@@ -9,8 +9,8 @@ try {
         exit();
     }
     
-    $staffId = isset($_POST['subject-teacher']) ? (int)$_POST['subject-teacher'] : 0;
-    $sectionSubjectsId = isset($_POST['section-subject-id']) ? (int)$_POST['section-subject-id'] : 0;
+    $staffId = isset($_POST['subject-teacher']) ? (int)$_POST['subject-teacher'] : null;
+    $sectionSubjectsId = (int)$_POST['section-subject-id'] ?? null;
     
     $controller  = new adminTeacherController();
     $response = $controller->apiPostAssignTeacher($staffId, $sectionSubjectsId);

@@ -2,17 +2,23 @@
 
 declare(strict_types=1);
 require_once __DIR__ . '/../controller/adminSectionsController.php';
+require_once __DIR__ . '/../controller/adminViewSectionController.php';
+require_once __DIR__ . '/../../core/tableDataTemplate.php';
 
 class adminViewSectionView {
 
     protected $conn;
     protected $sectionsController;
+    protected $viewSectionController;
+    protected $tableTemplate;
     protected $id;
 
     public function __construct() {
         $db = new Connect();
+        $this->tableTemplate = new TableCreator();
         $this->conn = $db->getConnection();
         $this->sectionsController = new adminSectionsController();
+        $this->viewSectionController = new adminViewSectionController();
         if(isset($_GET['section_id'])) $this->id = (int)$_GET['section_id'];
     }
 
@@ -100,4 +106,37 @@ class adminViewSectionView {
             echo 'Something went wrong. Please try again Later.';
         }
     }
-}
+    public function displaySubjectDetails() {
+        try {
+            $subjectDetails = $this->viewSectionController->viewSectionSubjectDetails($this->id);
+
+            if(!$subjectDetails['success']) {
+                echo $subjectDetails['message'];
+            }
+            else {
+                echo '<table class="subject-details-table">';
+                $this->tableTemplate->generateHorizontalTitles('subject-details-head', [
+                    'Subject Name',
+                    'Scheduled Day',
+                    'Scheduled Time'
+                ]);
+                echo '<tbody>';
+                foreach($subjectDetails['data'] as $subjects) {
+                    $subjectName = !empty($subjects['Subject_Name']) ? $subjects['Subject_Name'] : 'No subject name';
+                    $scheduleDay = !empty($subjects['Schedule_Day']) ? $subjects['Schedule_Day'] : 'No scheduled day yet';
+                    $timeStart = (!empty($subjects['Time_Start']) && !empty($subjects['Time_End'])) ? 
+                    $subjects['Time_Start'] . '-' . $subjects['Time_End']  : 'No time set yet';
+
+                    $this->tableTemplate->generateHorizontalRows('subject-details-body', [
+                        $subjectName, $scheduleDay, $timeStart
+                    ]);
+                }
+                echo '</tbody>';
+                echo '</table>';
+            }
+        }
+        catch(Exception $e) {
+            echo 'There was an unexpected problem. Please try again later.';
+        }
+    }
+ }

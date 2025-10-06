@@ -44,6 +44,7 @@ class adminSchedulesModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new Exception('Failed to fetch schedules',0,$e);
         }
     }
@@ -59,6 +60,7 @@ class adminSchedulesModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch section subjects',0,$e);
         }
     }

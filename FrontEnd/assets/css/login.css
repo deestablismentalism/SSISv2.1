@@ -65,7 +65,7 @@ input { /* email and password input */
     box-sizing: border-box;
     border-radius: 8px;
     font-family: Arial;
-    background-color: #8f9fb1;
+    background-color: #8f9fb180;
     opacity: 70%;
     color: rgb(0, 0, 0);
     margin: 0em 2em 0em 3em;

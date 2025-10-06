@@ -56,6 +56,7 @@ body {
             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.1)" points="0,1000 1000,800 1000,1000"/></svg>');
             background-size: cover;
             animation: float 6s ease-in-out infinite;
+            z-index: 100    z;
         }
 
                 

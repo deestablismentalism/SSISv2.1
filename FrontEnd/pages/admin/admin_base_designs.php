@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once __DIR__ . '/../../../BackEnd/common/userTypeView.php';
-if (!isset($_SESSION['Staff']['User-Id']) && $_SESSION['Staff']['Staff-Type'] != 1) {
+if (!isset($_SESSION['Staff']) && $_SESSION['Staff']['Staff-Type'] !== 1) {
     header("Location: ../../Login.php");
     exit();
 }
@@ -22,6 +22,10 @@ if (!isset($_SESSION['Staff']['User-Id']) && $_SESSION['Staff']['Staff-Type'] !=
     <img src="../../assets/imgs/graduation-cap.png" alt="graduation-cap" fetchpriority="high" aria-hidden="true" hidden>
 </head>
 <body>
+        <?php
+            include '../loader.php';
+        ?>
+
         <div class="main-wrapper">
         <?php require_once __DIR__ . '/./admin_sidebar.php'; ?>
         <div class="content">

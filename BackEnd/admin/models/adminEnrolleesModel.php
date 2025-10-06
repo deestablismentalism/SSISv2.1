@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/../../core/dbconnection.php';
-require_once __DIR__ . '/../../Exception/DatabaseException.php';
+require_once __DIR__ . '/../../Exceptions/DatabaseException.php';
 
 class adminEnrolleesModel {
     protected $conn;

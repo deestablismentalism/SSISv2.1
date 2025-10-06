@@ -2,7 +2,17 @@
    padding: 1rem;
 }
 .page-title {
-    font-size: var(--title-font-size);
+    font-size: 3em;
+    font-family: 'Baloo-Thambi-2';
+    color: #123b69;
+    font-weight: 900;
+}
+
+.sections-list-header h2 {
+    font-size: 2em;
+    font-family: 'Baloo-Thambi-2';
+    font-weight: 600;
+    color: #123b69;
 }
 .sections-title-wrapper {
     display: flex;
@@ -25,42 +35,58 @@ input[type="text"] {
 }
 .add-section-form button[type="submit"], 
 .sections-title-wrapper button{
-    background-color: #007bff;
-    color: #fff;
-    border: none;
     padding: 0.75em 2em;
     border-radius: 0.5em;
     font-size: 1em;
     cursor: pointer;
-    transition: background 0.2s;
     height: 50%;
+    border: 2px solid var(--main-color);
+    color: var(--main-color);
+    background: transparent;
+    box-shadow: inset 0 0 0 0 var(--main-color);
+    cursor: pointer;
+    text-align: center;
+    transition: ease-out 0.5s;
+    font-family: var(--button-fonts);
 }
-.sections-form button[type="submit"]:hover {
-    background-color: #0056b3;
+
+.add-section-form button[type="submit"]:hover,
+.sections-title-wrapper button:hover {
+    color: white;
+    box-shadow: inset 0 -100px 0 0 var(--main-color);
 }
+
+.add-section-form button[type="submit"]:active ,
+.sections-title-wrapper button:active {
+    transform: var(--button-click);
+}
+
+
 .sections-list-wrapper {
     margin-top: 2em;
-    background: #fff;
+    background: #f7f5f5;
     padding: 2em;
     border-radius: 1.5em;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     min-height: 100vh;
 }
 /*sections lists uniform design*/
 .section {
     font-size: 1.2rem;
+    color: var(--main-color);
+    font-weight: 900;
 }
 .sections-list-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 2rem;
 }
 .section-grade-level {
     width: fit-content;
-    padding: 0.2rem;
+    padding: .2em 1em;
     border-radius: 0.6rem;
-    background: linear-gradient(to bottom right,#f0e6ee, #e1cede, #d2b6ce, #c39fbe);
-    box-shadow: 0 0 0 0.06rem  rgba(0, 0, 0, 0.5);
+    background-color: #2a7683db;
+    color: white;
+    margin-top: 0.5em;
 }
 .edit-section {
     padding: 0.2rem;
@@ -71,15 +97,23 @@ input[type="text"] {
 }
 .sections-list {
     padding: 0.5rem;
-    background: linear-gradient(to bottom right, #f0e6ee, #e4dbe2, #d9d1d7);
-    border-radius: 1rem;
+    background-color: white;
     width: 25%;
+    flex: 0 1 20rem;
+    border-radius: 5px;
+    box-shadow: -.1px -1px 5px .1px #d0caca;
+    font-family: var(--main-fonts);
+    cursor: default;
 }
 .section-major-information {
     padding: 0.2rem;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid black;
+    margin: 1em 0em;
+}
+
+.section-minor-information {
+    margin: 1em 0em;
 }
 .section-major-information img {
     width: 1.5rem;
@@ -88,6 +122,8 @@ input[type="text"] {
 .adviser, .students {
     display: flex;
     justify-content: space-between;
+    font-weight: 700;
+    margin-bottom: .5em;
 }
 .adviser-value, .students-value {
     color:#3e3e3e;

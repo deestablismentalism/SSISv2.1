@@ -28,8 +28,8 @@ class adminSectionsController {
                     'data'=> []
                 ];
             }
-            $sectionNameExists = $this->sectionsModel->checkIfSectionNameExists($sectionName);
-            if($sectionNameExists) {
+            $action = $this->sectionsModel->insertSectionAndSectionSubjects($sectionName, $gradeLevelId);
+            if($action['existing']) {
                 return [
                     'httpcode'=> 409,
                     'success'=> false,
@@ -38,20 +38,35 @@ class adminSectionsController {
                 ];
             }
             else {
-                $action = $this->sectionsModel->insertSections($sectionName, $gradeLevelId);
-                if(!$action) {
+                if(!empty($action['failed']) && empty($action['success'])) {
                     return [
                         'httpcode'=> 500,
                         'success'=> false,
-                        'message'=> 'There was an unexpected problem during the insert. Try Again later',
+                        'message'=> 'Failed to create section and subjects relationship',
                         'data'=> []                
+                    ];
+                }
+                if(!empty($action['failed']) && !empty($action['success'])) {
+                    return [
+                        'httpcode'=> 201,
+                        'success'=> true,
+                        'message'=> 'Failed to create section and subjects relationship for some subjects',
+                        'data'=> $action['failed']
+                    ];
+                }
+                if(empty($action['failed']) && empty($action['success'])) {
+                    return [
+                        'httpcode'=> 201,
+                        'success'=> true,
+                        'message'=> 'Section inserted successfully. No subjects related to this section yet',
+                        'data'=> $action
                     ];
                 }
                 return [
                     'httpcode'=> 201,
                     'success'=> true,
                     'message'=> 'Section inserted successfully',
-                    'data'=> $action
+                    'data'=> $action['success']
                 ];
             }
         }
