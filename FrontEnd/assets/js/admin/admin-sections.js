@@ -19,9 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
             //submit handler
             form.addEventListener('submit', function(e){
                  e.preventDefault();
-                 
+                 Loader.show();
                  button.disabled = true;
-                 button.style.backgroundColor = 'gray';
 
                  const formData = new FormData(form);
                  fetch(`../../../BackEnd/api/admin/postAddSection.php`, {
@@ -30,11 +29,11 @@ document.addEventListener('DOMContentLoaded', function() {
                  })
                  .then(response=> response.json())
                  .then(data =>{
+                    Loader.hide();
                     if(data.success == false) {
                         alert(data.message);
                         form.reset();
                         button.disabled = false;
-                        button.style.backgroundColor = '#007bff';
                     }
                     else {
                         alert('Section added successfully.');
@@ -45,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                  })
                  .catch(error=>{
+                    Loader.hide();
                     console.log(error.message);
                  })
             })

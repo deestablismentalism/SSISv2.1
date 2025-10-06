@@ -1,0 +1,9 @@
+        Loader.show();
+
+
+        .finally(() => {
+            Loader.hide();
+        });
+
+<link rel="stylesheet" href="assets/css/loader.css">
+<script src="assets/js/loader.js"></script>
