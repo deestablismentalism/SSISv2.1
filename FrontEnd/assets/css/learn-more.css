@@ -1,12 +1,11 @@
-.header {
-    background-color: #003366;
+html{ 
+        background-color: #f3fffe
 }
-.header-title {
-    display: flex;
-    font-family: Barlow, light, sans-serif;
-    color: #ffffff;
-    font-size: 32px;
-    font-weight: 400;
+.header {
+    background-color: #f3fffe;
+}
+.body {
+    background-color: #f3fffe; /* Light background for contrast */
 }
 
 @keyframes flipInWord {
@@ -29,8 +28,7 @@
 /* Hero Section */
         .hero {
             background: #000; /* just a plain dark background */
-            position: relative;
-            overflow: hidden;
+            background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             min-height: 80vh;
@@ -38,9 +36,9 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: white;
+            color: #f3fffe;
             position: relative;
-            
+            overflow: hidden;
         }
 
         .hero::before {
@@ -290,110 +288,62 @@
     grid-template-columns: 1fr 1fr;
     align-items: center;
     flex-direction: column;
-    padding: 30px;
     gap: 15px;
 }
 
 .learn-more-container > .learn-more-content {
-    background-color: #f1f1f1;
-    border: 1px solid rgba(0, 0, 0, 0.25);
+    background:#7cc5fa;
     padding: 30px;
     text-align: center;
-    border-radius: 5px;
-    height: 40em;
-
+    border-radius: 12px;
+    height: 30em;
 }
 
-.learn-more-text {
-    font-size: 1.5em;
-    color: #000000; /* Changed from white to black for better contrast */
-    margin-top: 40px;
-    text-align: center;
-    width: 100%;
-    color: #ffcc00;
-    font-weight: bolder;
-    margin: 30px 0px 30px 0px;
-
-
-}
-
-.container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns */
-    gap: 20px; /* Space between items */
-    align-items: stretch; /* Make all items equal in height */
-    padding: 20px; /* Padding around the grid */
-    
-}
-
-/* Section styles */
-.about-section, .mission-section, .vision-section {
-    background-color: #f4f4f4;
-    padding: 35px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(0, 0, 0, 0.25);
-}
-
-.about-section h2, .mission-section h2, .vision-section h2 {
-    color: #000000;
-    margin-bottom: 10px;
-    font-size: 1.5em;
-    font-weight: bold;
-}
-
-.about-section p, .mission-section p, .vision-section p {
-    color: #000000;
-    line-height: 1.6;
-    text-align: justify;
+h5 {
+    color: #0e9f6e;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 1.9rem;
+    text-align: left;
+    margin: 3rem 104px 1.5rem;
+    position: relative;
 }
 
 .learn-more-container p {
-    font-size: 1.5em;
-    color: #000000; /* Changed from white to black for better contrast */
+    font-size: 1.2em;
+    color: #f9f9f9;
     margin-top: 20px;
     text-align: center;
-    width: 100%;
 }
 
 .learn-more-container h3 {
-    font-size: 1.5em;
-    color: #003366; /* Changed from white to black for better contrast */
+    font-size: 1.8rem;
+    margin: 0 0 1rem;
+    color: #4285f4;
+    line-height: 1.3;
     margin-top: 20px;
-    text-align: center;
-    width: 100%;
-    font-weight: bold;
 }
 
 /* Mission, Vision, Values Container */
 .mv-container {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 15px;
   flex-wrap: wrap;
   margin: 44px auto 84px;
 }
 
 .card {
-  background: white;
+  background:#fff;
   border-radius: 16px;
   padding: 2rem;
   width: 457px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   background-image: url("../assets/imgs/crumpled-paper.jpg");
-
 }
 
-.card:hover {
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-}
-
-
-.container h3 {
+.card h3 {
   margin: 0 0 1rem;
   color: #1f3c5b;
   font-size: 1.9em;
@@ -401,12 +351,19 @@
   margin-top: 8px;
   text-align: center;   
 }
-.container p {
-  color: #000000;
+.card p {
+  color: #555;
   font-size: 1.1em;
   line-height: 1.6;
   text-align: center;
 }
+
+/* .card ul {
+  font-size: 1.45em;
+  color: #f9f9f9;
+  text-align: center;
+  list-style: none; 
+} */
 
 /* Responsive CSS for Learn More Page */
 
