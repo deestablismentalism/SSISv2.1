@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('add-subject-form');
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                Loader.show();
                 const submitButton = form.querySelector('.submit-button');
                 const formData = new FormData(form);
                 submitButton.disabled = true;
@@ -53,12 +54,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(result);
 
                 if(result === null) {
+                    Loader.hide();
                     form.reset();
                     submitButton.disabled = false;
-                    submitButton.style.backgroundColor = '#007bff';
                 }
                 else {
                     setTimeout(()=>{
+                        Loader.hide();
                         alert(result.message);
                         window.location.reload();
                     },1000);
@@ -96,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(submitButton)
                 form.onsubmit = async (e)=>{
                     e.preventDefault();
+                    Loader.show();
                     try {
                         submitButton.disabled = true;
                         submitButton.style.backgroundColor = 'gray';
@@ -103,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         formData.append('section-subject-id', subjectId);
                         postAssignTeacherForm(formData).then(data=>{
                             setTimeout(()=>{
+                                Loader.hide();
                                 alert(data.message);
                                 window.location.reload();
                             },1000);
@@ -110,14 +114,16 @@ document.addEventListener('DOMContentLoaded', function() {
                             alert(error);
                             form.reset();
                             submitButton.disabled = false;
-                            submitButton.style.backgroundColor = '#007bff';
+                            Loader.hide();
                         });
                     }
                     catch(error){
+                        Loader.hide();
                         alert(error);
                     }
             }
             }catch(err){
+                Loader.hide();
                 alert(err);
             }
 

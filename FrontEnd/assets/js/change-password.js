@@ -23,10 +23,18 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(data => {
             if (data.success) {
-                alert(data.message);
+                Notification.show({
+                    type: data.success ? "success" : "error",
+                    title: data.success ? "Success" : "Error",
+                    message: data.message
+                });
                 form.reset();
             } else if (!data.success){
-                alert(data.message);
+                Notification.show({
+                    type: data.success ? "Error" : "error",
+                    title: data.success ? "Error" : "Error",
+                    message: data.message
+                });
             }
         })
         .catch(error => {
