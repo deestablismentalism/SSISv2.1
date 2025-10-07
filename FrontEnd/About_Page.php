@@ -190,7 +190,7 @@
                 <!-- Sample repeated cards with varying AOS effects -->
                 <div class="team-card" data-aos="zoom-in">
                     <div class="image-wrapper">
-                        <img src="./assets/imgs/prcpll.jpeg" alt="Team Member" />
+                        <img src="./assets/imgs/prcpll.png" alt="Team Member" />
                     </div>
                         <h4>Jefferson Riano Alojado</h4>
                         <p class="position">Principal I</p>
@@ -238,7 +238,7 @@
                 </div>
                 <div class="team-card" data-aos="zoom-in">
                     <div class="image-wrapper">
-                        <img src="./assets/imgs/LENIE S..jpg" alt="Team Member" />
+                        <img src="./assets/imgs/LENIE S..png" alt="Team Member" />
                     </div>
                         <h4>Lenie Suarez Guinto</h4>
                         <p class="position">Teacher I</p>
@@ -356,7 +356,7 @@
                 </div>
                 <div class="team-card" data-aos="zoom-in">
                     <div class="image-wrapper">
-                        <img src="./assets/imgs/ARCEO, SARAH.jpg" alt="Team Member" />
+                        <img src="./assets/imgs/ARCEO, SARAH.png" alt="Team Member" />
                     </div>
                         <h4>Sarah Mae H. Arceo </h4>
                         <p class="position">Teacher I</p>
