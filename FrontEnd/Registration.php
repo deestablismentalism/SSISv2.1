@@ -33,7 +33,7 @@
         <div class="container">
 
             <!-- Registration form -->
-            <form id="registration-form" action="../server_side/post_registration_form.php" method="post">
+            <form id="registration-form" method="post">
                 <div class="user-details">
                     <!-- Input for users first name -->
                     <!-- <div class="input-box">
@@ -94,8 +94,7 @@
     <div class="vlyellow"></div>
 
     <div id="img-container">
-        <img src="../imgs/teacher.jpg" 
-        alt="student" id="student">
+        <img src="./assets/imgs/teacher.jpg" alt="student" id="student">
     </div>
    <!-- <script src="../js/registration-validation.js"></script> -->
 </body>

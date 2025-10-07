@@ -1,4 +1,5 @@
 <?php
+class SMSFailureException extends Exception {} //Domain specific exception
 class SendPassword {
     /**
      * Cleans and formats a Philippine mobile number
@@ -43,19 +44,19 @@ class SendPassword {
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if (curl_errno($ch)) {
-            throw new Exception("cURL Error: " . curl_error($ch));
+            throw new SMSFailureException("cURL Error: " . curl_error($ch));
         }
 
         curl_close($ch);
 
         $responseData = json_decode($response, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception("Invalid response from SMS gateway");
+            throw new SMSFailureException("Invalid response from SMS gateway");
         }
 
         // Check if the message was accepted
         if (!isset($responseData['state']) || $responseData['state'] !== 'Pending') {
-            throw new Exception("SMS gateway rejected the message");
+            throw new SMSFailureException("SMS gateway rejected the message");
         }
 
         return true;
