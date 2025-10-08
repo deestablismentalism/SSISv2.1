@@ -1,17 +1,25 @@
 <?php
+declare(strict_types=1);
+require_once __DIR__ . '/../../admin/controller/adminTeacherController.php';
+header('Content-Type: application/json');
 
-include_once 'staff_registration.php';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $Staff_First_Name = $_POST['Staff_First_Name'];
-    $Staff_Middle_Name = $_POST['Staff_Middle_Name'];
-    $Staff_Last_Name = $_POST['Staff_Last_Name'];
-    $Staff_Email = $_POST['Staff_Email'];
-    $Staff_Contact_Number = $_POST['Staff_Contact_Number'];
-    $Staff_Status = '1';
-    $Staff_Type = '2';
-
-    $register = new StaffRegistration();
-    $register->registerStaff($Staff_First_Name, $Staff_Middle_Name, $Staff_Last_Name, $Staff_Email, $Staff_Contact_Number, $Staff_Status, $Staff_Type);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['success'=> false, 'message'=> 'Invalid request method']);
+    exit();
 }
+$controller = new adminTeacherController();
+
+$firstName = $_POST['first-name'] ?? null;
+$middleName = $_POST['middle-name'] ?? null;
+$lastName = $_POST['last-name'] ?? null;
+$staffEmail = $_POST['staff-email'] ?? null;
+$contactNumber = $_POST['contact-number'] ?? null;
+$status = 1;
+$staffType = 2;
+
+$response = $controller->apiPostRegisterTeacher($firstName, $middleName, $lastName, $staffEmail, $contactNumber, $status, $staffType);
+http_response_code($response['httpcode']);
+echo json_encode($response);
+exit();
+
 ?>
