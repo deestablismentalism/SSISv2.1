@@ -25,13 +25,13 @@ document.addEventListener("DOMContentLoaded", function() {
             if (data.success) {
                 Notification.show({
                     type: data.success ? "success" : "error",
-                    title: data.success ? "Success" : "Error",
+                    title: data.success ? "Success" : "error",
                     message: data.message
                 });
                 form.reset();
             } else if (!data.success){
                 Notification.show({
-                    type: data.success ? "Error" : "error",
+                    type: data.success ? "error" : "error",
                     title: data.success ? "Error" : "Error",
                     message: data.message
                 });

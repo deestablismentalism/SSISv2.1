@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function viewStudentDetails(studentId) {
     // Create a modal to display student details
     //TODO: create the php script for fetchStudentDetails.php
+    Loader.show();
     fetch(`../../../BackEnd/api/admin/fetchStudentDetails.php?id=${encodeURIComponent(studentId)}`) 
         .then(response => response.json())
         .then(data => {
@@ -62,6 +63,11 @@ function viewStudentDetails(studentId) {
                 createStudentDetailsModal(data.student);
             } else {
                 alert('Error fetching student details: ' + data.message);
+                Notification.show({
+                    type: data.success ? "error" : "error",
+                    title: data.success ? "Error" : "Error",
+                    message: data.message
+                });
             }
         })
         .catch(error => {
@@ -137,12 +143,14 @@ function createStudentDetailsModal(student) {
 
 // Function to edit student details
 function editStudentDetails(studentId) {
+    Loader.show();
     window.location.href = `../admin/admin_edit_student.php?id=${studentId}`;
 }
 
 // Function to delete student
 function deleteStudent(studentId) {
     if (confirm('Are you sure you want to delete this student? This action cannot be undone.')) {
+        Loader.show();
         fetch('../server_side/deleteStudent.php', {
             method: 'POST',
             headers: {
@@ -153,17 +161,33 @@ function deleteStudent(studentId) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Student deleted successfully');
+                Notification.show({
+                    type: data.success ? "success" : "error",
+                    title: data.success ? "Success" : "error",
+                    message: data.message
+                });
                 // Refresh the page to update the student list
                 location.reload();
             } else {
-                alert('Error deleting student: ' + data.message);
+                Notification.show({
+                    type: data.success ? "error" : "error",
+                    title: data.success ? "Error Deleting Student" : "Error",
+                    message: data.message
+                });
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred while deleting the student.');
+            Notification.show({
+                type: data.success ? "error" : "error",
+                title: data.success ? "An error Occured While deleting Student" : "Error",
+                message: data.message
+            });
+        })
+        .finally(() => {
+            Loader.hide();
         });
+        
     }
 }
 
