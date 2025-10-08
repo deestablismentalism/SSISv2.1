@@ -58,7 +58,6 @@ class SendPassword {
         if (!isset($responseData['state']) || $responseData['state'] !== 'Pending') {
             throw new SMSFailureException("SMS gateway rejected the message");
         }
-
         return true;
     }
 }
