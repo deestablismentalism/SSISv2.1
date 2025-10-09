@@ -175,7 +175,7 @@ function getStatusText(status) {
         case 2:
             return 'Inactive';
         case 3:
-            return 'On Leave';
+            return 'Dropped';
         default:
             return 'Unknown';
     }
