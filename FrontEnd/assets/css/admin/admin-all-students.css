@@ -18,6 +18,41 @@
     color: var(--main-color);
 }
 
+.filter-select {
+    width: 100%;
+    max-width: 250px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: var(--wrapper-bg-color, #fff);
+    font-family: var(--main-fonts, Arial, sans-serif);
+    font-size: 1rem;
+    color: var(--main-color, #333);
+    box-shadow: 0 2px 8px rgba(208, 202, 202, 0.15);
+    transition: border-color 0.2s;
+    outline: none;
+    margin-bottom: 1rem;
+}
+
+.filter-select:focus {
+    border-color: var(--main-color, #007bff);
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.1);
+}
+
+.filter-select option {
+    background: #fff;
+    color: #333;
+    font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+    .filter-select {
+        max-width: 100%;
+        font-size: 0.95rem;
+        padding: 8px 10px;
+    }
+}
+
 .students th, td {
     font-family: var(--main-fonts);
     text-align: center;
