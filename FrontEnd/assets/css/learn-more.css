@@ -286,21 +286,33 @@ html{
     margin-top: 40px;
 }
 
+h5 {
+    font-size: 31px;
+    margin-top: 40px;
+    text-align: center;
+    width: 100%;
+    color: #ffcc00;
+    margin: 30px 0px 30px 0px;
+    font-family: "PT Serif", light;
+    text-shadow: 1px 1px 7px rgb(222 222 163);
+    font-weight: 500;
+}
+
 .learn-more-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
     flex-direction: column;
-    gap: 15px;
 }
 
 .learn-more-container > .learn-more-content {
-    background-color: #d3f5ff;
+    border-radius: 12px;
+    background-color: #3fc4f48f;
     border: 1px solid rgb(107 255 192 / 26%);
-    padding: 30px;
+    padding: 3rem;
     text-align: center;
     border-radius: 142px;
-    height: 35em;
+    height: 20em;
     width: 36em;
 
 }
@@ -315,8 +327,6 @@ html{
     font-family: "PT Serif", light;
     text-shadow: 1px 1px 7px rgb(222 222 163);
     font-weight: 500;
-
-
 }
 
 .container {
@@ -353,18 +363,22 @@ html{
 }
 
 .learn-more-container p {
-    font-size: 1.2em;
-    color: #f9f9f9;
-    margin-top: 20px;
-    text-align: center;
+    line-height: 1.6;
+    color: #0f2e3e;
+    margin-bottom: 1.5rem;
+    font-family: "PT Serif";
+    text-shadow: 2 3 #3e1a1a;
+    text-shadow: 1px 1px 12px rgb(207 209 210);
 }
 
 .learn-more-container h3 {
     font-size: 1.8rem;
     margin: 0 0 1rem;
-    color: #4285f4;
+    color: #224890;
     line-height: 1.3;
-    margin-top: 20px;
+    font-family: "PT Serif", light;
+    text-shadow: 1px 1px 12px rgb(153 231 255);
+    font-weight: 600;
 }
 
 /* Mission, Vision, Values Container */

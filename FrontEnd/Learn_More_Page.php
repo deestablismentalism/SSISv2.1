@@ -118,9 +118,7 @@
     </div>
     <div class="main-content">
         <div class="learn-more-section">
-
             <h5>Take an Insight of Our Proudly to Present School</h5>
-
             <div class="learn-more-container">
                 <div class="learn-more-content">
                     <div class="image-text-container">
@@ -137,19 +135,6 @@
                 </div>
                 <div class="learn-more-content">
                     <div class="image-text-container">
-                        <!-- <img src="./assets/imgs/teacher.jpg" alt="Image 1" class="image"> -->
-                        <div class="text-container">
-                            <h3>Our Teachers</h3>
-                            <p>Our dedicated teachers are committed to providing quality education and support to all students.
-                              They go beyond teaching basic subjects by instilling confidence in their students, encouraging them to 
-                              believe in their abilities. Through everyday lessons and meaningful guidance, 
-                              they shape future leaders with strong values and a sense of responsibility. These educators 
-                              create a supportive environment where children feel empowered to strive for excellence in everything they do.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="learn-more-content">
-                    <div class="image-text-container">
                         <!-- <img src="./assets/imgs/grad.jpg" alt="Image 1" class="image"> -->
                         <div class="text-container">
                             <h3>History</h3>
@@ -158,18 +143,6 @@
                                 meet the growing needs of learners and the demands of modern education.
                         </div>
                     </div>
-                </div>
-                <div class="learn-more-content">
-                    <div class="image-text-container">
-                        <!-- <img src="./assets/imgs/planting.jp" alt="Image 1" class="image"> -->
-                        <div class="text-container">
-                             <h3>Community</h3>
-                            <p>The school thrives through the strong support of its local community. Parents, stakeholders, 
-                                and nearby organizations actively participate in school programs, fostering a collaborative and 
-                                nurturing learning environment.</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     <div class="mv-container">
