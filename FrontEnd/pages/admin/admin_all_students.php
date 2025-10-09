@@ -7,41 +7,17 @@ ob_start();
    <div class="admin-all-students-content">
         <div class="table-title">
             <div class="table-title-left"><h2> Students </h2></div>
-            <div class="filter-panel"> 
-                <select id="filter-grade"> 
-                    <option value="All">All Grades</option> 
-                    <option value="Kinder 1">Kinder 1</option> 
-                    <option value="Kinder 2">Kinder 2</option> 
-                    <option value="Grade 1">Grade 1</option> 
-                    <option value="Grade 2">Grade 2</option> 
-                    <option value="Grade 3">Grade 3</option> 
-                    <option value="Grade 4">Grade 4</option> 
-                    <option value="Grade 5">Grade 5</option> 
-                    <option value="Grade 6">Grade 6</option> 
-                </select> 
-                
-                <select id="filter-section"> 
-                    <option value="">All Sections</option> 
-                    <?php foreach ($sections as $section): ?> <option value="<?= $section['Section_Name'] ?>"><?= $section['Section_Name'] ?></option> <?php endforeach; ?> 
-                </select> 
-
-                <select id="filter-status"> 
-                    <option value="">All Status</option> 
-                    <option value="1">Active</option> 
-                    <option value="2">Inactive</option> 
-                    <option value="3">Dropped</option> 
-                </select> 
-                
-                <select id="filter-sort"> 
-                    <option value="">Sort</option> 
-                    <option value="asc">Ascending</option> 
-                    <option value="desc">Descending</option> 
-                </select> 
-                
-                <button id="apply-filters">Filter</button> 
-            </div>
             <div> <button class="add-student-btn"> <img src="../../assets/imgs/plus-solid.svg"></button></div>
             <div class="table-title-right">
+                <select id="filter-grade" class="filter-select">
+                    <option value="">All Grades</option>
+                </select>
+                <select id="filter-status" class="filter-select">
+                    <option value="">All Statuses</option>
+                </select>
+                <select id="filter-section" class="filter-select">
+                    <option value="">All Sections</option>
+                </select>
                 <input type="text" id="search" class="search-box" placeholder="search student...">
             </div>
         </div>
