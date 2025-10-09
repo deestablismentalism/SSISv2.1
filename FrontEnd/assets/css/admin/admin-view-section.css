@@ -8,14 +8,20 @@
 .students-list {
     padding: 2rem;
 }
+
+
 .admin-view-section-content {
     margin: 1rem;
 }
+
 .section-name,
 .students-list-title {
-    font-size: 1.5rem;
+    font-size: 2em;
     font-weight: bold;
+    font-family: var(--title-fonts);
+    color: var(--main-color);
 }
+
 .adviser-name {
     padding: 2rem;
     font-size: 1.3rem;

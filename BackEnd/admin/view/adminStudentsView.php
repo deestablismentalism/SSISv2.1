@@ -17,6 +17,7 @@ class adminStudentsView {
         if(!$response['success']) {
             echo '<div class="error-message"> <p>'.htmlspecialchars($response['message']). '</p></div>';
         }
+        
         $data = $response['data'];
         foreach($data as $rows) {
             $section = $rows['Section_Name'] === null ? 'Section is not set' : htmlspecialchars($rows['Section_Name']);
@@ -38,7 +39,7 @@ class adminStudentsView {
                 default:
                     $statusText = 'Unknown';
             }
-
+            
             echo '<tr class="student-rows"> 
                 <td>' . htmlspecialchars($rows['Student_Last_Name']).','. 
                 htmlspecialchars($rows['Student_First_Name']) .' '.

@@ -61,6 +61,7 @@ function viewStudentDetails(studentId) {
             if (data.success) {
                 // Create modal with student details
                 createStudentDetailsModal(data.student);
+                Loader.hide();
             } else {
                 alert('Error fetching student details: ' + data.message);
                 Notification.show({
@@ -68,6 +69,7 @@ function viewStudentDetails(studentId) {
                     title: data.success ? "Error" : "Error",
                     message: data.message
                 });
+                Loader.hide();
             }
         })
         .catch(error => {
