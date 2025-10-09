@@ -16,6 +16,7 @@ if (!isset($_SESSION['Staff']) && $_SESSION['Staff']['Staff-Type'] !== 1) {
     <link rel="stylesheet" href="../../assets/css/fonts.css">
     <link rel="stylesheet" href="../../assets/css/admin/admin-base-designs.css">
     <link rel="stylesheet" href="../../assets/css/reset.css">
+    <link rel="stylesheet" href="../../assets/css/loader.css">
     <link rel="icon" href="../../../favicon.ico">
     <?php if (isset($pageCss)) echo $pageCss; ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
@@ -23,7 +24,7 @@ if (!isset($_SESSION['Staff']) && $_SESSION['Staff']['Staff-Type'] !== 1) {
 </head>
 <body>
         <?php
-            include '../loader.php';
+            require_once __DIR__ . '/../loader.php';
         ?>
 
         <div class="main-wrapper">
