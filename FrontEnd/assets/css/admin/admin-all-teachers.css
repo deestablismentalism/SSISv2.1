@@ -1,7 +1,9 @@
+.admin-all-teachers-content {
+    margin: 1rem;
+}
 .content{
     height:92vh;
 }
-
 table {
     font-size: 1.3em;
     font-family: 'Barlow';
@@ -11,15 +13,16 @@ table {
     cursor: default;
     margin-left:3em;
 }
-
+.admin-all-teachers-title-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
 .all-teachers-title {
     font-family: 'Baloo-Thambi-2';
     font-size: 2em;
     color: #003366;
     font-weight: 900;
-    margin: 1em;
 }
-
 table tr:nth-child(even) {
     background-color: #ebebeb;
 }
@@ -33,11 +36,9 @@ table th {
     font-weight: 900;
     padding: .5em;
 }
-
 table td{
     padding: .5em;
 }
-
 .btn-primary {
     padding: 8px 15px;
     background-color: #003366;
@@ -47,14 +48,11 @@ table td{
     cursor: pointer;
     font-size: 16px;
 }
-
 .btn-primary:hover {
     background-color: #00509e;
     color: rgb(218, 216, 216);
 
 }
-
 .register {
-    margin-left: 4em;
     font-family: 'Barlow';
 }
