@@ -8,63 +8,83 @@ document.addEventListener('DOMContentLoaded', function(){
         modal.style.display = 'block';
         modalContent.innerHTML = loadingText;
 
+        let initialModalContent = '';
         try {
             const response = await fetchSectionSubjects();
             let subjectValues = ``;
-            response.forEach(subject=>{
+            response.data.forEach(subject=>{
                 subjectValues += `<div class="modal-subjects"> <p class="subject-name">${subject.Subject_Name} - ${subject.Section_Name}</p> <button data-id="${subject.Section_Subjects_Id}"> create schedule</button> </div>`;
             })
             modalContent.innerHTML = modalHeader();           
             modalContent.innerHTML += `<p>Which section do you want to create a schedule for?</p><br>` + subjectValues;
+            initialModalContent = modalContent.innerHTML;
             close(modal);
-
+            attachSectionButtonListener();
             //handler for create schedule buttons
-            const sectionButtons = modalContent.querySelectorAll('button');
-            sectionButtons.forEach(button=>{
+            function attachSectionButtonListener() {
+                const sectionButtons = modalContent.querySelectorAll('button');
+                sectionButtons.forEach(button=>{
                 button.addEventListener('click', async function(e){
                     const sectionSubject = e.target.parentElement.querySelector('.subject-name');//get text content
                     modalContent.innerHTML = '';
                     modalContent.innerHTML = loadingText;
                     const sectionSubjectId = parseInt(e.target.getAttribute('data-id')); //to store section subject id in db
-                    
                     try {
                         const formResponse = await fetchAddScheduleForm();
                         modalContent.innerHTML = modalHeader(true);
                         modalContent.innerHTML += `<p>${sectionSubject.textContent}</p>`;
                         modalContent.innerHTML += formResponse;
                         close(modal);
+
+                        const backButton = modalContent.querySelector('.back-button');
+                        if(backButton) {
+                            backButton.addEventListener('click',()=>{
+                                modalContent.innerHTML = initialModalContent;
+                                close(modal);
+                                attachSectionButtonListener();
+                            });
+                        }
                     }
                     catch(error) {
-                        alert(error);
+                        alert(error.message);
                         console.error(error);
                         modalContent.innerHTML = modalHeader();
                         modalContent.innerHTML += `Failed to load`;
                         close(modal);
                     }
-
                     const form = document.getElementById('add-schedule-form');
                     const button = modal.querySelector('button[type="submit"]');
-                    form.addEventListener('submit', function(e) {
+                    let isSubmitting = false;
+                    form.addEventListener('submit', async function(e) {
                         e.preventDefault();
-
+                        if(isSubmitting) return;
+                        isSubmitting = true;
                         button.disabled = true;
+                        button.style.backgroundColor = 'gray';
                         const formData = new FormData(form);
                         formData.append('section-subject-id', sectionSubjectId);
+                        try {
+                            const result = await postAddSectionSchedule(formData);
 
-                        postAddSectionSchedule(formData).then(data=>{
-                            alert(data.message);
-                            setTimeout(()=>{window.location.reload()}, 1000);
-                        }).catch(err=>{
-                            alert(err.message);
-                            form.reset();
-                        });
-
-
-
+                            if(!result.success) {
+                                alert(result.message);
+                                form.reset();
+                                button.disabled = false;
+                            }
+                            else {
+                                alert(result.message);
+                                setTimeout(()=>{
+                                    window.location.reload()
+                                }, 1000);
+                            }
+                        }
+                        catch(error) {
+                            alert(`Error: ${error.message}`);
+                        }
                     });
                 })
             });
-
+            }    
         }
         catch(error) {
             alert(error.message);
@@ -73,26 +93,42 @@ document.addEventListener('DOMContentLoaded', function(){
             modalContent.innerHTML += `Failed to load`;
             close(modal);
         }
-        
     });
 });
 async function fetchSectionSubjects() {
-    const response = await fetch(`../../../BackEnd/api/admin/fetchAllSubjects.php`);
-
-    let data;
     try {
-        data = await response.json();
+        const response = await fetch(`../../../BackEnd/api/admin/fetchAllSubjects.php`);
+
+        let data;
+        try {
+            data = await response.json();
+        }
+        catch {
+            throw new Error('Invalid response');
+        }
+        if(!response.ok) {
+            return {
+                success: false,
+                message: data.message || `HTTP ERROR: ${response.status}`,
+                data: null
+            };
+        }
+        if(!data.success) {
+            return {
+                success: false,
+                message: data.message || `Something went wrong`,
+                data: null
+            };
+        }
+        return data;
     }
-    catch {
-        throw new Error('Invalid response');
+    catch(error) {
+        return {
+            success: false,
+            message: error.message || `There was an error`,
+            data: null
+        };
     }
-    if(!response.ok) {
-        throw new Error(`HTTP Error: ${response.status}`);
-    }
-    if(!data.success) {
-        throw new Error(data.message);
-    }
-    return data.data;
 }
 async function fetchAddScheduleForm() {
     const response = await fetch(`../../../BackEnd/templates/admin/fetchAddScheduleForm.php`);
@@ -110,24 +146,40 @@ async function fetchAddScheduleForm() {
     return data;
 }
 async function postAddSectionSchedule(formData) {
-    const response = await fetch(`../../../BackEnd/api/admin/postAddSectionSchedule.php`, {
+    try {
+        const response = await fetch(`../../../BackEnd/api/admin/postAddSectionSchedule.php`, {
         method: 'POST',
         body: formData
-    });
-
-    let data;
-    try {
-        data = await response.json();
+        });
+        let data;
+        try {
+            data = await response.json();
+        }
+        catch {
+            throw new Error('Invalid response');
+        }
+        if(!response.ok) {
+            return {
+                success: false,
+                message: data.message || `HTTP ERROR: ${response.status}`,
+                data: null
+            };
+        }
+        if(!data.success) {
+            return {
+                success: false,
+                message: data.message || `Something went wrong`,
+                data: null
+            };
+        }
+        return data;
     }
-    catch {
-        throw new Error('Invalid response');
+    catch(error) {
+        return {
+            success: false,
+            message: error.message || `There was unexpected error`,
+            data: null
+        };
     }
-    if(!response.ok) {
-        throw new Error(`HTTP error: ${response.status}`);
-    }
-    if(!data.success) {
-        throw new Error(data.message);
-    }
-    return data;
 }
 
