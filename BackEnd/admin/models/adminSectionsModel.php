@@ -92,10 +92,9 @@ class adminSectionsModel {
                 return $results;
             }
             $sectionId = $this->insertSection($sectionName, $gradeLevelId);
-            
             $subjects = $this->getAllRelatedSubjectsByGradeLevel($gradeLevelId);
             foreach($subjects as $subjectId) {
-                $subjectIds = (int)$subjectId;
+                $subjectIds = (int)$subjectId['Subject_Id'];
                 $insert = $this->insertToSectionSubjects($subjectIds, $sectionId);
                 if(!$insert) {
                     $results['failed'][] = $subjectIds;
@@ -193,7 +192,7 @@ class adminSectionsModel {
     public function getSectionAdviserName($id) : ?array {
         try {
             $sql = "SELECT staff.Staff_First_Name, staff.Staff_Last_Name, staff.Staff_Middle_Name FROM section_advisers AS sa
-                    LEFT JOIN staffs AS staff ON sa.Staff_Id = staff.Staff_Id WHERE sa.Section_Id = :id";
+                    INNER JOIN staffs AS staff ON sa.Staff_Id = staff.Staff_Id WHERE sa.Section_Id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
