@@ -16,7 +16,7 @@
                 </div>
             </ul>
             
-            <button class="join-btn" onclick="location.href='./Registration.php'">Sign Up</button>
+            <a class="join-btn" href="./Registration.php">Sign Up</a>
             
             <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
         </nav>
