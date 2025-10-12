@@ -10,22 +10,11 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-subjects.c
         <button id="add-subject-button" class="submit-button"> Add Subject </button>  
     </div>
     <div class="subjects-list">
-        <table class="subjects-table">
-            <thead> 
-                <th> Subject Name </th>
-                <th> Section Name</th>
-                <th> Grade Level </th>
-                <th> Teacher Assigned </th>
-                <th> Assign </th>
-            </thead>
-            <tbody> 
-                <?php 
-                    require_once __DIR__ . '/../../../BackEnd/admin/view/adminSubjectsView.php';
-                    $view = new adminSubjectsView();
-                    $view->displaySubjects();
-                ?>
-            </tbody>
-        </table>
+        <?php 
+            require_once __DIR__ . '/../../../BackEnd/admin/view/adminSubjectsView.php';
+            $view = new adminSubjectsView();
+            $view->displaySubjects();
+        ?>
     </div>
 </div>
 <div class="success-message"></div>
