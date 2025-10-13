@@ -94,6 +94,71 @@ p.subtitle {
   border-color: #007bff;
 }
 
+/* ===== Floating Label Inputs ===== */
+.input-group {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #ccc;
+  border-radius: 31px;
+  background: transparent;
+  outline: none;
+  font-size: 1em;
+  transition: all 0.3s ease;
+}
+
+.input-group label {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  color: #888;
+  transform: translateY(-50%);
+  background: white;
+  padding: 0 6px;
+  font-size: 1em;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+/* When input is focused or not empty */
+.input-group input:focus,
+.input-group input:not(:placeholder-shown) {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+}
+
+/* Label moves upward when active */
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+  top: 0;
+  left: 12px;
+  font-size: 0.8em;
+  color: #007bff;
+}
+
+/* ===== Glowing Animation Effect ===== */
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(0, 123, 255, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+  }
+}
+
+/* Apply glowing animation while focused */
+.input-group input:focus {
+  animation: glowPulse 1.5s infinite ease-in-out;
+}
+
+
 /* ===== Buttons ===== */
 .btn-primary {
   width: 90%;
