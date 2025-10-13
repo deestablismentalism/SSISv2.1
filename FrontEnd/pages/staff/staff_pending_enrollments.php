@@ -54,12 +54,12 @@
             </div>
             <div class="enrollment-start">
                 <div class="enrollment-access">
-                    <div class="header">
+                    <div class="header-pending">
                         <div class="header-left">
                             <h2> Pending Enrollments </h2>
                         </div>
                         <div class="header-right">
-                            <input type=text id="search" placeholder="search enrollee name...">
+                            <input type=text id="search" placeholder="Search Enrollee Name...">
                         </div>
                     </div>
                     <div class="menu-content">

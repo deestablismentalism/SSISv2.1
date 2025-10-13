@@ -51,7 +51,7 @@ class staffEnrollmentStatusView {
                         <td>' . $rows['Age'] . '</td>
                         <td>' . htmlspecialchars($rows['Birth_Date']) . '</td> 
                         <td>' . htmlspecialchars($rows['Sex']) . '</td>
-                        <td> <button class="view-button" data-id="' . $rows['Enrollee_Id'] . '"> View info</button></td>
+                        <td> <button class="view-button" data-id="' . $rows['Enrollee_Id'] . '"> <img src="../../assets/imgs/edit-white.png" loading="lazy" alt="edit"></button></td>
                         </tr>';
             }
         }
