@@ -26,7 +26,7 @@
     flex-shrink: 0;
   }
   
-  .success-notification {
+  .notification {
     padding: 1.25rem;
     border-radius: 0.75rem;
     background-color: rgb(240 253 244);
@@ -35,12 +35,12 @@
     border: 1px solid rgba(74, 222, 128, 0.2);
   }
   
-  .success-notification:hover {
+  .notification:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   }
   
-  .success-notification-svg {
+  .notification-svg {
     color: rgb(74 222 128);
     width: 1.5rem;
     height: 1.5rem;
@@ -48,11 +48,11 @@
     animation: pulse 2s infinite;
   }
   
-  .success-notification-prompt-wrap {
+  .notification-prompt-wrap {
     margin-left: 1rem;
   }
   
-  .success-notification-prompt-heading {
+  .notification-prompt-heading {
     font-weight: 700;
     color: rgb(22 101 52);
     font-size: 1.05rem;
@@ -66,53 +66,74 @@
     animation: scaleCheck 0.3s ease-in-out;
   }
   
-  .success-notification-prompt-prompt {
+  .notification-prompt{
     margin-top: 0.75rem;
-    color: rgb(21 128 61);
     line-height: 1.5;
   }
+
+  .green-text {
+    color: green;
+  }
   
-  .success-notification-button-container {
+  .notification-button-container {
     display: flex;
     margin-top: 1rem;
     gap: 0.75rem;
   }
   
-  .success-notification-button-main {
+  .notification-button-secondary {
     padding: 0.5rem 1rem;
-    background-color: rgb(22 101 52);
-    color: white;
     font-size: 0.875rem;
     font-weight: 600;
     border-radius: 0.5rem;
-    border: none;
+    border: 2px solid var(--main-color);
+    color: white;
+    background: var(--main-color);
+    cursor: pointer;
+    text-align: center;
+    transition: ease-out 0.5s;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(22, 101, 52, 0.2);
   }
   
-  .success-notification-button-main:hover {
-    background-color: rgb(21 128 61);
-    transform: translateY(-1px);
+  .notification-button-secondary:hover {
+    transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(22, 101, 52, 0.3);
   }
-  
-  .success-notification-button-secondary {
-    padding: 0.5rem 1rem;
-    background-color: rgb(240 253 244);
-    color: rgb(22 101 52);
-    font-size: 0.875rem;
-    font-weight: 600;
-    border-radius: 0.5rem;
-    border: 1px solid rgba(22, 101, 52, 0.2);
-    transition: all 0.2s ease;
+
+  .notification-button-secondary:active {
+    transform: var(--button-click);    
   }
   
-  .success-notification-button-secondary:hover {
-    background-color: rgb(220, 243, 234);
-    border-color: rgba(22, 101, 52, 0.3);
-    transform: translateY(-1px);
+  .red-text {
+    color: red;
+  }
+
+  .error-notification-svg {
+    color: rgb(222, 74, 74);
+    width: 1.5rem;
+    height: 1.5rem;
+    animation: pulse 2s infinite;
   }
   
+  .error-notification-prompt-wrap {
+    margin-left: 1rem;
+  }
+  
+  .error-notification-prompt-heading {
+    font-weight: 700;
+    color: rgb(101, 27, 22);
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .error-checkmark {
+    color: rgb(222, 74, 74);
+    animation: scaleCheck 0.3s ease-in-out;
+  }
+
+
   @keyframes slideIn {
     from {
       opacity: 0;
@@ -148,8 +169,8 @@
     }
   }
   
-  .success-notification-button-main:active,
-  .success-notification-button-secondary:active {
+  .notification-button-main:active,
+  .notification-button-secondary:active {
     transform: scale(0.95);
   }
   

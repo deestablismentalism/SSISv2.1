@@ -11,7 +11,10 @@ $adminViewSectionView = new adminViewSectionView();
 
     <div class="admin-view-section-content">
         <div class="section-details-container"> 
-           <button id="edit-section-btn" class="edit-section"> Edit Section details </button>
+            <div class="button-container">
+                <button id="edit-section-btn" class="edit-section"> Edit Section details </button>
+                <button class="back-btn"> Hi</button>
+            </div>
            <div class="section-name-container">
                 <div class="section-name"> <h1> <?php $adminViewSectionView->displaySectionName(); ?> </h1></div>
            </div>

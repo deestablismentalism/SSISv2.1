@@ -39,7 +39,11 @@ class adminStudentsView {
                     $statusText = 'Unknown';
             }
 
-            echo '<tr class="student-rows"> 
+            $rowData = ' data-grade="' . htmlspecialchars($rows['Grade_Level']) . '"' .
+                       ' data-status="' . htmlspecialchars((string)$rows['Student_Status']) . '"' .
+                       ' data-section="' . htmlspecialchars($rows['Section_Name'] ?? 'Section is not set') . '"';
+
+            echo '<tr class="student-rows"' . $rowData . '> 
                 <td>' . htmlspecialchars($rows['Student_Last_Name']).','. 
                 htmlspecialchars($rows['Student_First_Name']) .' '.
                 $middleInitial .
