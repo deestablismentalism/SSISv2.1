@@ -147,6 +147,7 @@ html{
             font-size: 1rem;
             animation: slideInUp 1s ease 0.3s forwards;
             margin: -164px 0 102px 0px;
+            text-shadow: 2px 4px 10px rgb(0, 27, 33);
         }
 
         .hero-subtitle img {
@@ -154,6 +155,7 @@ html{
             height: auto;
             vertical-align: middle;
             margin-right: 10px;
+            text-shadow: 2px 4px 10px rgb(0, 1, 1);
         }
 
 
@@ -172,7 +174,7 @@ html{
         animation: flipInWord 0.8s ease forwards;
         font-family: "PT Serif", serif;
         font-weight: 900;
-        text-shadow: 2px 4px 10px rgb(190 194 131);
+        text-shadow: 2px 4px 10px rgb(10 131 156);
         }
 
         .hero-title .word:nth-child(1) {
@@ -330,16 +332,16 @@ html{
 
 
 /* Leadership Section - FIXED */
-h5 {
+.about-text {
     font-size: 31px;
     margin-top: 40px;
     text-align: center;
     width: 100%;
-    color: #ffcc00;
+    color: #0093ff;
     margin: 30px 0px 30px 0px;
     font-family: "PT Serif", light;
-        text-shadow: 1px 1px 7px rgb(222 222 163);
-    font-weight: 500;
+    /* text-shadow: 1px 1px 7px rgb(222 222 163); */
+    font-weight: 800;
 }
 
 .teachers {
