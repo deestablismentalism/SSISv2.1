@@ -20,7 +20,7 @@
   <div class="login-container">
     <!-- LEFT ILLUSTRATION -->
     <div class="login-illustration">
-      <img src="./assets/imgs/users-login.jpg" alt="Users Illustration" />
+      <img src="./assets/imgs/users-login.png" alt="Users Illustration" />
     </div>
 
     <!-- RIGHT LOGIN FORM -->
@@ -30,14 +30,15 @@
 
      <form id="login-form" action="..\BackEnd\common\postLoginVerify.php" method="post">
         <div class="input-group">
+          <input type="text" id="phone_number" name="phone_number" placeholder=" " required />
           <label for="phone_number">Phone Number</label>
-          <input type="text" id="phone_number" name="phone_number" placeholder="09xx xxx xxxx" required />
         </div>
 
         <div class="input-group">
+          <input type="password" id="password" name="password" placeholder=" " required />
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="Enter your password" required />
         </div>
+
 
         <button type="submit" class="btn-primary">Log In <span style=" place-items: center;"></span></button>
         <br>
