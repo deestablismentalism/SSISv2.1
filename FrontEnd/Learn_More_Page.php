@@ -12,15 +12,10 @@
     <title>SSIS-Learn More Page</title>
 </head>
 <body>
-
-        <!-- Header Section -->
-        <div class = "header">
-            <?php
-                include './Landing_Header.php';
-            ?>
-        </div>
-        <!-- Header Section End -->
-  
+        <?php
+            include './Landing_Header.php';
+        ?>
+    <div class = "header">
         <!-- Hero Section -->
         <section class="hero">
             <div class="hero-slideshow">
@@ -36,7 +31,7 @@
             </div>
             <div class="hero-content">
                 <p class="hero-subtitle" style="text-align: center; right: 10px;">
-                    <img src="assets/imgs/deped_logo.png" alt="DepEd Logo" />
+                    <img src="./assets/imgs/deped_logo.png" alt="DepEd Logo" />
                     Republic of the Philippines Department of Education
                 </p>
                 <br>
@@ -51,27 +46,28 @@
                 let slideIndex = 0;
                 const slides = document.querySelectorAll('.hero-slide');
 
-                function showSlides() {
-                    slides.forEach((slide, i) => {
-                        slide.classList.remove('active');
-                    });
-                    slideIndex++;
-                    if (slideIndex > slides.length) { slideIndex = 1 }
-                    slides[slideIndex - 1].classList.add('active');
-                    setTimeout(showSlides, 4000); // Change every 4 seconds
-                }
+            function showSlides() {
+                slides.forEach((slide, i) => {
+                    slide.classList.remove('active');
+                });
+                slideIndex++;
+                if (slideIndex > slides.length) { slideIndex = 1 }
+                slides[slideIndex - 1].classList.add('active');
+                setTimeout(showSlides, 4000); // Change every 4 seconds
+            }
 
-                showSlides();
-            </script>
+            showSlides();
+        </script>
 
 
-            <!-- Wave SVG -->
+        <!-- Wave SVG -->
             <div class="wave">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+                        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
                 </svg>
             </div>
         </section>
+    </header>
 
         <script>
             // Mobile menu toggle
@@ -122,7 +118,7 @@
     </div>
     <div class="main-content">
         <div class="learn-more-section">
-            <p class="learn-more-text">Take an Insight of Our Proudly to Present School</p>
+            <h5>Take an Insight of Our Proudly to Present School</h5>
             <div class="learn-more-container">
                 <div class="learn-more-content">
                     <div class="image-text-container">
@@ -139,19 +135,6 @@
                 </div>
                 <div class="learn-more-content">
                     <div class="image-text-container">
-                        <!-- <img src="./assets/imgs/teacher.jpg" alt="Image 1" class="image"> -->
-                        <div class="text-container">
-                            <h3>Our Teachers</h3>
-                            <p>Our dedicated teachers are committed to providing quality education and support to all students.
-                              They go beyond teaching basic subjects by instilling confidence in their students, encouraging them to 
-                              believe in their abilities. Through everyday lessons and meaningful guidance, 
-                              they shape future leaders with strong values and a sense of responsibility. These educators 
-                              create a supportive environment where children feel empowered to strive for excellence in everything they do.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="learn-more-content">
-                    <div class="image-text-container">
                         <!-- <img src="./assets/imgs/grad.jpg" alt="Image 1" class="image"> -->
                         <div class="text-container">
                             <h3>History</h3>
@@ -160,18 +143,6 @@
                                 meet the growing needs of learners and the demands of modern education.
                         </div>
                     </div>
-                </div>
-                <div class="learn-more-content">
-                    <div class="image-text-container">
-                        <!-- <img src="./assets/imgs/planting.jp" alt="Image 1" class="image"> -->
-                        <div class="text-container">
-                             <h3>Community</h3>
-                            <p>The school thrives through the strong support of its local community. Parents, stakeholders, 
-                                and nearby organizations actively participate in school programs, fostering a collaborative and 
-                                nurturing learning environment.</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     <div class="mv-container">
@@ -179,12 +150,11 @@
             <h3>Our Mission</h3>
             <p>To protect and promote the right of every Filipino to quality, 
             equitable, culture-based, and complete basic education where:<br>
-<br>
                 Students learn in a child-friendly, gender-sensitive, safe, and motivating environment.<br>
-                Teachers facilitate learning and constantly nurture every learner.
+                Teachers facilitate learning and constantly nurture every learner. <br>
                 Administrators and staff, as stewards of the institution, 
-                ensure an enabling and supportive environment for effective learning to happen.
-                Family, community, and other stakeholders are actively engaged and <br>
+                ensure an enabling and supportive environment for effective learning to happen. <br>
+                Family, community, and other stakeholders are actively engaged and
                 share responsibility for developing life-long learners.
             </div>
             <div class="card">
@@ -193,8 +163,7 @@
                 who passionately love their country<br>
                 and whose values and competencies<br>
                 enable them to realize their full potential<br>
-                and contribute meaningfully to building the nation.<br>
-<br>
+                and contribute meaningfully to building the nation.<br><br>
                 As a learner-centered public institution,<br>
                 the Department of Education<br>
                 continuously improves itself<br>
@@ -202,10 +171,12 @@
             </div>
             <div class="card">
             <h3>Our Values</h3>
-            <p>Maka-Diyos, <br>
-                Maka-tao, <br>
-                Makakalikasan, <br>
-                Makabansa</p>
+            <ul>
+            <li> Maka-Diyos </li>
+            <li> Maka-tao </li>
+            <li> Makakalikasan </li>
+            <li> Makabansa </li>
+            </ul>
             </div>
         </div>
     </div>

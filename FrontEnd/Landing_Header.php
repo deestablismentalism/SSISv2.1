@@ -12,7 +12,6 @@
                     <li><a href="./Index.php">Home</a></li>
                     <li><a href="./About_Page.php">About</a></li>
                     <li><a href="./Learn_More_Page.php">Learn More </a></li>
-                    <li><a href="./Login.php">Log In</a></li>
                 </div>
             </ul>
             
