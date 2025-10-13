@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function(){
             const response = await fetchSectionSubjects();
             let subjectValues = ``;
             response.forEach(subject=>{
-                subjectValues += `<div class="modal-subjects"> <p class="subject-name">${subject.Subject_Name} - ${subject.Section_Name}</p> <button data-id="${subject.Section_Subjects_Id}"> create schedule</button> </div>`;
+                subjectValues += `<div class="modal-subjects"> <p class="subject-name">${subject.Subject_Name} - ${subject.Section_Name}</p> <button data-id="${subject.Section_Subjects_Id}"> Create schedule</button> </div>`;
             })
             modalContent.innerHTML = modalHeader();           
             modalContent.innerHTML += `<p>Which section do you want to create a schedule for?</p><br>` + subjectValues;

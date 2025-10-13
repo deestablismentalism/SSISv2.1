@@ -1,0 +1,7 @@
+.card {
+    cursor: default;
+    background-color: white;
+    font-family: var(--main-fonts);
+    box-shadow: -.1px -1px 5px .1px #d0caca;
+    border:none;
+} 
