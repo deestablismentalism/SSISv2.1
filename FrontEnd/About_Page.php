@@ -119,7 +119,7 @@
         </script>
         <!-- Hero Section End-->
 
-            <h5>Meet Our Leadership</h5>
+            <div class="about-text">Meet Our Leadership</div>
 
         <section class="teachers">
             <div class="teachers-text" data-aos="fade-right">
