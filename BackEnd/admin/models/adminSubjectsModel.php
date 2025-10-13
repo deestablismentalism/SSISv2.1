@@ -17,7 +17,7 @@ class adminSubjectsModel {
         try {
             $sql = "SELECT 1 FROM grade_level_subjects AS gls
                     INNER JOIN subjects AS s ON gls.Subject_Id = s.Subject_Id 
-                    WHERE TRIM(REGEXP_REPLACE(s.Subject_Name, '[[:space:]]+', '')) = :subjectName AND gls.Grade_Level_Id = :gradeLevelId";
+                    WHERE LOWER(TRIM(REGEXP_REPLACE(s.Subject_Name, '[[:space:]]+', ''))) = :subjectName AND gls.Grade_Level_Id = :gradeLevelId";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':subjectName', $subjectName);
             $stmt->bindParam(':gradeLevelId', $gradeLevelId);
@@ -42,7 +42,6 @@ class adminSubjectsModel {
             if(!$result) {
                 throw new Exception('Insert subject failed');
             }
-
             return (int) $this->conn->lastInsertId();
         }
         catch(PDOException $e) {
@@ -112,7 +111,7 @@ class adminSubjectsModel {
         ];
         try {
             $this->conn->beginTransaction();
-            $normalizedName = trim(preg_replace('/\s+/','',$subjectName));
+            $normalizedName = strtolower(trim(preg_replace('/\s+/','',$subjectName)));
             // First check all grade levels for existing subjects
             $validGradeLevels = [];
             foreach ($gradeLevelIds as $gradeLevelId) {
@@ -130,29 +129,25 @@ class adminSubjectsModel {
             }
             // Insert the subject (only once)
             $subjectId = $this->insertSubject($subjectName);
-            
             // Process each valid grade level
             foreach ($validGradeLevels as $gradeLevelId) {
-                $convertedId = (int) $gradeLevelId;
+                $convertedId = (int)$gradeLevelId;
                 try {
                     // Link subject to grade level
                     if (!$this->insertGradeLevelSubjects($subjectId, $convertedId)) {
                         $results['failed'][] = $convertedId;
                         continue;
                     }
-                    
                     // Link subject to all sections in this grade level
                     $sectionIds = $this->getAllRelatedSectionIdByGradeLevel($convertedId);
                     $allSectionsLinked = true;
-                    
                     foreach ($sectionIds as $sectionId) {
-                        $convertedSectionId = (int)$sectionId;
+                        $convertedSectionId = (int)$sectionId['Section_Id'];
                         if (!$this->insertToSectionSubjects($subjectId, $convertedSectionId)) {
                             $allSectionsLinked = false;
                             break;
                         }
                     }
-                    
                     if ($allSectionsLinked) {
                         $results['success'][] = $convertedId;
                     } else {
@@ -164,14 +159,12 @@ class adminSubjectsModel {
                     // Log the error if needed
                 }
             }
-            
             // Commit if we have any successes, otherwise rollback
             if (!empty($results['success'])) {
                 $this->conn->commit();
             } else {
                 $this->conn->rollBack();
             }
-            
             return $results;
             
         } catch (PDOException $e) {
@@ -188,11 +181,11 @@ class adminSubjectsModel {
                     se.Section_Name,
                     g.Grade_Level,
                     st.Staff_First_Name, st.Staff_Last_Name, st.Staff_Middle_Name FROM section_subjects AS ss
-                    LEFT JOIN sections AS se ON ss.Section_Id = se.Section_Id
-                    LEFT JOIN grade_level_subjects AS gl ON ss.Subject_Id = gl.Subject_Id
-                    LEFT JOIN grade_level AS g ON gl.Grade_Level_Id = g.Grade_Level_Id 
-                    LEFT JOIN subjects AS s ON gl.Subject_Id = s.Subject_Id
-                    LEFT JOIN staffs AS st ON ss.Staff_Id = st.Staff_Id";
+                    INNER JOIN sections AS se ON ss.Section_Id = se.Section_Id
+                    INNER JOIN grade_level AS g ON g.Grade_Level_Id = se.Grade_Level_Id 
+                    INNER JOIN subjects AS s ON ss.Subject_Id = s.Subject_Id
+                    LEFT JOIN staffs AS st ON ss.Staff_Id = st.Staff_Id
+                    ORDER BY g.Grade_Level_Id, se.Section_Name, s.Subject_Name";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
 

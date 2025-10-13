@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const formButton = document.getElementById('add-subject-button');
     //Add section event listener
+    
     formButton.addEventListener('click', function(){
         modal.style.display = 'block';
         modalContent.innerHTML = '';
@@ -42,16 +43,17 @@ document.addEventListener('DOMContentLoaded', function() {
             close(modal);
             
             const form = document.getElementById('add-subject-form');
+            let isSubmitting = false;
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                Loader.show();
+                if(isSubmitting) return;
+                isSubmitting = true;
+
                 const submitButton = form.querySelector('.submit-button');
-                const formData = new FormData(form);
                 submitButton.disabled = true;
                 submitButton.style.backgroundColor = 'gray';
-
+                const formData = new FormData(form);
                 const result = await postAddSubject(formData);
-                console.log(result);
 
                 if(result === null) {
                     Loader.hide();

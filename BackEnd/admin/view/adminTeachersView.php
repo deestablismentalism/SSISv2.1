@@ -1,38 +1,43 @@
 <?php
-    require_once __DIR__ . '/./models/adminTeachersModel.php';
+declare(strict_types=1);
+require_once __DIR__ . '/../controller/adminTeacherController.php';
+require_once __DIR__ . '/../../core/tableDataTemplate.php';
+require_once __DIR__ . '/../../core/safeHTML.php';
     
-    class adminTeachersView {
-        protected $displayTeachers;
-        private $User_Type;
+class adminTeachersView {
+    protected $controller;
+    protected $tableTemplate;
 
-        public function __construct() {
-            $this->displayTeachers = new adminTeachersModel();
-            $this->User_Type = $_SESSION['Staff']['Staff-Type'];
-        }
 
-        public function displayAllTeachers() {
-            $teachers = $this->displayTeachers->selectAllTeachers();
-            echo "<tr>
-                    <th>Full Name</th>
-                    <th>Contact Number</th>
-                    <th>Position</th>
-                    <th>Action</th>
-                    </tr>";
-            foreach ($teachers as $teacher) {
-                echo"<tr>";
-                echo "<td>" . $teacher['Staff_First_Name'] . " " . $teacher['Staff_Middle_Name'] . " " . $teacher['Staff_Last_Name']. "</td>";
-                echo "<td>" . $teacher['Staff_Contact_Number'] . "</td>";
-                echo "<td>" . $teacher['Position'] . "</td>";
-
-                if ($this->User_Type == 1){
-                    echo '<td> <a href="./admin_teacher_info.php?staff_id=' . $teacher['Staff_Id'] . '" class="btn btn-primary">Edit</a></td>';
-                }
-                else if ($this->User_Type == 2){
-                    echo '<td> <a href="./admin_teacher_info.php?staff_id=' . $teacher['Staff_Id'] . '" class="btn btn-primary">View</a></td>';
-                }
-                echo "</tr>";
-            }
-        }
+    public function __construct() {
+        $this->controller = new adminTeacherController();
+        $this->tableTemplate = new TableCreator();
     }
 
-?>
+    public function displayAllTeachers() {
+        $data = $this->controller->viewAllTeachers();
+
+        if(!$data['success']) {
+            echo '<div class="error-message">'. htmlspecialchars($data['message']) .'</div>';
+        }
+        else {
+            echo '<table>';
+            $this->tableTemplate->generateHorizontalTitles('teachers-table-title', [
+                'Full Name', 'Contact Number', 'Position', 'Action'
+            ]);
+
+            echo '<tbody>';
+            foreach($data['data'] as $rows) {
+                $middleName = !empty($rows['Staff_Middle_Name']) ? $rows['Staff_Middle_Name'] : '';
+                $fullName = $rows['Staff_Last_Name'] . ', ' . $rows['Staff_First_Name'] . ' ' . $middleName;
+                $contactNumber = $rows['Staff_Contact_Number'];
+                $position = !empty($rows['Position']) ? $rows['Position'] : 'No position set';
+                $actionButtons = new safeHTML('<button id="view-techer"> View</button> <button id="edit-teacher"> Edit </button>');
+                $this->tableTemplate->generateHorizontalRows('teachers-data', [
+                    $fullName, $contactNumber, $position, $actionButtons 
+                ]);
+            }
+            echo '</tbody></table>';
+        }
+    }
+}
