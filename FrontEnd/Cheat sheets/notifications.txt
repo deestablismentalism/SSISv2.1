@@ -1,0 +1,14 @@
+if (data.success) {
+    Notification.show({
+        type: data.success ? "success" : "error",
+        title: data.success ? "Success" : "error",
+        message: data.message
+    });
+
+} else if (!data.success){
+    Notification.show({
+        type: data.success ? "error" : "error",
+        title: data.success ? "Error" : "Error",
+        message: data.message
+    });
+}

@@ -1,26 +1,75 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Search functionality
     const searchInput = document.getElementById('search');
-    if (searchInput) {
-        searchInput.addEventListener('keyup', function() {
-            const searchTerm = this.value.toLowerCase();
-            const studentRows = document.querySelectorAll('.student-rows');
-            
-            studentRows.forEach(row => {
-                const studentName = row.querySelector('td:first-child').textContent.toLowerCase();
-                const studentLRN = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                const studentEmail = row.querySelector('td:nth-child(5)').textContent.toLowerCase();
-                
-                if (studentName.includes(searchTerm) || 
-                    studentLRN.includes(searchTerm) || 
-                    studentEmail.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+    const gradeFilter = document.getElementById('filter-grade');
+    const statusFilter = document.getElementById('filter-status');
+    const sectionFilter = document.getElementById('filter-section');
+
+    function getRows() { return document.querySelectorAll('.student-rows'); }
+
+    function getStatusTextFromNumber(n) {
+        switch(parseInt(n)) {
+            case 1: return 'Active';
+            case 2: return 'Inactive';
+            case 3: return 'Dropped';
+            default: return 'Unknown';
+        }
+    }
+
+    function populateFilters() {
+        if (!gradeFilter || !statusFilter || !sectionFilter) return;
+        const grades = new Set();
+        const statuses = new Set();
+        const sections = new Set();
+        getRows().forEach(row => {
+            const g = row.getAttribute('data-grade'); if (g) grades.add(g);
+            const s = row.getAttribute('data-status'); if (s) statuses.add(s);
+            const sec = row.getAttribute('data-section'); if (sec) sections.add(sec);
+        });
+        const addOptions = (selectEl, values, labelFn = (v)=>v) => {
+            const existing = new Set(Array.from(selectEl.options).map(o => o.value));
+            Array.from(values).filter(v => v && !existing.has(v)).sort().forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v;
+                opt.textContent = labelFn(v);
+                selectEl.appendChild(opt);
             });
+        };
+        addOptions(gradeFilter, grades);
+        addOptions(statusFilter, statuses, getStatusTextFromNumber);
+        addOptions(sectionFilter, sections);
+    }
+
+    function applyFilters() {
+        const searchTerm = (searchInput ? searchInput.value : '').toLowerCase();
+        const gradeVal = gradeFilter ? gradeFilter.value.toLowerCase() : '';
+        const statusVal = statusFilter ? statusFilter.value : '';
+        const sectionVal = sectionFilter ? sectionFilter.value.toLowerCase() : '';
+
+        getRows().forEach(row => {
+            const rowGrade = (row.getAttribute('data-grade') || '').toLowerCase();
+            const rowStatus = (row.getAttribute('data-status') || '').toString();
+            const rowSection = (row.getAttribute('data-section') || '').toLowerCase();
+
+            const studentName = row.querySelector('td:first-child').textContent.toLowerCase();
+            const studentLRN = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const studentEmail = row.querySelector('td:nth-child(5)').textContent.toLowerCase();
+
+            const matchesSearch = !searchTerm || studentName.includes(searchTerm) || studentLRN.includes(searchTerm) || studentEmail.includes(searchTerm);
+            const matchesGrade = !gradeVal || rowGrade === gradeVal;
+            const matchesStatus = !statusVal || rowStatus === statusVal;
+            const matchesSection = !sectionVal || rowSection === sectionVal;
+
+            row.style.display = (matchesSearch && matchesGrade && matchesStatus && matchesSection) ? '' : 'none';
         });
     }
+
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+    if (gradeFilter) gradeFilter.addEventListener('change', applyFilters);
+    if (statusFilter) statusFilter.addEventListener('change', applyFilters);
+    if (sectionFilter) sectionFilter.addEventListener('change', applyFilters);
+
+    populateFilters();
+    applyFilters();
 
     // View Student button
     const viewButtons = document.querySelectorAll('.view-student');
@@ -175,8 +224,8 @@ function getStatusText(status) {
         case 2:
             return 'Inactive';
         case 3:
-            return 'On Leave';
+            return 'Dropped';
         default:
             return 'Unknown';
     }
-} 
+}

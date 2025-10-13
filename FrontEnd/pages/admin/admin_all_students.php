@@ -9,6 +9,15 @@ ob_start();
             <div class="table-title-left"><h2> Students </h2></div>
             <div> <button class="add-student-btn"> <img src="../../assets/imgs/plus-solid.svg"></button></div>
             <div class="table-title-right">
+                <select id="filter-grade" class="filter-select">
+                    <option value="">All Grades</option>
+                </select>
+                <select id="filter-status" class="filter-select">
+                    <option value="">All Statuses</option>
+                </select>
+                <select id="filter-section" class="filter-select">
+                    <option value="">All Sections</option>
+                </select>
                 <input type="text" id="search" class="search-box" placeholder="search student...">
             </div>
         </div>

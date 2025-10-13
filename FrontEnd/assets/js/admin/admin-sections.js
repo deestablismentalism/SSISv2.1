@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.text())
         .then(data => {
             content.innerHTML = data;
-
             const form = document.getElementById('add-section-form');
             const button = document.querySelector('button[type="submit"]');
             console.log(button); 
@@ -29,22 +28,22 @@ document.addEventListener('DOMContentLoaded', function() {
                  })
                  .then(response=> response.json())
                  .then(data =>{
-                    Loader.hide();
                     if(data.success == false) {
                         alert(data.message);
                         form.reset();
                         button.disabled = false;
+                        Loader.hide();  
                     }
                     else {
                         alert('Section added successfully.');
                         console.log(data);
                         setTimeout(()=> {
+                            Loader.hide();
                             window.location.reload();
                         }, 1000);
                     }
                  })
                  .catch(error=>{
-                    Loader.hide();
                     console.log(error.message);
                  })
             })
@@ -56,18 +55,35 @@ document.addEventListener('DOMContentLoaded', function() {
         const template = document.getElementById('sections-list-template');
         const container = document.querySelector('.sections-list-container');
         if(data) {
-            data.forEach(section=> {
+            data.forEach(section => {
                 const clone = template.content.cloneNode(true);
-
-                const adviserName = section.Staff_Id == null ? 'No Adviser yet' : section.Staff_First_Name + ' ' + section.Staff_Last_Name;
-                const students = section.Students == 0 ? 'No Students yet' : section.Students;
+            
+                const adviserName = section.Staff_Id == null
+                    ? 'No Adviser yet'
+                    : section.Staff_First_Name + ' ' + section.Staff_Last_Name;
+            
+                const students = section.Students == 0
+                    ? 'No Students yet'
+                    : section.Students;
+            
                 clone.querySelector('.section').textContent = section.Section_Name;
                 clone.querySelector('.section-grade-level').textContent = section.Grade_Level;
                 clone.querySelector('.adviser-value').textContent = adviserName;
                 clone.querySelector('.students-value').textContent = students;
-                clone.querySelector('.edit-section').setAttribute('href' , `./admin_view_section.php?section_id=${section.Section_Id}`);
+            
+                clone.querySelector('.edit-section')
+                    .setAttribute('href', `./admin_view_section.php?section_id=${section.Section_Id}`);
+            
                 container.appendChild(clone);
-
+            });
+            
+            container.addEventListener('click', e => {
+                const link = e.target.closest('.edit-section');
+                if (!link) return;
+                e.preventDefault();
+                Loader.show();
+                const target = link.href;
+                setTimeout(() => window.location.href = target, 100);
             });
         }
     })
@@ -83,13 +99,22 @@ async function fetchSectionDetails() {
             return null;
         }
         if(!data.success) {
-            alert(data.message || 'Something went wrong');
+            Notification.show({
+                type: data.success ? "error" : "error",
+                title: data.success ? "Something Went Wrong" : "Error",
+                message: data.message
+            });
             return null;
         }
+        Loader.hide();
         return data.data;
     }
     catch(err) {
-        alert('There was an unexpected problem');
+        Notification.show({
+            type: data.success ? "error" : "error",
+            title: data.success ? "There was an unexpected problem" : "Error",
+            message: data.message ? err.message : " " 
+        });;
         console.error(error);
         return null;
     }

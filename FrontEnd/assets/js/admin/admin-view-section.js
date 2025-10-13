@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const sectionId = new URLSearchParams(window.location.search).get('section_id');
     console.log(sectionId);
     editBtn.addEventListener('click', function() {
-
         modal.style.display = 'block';
         modalContent.innerHTML = loadingText;
         fetch(`../../../BackEnd/templates/admin/fetchEditSectionForm.php?section_id=${sectionId}`)
@@ -16,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data=> {
             modalContent.innerHTML = modalHeader();
             modalContent.innerHTML += data;
-
             close(modal);
 
             const form = document.getElementById('edit-section-details');
