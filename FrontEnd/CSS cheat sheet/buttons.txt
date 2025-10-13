@@ -1,3 +1,6 @@
+BUTTON WITH TRANSPARENT BACKGROUND 
+
+
 button {
     /*DO NOT CHANGE*/
     border: 2px solid var(--main-color);
@@ -7,7 +10,7 @@ button {
     cursor: pointer;
     text-align: center;
     transition: ease-out 0.5s;
-    
+    font-family: var(--button-fonts);
 
     /* Feel Free to adjust */
     border-radius: 0.5rem;
@@ -27,3 +30,30 @@ button:active {
     transform: scale(0.9);
 }
 
+
+
+
+
+
+BUTTON WITH SOLID BACKGROUND
+
+.modal-subjects button {
+    border: 2px solid var(--main-color);
+    color: white;
+    background: var(--main-color);
+    cursor: pointer;
+    text-align: center;
+    transition: ease-out 0.5s;
+    font-family: var(--button-fonts);
+
+    padding: 0.2rem;
+    border-radius: 0.2rem ;
+}
+
+.modal-subjects button:hover {
+    transform: scale(1.05);
+}
+
+.modal-subjects button:active {
+    transform:var(--button-click);
+}

@@ -1,3 +1,19 @@
+:root {
+    --main-fonts: 'Baloo', Arial;
+    --title-fonts: 'Baloo-Thambi-2', sans-serif;
+    --button-fonts: 'Baloo-Thambi-2';
+    --link-fonts: 'Roboto', sans-serif;
+    --sidebar-width: 60px;
+    --sidebar-expanded-width: 20dvw;
+    --title-font-size: 3em;
+    --main-color: #123b69;
+    --secondary-color: #F1BD22;
+    --wrapper-bg-color: #fffdfdf5;
+    --button-color: ;
+    --button-hover-color: ;
+    --button-click: scale(.9);
+}   
+
 body {
     background-color: antiquewhite;
     width: 100%;
@@ -119,26 +135,32 @@ body {
 
 .enrollments {
     width: 100%;
+    border-collapse: collapse;
+    border-radius: 1em;
+    overflow: hidden;
+    cursor: default;
+    border: none;
+    background-color: white;
+    font-family: var(--main-fonts);
+    box-shadow: -.1px -1px 5px .1px #d0caca;
 }
 
-.enrollments th {
-    font-weight: bold;
+th, td {
+    font-family: var(--main-fonts);
     text-align: center;
-    background-color: #FFFFFF;
+    padding: 1rem;
 }
 
 .enrollments th, .enrollments td {
-    text-align: center;
-    padding: 10px;
+    padding: 1em;
+    text-align: left;
+}
+.enrollments th {
+    background: #f0f0f0;
+    color: #333;
+    font-weight: 600;
 }
 
-.enrollments tr:nth-child(even) {
-    background-color: #F4F4F4; /* Light gray for even rows */
-}
-
-.enrollments tr:nth-child(odd) {
-    background-color: #FFFFFF; /* White for odd rows */
-}
 .modal-table {
     table-layout: fixed;
 }
@@ -204,12 +226,25 @@ body {
     cursor: pointer;
 }
 .view-button {
-    background-color: #003366d5; /* Dark blue */
+    border: 2px solid var(--main-color);
     color: white;
-    padding: 6px 12px;
-    border-radius: 5px;
+    background: var(--main-color);
     cursor: pointer;
+    text-align: center;
+    transition: ease-out 0.5s;
+    font-family: var(--button-fonts);
+    padding: 0.2rem;
+    border-radius: 0.2rem ;
 }
+
+.view-button:hover {
+    transform: scale(1.05);
+}
+
+.view-button:active {
+    transform:var(--button-click);
+}
+
 .checkboxes {
     width: 20px;
     height: 20px;

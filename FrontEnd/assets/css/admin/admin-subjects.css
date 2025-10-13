@@ -15,6 +15,9 @@
 }
 .admin-subject-title {
     font-size: var(--title-font-size);
+    font-weight: 900;
+    font-family: var(--title-fonts);
+    color: var(--main-color);
 }
 .add-subject {
     background-color: #ffffff;
@@ -27,10 +30,11 @@
 }
 .subjects-list {
     margin-top: 2em;
-    background: #fff;
+    background: var(--wrapper-bg-color);
     padding: 2em;
     border-radius: 1.5em;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    font-family: var(--main-fonts);
 }
 .subjects-list h2 {
     margin-bottom: 1em;
@@ -42,9 +46,13 @@
 .subjects-table {
     width: 100%;
     border-collapse: collapse;
-    background: #fafafa;
     border-radius: 1em;
     overflow: hidden;
+    cursor: default;
+    border: none;
+    background-color: white;
+    font-family: var(--main-fonts);
+    box-shadow: -.1px -1px 5px .1px #d0caca;
 }
 .subjects-table th, .subjects-table td {
     padding: 1em;
@@ -195,27 +203,52 @@
     color: black;
 }
 
-/* Submit button */
 .submit-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
+    /*DO NOT CHANGE*/
+    border: 2px solid var(--main-color);
+    color: var(--main-color);
+    background: transparent;
+    box-shadow: inset 0 0 0 0 var(--main-color);
+    cursor: pointer;
+    text-align: center;
+    transition: ease-out 0.5s;
+    font-family: var(--button-fonts);
+    
+
+    /* Feel Free to adjust */
     padding: 0.75em 2em;
     border-radius: 0.5em;
     font-size: 1em;
-    cursor: pointer;
-    transition: background-ease 0.2s;
     height: 50%;
-    align-self: flex-start;
 }
+
 .submit-button:hover {
-    background-color: #0056b3;
+    /*DO NOT CHANGE*/
+    color: white;
+    box-shadow: inset 0 -100px 0 0 var(--main-color);
 }
+
+.submit-button:active {
+    /*DO NOT CHANGE*/
+    transform: scale(0.9);
+}
+
+
+
 .assign-teacher {
     background-color: #007bff;
     padding: 0.5rem;
     border-radius: 0.3rem;
+    cursor: pointer;
 }
+
+.assign-teacher:hover {
+    background-color: #0056b3;
+}
+.assign-teacher:active {
+    transform: var(--button-click);
+}
+
 .assign-teacher img {
     width: 1.5rem;
     height: 1.5rem;

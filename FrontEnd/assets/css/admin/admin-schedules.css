@@ -1,3 +1,64 @@
+.table-title {
+    padding: 1rem;
+    background-color: white;
+    font-family: var(--main-fonts);
+    box-shadow: -.1px -1px 5px .1px #d0caca;
+    border-radius: 5px;
+}
+
+.schedule-title {
+    font-family: var(--title-fonts);
+    font-size: var(--title-font-size);
+    font-weight: bold;
+    color: var(--main-color);
+}
+
+.schedules-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 1em;
+    overflow: hidden;
+    cursor: default;
+    border: none;
+    background-color: white;
+    font-family: var(--main-fonts);
+    box-shadow: -.1px -1px 5px .1px #d0caca;
+}
+
+.schedules-list-title {
+    font-family: var(--title-fonts);
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--main-color);
+}
+
+th, td {
+    font-family: var(--main-fonts);
+    text-align: center;
+    padding: 1rem;
+}
+
+.schedules-table th, .schedules-table td {
+    padding: 1em;
+    text-align: left;
+}
+.schedules-table th {
+    background: #f0f0f0;
+    color: #333;
+    font-weight: 600;
+}
+
+tr:nth-child(odd) {background-color: #ffffff;}
+
+tr:nth-child(even) {background-color: #f9f9f9;}
+.view-student  {
+    background-color: yellow; /* Dark blue */
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
 .admin-schedules-content {
     padding: 1rem;
 }
@@ -9,30 +70,72 @@
 .schedules-list-container {
     margin: 1rem;
     padding: 2rem;
-    background-color: #fff;
+    background-color:var(--wrapper-bg-color);
     border-radius: 0.5rem;
 }
 .schedule-title {
     font-size: var(--title-font-size);
 }
+
 .add-sched-btn {
-    color: white;
-    background-color: #007bff;
+    /*DO NOT CHANGE*/
+    border: 2px solid var(--main-color);
+    color: var(--main-color);
+    background: transparent;
+    box-shadow: inset 0 0 0 0 var(--main-color);
+    cursor: pointer;
+    text-align: center;
+    transition: ease-out 0.5s;
+    font-family: var(--button-fonts);
+
+    /* Feel Free to adjust */
     border-radius: 0.5rem;
-    padding: 0.75em 2em;
+    padding: 0.5rem;
+    height: 50%;
+    margin-top: .6em;
 }
+
+.add-sched-btn:hover {
+    /*DO NOT CHANGE*/
+    color: white;
+    box-shadow: inset 0 -100px 0 0 var(--main-color);
+}
+
+.add-sched-btn:active {
+    /*DO NOT CHANGE*/
+    transform: scale(0.9);
+}
+
+
 /*modal subjects list*/
+
 .modal-subjects {
     display:flex;
     justify-content: space-between;
     margin-bottom: 0.2rem;
 }
+
 .modal-subjects button {
-    padding: 0.2rem;
+    border: 2px solid var(--main-color);
     color: white;
-    background-color: #007bff;
+    background: var(--main-color);
+    cursor: pointer;
+    text-align: center;
+    transition: ease-out 0.5s;
+    font-family: var(--button-fonts);
+
+    padding: 0.2rem;
     border-radius: 0.2rem ;
 }
+
+.modal-subjects button:hover {
+    transform: scale(1.05);
+}
+
+.modal-subjects button:active {
+    transform:var(--button-click);
+}
+
 /*modak schedule form*/
 .schedule-form {
     display: flex;

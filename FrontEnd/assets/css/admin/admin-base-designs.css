@@ -6,7 +6,7 @@
     --link-fonts: 'Roboto', sans-serif;
     --sidebar-width: 60px;
     --sidebar-expanded-width: 20dvw;
-    --title-font-size: 1.5rem;
+    --title-font-size: 3em;
     --main-color: #123b69;
     --secondary-color: #F1BD22;
     --wrapper-bg-color: #fffdfdf5;
@@ -383,10 +383,15 @@ p {
     border-radius: 8px;
     max-height: 80vh;
     overflow-y: auto;
+    font-family: var(--main-fonts);
 }
+
+
 .close {
     position: absolute;
     right: 20px;
+
+
     top: 10px;
     color: #aaa;
     font-size: 28px;

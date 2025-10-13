@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="./assets/css/reset.css">
     <link rel="stylesheet" href="./assets/css/change-password.css">
     <link rel="stylesheet" href="./assets/css/fonts.css">
+    <link rel="stylesheet" href="/SSISV2.1/FrontEnd/assets/css/notifications.css">
     <script src="./assets/js/change-password.js" defer></script>
+    <script src="/SSISV2.1/FrontEnd/assets/js/notifications.js"></script>
 </head>
 <body>
     <?php
