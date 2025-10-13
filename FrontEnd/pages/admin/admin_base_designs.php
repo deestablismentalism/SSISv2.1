@@ -16,6 +16,7 @@ if (!isset($_SESSION['Staff']) && $_SESSION['Staff']['Staff-Type'] !== 1) {
     <link rel="stylesheet" href="../../assets/css/fonts.css">
     <link rel="stylesheet" href="../../assets/css/admin/admin-base-designs.css">
     <link rel="stylesheet" href="../../assets/css/reset.css">
+    <link rel="stylesheet" href="../../assets/css/loader.css">
     <link rel="icon" href="../../../favicon.ico">
     <link rel="stylesheet" href="/SSISV2.1/FrontEnd/assets/css/notifications.css">
     <?php if (isset($pageCss)) echo $pageCss; ?>
@@ -25,7 +26,7 @@ if (!isset($_SESSION['Staff']) && $_SESSION['Staff']['Staff-Type'] !== 1) {
 </head>
 <body>
         <?php
-            include '../loader.php';
+            require_once __DIR__ . '/../loader.php';
         ?>
 
         <div class="main-wrapper">
