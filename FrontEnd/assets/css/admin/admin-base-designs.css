@@ -1,7 +1,7 @@
 /*----START OF BASE DESIGNS----*/
 :root {
-    --main-fonts: 'Baloo', Arial;
-    --title-fonts: 'Baloo-Thambi-2', sans-serif;
+    --main-fonts: 'Barlow', Arial, sans-serif;
+    --title-fonts: 'Barlow', Arial, sans-serif;
     --button-fonts: 'Baloo-Thambi-2';
     --link-fonts: 'Roboto', sans-serif;
     --sidebar-width: 60px;

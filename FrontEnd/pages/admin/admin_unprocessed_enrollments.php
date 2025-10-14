@@ -13,7 +13,7 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-unprocesse
     </div>
     <div class="table">
         <table class="enrollments">
-            <thead> 
+            <thead style="background-color: #ffffffff; border-bottom: 2px solid #ddd; font-weight: 900;">
                 <th>LRN</th>
                 <th>Full Name</th>
                 <th>Handled By</th>
@@ -35,7 +35,7 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-unprocesse
     </div>
     <div class="table">
         <table class="enrollments">
-            <thead> 
+            <thead style="background-color: #ffffffff; border-bottom: 2px solid #ddd; font-weight: 900;">
                 <th>LRN</th>
                 <th>Full Name</th>
                 <th>Handled By</th>
@@ -56,7 +56,7 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-unprocesse
     </div>
     <div class="table">
         <table class="enrollments">
-            <thead> 
+            <thead style="background-color: #ffffffff; border-bottom: 2px solid #ddd; font-weight: 900;">
                 <th>LRN</th>
                 <th>Full Name</th>
                 <th>Handled By</th>

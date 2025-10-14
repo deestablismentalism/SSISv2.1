@@ -25,15 +25,19 @@ ob_start();
         <div class="table-container">
             <table class="students">
                 <thead> 
-                    <th> Student Name </th>
-                    <th> Student LRN </th>
-                    <th> Grade Level </th>
-                    <th> Section </th>
-                    <th> Student Email </th>
-                    <th> Student Status </th>
-                    <th> Student Actions </th>
+                    <tr>
+                        <th> Student Name </th>
+                        <th> Student LRN </th>
+                        <th> Grade Level </th>
+                        <th> Section </th>
+                        <th> Student Email </th>
+                        <th> Student Status </th>
+                        <th> Student Actions </th>
+                    </tr>
                 </thead>
                 <tbody class="student-info">
+
+                
                     <?php 
                         include_once __DIR__ . '/../../../BackEnd/admin/view/adminStudentsView.php';
                         $view = new adminStudentsView();
