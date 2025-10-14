@@ -1,305 +1,248 @@
-/*Head, main, logo container, page title*/
-.header { 
-    color: White;
-    font-size: 23.4px;  
-    font-family: "Balthazar";
-    padding: .1em;
-    margin-bottom: 2em;
-    height: 1em;
-    margin-top: 1.7em;
+/* ===== Base Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
-#img-container{
-    margin: 0 auto;  
-    height: auto;
-    min-height: 100vh;
+/* ===== Page Background ===== */
+body {
+  background: linear-gradient(135deg, #e8f0ff, #f8fbff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* ===== Main Container ===== */
+.main {
+    /* background: white; */
+    /* display: flex
+; */
+    flex-direction: column;
+    align-items: center;
+    /* border-radius: 20px; */
+    /* overflow: hidden; */
+    /* box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); */
+    /* width: 90%; */
+    /* max-width: 950px; */
+    position: relative;
+    /* padding: 40px 50px 60px 50px; */
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    max-width: 1100px;
     width: 100%;
-    max-width: 1000px;
+    display: grid
+;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 23px;
     overflow: hidden;
+    height: 30em;
+
 }
 
-#student{
-    width: 100%;
-    height: auto;
-    min-height: 100vh;
-    object-fit: cover;
-    display: block;
+/* ===== Header and Title ===== */
+.header h2 {
+  font-size: 1.5em;
+  color: #243b75;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
-#logo-container {
-    height: 5em;
-    width: 5em;
-    border-radius: 50%;
-    background-color: #003366;
-    margin: 0 auto;  
-    margin-bottom: 2.5em;
+.login-container {
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 950px;
+    padding: 2em
 }
 
 #school-logo {
-    border-radius: 21%;
-    height: 4em;
-    width: 4em;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #007bff;
 }
 
-.page-title { 
-    color:#f3f3f3;
-    font-size: 100%;
-    padding-bottom: 0.5em;
+.page-title h3 {
+    font-size: 2.5em;
+    color: #243b75;
+    font-weight: 800;
+    font-family: "PT Serif", bold;
+    text-align: center
 }
 
-
-hr{
-    border: 0;
-    height: 1px;
-    background: #333;
-    background-image: linear-gradient(to right, #E1A23C, #ccc, #E1A23C);
-    width: 8em;
-    margin: 0 auto;
-}
-
-html, body {
-    display: flex;
-    font-family: sans-serif;
-    max-height: 100vh;
-    background: #f3f3f3;
-    direction: column;
-    margin: 0;
-    font-family: "Balthazar";
-    overflow: hidden;
-}
-
-.main {
-    background-color: #003366;
+p.subtitle {
+    color: #6c7aa5;
+    margin-bottom: 25px;
     text-align: center;
-    min-height: 0%;
-    height: auto;
-    min-height: 100vh;
-    width: 90%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
 }
 
-.user-details{
-    display: flex;
-    flex-wrap:  wrap;
-    align-content: flex-end;
-    flex: 1;
-    margin: 2em 0em 0em 0em;
-    justify-content: center;
+
+/* ===== Form Container ===== */
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
+form {
+  width: 100%;
+  max-width: 450px;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Floating Label Input Style ===== */
 .input-box {
-    margin: 0em 2em 0em 0em;
-    justify-content: center;
-    display: inline-block;
+  position: relative;
+  margin-bottom: 25px;
 }
 
-.input-box  ::placeholder {
-    color: #FFF8F8;
-    opacity: .64;
-    font-size: .8em;
-    font-family: Baloo-Thambi-2;    
+.input-box input {
+  width: 100%;
+  padding: 13px 18px;
+  border: 1px solid #ccc;
+  border-radius: 31px;
+  background: transparent;
+  outline: none;
+  font-size: 1em;
+  transition: all 0.3s ease;
 }
 
-input {
-    margin: .4em .3em 1.5em .3em;
-    display: flex;
-    width: 16em;
-    height: 3.5em;
-    font-size: .9em;
-    box-sizing: border-box;
-    border-radius: 8px;
-    font-family: 'Baloo Thambi';
-    background-color: #70859c;
+.input-box .details {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  color: #888;
+  transform: translateY(-50%);
+  background: white;
+  padding: 0 6px;
+  font-size: 1em;
+  pointer-events: none;
+  transition: 0.3s ease;
 }
 
-.details {
-    color: rgb(255, 248, 248);
-    margin-bottom: 8em;
-    text-align: start;
-    border-bottom-width: 2px;
-    transition: all 0.3s ease;
-    display: center;
-    font-size: .8em;
-    font-family: Baloo-Thambi-2;
-    font-weight: 400;
-    text-align: center;
+/* Floating effect when active */
+.input-box input:focus,
+.input-box input:not(:placeholder-shown) {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
 }
 
-/*button, Create, Two Lines*/
+/* Label moves upward when active */
+.input-box input:focus + .details,
+.input-box input:not(:placeholder-shown) + .details {
+  top: 0;
+  left: 12px;
+  font-size: 0.8em;
+  color: #007bff;
+}
+
+/* ===== Glowing Animation ===== */
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(0, 123, 255, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+  }
+}
+
+.input-box input:focus {
+  animation: glowPulse 1.5s infinite ease-in-out;
+}
+
+/* ===== Buttons ===== */
 .button {
-    margin: .6em 12em 0.8em 12em;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }
 
-p{  
-    color: white;
-}
-
-.signin-link {
-    color: #E1A23C;
-    cursor: pointer;
-}
-
-.vlorange{
-    background-color:  #E1A23C;
-    width: 2em;
-    height: auto;
-    min-height: 100vh;
-}
-
-.vlyellow{
-    background-color:  #CC8B20;
-    height: auto;
-    min-height: 100vh;
-    width: 2em;
-}
 .submit-btn {
-    padding: 1em 2em 2em 2em;
-    border-radius: 78px;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    background-color: #E1A23C;
-    width: 12em;
-    height: 2.7em;
-    font-size: 1em;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 31px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: 0.3s ease;
+  width: 80%;
+  text-align: center;
 }
 
 .submit-btn:hover {
-    background-color: #CC8B20;
-    transition: all 0.3s ease;
+  background: #0056b3;
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
 }
 
-/* Desktops (1024px and up) */
-@media (max-width: 1024px) {
-    .main {
-        width: 100%;
-        padding: 10px;
-    }   
-    #user-details{
-        font-size: 15px;
-    }
-    .vlyellow, .vlorange{
-        display: none;
-    }
-
+/* ===== Account Redirect Text ===== */
+p {
+  text-align: center;
+  margin-top: 25px;
+  color: #000000;
+  font-size: 0.95em;
 }
 
-/* Tablets (768px - 1023px) */
-@media (max-width: 768px) and (max-width: 1023px) {
-    .main {
-        width: 100%;
-        padding: 10px;
-    }
-    .input {
-        margin: .4em .3em 2.5em .3em;
-        width: 226px;
-        height: 3;
-    }
-    #student, #img-container {
-        display: none;
-    }
-    button {
-        margin: -1px 18px 9px 6px;
-        width: 26%;
-    }
-    #wrap {
-        width: 99%;
-    }
-    .main {
-        width: 100%;
-        padding: 10px;
-        max-width: 768px;
-    }
-    .user-details {
-        margin: 2em 0em 0em 1em;
-        font-size: 15px;
-    }
+p a {
+  color: #007bff;
+  font-weight: 500;
+  text-decoration: none;
 }
 
-/* Medium phones (425px - 767px) */
-@media (max-width: 767px) {
-    .header{
-        font-size: 21.4px;
-    }
-    .main {
-        width: 100%;
-    }
-    .box {
-        width: 70%;
-        margin: -10px auto;
-    }
-    input{
-        font-size: 8.7px;
-    }
-    button, .admin-login-button {
-        height: 46px;
-        margin: 2px 2%;
-        width: 37%;
-        font-size: 14px;
-    }
-    #student, #img-container {
-        display: none;
-    }
-    .user-details {
-        margin: 2em -1em 0em 1em;
-        font-size: 11px;
-    }
-    button {
-        margin: -1px 18px 9px 6px;
-        width: 26%;
-    }
-    p {
-    color: white;
-    font-size: 13px;
-    }
-}
-
-/* Small phones (375px - 424px) */
-@media (max-width: 424px) {
-    .main {
-        padding: 10px 5px;
-    }
-    .page-title h3, h2 {
-        font-size: 1em;
-    }
-    .box {
-        width: 95%;
-    }
-    button, .admin-login-button {
-        width: 95%; 
-    }
-    input {
-        margin: 4px auto;
-    }
-}
-
-/* Extra small phones (320px - 374px) */
-@media (max-width: 374px) {
-    h2 {
-        font-size: .9em;
-    }
-    button, .admin-login-button {
-        width: 100%;
-    }
-
-  #student, #img-container {
-    display: none;
-    }
-    p{
-        font-size: 13px;
-    }
-    .user-details {
-        margin: 1em 0em 1em 1em;
-        font-size: 10px;
-    }
-    .input-box {
-    margin: 0em 2em 2em 1em;
-    }
-    input{
-        margin: 0px auto;
-    }
+p a:hover {
+  text-decoration: underline;
 }
 
 
+/* ===== Right Image ===== */
+#img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    border-radius: 27px;
+}
 
+#image {
+    max-width: 400px;
+    height: auto;
+}
+
+/* ===== Responsive Layout ===== */
+@media (max-width: 900px) {
+  body {
+    flex-direction: column;
+  }
+
+  .main {
+    width: 95%;
+    padding: 30px 25px;
+  }
+
+  #img-container {
+    display: none; /* Hide image on small screens */
+  }
+
+  .submit-btn {
+    width: 100%;
+  }
+}

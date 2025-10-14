@@ -11,7 +11,7 @@
                         <div class="menu border-100sb" id="dashboard">
                             <img src="../../assets/imgs/dashboard-logo.png" class="bi">
                             <span id="dashboard-spn" class="menu-title">
-                                <a href="./Admin_Dashboard.php" class="admin-nav-links">Dashboard</a>
+                                <a href="./admin_dashboard.php" class="admin-nav-links">Dashboard</a>
                             </span>
                         </div>
 

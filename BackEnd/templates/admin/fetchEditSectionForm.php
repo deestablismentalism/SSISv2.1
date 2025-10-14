@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../../admin/controller/adminSectionDetailsController.php';
+require_once __DIR__ . '/../../admin/controller/adminViewSectionController.php';
 
-$controller = new adminSectionDetailsController();
+$controller = new adminViewSectionController();
 ?>
 <form id="edit-section-details" class="edit-section-details"> 
     <?php 

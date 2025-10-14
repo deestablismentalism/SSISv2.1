@@ -1,12 +1,11 @@
-.header {
-    background-color: #003366;
+html{ 
+        background-color: #f3fffe
 }
-.header-title {
-    display: flex;
-    font-family: Barlow, light, sans-serif;
-    color: #ffffff;
-    font-size: 32px;
-    font-weight: 400;
+.header {
+    background-color: #f3fffe;
+}
+.body {
+    background-color: #f3fffe; /* Light background for contrast */
 }
 
 @keyframes flipInWord {
@@ -100,6 +99,7 @@
             font-size: 1rem;
             animation: slideInUp 1s ease 0.3s forwards;
             margin: -164px 0 102px 0px;
+            text-shadow: 2px 4px 10px rgb(0, 27, 33);
         }
 
         .hero-subtitle img {
@@ -107,6 +107,7 @@
             height: auto;
             vertical-align: middle;
             margin-right: 10px;
+            text-shadow: 2px 4px 10px rgb(0, 1, 1);
         }
 
 
@@ -125,7 +126,7 @@
         animation: flipInWord 0.8s ease forwards;
         font-family: "PT Serif", serif;
         font-weight: 900;
-        text-shadow: 2px 4px 10px rgb(190 194 131);
+        text-shadow: 2px 4px 10px rgb(10 131 156);
         }
 
         .hero-title .word:nth-child(1) {
@@ -287,27 +288,7 @@
     margin-top: 40px;
 }
 
-.learn-more-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    flex-direction: column;
-    padding: 30px;
-    gap: 15px;
-}
-
-.learn-more-container > .learn-more-content {
-    background-color: #d3f5ff;
-    border: 1px solid rgb(107 255 192 / 26%);
-    padding: 30px;
-    text-align: center;
-    border-radius: 142px;
-    height: 35em;
-    width: 36em;
-
-}
-
-.learn-more-text {
+h5 {
     font-size: 31px;
     margin-top: 40px;
     text-align: center;
@@ -317,7 +298,37 @@
     font-family: "PT Serif", light;
     text-shadow: 1px 1px 7px rgb(222 222 163);
     font-weight: 500;
+}
 
+.learn-more-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    flex-direction: column;
+}
+
+.learn-more-container > .learn-more-content {
+    border-radius: 12px;
+    background-color: #3fc4f48f;
+    border: 1px solid rgb(107 255 192 / 26%);
+    padding: 3rem;
+    text-align: center;
+    border-radius: 142px;
+    height: 20em;
+    width: 36em;
+
+}
+
+.learn-more-text {
+    font-size: 31px;
+    margin-top: 40px;
+    text-align: center;
+    width: 100%;
+    color: #0093ff;
+    margin: 30px 0px 30px 0px;
+    font-family: "PT Serif", light;
+    /* text-shadow: 1px 1px 7px rgb(222 222 163); */
+    font-weight: 800;
 
 }
 
@@ -355,49 +366,44 @@
 }
 
 .learn-more-container p {
-    font-size: 1.5em;
-    color: #000000; /* Changed from white to black for better contrast */
-    margin-top: 20px;
-    text-align: center;
-    width: 100%;
+    line-height: 1.6;
+    color: #0f2e3e;
+    margin-bottom: 1.5rem;
+    font-family: "PT Serif";
+    text-shadow: 2 3 #3e1a1a;
+    text-shadow: 1px 1px 12px rgb(207 209 210);
 }
 
 .learn-more-container h3 {
-    font-size: 1.5em;
-    color: #003366; /* Changed from white to black for better contrast */
-    margin-top: 20px;
-    text-align: center;
-    width: 100%;
-    font-weight: bold;
+    font-size: 1.8rem;
+    margin: 0 0 1rem;
+    color: #224890;
+    line-height: 1.3;
+    font-family: "PT Serif", light;
+    text-shadow: 1px 1px 12px rgb(153 231 255);
+    font-weight: 600;
 }
 
 /* Mission, Vision, Values Container */
 .mv-container {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 15px;
   flex-wrap: wrap;
   margin: 44px auto 84px;
 }
 
 .card {
-  background: white;
+  background:#fff;
   border-radius: 16px;
   padding: 2rem;
   width: 457px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   background-image: url("../assets/imgs/crumpled-paper.jpg");
-
 }
 
-.card:hover {
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-}
-
-
-.container h3 {
+.card h3 {
   margin: 0 0 1rem;
   color: #1f3c5b;
   font-size: 1.9em;
@@ -405,12 +411,19 @@
   margin-top: 8px;
   text-align: center;   
 }
-.container p {
-  color: #000000;
+.card p {
+  color: #555;
   font-size: 1.1em;
   line-height: 1.6;
   text-align: center;
 }
+
+/* .card ul {
+  font-size: 1.45em;
+  color: #f9f9f9;
+  text-align: center;
+  list-style: none; 
+} */
 
 /* Responsive CSS for Learn More Page */
 

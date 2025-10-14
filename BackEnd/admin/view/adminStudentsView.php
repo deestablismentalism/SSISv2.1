@@ -19,7 +19,7 @@ class adminStudentsView {
         }
         $data = $response['data'];
         foreach($data as $rows) {
-            $section = $rows['Section_Name'] === null ? 'Section is not set' : htmlspecialchars($rows['Section_Name']);
+            $section = $rows['Section_Name'] === null ? '-' : htmlspecialchars($rows['Section_Name']);
             $middleInitial = $rows['Student_Middle_Name'] === null ? '' : substr($rows['Student_Middle_Name'], 0, 1) . ".";
             $lrn = $rows['Learner_Reference_Number'] === 0 ? 'LRN is not set' : $rows['Learner_Reference_Number'];
             
@@ -55,7 +55,7 @@ class adminStudentsView {
                 <td>' . $statusText . '</td>
                 <td> 
                     <button class="view-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="../../assets/imgs/eye-regular.svg" alt="View Student Information"></button> 
-                    <button class="edit-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="../../assets/imgs/edit.svg" alt="Edit Student Information"></button>
+                    <button class="edit-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="../../assets/imgs/edit-yellow-green.svg" alt="Edit Student Information"></button>
                     <button class="delete-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="../../assets/imgs/trash-solid.svg" alt="Delete Student Information"></button>
                 </td>
             </tr>';

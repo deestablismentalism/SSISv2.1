@@ -23,7 +23,6 @@ class adminSubjectsController {
                     'data'=> []
                 ];
             }
-
             return [
                 'httpcode'=> 200,
                 'success'=> true,
@@ -137,7 +136,7 @@ class adminSubjectsController {
                     return [
                         'httpcode'=> 400,
                         'success'=> true,
-                        'message'=> 'subjects failed to insert due to conflicts with other subjects',
+                        'message'=> 'Some subjects failed to insert due to same existing subjects',
                         'data'=> [
                             'failed'=> $insert['existing']
                         ]

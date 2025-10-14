@@ -99,10 +99,10 @@ body {
             z-index: 2;
         }
 
-        .hero-subtitle {
+        p.hero-subtitle {
             font-size: 1rem;
             animation: slideInUp 1s ease 0.3s forwards;
-            margin: -164px 0 102px 0px;
+            margin: -130px 0 102px 0px;
         }
 
         .hero-subtitle img {
