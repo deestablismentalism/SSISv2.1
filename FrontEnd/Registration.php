@@ -34,7 +34,7 @@
         <form id="registration-form" action="../server_side/post_registration_form.php" method="post">
             <div class="user-details">
                 <div class="page-title">
-                    <h3>Welcome</h3>
+                    <h3>Welcome!</h3>
                     <p class="subtitle">Sign in to your Account</p>
                 </div>
 
@@ -82,7 +82,7 @@
             <!-- Sign In Link -->
             <p>
               Already have an account?
-              <a href="../client_side/login_form.php" class="signin-link" style="text-decoration: none;">Sign In.</a>
+              <a href="Login.php" class="signin-link" style="text-decoration: none;">Sign In.</a>
             </p>
         </form>
     </div>

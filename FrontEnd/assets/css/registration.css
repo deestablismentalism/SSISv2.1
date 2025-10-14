@@ -63,6 +63,7 @@ body {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 950px;
+    padding: 2em
 }
 
 #school-logo {
@@ -113,7 +114,7 @@ form {
 
 .input-box input {
   width: 100%;
-  padding: 14px 16px;
+  padding: 13px 18px;
   border: 1px solid #ccc;
   border-radius: 31px;
   background: transparent;
