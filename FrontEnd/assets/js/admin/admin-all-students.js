@@ -71,25 +71,27 @@ document.addEventListener('DOMContentLoaded', function() {
     populateFilters();
     applyFilters();
 
-    // View Student button
+    // View Student button with loader
     const viewButtons = document.querySelectorAll('.view-student');
     viewButtons.forEach(button => {
         button.addEventListener('click', function() {
+            Loader.show();
             const studentId = this.getAttribute('data-id');
             viewStudentDetails(studentId);
         });
     });
 
-    // Edit Student button
+    // Edit Student button with loader
     const editButtons = document.querySelectorAll('.edit-student');
     editButtons.forEach(button => {
         button.addEventListener('click', function() {
+            Loader.show();
             const studentId = this.getAttribute('data-id');
             editStudentDetails(studentId);
         });
     });
 
-    // Delete Student button
+    // Delete Student button with loader
     const deleteButtons = document.querySelectorAll('.delete-student');
     deleteButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -101,19 +103,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Function to view student details
 function viewStudentDetails(studentId) {
-    // Create a modal to display student details
-    //TODO: create the php script for fetchStudentDetails.php
     fetch(`../../../BackEnd/api/admin/fetchStudentDetails.php?id=${encodeURIComponent(studentId)}`) 
         .then(response => response.json())
         .then(data => {
+            Loader.hide();
             if (data.success) {
-                // Create modal with student details
                 createStudentDetailsModal(data.student);
             } else {
                 alert('Error fetching student details: ' + data.message);
             }
         })
         .catch(error => {
+            Loader.hide();
             console.error('Error:', error);
             alert('An error occurred while fetching student details.');
         });
@@ -121,7 +122,6 @@ function viewStudentDetails(studentId) {
 
 // Function to create and display the student details modal
 function createStudentDetailsModal(student) {
-    // Create modal container
     const modalContainer = document.createElement('div');
     modalContainer.className = 'modal-container';
     
@@ -129,7 +129,6 @@ function createStudentDetailsModal(student) {
     const modalContent = document.createElement('div');
     modalContent.className = 'modal-content';
     
-    // Add close button
     const closeBtn = document.createElement('span');
     closeBtn.className = 'close-btn';
     closeBtn.innerHTML = '&times;';
@@ -137,11 +136,9 @@ function createStudentDetailsModal(student) {
         document.body.removeChild(modalContainer);
     };
     
-    // Add student details
     const studentDetails = document.createElement('div');
     studentDetails.className = 'student-details';
     
-    // Format student information
     studentDetails.innerHTML = `
         <h2>${student.Student_First_Name} ${student.Student_Middle_Name ? student.Student_Middle_Name + ' ' : ''}${student.Student_Last_Name}</h2>
         <div class="details-grid">
@@ -168,15 +165,12 @@ function createStudentDetailsModal(student) {
         </div>
     `;
     
-    // Append elements to modal
     modalContent.appendChild(closeBtn);
     modalContent.appendChild(studentDetails);
     modalContainer.appendChild(modalContent);
     
-    // Add modal to the body
     document.body.appendChild(modalContainer);
     
-    // Add event listener to close modal when clicking outside
     window.onclick = function(event) {
         if (event.target === modalContainer) {
             document.body.removeChild(modalContainer);
@@ -184,14 +178,13 @@ function createStudentDetailsModal(student) {
     };
 }
 
-// Function to edit student details
 function editStudentDetails(studentId) {
     window.location.href = `../admin/admin_edit_student.php?id=${studentId}`;
 }
 
-// Function to delete student
 function deleteStudent(studentId) {
     if (confirm('Are you sure you want to delete this student? This action cannot be undone.')) {
+        Loader.show();
         fetch('../server_side/deleteStudent.php', {
             method: 'POST',
             headers: {
@@ -201,15 +194,16 @@ function deleteStudent(studentId) {
         })
         .then(response => response.json())
         .then(data => {
+            Loader.hide();
             if (data.success) {
                 alert('Student deleted successfully');
-                // Refresh the page to update the student list
                 location.reload();
             } else {
                 alert('Error deleting student: ' + data.message);
             }
         })
         .catch(error => {
+            Loader.hide();
             console.error('Error:', error);
             alert('An error occurred while deleting the student.');
         });
