@@ -6,62 +6,20 @@
     --wrapper-bg-color: #fffdfdf5;
 }
 
-.admin-view-section-content {
-    padding: 1rem;
-    background: var(--wrapper-bg-color);
-    margin: 1rem;
-    font-family: var(--main-fonts);
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
 .section-details-container {
-    background-color: white;
     padding: 1rem;
+    background-color: white;
     border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: -.1px -1px 5px .1px #d0caca;
+    min-height: 100vh;
+    height: 100%;
 }
 
-.button-container {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.edit-section, .back-btn {
-    background-color: var(--secondary-color);
-    color: white;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: var(--main-fonts);
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-}
-
-.edit-section:hover, .back-btn:hover {
-    background-color: #d1a11c;
-}
-
-.section-name-container, .adviser-name-container {
-    text-align: center;
-    margin-bottom: 1rem;
-}
-
-.section-name, .adviser-name {
-    font-family: var(--title-fonts);
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--main-color);
-}
-
-.students-list-container {
+.students-list-container, .subject-details-container {
     margin-top: 1rem;
 }
 
-.students-list-title {
+.students-list-title, .subject-details-title {
     font-family: var(--title-fonts);
     font-size: 1.2rem;
     font-weight: bold;
@@ -69,7 +27,7 @@
     margin-bottom: 0.5rem;
 }
 
-.students-list {
+.students-list, .subject-details-list {
     margin-top: 1rem;
     overflow-x: auto;
 }
@@ -80,7 +38,7 @@ table {
     border-radius: 1em;
     overflow: hidden;
     background-color: white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: -.1px -1px 5px .1px #d0caca;
 }
 
 th, td {
@@ -107,21 +65,154 @@ tr:hover {
     background-color: #f5f5f5;
 }
 
-.subject-details-container {
-    margin-top: 1rem;
+.admin-view-section-content {
+    padding: 1rem;
+    background: var(--wrapper-bg-color);
+    margin: 1rem;
+    font-family: var(--main-fonts);
 }
 
-.subject-details-title {
+.section-name,
+.students-list-title {
+    font-size: 2em;
+    font-weight: bold;
     font-family: var(--title-fonts);
-    font-size: 1.2rem;
+    color: var(--main-color);
+}
+
+.section-name, .adviser-name {
+    margin-bottom: 1rem;
+    font-family: var(--title-fonts);
+    font-size: 1.5rem;
     font-weight: bold;
     color: var(--main-color);
-    margin-bottom: 0.5rem;
 }
 
-.subject-details-list {
-    margin-top: 1rem;
-    overflow-x: auto;
+.adviser-name {
+    padding: 2rem;
+}
+
+.section-name-container,
+.adviser-name-container {
+    text-align: center;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.edit-section, .back-btn {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: var(--main-fonts);
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.edit-section:hover, .back-btn:hover {
+    background-color: #d1a11c;
+}
+
+/*No students design*/
+.no-students-container {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.no-students-container h1 {
+    color: #333;
+}
+
+.no-students-container a {
+    color: blue;
+    text-decoration: underline;
+}
+
+.no-students-container a:hover {
+    color: #007bff;
+    cursor: pointer;
+}
+
+/*edit section form*/
+.edit-section-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-section-details input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    border: 2px solid #007bff;
+    width: 1.2em;
+    height: 1.2em;
+    border-radius: 0.3em;
+    display: inline-block;
+    position: relative;
+    margin-right: 0.5em;
+    vertical-align: middle;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.edit-section-details input[type="checkbox"]:checked {
+    border-color: #0056b3;
+    background-color: #007bff;
+}
+
+.edit-section-details input[type="checkbox"]:checked::after {
+    content: '';
+    display: block;
+    width: 0.4em;
+    height: 0.8em;
+    border: solid #fff;
+    border-width: 0 0.2em 0.2em 0;
+    position: absolute;
+    left: 0.35em;
+    top: 0.1em;
+    transform: rotate(45deg);
+}
+
+.edit-section-details input[type="text"] {
+    width: 30%;
+    padding: 0.5em;
+    margin-bottom: 1em;
+    border: 1px solid #ccc;
+    border-radius: 0.5em;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+.edit-section-details select {
+    padding: 0.5em;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 30%;
+}
+
+.edit-section-details button[type="submit"] {
+    margin: 0.3rem;
+    background-color: #4caf50;
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.3rem;
+    width: fit-content;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    margin: 0.3rem;
+    background-color: #f44336;
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.3rem;
+    width: fit-content;
+    cursor: pointer;
 }
 
 .modal {
