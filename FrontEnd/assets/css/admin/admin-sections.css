@@ -1,16 +1,33 @@
+
+:root {
+    --main-fonts: 'Barlow', Arial, sans-serif;
+    --title-fonts: 'Barlow', Arial, sans-serif;
+    --button-fonts: 'Baloo-Thambi-2';
+    --link-fonts: 'Roboto', sans-serif;
+    --sidebar-width: 60px;
+    --sidebar-expanded-width: 20dvw;
+    --title-font-size: 3em;
+    --main-color: #123b69;
+    --secondary-color: #F1BD22;
+    --wrapper-bg-color: #fffdfdf5;
+    --button-color: ;
+    --button-hover-color: ;
+    --button-click: scale(.9);
+}
+
 .admin-sections-content {
    padding: 1rem;
 }
 .page-title {
     font-size: 3em;
-    font-family: 'Baloo-Thambi-2';
+    font-family:'Barlow', Arial, sans-serif;
     color: #123b69;
     font-weight: 900;
 }
 
 .sections-list-header h2 {
     font-size: 2em;
-    font-family: 'Baloo-Thambi-2';
+    font-family:'Barlow', Arial, sans-serif;
     font-weight: 600;
     color: #123b69;
 }

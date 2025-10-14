@@ -9,12 +9,11 @@ $pageJs= '<script type="module" src="../../assets/js/admin/admin-sections.js" de
 
 <div class="admin-sections-content">
     <div class="sections-title-wrapper"> 
-            <h1 class="page-title"> Sections</h1>
+            <h1 class="page-title"> Sections List</h1>
             <button class="submit-btn" id="add-section-btn">Add Section</button>
     </div>
     <div class="sections-list-wrapper">
         <div class="sections-list-header">
-            <h2> Sections List </h2>
             <input type="text" name="search" id="search-section" placeholder="Search section...">        
         </div>
 
