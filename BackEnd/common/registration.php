@@ -2,15 +2,18 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../core/dbconnection.php';
 require_once __DIR__ . '/./sendPassword.php';
+require_once __DIR__ . '/../core/generatePassword.php';
 require_once __DIR__ . '/../Exceptions/DatabaseException.php';
 
 class Registration {
     protected $conn;
+    protected $generatePassword;
     
     //automatically run and connect database
     public function __construct() {
         $db = new Connect();
         $this->conn = $db->getConnection();
+        $this->generatePassword = new generatePassword();
     }
     private function insertToRegistration(string $fName,string $lName, string $mName, string $cpNumber) : int {
         try {
@@ -80,7 +83,7 @@ class Registration {
             //Registration
             $registrationId = $this->insertToRegistration($First_Name, $Last_Name, $Middle_Name, $Contact_Number);
             // Generate and hash password
-            $password = $this->generatePassword();
+            $password = $this->generatePassword->getPassword();
             $hashed_password = password_hash($password, PASSWORD_DEFAULT); 
             // Insert into users table
             $insertUser = $this->insertUser($registrationId,$hashed_password, $userType);
@@ -156,12 +159,4 @@ class Registration {
         }
     }
     
-    private function generatePassword() : string{
-        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        $password = '';
-        for ($i = 0; $i < 8; $i++) {
-            $password .= $chars[random_int(0, strlen($chars) - 1)];
-        }
-        return $password;
-    }
 }

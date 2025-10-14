@@ -1,3 +1,13 @@
+:root{
+    --main-color: #349d00;
+    --secondary-color: #f2f2f2;
+    --wrapper-bg-color: #f9f9f9;
+    --main-fonts: 'BArlow', Arial, sans-serif;
+    --title-fonts: 'BArlow', Arial, sans-serif;
+    --title-font-size: 1.5rem; 
+}
+
+
 .admin-all-students-content {
     padding: 1rem;
     background: var(--wrapper-bg-color);

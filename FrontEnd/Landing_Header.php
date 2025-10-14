@@ -12,11 +12,10 @@
                     <li><a href="./Index.php">Home</a></li>
                     <li><a href="./About_Page.php">About</a></li>
                     <li><a href="./Learn_More_Page.php">Learn More </a></li>
-                    <li><a href="./Login.php">Log In</a></li>
                 </div>
             </ul>
             
-            <button class="join-btn" onclick="location.href='./Registration.php'">Sign Up</button>
+            <a class="join-btn" href="./Registration.php">Sign Up</a>
             
             <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
         </nav>

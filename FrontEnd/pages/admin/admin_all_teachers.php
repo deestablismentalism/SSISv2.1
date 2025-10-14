@@ -1,37 +1,30 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/../session_init.php';
 require_once __DIR__ . '/../../../BackEnd/common/userTypeView.php';
-
-if (!isset($_SESSION['Staff']['User-Id']) || $_SESSION['Staff']['Staff-Type'] != 1) {
-    header("Location: ../../Login.php");
-    exit();
-}
+require_once __DIR__ . '/../../assets/components.php';
+$component = new components();
 
 $pageTitle = "All Teachers";
-
+$pageJs = '<script type="module" src="../../assets/js/admin/admin-all-teachers.js" defer></script>';
 $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-all-teachers.css">';
 
 ob_start();
 ?>
-    <div class="table-wrapper">
-        <p class="all-teachers-title">All Teachers</p>
+    <div class="admin-all-teachers-content">
+        <div class="admin-all-teachers-title-wrapper">
+             <h1 class="all-teachers-title">All Teachers </h1> 
+             <button class="btn btn-primary register" id="register-teacher-btn">Register a New Teacher</button>
+        </div>
         <table class="table-teachers">
             <?php
-                require_once __DIR__ . '/../../../BackEnd/admin/adminTeachersView.php';
+                require_once __DIR__ . '/../../../BackEnd/admin/view/adminTeachersView.php';
                 $table = new adminTeachersView();
                 $table->displayAllTeachers();
             ?>
         </table>
-
-        <?php if ($_SESSION['Staff']['Staff-Type'] == 1): ?>
-            <a href="./admin_staff_registration.php" class="btn btn-primary register">
-                Register a New Teacher
-            </a>
-        <?php endif; ?>
     </div>
 <?php
+echo $component->modalComponent('all-teachers-modal', 'all-teachers-modal-content');
 $pageContent = ob_get_clean();
-
-include_once __DIR__ . '/./admin_base_designs.php';
+require_once __DIR__ . '/./admin_base_designs.php';
+?>

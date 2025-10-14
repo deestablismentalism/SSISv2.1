@@ -1,78 +1,59 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Form</title>
-    <link rel="stylesheet" href="./assets/css/reset.css">
-    <link rel="stylesheet" href="./assets/css/login.css">
-    <link rel="stylesheet" href="./assets/css/fonts.css">
-    <link rel="stylesheet" href="./assets/css/loader.css">
-    <script src="./assets/js/loader.js"></script>
-    <script src="./assets/js/login-validation.js"></script> 
-    <link rel="icon" href="../favicon.ico">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Portal</title>
+  <link rel="stylesheet" href="./assets/css/reset.css" />
+  <link rel="stylesheet" href="./assets/css/login.css" />
+  <link rel="stylesheet" href="./assets/css/fonts.css" />
+  <link rel="stylesheet" href="./assets/css/loader.css" />
+  <script src="./assets/js/loader.js"></script>
+  <script src="./assets/js/login-validation.js"></script> 
 </head>
 
-<body>  
+<body>
     <?php
         include './pages/loader.php';
     ?>
-    <div class="main"> 
 
-        <div class="header">
-             <h2>Lucena South II Elementary School</h2>
-        </div>
- 
-        <div id="logo-container">
-            <img src="./assets/imgs/logo.jpg" 
-            alt="School Logo" id="school-logo">
+  <div class="login-container">
+    <!-- LEFT ILLUSTRATION -->
+    <div class="login-illustration">
+      <img src="./assets/imgs/users-login.png" alt="Users Illustration" />
+    </div>
+
+    <!-- RIGHT LOGIN FORM -->
+    <div class="login-form">
+      <h1>Welcome!</h1>
+      <p class="subtitle">Sign in to your Account</p>
+
+     <form id="login-form" action="..\BackEnd\common\postLoginVerify.php" method="post">
+        <div class="input-group">
+          <input type="text" id="phone_number" name="phone_number" placeholder=" " required />
+          <label for="phone_number">Phone Number</label>
         </div>
 
-        <div class = "page-title">
-             <h3>Log-In</h3>
-             <BR>
-             <hr>
+        <div class="input-group">
+          <input type="password" id="password" name="password" placeholder=" " required />
+          <label for="password">Password</label>
         </div>
 
-        
-       <div class="form-container">
-            <br>
-            <div class="error-msg">
-                <span id="em-login"> Error Message Here </span>
-            </div>
-           <form id="login-form" action="..\BackEnd\common\postLoginVerify.php" method="post">
-               <div class="box">
-                   <BR>
-                   <label for="phone_number" style="color: white;  font-family: Baloo-Thambi-2;  font-size: .8em;" > Phone Number</label>
-                   <input type="text" id="phone_number" name="phone_number" placeholder="09xx xxx xxxx" required>
-                   <BR>
-                   <label for="password" style="color: white; margin-bottom: 2em; font-family: Baloo-Thambi-2;  font-size: .8em; ">Password</label>
-                   <input type="password" id="password" name="password" placeholder="Enter password here" required>
-                </div>
-                <div class="wrap">
-                    <button type="submit">
-                        Log In
-                    </button>
-                </div>
-            </form>
-        </div>
-        
-        <p><span style="color: white;">Don't have an account?</span>
+
+        <button type="submit" class="btn-primary">Log In <span style=" place-items: center;"></span></button>
+        <br>
+        <br>
+
+        <p><span style="color: black;">Don't have an account?</span>
             <a href="./Registration.php" class="register-link">
                 Create a New Account
             </a>
         </p>
+
+
+
+      </form>
     </div>
-
-    <div class="vlorange"></div>
-    <div class="vlyellow"></div>
-
-    <div id="img-container">
-        <img src="./assets/imgs/teacher.jpg" 
-        alt="student" id="student">
-    </div>
-
-
+  </div>
 </body>
 </html>

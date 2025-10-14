@@ -19,7 +19,7 @@
             content: '';            
             position: absolute;
             inset: 0;   
-            background: linear-gradient(rgb(4 108 116 / 84%), rgb(15 71 124));
+            background: linear-gradient(rgb(4 60 116 / 84%), rgb(15 71 124));
             backdrop-filter: blur(10px);
             background-color: rgba(255, 255, 255, 0.1); /* Optional: add some transparency */
             background-size: cover;
@@ -71,10 +71,10 @@
             
         .school-name {
             font-family: "PT Serif", serif;
-            color: #faf9e6; 
+            color: #ddecff;
             font-weight: 900;
             font-size: 33px;
-            text-shadow: 2px 4px 10px rgb(190 194 131);
+            /* text-shadow: 2px 4px 10px rgb(190 194 131); */
             margin: 9px 0px 3px;
         }
 
@@ -102,7 +102,7 @@
         .connect-title {
             font-size: 25px;
             font-weight: bold;
-            color: #fff5c1;
+            color: #c1d6ff;
             margin: 6px 31px 17px;
         }
 
