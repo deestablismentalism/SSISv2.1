@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/../../core/dbconnection.php';
+require_once __DIR__ . '/../../Exceptions/DatabaseException.php';
 
 class userEnrolleesModel {
     protected $conn;
@@ -94,14 +95,19 @@ class userEnrolleesModel {
             return ['success'=> false, 'message'=> 'query failed'];
         }
     } 
-    public function getUserEnrollees($id) {
-        $sql = "SELECT * FROM enrollee WHERE User_Id = :id";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT );
-        $stmt->execute(['id' => $id]);
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+    public function getUserEnrollees(int $userId) : array{
+        try {
+            $sql = "SELECT * FROM enrollee WHERE User_Id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $userId, PDO::PARAM_INT );
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            return $result;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to fetch user enrollees',0,$e);
+        }
     }
 
     public function getUserStatus($userId, $enrolleeId) {
