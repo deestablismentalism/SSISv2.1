@@ -1,6 +1,6 @@
 <?php 
 ob_start();
-$pageJs = '<script type="module" src="../../assets/js/admin/admin-subjects-validation.js" defer></script>';
+$pageJs = '<script type="module" src="../../assets/js/admin/admin-subjects.js" defer></script>';
 $pageTitle = "Admin Subjects";
 $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-subjects.css">';
 ?>
