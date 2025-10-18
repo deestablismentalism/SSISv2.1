@@ -16,8 +16,11 @@ document.addEventListener("DOMContentLoaded", function() {
             const result = await postLoginVerify(formData);
 
             if(!result.success) {
-                errorMessageContainer.classList.add('show');
-                errorMessage.innerHTML = result.message;
+                Notification.show({
+                    type: result.success ? "error" : "error",
+                    title: result.success ? "Error" : "Error",
+                    message: result.message
+                });
                 button.disabled = false;
                 button.style.backgroundColor = '#E1A23C';
             }
@@ -42,9 +45,11 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
         catch(err) {
-            errorMessageContainer.classList.add('show');
-            errorMessage.innerHTML = err.message;
-            console.error(err);
+            Notification.show({
+                type: result.success ? "error" : "error",
+                title: result.success ? "Error" : "Error",
+                message: err.message
+            });
         } 
         finally {
             Loader.hide();
