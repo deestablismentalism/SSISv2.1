@@ -37,7 +37,7 @@ class adminUnhandledEnrollmentsView {
         foreach($data['data'] as $row) {
             $lrn = !empty($row['Learner_Reference_Number']) ?  $row['Learner_Reference_Number'] :"No LRN";
             $status = $this->stringEquivalent($row['Enrollment_Status']);
-            $viewSubmission = $row['Transaction_Status'] == 1 ? "<button id='" .$row['Enrollee_Id']."' data-id='" .$row['Enrollee_Id']."' class='view-resubmission'>View Resubmission</button>" : "";
+            $viewSubmission = $row['Transaction_Status'] == 1 ? "<button id='" .$row['Enrollee_Id']."' data-id='" .$row['Enrollee_Id']."' class='view-resubmission'>Resubmission</button>" : "";
             $studentMiddleInitial = !empty($row['Student_Middle_Name']) ? substr(htmlspecialchars($row['Student_Middle_Name']), 0, 1) . "." : "";
             $fullName = htmlspecialchars($row['Student_Last_Name']) . ', ' . htmlspecialchars($row['Student_First_Name']) . ' ' .  $studentMiddleInitial;
             $staffMiddleInitial = !empty($row['Staff_Middle_Name']) ? substr($row['Staff_Middle_Name'], 0, 1) . "." : "";
@@ -63,7 +63,7 @@ class adminUnhandledEnrollmentsView {
             $lrn = !empty($row['Learner_Reference_Number']) ?  $row['Learner_Reference_Number'] :"No LRN";
             $status = $this->stringEquivalent($row['Enrollment_Status']);
             $allowResubmissionButton = '<button>Check</button>Close<button></button>';
-            $viewSubmission = $row['Transaction_Status'] == 1 ? "<button id='" .$row['Enrollee_Id']."' data-id='" .$row['Enrollee_Id']."' class='view-resubmission'>View Resubmission</button>" : "";
+            $viewSubmission = $row['Transaction_Status'] == 1 ? "<button id='" .$row['Enrollee_Id']."' data-id='" .$row['Enrollee_Id']."' class='view-resubmission'>Resubmission</button>" : "";
             $studentMiddleInitial = !empty($row['Student_Middle_Name']) ? substr(htmlspecialchars($row['Student_Middle_Name']), 0, 1) . "." : "";
             $fullName = htmlspecialchars($row['Student_Last_Name']) . ', ' . htmlspecialchars($row['Student_First_Name']) . ' ' .  $studentMiddleInitial;
             $staffMiddleInitial = !empty($row['Staff_Middle_Name']) ? substr($row['Staff_Middle_Name'], 0, 1) . "." : "";
@@ -88,7 +88,7 @@ class adminUnhandledEnrollmentsView {
         foreach($data['data'] as $row) {
             $lrn = !empty($row['Learner_Reference_Number']) ?  $row['Learner_Reference_Number'] :"No LRN";
             $status = $this->stringEquivalent($row['Enrollment_Status']);
-            $viewSubmission = $row['Transaction_Status'] == 1 ? "<button id='" .$row['Enrollee_Id']."' data-id='" .$row['Enrollee_Id']."' class='view-resubmission'>View Resubmission</button>" : "";
+            $viewSubmission = $row['Transaction_Status'] == 1 ? "<button id='" .$row['Enrollee_Id']."' data-id='" .$row['Enrollee_Id']."' class='view-resubmission'>Resubmission</button>" : "";
             $studentMiddleInitial = !empty($row['Student_Middle_Name']) ? substr($row['Student_Middle_Name'], 0, 1) . "." : "";
             $fullName = $row['Student_Last_Name'] . ', ' . $row['Student_First_Name'] . ' ' .  $studentMiddleInitial;
             $staffMiddleInitial = !empty($row['Staff_Middle_Name']) ? substr($row['Staff_Middle_Name'], 0, 1) . "." : "";
