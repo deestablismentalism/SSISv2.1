@@ -10,12 +10,12 @@
     <div class="advisory-wrapper">
         <?php
             $teacherAdvisoryView->displayAdvisoryPage();
-        ?>
+        ?>  
     </div>
 </div>
 
 <div class="modal" id="student-view-modal">
-    <div class="modal-content" id="student-modal-content"></div>
+    <div class="modal-content" id="student-modal-content"></div>    
 </div>
 <?php
     $pageContent = ob_get_clean();

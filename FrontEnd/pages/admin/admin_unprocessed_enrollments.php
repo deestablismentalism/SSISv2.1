@@ -8,11 +8,6 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-unprocesse
 ?>
     <!--START OF THE MAIN CONTENT-->
 
-  <nav class="breadcrumb">
-    <a href="#">Enrolls</a>
-    <span class="separator">›</span>
-    <a href="#" class="active">Processed Enrollments</a>
-  </nav>
 
 <div class="denied-followup-content">
     <div class="header-left">
