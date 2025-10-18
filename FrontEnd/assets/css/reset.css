@@ -9,6 +9,20 @@
   *::after {
     box-sizing: border-box;
   }
+
+  #enrolledTitle{
+    margin: 31px -2px -12px 3px;
+    /* text-size-adjust: auto; */
+    font-size: 24px;
+    color: white;
+    font-weight: 900;
+    text-shadow: 2px 1px 9px #0000009c;
+    width: 166px;
+    padding: 16px;
+    border-top: 28px;
+    border-radius: 12px;
+    text-align: center;
+  }
   
   /*
     Remove list styles (bullets/numbers)

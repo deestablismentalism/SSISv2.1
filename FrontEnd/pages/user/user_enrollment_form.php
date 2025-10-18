@@ -96,7 +96,7 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                                 <div class="error-msg">
                                     <span class="em-lschoolID"> Error Message Here. </span>
                                 </div>
-                                <input type="number" name="lschoolID" id="lschoolID" class="textbox">
+                                <input type="number" name="lschoolID" id="lschoolID" class="textbox" min="6" max="6">
                             </div>
                         </div>
                         <div class="last-school-address">
@@ -129,7 +129,7 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                                 <div class="error-msg">
                                     <span class="em-fschoolID"> Error Message Here. </span>
                                 </div>
-                                <input type="number" name="fschoolID" id="fschoolID" class="textbox">
+                                <input type="number" name="fschoolID" id="fschoolID" class="textbox" min="6" max="6">
                             </div>
                         </div>
                         <div>
@@ -151,7 +151,7 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                 <!--ROW 1-->
                 <div class="student-info-row-1">
                     <div class="PSA-number">
-                            <p class="dfont">Numero na nakalagay sa Sertipiko ng Kapanganakan <br class="responsive-text-break">(Birth Certificate) mula sa PSA (kung may dala na kopya) <span class="required">*</span></p>
+                            <p class="dfont">Numero na nakalagay sa Sertipiko ng Kapanganakan (Birth Certificate) <br><br class="responsive-text-break">mula sa PSA (kung may dala na kopya) <span class="required">*</span></p>
                             <div class="error-msg">
                                 <span class="em-PSA-number"></span>
                             </div>
@@ -519,7 +519,7 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                     <input type="radio" name="fourPS" id="is-4ps" class="radio" value="yes">
                     <label for="is-4ps">Oo</label>
                     <input type="radio" name="fourPS" id="not-4ps" class="radio" value="no">
-                    <label for="not-4ps">Hinde</label>
+                    <label for="not-4ps">Hindi</label>
                 </div>
                 <div class="image-confirm">
                     <p class="dfont">Ipasa ang malinaw na larawan ng mga Dokumento gaya ng <b>PSA BIRTH CERTIFICATE at REPORT CARD <span class="required">*</span></b></p>

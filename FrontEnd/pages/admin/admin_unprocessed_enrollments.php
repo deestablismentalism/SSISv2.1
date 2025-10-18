@@ -7,9 +7,16 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-unprocesse
     $view = new adminUnhandledEnrollmentsView();
 ?>
     <!--START OF THE MAIN CONTENT-->
+
+  <nav class="breadcrumb">
+    <a href="#">Enrolls</a>
+    <span class="separator">›</span>
+    <a href="#" class="active">Processed Enrollments</a>
+  </nav>
+
 <div class="denied-followup-content">
     <div class="header-left">
-        <h2> Enrolled </h2>
+        <h2  id="enrolledTitle" style="background: #54cc25ff;"> Enrolled </h2>
     </div>
     <div class="table">
         <table class="enrollments">
@@ -31,7 +38,7 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-unprocesse
     </div>
 
     <div class="header-left">
-        <h2> Followed Up </h2>
+        <h2  id="enrolledTitle" style="background: #f4bb36ff;"> Followed Up </h2>
     </div>
     <div class="table">
         <table class="enrollments">
@@ -52,7 +59,8 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-unprocesse
         </table>
     </div>
     <div class="header-left">
-        <h2> Denied </h2>
+
+        <h2 id="enrolledTitle" style="background: #f44336;"> Denied </h2>
     </div>
     <div class="table">
         <table class="enrollments">
