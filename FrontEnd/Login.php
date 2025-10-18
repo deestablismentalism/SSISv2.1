@@ -8,15 +8,20 @@
   <link rel="stylesheet" href="./assets/css/login.css" />
   <link rel="stylesheet" href="./assets/css/fonts.css" />
   <link rel="stylesheet" href="./assets/css/loader.css" />
+  <link rel="stylesheet" href="./assets/css/notifications.css">
   <script src="./assets/js/loader.js"></script>
   <script src="./assets/js/login-validation.js"></script> 
+  <script src="./assets/js/notifications.js"></script>
+
 </head>
 
 <body>
     <?php
         include './pages/loader.php';
     ?>
-
+    <?php
+        include_once './pages/notifications.php'
+    ?>
   <div class="login-container">
     <!-- LEFT ILLUSTRATION -->
     <div class="login-illustration">
