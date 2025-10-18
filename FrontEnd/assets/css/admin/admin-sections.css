@@ -67,6 +67,28 @@ input[type="text"] {
     font-family: var(--button-fonts);
 }
 
+#search-section { 
+    padding: 10px 23px;
+    /* border: 2px solid #c6c6c6; */
+    border-radius: 25px;
+    width: 250px;
+    width: 207px;
+    margin-bottom: 1em;
+    font-size: 17px;
+    box-sizing: border-box;
+    background: #f0f0f0;
+    color: #05137e;
+    border: 2px solid #1929a19e;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#search-section:hover {
+  background: #ffffff;
+  color: #05137e;
+  box-shadow: 0 4px 12px rgba(5, 19, 126, 0.4);
+}
+
 .add-section-form button[type="submit"]:hover,
 .sections-title-wrapper button:hover {
     color: white;
@@ -76,8 +98,7 @@ input[type="text"] {
 .add-section-form button[type="submit"]:active ,
 .sections-title-wrapper button:active {
     transform: var(--button-click);
-}
-
+} 
 
 .sections-list-wrapper {
     margin-top: 2em;

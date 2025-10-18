@@ -59,7 +59,7 @@
                             <h2> Pending Enrollments </h2>
                         </div>
                         <div class="header-right">
-                            <input type=text id="search" placeholder="Search Enrollee Name...">
+                            <input type=text id="search" placeholder="Search Name...">
                         </div>
                     </div>
                     <div class="menu-content">
@@ -70,7 +70,7 @@
                                 <th> Age </th>
                                 <th> Birthdate </th>
                                 <th> Biological Sex </th>
-                                <th> Display Enrollment Information</th>
+                                <th> Submitted   Enrollment Information</th>
                             </tr>
                             <tbody id="query-table"> 
                                 <?php      
