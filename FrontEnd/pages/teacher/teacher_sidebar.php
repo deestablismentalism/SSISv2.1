@@ -8,7 +8,7 @@
                 <!--DASHBOARD-->
                 <div class="menu border-100sb" id="dashboard">
                     <img src="../../assets/imgs/easel.svg" class="bi">
-                    <span id="dashboard-spn" class="menu-title">Dashboard</span>
+                    <a href="./teacher_dashboard.php"><span id="dashboard-spn" class="menu-title">Dashboard</span></a>
                 </div>
                 <div class="menu border-100sb" id="pending">
                     <img src="../../assets/imgs/newspaper.png" alt="newspaper" class="bi">

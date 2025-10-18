@@ -60,14 +60,14 @@
                     <div class="menu border-100sb" id="enrolls">
                         <img src="../../assets/imgs/enrolls.svg" class="bi">
                         <span id="enrolls-spn" class="menu-title">Enrolls</span>
-                        <button class="enrolls-btn dropdown" ><img src="../../assets/imgs/chevron-down.svg" class ="bi-chevron-down"></button>
+                        <button class="enrolls-btn dropdown"><img src="../../assets/imgs/chevron-down.svg" class ="bi-chevron-down"></button>
                     </div>
                         <ul class="enrolls-ul drop-content">
                             <li>
                                 <a href="./admin_all_enrollees.php" class="enrolled"> Processed Enrollments</a>
                             </li>
                             <li>
-                                <a href="admin_unprocessed_enrollments.php"> Unprocessed Enrollments </a>
+                                <a href="admin_unprocessed_enrollments.php" class="unprocessed"> Unprocessed Enrollments </a>
                             </li>
                             <li>
                                 <a href="../staff/staff_pending_enrollments.php" class="pending">Pending</a>
