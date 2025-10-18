@@ -10,13 +10,10 @@ $view = new adminSchedulesView();
 <div class="admin-schedules-content">
     <div class="admin-schedules-header-container">
         <div class="admin-schedules-header">
-            <div class="schedule-title"> <h1> Schedules </h1></div>
+            <div class="schedule-title"> <h1> Schedules List </h1></div>
             <button class="add-sched-btn" id="get-add-sched-form"> Add Schedule </button>
         </div>
         <div class="schedules-list-container">
-            <div class="schedules-list-title">
-                <h1> Schedules List </h1>
-            </div>
             <?php 
                 $view->displaySchedules();
             ?>
