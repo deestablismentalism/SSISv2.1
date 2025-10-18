@@ -2,23 +2,28 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registration</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration</title>
 
-  <!-- CSS Files -->
-  <link rel="stylesheet" href="./assets/css/reset.css" />
-  <link rel="stylesheet" href="./assets/css/Registration.css" />
-  <link rel="stylesheet" href="./assets/css/registration_form_errors.css" />
-  <link rel="stylesheet" href="./assets/css/fonts.css" />
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="./assets/css/reset.css" />
+    <link rel="stylesheet" href="./assets/css/Registration.css" />
+    <link rel="stylesheet" href="./assets/css/registration_form_errors.css" />
+    <link rel="stylesheet" href="./assets/css/fonts.css" />
+    <link rel="stylesheet" href="./assets/css/notifications.css" /> 
 
   <!-- JS -->
   <script src="./assets/js/registration.js" defer></script>
+  <script src="./assets/js/notifications.js"></script>
 </head>
 
 <body>
     <?php
-        include './pages/loader.php';
+        include_once './pages/loader.php';
+    ?>
+    <?php
+        include_once './pages/notifications.php';
     ?>
 
   <div class="login-container">

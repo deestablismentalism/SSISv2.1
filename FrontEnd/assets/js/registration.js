@@ -3,12 +3,17 @@ document.addEventListener("DOMContentLoaded", function() {
     
     form.addEventListener("submit", async function(e) {
         e.preventDefault();        
+        Loader.show();
+        
         const formData = new FormData(form);
-
         const result = await postRegistrationForm(formData);
 
         if(result.success) {
-            alert(result.message);
+            Notification.show({
+                type: result.success ? "success" : "error",
+                title: result.success ? "Success" : "error",
+                message: result.message
+            });
 
             setTimeout(()=>{
                 window.location.href = './Login.php';
@@ -16,14 +21,19 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         else {
             //TODO: switch to error message container
-            alert(result.message);
+            Notification.show({
+                type: result.success ? "Error" : "error",
+                title: result.success ? "Error" : "Error",
+                message: result.message
+            });
+            Loader.hide();
         }
         
     });
 });
 async function postRegistrationForm(formData) {
     try {
-            const response = await fetch(`../../../BackEnd/api/postRegistrationForm.php`,{
+            const response = await fetch(`/SSISV2.1/BackEnd/api/postRegistrationForm.php`,{
             method: 'POST',
             body: formData
         });
