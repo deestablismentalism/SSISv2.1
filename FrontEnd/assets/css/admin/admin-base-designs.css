@@ -478,6 +478,7 @@ p {
         width: 92%;
     }
 }
+
 @media (max-width: 1510px) {
     sidebar.active {
         min-width: 20vw;
@@ -499,6 +500,68 @@ p {
     }
 }
 
+@media (max-width: 1440px) {
+    .sidebar.active {
+        width: 22vw;
+    }
+    
+    .header-title {
+        font-size: 1.6rem;
+    }
+    
+    .header-title::before {
+        width: 1.3rem;
+        height: 1.3rem;
+    }
+    
+    .account {
+        padding-right: 1.5em;
+        font-size: 0.95em;
+    }
+    
+    .menu {
+        padding: 1.5em 0.8em 0.8em 0.8em;
+    }
+}
+
+@media (max-width: 1064px) {
+    .sidebar {
+        font-size: 0.9em;
+    }
+    
+    .sidebar.active {
+        width: 25vw;
+    }
+
+    .header-title {
+        font-size: 1.4rem;
+    }
+    
+    .header-title::before {
+        width: 1.2rem;
+        height: 1.2rem;
+        bottom: 0.7rem;
+    }
+
+    .account {
+        padding-right: 1em;
+        font-size: 0.9em;
+    }
+    
+    .account img, .account button {
+        width: 1.8em;
+        height: 1.8em;
+    }
+    
+    .menu {
+        padding: 1.2em 0.7em 0.7em 0.7em;
+    }
+    
+    .menu-title {
+        padding: 0 0.8em;
+    }
+}
+
 @media (max-width: 1045px) {
     .sidebar {
         font-size: .8em;
@@ -508,6 +571,155 @@ p {
         font-size: 1em;
     }
 
+}
+
+@media (max-width: 768px) {
+    .main-wrapper {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        height: 100vh;
+        width: 280px;
+        z-index: 1000;
+        transition: left 0.3s ease;
+        font-size: 1em;
+    }
+    
+    .sidebar.active {
+        left: 0;
+        width: 280px;
+    }
+    
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+    
+    .sidebar.active ~ .sidebar-overlay {
+        display: block;
+    }
+    
+    .content {
+        width: 100%;
+        margin-left: 0 !important;
+    }
+    
+    .header-wrapper {
+        flex-direction: row;
+        height: auto;
+        min-height: 3rem;
+        padding: 0.5rem;
+    }
+    
+    .header-title {
+        font-size: 1.2rem;
+        padding-left: 3rem;
+    }
+    
+    .header-title::before {
+        width: 1rem;
+        height: 1rem;
+        bottom: 0.6rem;
+        left: 0.8rem;
+    }
+    
+    .account {
+        padding-right: 0.5em;
+        font-size: 0.85em;
+    }
+    
+    .account img, .account button {
+        width: 1.6em;
+        height: 1.6em;
+        margin-right: 0.5em;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        right: 0;
+        min-width: 140px;
+    }
+    
+    .user-info-wrapper {
+        display: none;
+    }
+    
+    /* Mobile menu toggle button */
+    .mobile-menu-toggle {
+        display: block;
+        position: fixed;
+        top: 0.8rem;
+        left: 0.8rem;
+        z-index: 1001;
+        background: var(--main-color);
+        color: white;
+        border: none;
+        padding: 0.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.2rem;
+    }
+    
+    .menu {
+        padding: 1em 0.8em 0.8em 0.8em;
+        grid-template-columns: 20% 60% 20%;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 2rem auto;
+        padding: 1rem;
+        max-height: 90vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-title {
+        font-size: 1rem;
+        padding-left: 3rem;
+    }
+    
+    .header-title::before {
+        width: 0.9rem;
+        height: 0.9rem;
+    }
+    
+    .account {
+        font-size: 0.8em;
+    }
+    
+    .mobile-menu-toggle {
+        width: 2.2rem;
+        height: 2.2rem;
+        top: 0.7rem;
+        left: 0.7rem;
+    }
+    
+    .sidebar.active {
+        width: 260px;
+    }
+}
+
+/* Show mobile menu toggle only on mobile */
+.mobile-menu-toggle {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
 }
 
 /*----END OF THE BASE DESIGNS----*/

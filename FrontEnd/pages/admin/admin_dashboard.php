@@ -116,16 +116,20 @@ $pageJs = '<script type="module" src="../../assets/js/admin/admin-dashboard.js" 
         <a class="big-card-hyperlink" href="../staff/staff_pending_enrollments.php"> View All Pending Enrollees</a>
      </div>
      <table class="pending-enrollments-table">
+         <thead>
          <tr>
              <th>LRN</th>
              <th>Name</th>
              <th>Level</th>
          </tr>
+         </thead>
+         <tbody>
          <?php
              include_once __DIR__ . '/../../../BackEnd/admin/view/adminDashboardView.php';
              $dashboard = new adminDashboardView();
              $dashboard->displayPendingEnrolleesInformation();
          ?>
+         </tbody>
      </table>
 </div>
 <div class="quick-actions-wrapper">
