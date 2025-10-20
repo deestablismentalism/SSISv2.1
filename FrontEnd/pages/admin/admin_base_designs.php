@@ -30,17 +30,18 @@ if (!isset($_SESSION['Staff']) && $_SESSION['Staff']['Staff-Type'] !== 1) {
         ?>
 
         <div class="main-wrapper">
-        <?php require_once __DIR__ . '/./admin_sidebar.php'; ?>
-        <div class="content">
-            <?php require_once __DIR__ . '/./admin_header.php';
-                if(isset($pageContent)) {
-                   echo $pageContent;
-                }
-            ?>
+            <?php require_once __DIR__ . '/./admin_sidebar.php'; ?>
+            <div class="content">
+                <?php require_once __DIR__ . '/./admin_header.php';
+                    if(isset($pageContent)) {
+                       echo $pageContent;
+                    }
+                ?>
+            </div>
         </div>
-    </div>
+        
+        <script src="../../assets/js/admin/admin-base-designs.js" defer></script>
+        <?php if(isset($pageJs)) echo $pageJs ?>
 </body>
-<script src="../../assets/js/admin/admin-base-designs.js" defer></script>
-<?php if(isset($pageJs)) echo $pageJs ?>
 </html>
 

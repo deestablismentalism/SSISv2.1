@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
+/* ============================================ */
+/* DEFAULT/BASE STYLES - 1440px and above */
+/* ============================================ */
+
 :root {
   --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   --card-bg: rgba(112, 190, 226, 0.282);
@@ -8,9 +12,19 @@
   --hover-accent: #48cae4;
   --border-radius: 1rem;
   --transition: all 0.3s ease;
-  --base-padding: 2rem;
+  
+  /* Optimized for 1440px */
+  --base-padding: 1.75rem;
   --card-padding: 1.5rem;
   --gap-size: 1.5rem;
+  --font-base: 15px;
+  --font-heading: 1.5rem;
+  --font-subheading: 1.2rem;
+  --font-body: 0.95rem;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -20,6 +34,11 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  font-size: var(--font-base);
+}
+
+.enrollee-data-wrapper {
+  width: 100%;
 }
 
 /* ---- CLOCK SECTION ---- */
@@ -27,7 +46,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem 0;
+  padding: 1.75rem 0;
   background: linear-gradient(135deg, #1e3c72, #2a5298);
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
@@ -37,20 +56,27 @@ body {
 }
 
 .time {
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   font-weight: 600;
-  letter-spacing: 3px;
+  letter-spacing: 2.5px;
+  color: white;
+}
+
+.time span {
+  display: inline-block;
 }
 
 .date {
   font-size: 1rem;
-  opacity: 0.85;
+  opacity: 0.9;
+  color: white;
+  margin-top: 0.5rem;
 }
 
 /* ---- DASHBOARD HYPERLINKS ---- */
 .dashboard-hyperlinks {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--gap-size);
   margin: var(--base-padding);
 }
@@ -58,6 +84,7 @@ body {
 .all-hyperlinks-wrapper {
   text-decoration: none;
   color: var(--text-color);
+  transition: var(--transition);
 }
 
 .all-hyperlinks-wrapper > div {
@@ -67,68 +94,100 @@ body {
   padding: var(--card-padding);
   backdrop-filter: blur(10px);
   transition: var(--transition);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .all-hyperlinks-wrapper:hover > div {
-  transform: translateY(-5px);
+  transform: translateY(-3px);
   border-color: var(--accent-color);
-  box-shadow: 0 8px 30px rgba(0, 180, 216, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 180, 216, 0.25);
 }
 
 .data-link-title {
-  font-size: 1.2rem;
-  margin-bottom: 0.8rem;
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  color: var(--text-color);
 }
 
 .total-count {
   font-size: 2rem;
   font-weight: 600;
   color: var(--accent-color);
+  display: block;
 }
 
 /* ---- CHART SECTIONS ---- */
 .data-title {
-  font-size: 1.4rem;
+  font-size: var(--font-heading);
   font-weight: 600;
   margin: var(--base-padding);
-  text-transform: uppercase;
-  border-left: 5px solid var(--accent-color);
-  padding-left: 0.8rem;
-}
-
-.radio-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
   margin-bottom: 1rem;
-}
-
-.radio-container label {
-  margin-right: 1.2rem;
-  cursor: pointer;
-  white-space: nowrap;
+  text-transform: uppercase;
+  border-left: 4px solid var(--accent-color);
+  padding-left: 0.75rem;
+  color: var(--text-color);
 }
 
 .enrollees-by-day-container, 
 .students-data-wrapper {
   background: var(--card-bg);
   border-radius: var(--border-radius);
-  padding: var(--card-padding) var(--base-padding);
-  margin: var(--base-padding);
+  padding: var(--card-padding);
+  margin: 0 var(--base-padding) var(--base-padding);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.enrollees-by-day-container p,
+.students-data-wrapper p {
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  font-size: var(--font-body);
+}
+
+.radio-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.radio-container label {
+  color: var(--text-color);
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: var(--font-body);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.radio-container input[type="radio"] {
+  cursor: pointer;
 }
 
 .chart-loading {
   text-align: center;
   opacity: 0.7;
+  color: var(--text-color);
+  padding: 1rem;
+  font-size: var(--font-body);
+}
+
+canvas {
+  max-height: 350px;
+  width: 100% !important;
 }
 
 /* ---- CARD GRID ---- */
 .card-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--gap-size);
   margin-top: 1.5rem;
 }
@@ -136,22 +195,26 @@ body {
 .card {
   background: var(--card-bg);
   border-radius: var(--border-radius);
-  padding: 1.2rem;
+  padding: 1.25rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);
   transition: var(--transition);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   border-color: var(--accent-color);
 }
 
 /* ---- BIG CARD SECTION ---- */
 .big-card-wrapper {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2.5fr 1fr;
   gap: var(--base-padding);
   margin: var(--base-padding);
 }
@@ -159,6 +222,8 @@ body {
 .big-card-title {
   font-size: 1.2rem;
   font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 1rem;
 }
 
 .pending-enrollments-wrapper, 
@@ -174,128 +239,124 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .big-card-hyperlink {
   color: var(--hover-accent);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   transition: var(--transition);
 }
 
 .big-card-hyperlink:hover {
   text-decoration: underline;
+  color: white;
 }
 
 .pending-enrollments-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 0.5rem;
-  overflow-x: auto;
-  display: block;
 }
 
 .pending-enrollments-table th, 
 .pending-enrollments-table td {
   text-align: left;
-  padding: 0.8rem 0.6rem;
+  padding: 0.85rem 0.75rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.pending-enrollments-table th {
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .pending-enrollments-table tr:hover {
   background: rgba(255, 255, 255, 0.05);
 }
 
+.pending-enrollments-table tbody tr {
+  transition: var(--transition);
+}
+
 /* ---- QUICK ACTIONS ---- */
 .quick-action-card h3 {
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  color: var(--text-color);
+  font-size: 1.15rem;
 }
 
 .quick-action-card ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .quick-action-card li {
-  margin: 0.7rem 0;
+  margin: 0.85rem 0;
 }
 
 .quick-action-card a {
   color: var(--accent-color);
   text-decoration: none;
   transition: var(--transition);
+  font-size: 0.95rem;
+  display: inline-block;
 }
 
 .quick-action-card a:hover {
   color: var(--hover-accent);
+  transform: translateX(3px);
 }
 
 /* ============================================ */
-/* RESPONSIVE MEDIA QUERIES */
+/* RESPONSIVE BREAKPOINTS */
 /* ============================================ */
 
-/* 1440px screens */
+/* Large screens - Above 1440px */
+@media screen and (min-width: 1920px) {
+  :root {
+    --base-padding: 2rem;
+    --card-padding: 1.75rem;
+    --gap-size: 2rem;
+    --font-base: 16px;
+    --font-heading: 1.75rem;
+  }
+
+  .time {
+    font-size: 2.75rem;
+  }
+
+  .total-count {
+    font-size: 2.5rem;
+  }
+
+  canvas {
+    max-height: 400px;
+  }
+}
+
+/* 1440px - Default optimization point */
 @media screen and (max-width: 1440px) {
+  /* Already optimized at root level */
+}
+
+/* 1064px screens - Tablet landscape */
+@media screen and (max-width: 1064px) {
   :root {
     --base-padding: 1.5rem;
     --card-padding: 1.25rem;
     --gap-size: 1.25rem;
-  }
-
-  .time {
-    font-size: 2.2rem;
-  }
-
-  .date {
-    font-size: 0.95rem;
-  }
-
-  .data-link-title {
-    font-size: 1.1rem;
-  }
-
-  .total-count {
-    font-size: 1.8rem;
-  }
-
-  .data-title {
-    font-size: 1.3rem;
-    margin: 1.5rem;
-  }
-
-  .dashboard-hyperlinks {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.25rem;
-    margin: 1.5rem;
-  }
-
-  .card-container {
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  }
-
-  .big-card-wrapper {
-    gap: 1.5rem;
-    margin: 1.5rem;
-  }
-
-  .pending-enrollments-table th,
-  .pending-enrollments-table td {
-    font-size: 0.9rem;
-    padding: 0.7rem 0.5rem;
-  }
-}
-
-/* 1064px screens (tablets landscape) */
-@media screen and (max-width: 1064px) {
-  :root {
-    --base-padding: 1.25rem;
-    --card-padding: 1rem;
-    --gap-size: 1rem;
+    --font-base: 14px;
+    --font-heading: 1.35rem;
+    --font-subheading: 1.1rem;
+    --font-body: 0.9rem;
   }
 
   .gradient-background {
@@ -303,93 +364,67 @@ body {
   }
 
   .time {
-    font-size: 1.8rem;
+    font-size: 1.9rem;
     letter-spacing: 2px;
   }
 
   .date {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
 
   .dashboard-hyperlinks {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin: 1.25rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
   }
 
   .data-link-title {
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
 
   .total-count {
-    font-size: 1.6rem;
-  }
-
-  .data-title {
-    font-size: 1.2rem;
-    margin: 1.25rem;
-  }
-
-  .enrollees-by-day-container,
-  .students-data-wrapper {
-    padding: 1rem 1.25rem;
-    margin: 1.25rem;
-  }
-
-  .radio-container label {
-    font-size: 0.9rem;
-    margin-right: 0.8rem;
+    font-size: 1.75rem;
   }
 
   .card-container {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1rem;
-  }
-
-  .card {
-    padding: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
   }
 
   .big-card-wrapper {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
-    margin: 1.25rem;
-  }
-
-  .big-card-title {
-    font-size: 1.1rem;
+    gap: 1.5rem;
   }
 
   .pending-enrollments-table th,
   .pending-enrollments-table td {
+    padding: 0.75rem 0.6rem;
     font-size: 0.85rem;
-    padding: 0.65rem 0.4rem;
   }
 
-  .quick-action-card h3 {
-    font-size: 1.1rem;
-  }
-
-  .quick-action-card li {
-    font-size: 0.9rem;
+  canvas {
+    max-height: 300px;
   }
 }
 
-/* 768px screens (tablets portrait & mobile) */
+/* 768px screens - Tablet portrait & Mobile landscape */
 @media screen and (max-width: 768px) {
   :root {
-    --base-padding: 1rem;
-    --card-padding: 0.85rem;
-    --gap-size: 0.85rem;
+    --base-padding: 1.25rem;
+    --card-padding: 1rem;
+    --gap-size: 1rem;
+    --font-base: 13px;
+    --font-heading: 1.25rem;
+    --font-subheading: 1rem;
+    --font-body: 0.85rem;
     --border-radius: 0.75rem;
   }
 
   .gradient-background {
-    padding: 1rem 0;
+    padding: 1.25rem 0;
   }
 
   .time {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     letter-spacing: 1.5px;
   }
 
@@ -399,82 +434,84 @@ body {
 
   .dashboard-hyperlinks {
     grid-template-columns: 1fr;
-    gap: 0.85rem;
-    margin: 1rem;
+    gap: 1rem;
+    margin: 1.25rem;
   }
 
   .all-hyperlinks-wrapper > div {
-    padding: 1rem;
+    padding: 1.25rem;
   }
 
   .data-link-title {
-    font-size: 0.95rem;
-    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 0.6rem;
   }
 
   .total-count {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
 
   .data-title {
-    font-size: 1.1rem;
-    margin: 1rem;
+    font-size: 1.2rem;
+    margin: 1.25rem;
     padding-left: 0.6rem;
     border-left-width: 3px;
   }
 
   .enrollees-by-day-container,
   .students-data-wrapper {
-    padding: 0.85rem 1rem;
-    margin: 1rem;
+    padding: 1rem;
+    margin: 0 1.25rem 1.25rem;
   }
 
   .radio-container {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.75rem;
   }
 
   .radio-container label {
     font-size: 0.85rem;
-    margin-right: 0;
   }
 
   .card-container {
     grid-template-columns: 1fr;
-    gap: 0.85rem;
+    gap: 1rem;
   }
 
   .card {
-    padding: 0.85rem;
+    padding: 1rem;
   }
 
   .big-card-wrapper {
     grid-template-columns: 1fr;
-    gap: 1rem;
-    margin: 1rem;
+    gap: 1.25rem;
+    margin: 1.25rem;
   }
 
   .pending-enrollments-wrapper,
   .quick-actions-wrapper {
-    padding: 1rem;
+    padding: 1.25rem;
   }
 
   .big-card-title {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 
   .pending-enrollments-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.75rem;
   }
 
   .big-card-hyperlink {
     font-size: 0.85rem;
   }
 
-  /* Make table mobile-friendly */
+  /* Mobile-friendly table */
   .pending-enrollments-table {
-    font-size: 0.8rem;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .pending-enrollments-table thead {
@@ -483,23 +520,23 @@ body {
 
   .pending-enrollments-table,
   .pending-enrollments-table tbody,
-  .pending-enrollments-table tr,
-  .pending-enrollments-table td {
+  .pending-enrollments-table tr {
     display: block;
     width: 100%;
   }
 
   .pending-enrollments-table tr {
     margin-bottom: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 0.5rem;
-    padding: 0.5rem;
-    background: rgba(255, 255, 255, 0.02);
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
   }
 
   .pending-enrollments-table td {
+    display: block;
     text-align: right;
-    padding: 0.5rem;
+    padding: 0.6rem 0.5rem;
     position: relative;
     padding-left: 50%;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -517,29 +554,42 @@ body {
     padding-right: 10px;
     white-space: nowrap;
     text-align: left;
-    font-weight: bold;
-    opacity: 0.8;
+    font-weight: 600;
+    opacity: 0.85;
   }
 
   .quick-action-card h3 {
-    font-size: 1rem;
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
   }
 
   .quick-action-card li {
     font-size: 0.85rem;
-    margin: 0.6rem 0;
+    margin: 0.75rem 0;
   }
 
-  /* Adjust canvas for mobile */
+  .quick-action-card a {
+    font-size: 0.85rem;
+  }
+
   canvas {
-    max-height: 250px !important;
+    max-height: 250px;
   }
 }
 
-/* Extra small screens */
+/* Small mobile screens */
 @media screen and (max-width: 480px) {
+  :root {
+    --base-padding: 1rem;
+    --card-padding: 0.875rem;
+    --gap-size: 0.875rem;
+    --font-base: 12px;
+    --font-heading: 1.15rem;
+  }
+
   .time {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
   }
 
   .date {
@@ -547,18 +597,45 @@ body {
   }
 
   .data-link-title {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
 
   .total-count {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 
   .data-title {
-    font-size: 1rem;
+    font-size: 1.1rem;
+  }
+
+  .all-hyperlinks-wrapper > div {
+    padding: 1rem;
   }
 
   canvas {
-    max-height: 200px !important;
+    max-height: 200px;
+  }
+
+  .big-card-title {
+    font-size: 1rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .gradient-background,
+  .big-card-hyperlink,
+  .quick-actions-wrapper {
+    display: none;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .card, .pending-enrollments-wrapper {
+    border: 1px solid #ccc;
+    page-break-inside: avoid;
   }
 }
