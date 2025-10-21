@@ -2,6 +2,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebarToggleBtn = document.getElementById('sidebar-toggle-button');
     const sidebar = document.querySelector('.sidebar');
     
+    // Set sidebar as active by default (open on page load)
+    if (sidebar && window.innerWidth > 768) {
+        sidebar.classList.toggle('active');
+    }
+    
     // Desktop sidebar toggle
     if (sidebarToggleBtn) {
         sidebarToggleBtn.addEventListener('click', function() {
@@ -105,13 +110,18 @@ function handleResponsiveMenu() {
     const mobileToggle = document.querySelector('.mobile-menu-toggle');
     
     if (window.innerWidth > 768) {
-        // Desktop mode
-        if (sidebar) {
-            sidebar.classList.remove('active');
+        // Desktop mode - keep sidebar open
+        if (sidebar && !sidebar.classList.contains('active')) {
+            sidebar.classList.add('active');
         }
         if (mobileToggle) {
             mobileToggle.classList.remove('active');
         }
         document.body.classList.remove('sidebar-open');
+    } else {
+        // Mobile mode - start closed
+        if (sidebar) {
+            sidebar.classList.remove('active');
+        }
     }
 }

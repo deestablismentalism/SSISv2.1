@@ -72,7 +72,7 @@ p {
 .sidebar {
     min-height: 100vh;
     height: 100%;
-    width: 60px; /* collapsed width */
+    width: var(--sidebar-expanded-width);
     background: #1c4a72;
     transition: width 0.3s ease;
     font-family: 'Barlow', 'Arial';
@@ -80,12 +80,12 @@ p {
     top: 0;
     left: 0;
     z-index: 100;
-    overflow: hidden; 
+    overflow: visible; 
 }
 .main-content {
     flex-grow: 1;
     transition: margin-left 0.3s ease;
-    min-width: 0; /* Allow content to shrink properly */
+    min-width: 0; 
 }
 .main-wrapper {
     display: flex;
@@ -104,8 +104,8 @@ p {
     border: none;   
     background: none;
     cursor: pointer;
-    opacity: 0;
-    max-height: 0;
+    opacity: 1;
+    max-height: 100%; 
     transition: max-height 0.5s ease-out, opacity 0.3s ease-out;
 }    
 
@@ -125,10 +125,10 @@ p {
     list-style: none;
 }
 .sidebar span {
-    opacity: 0;
-    max-height: 0;
+    opacity: 1;
+    max-height: 100%; 
     transition: max-height .1s ease-out, opacity .1s ease-out;
-    pointer-events: none;
+    pointer-events: auto; 
 }
 .menu {
     padding: 2em 1em 1em 1em; 
@@ -142,6 +142,10 @@ p {
 .menu img {
     width: 1.3em;
     max-width: 2em;
+}
+
+#sidebar-toggle-button {
+    height: 2em; width: 2em;
 }
 .border-75 {
     position: relative;
@@ -172,13 +176,16 @@ p {
     padding: 0.5rem;
     height: 3rem;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 }
 .SSIS {
-    margin: 1em;
-    max-width: 0;
-    opacity: 0;
-    display: none;
+    display: block;
+    max-height: 2.5em; 
+    font-size: 1.2em;
+    font-weight: 600;
+    padding-left: 1em;
+    margin: 0.3rem;
+    opacity: 1; 
 }
 .menu-btn {
     border: none;
@@ -188,10 +195,9 @@ p {
     transition: max-height .1s ease-out, opacity .1s ease-out;
     max-width: 10vh;
     width: 2em;
-}
-.menu-btn img{
-    opacity: 1;
-    width: 100%;
+    grid-column: 2/2; /* 🔥 Added: Start positioned */
+    justify-self: right; /* 🔥 Added: Start aligned right */
+    margin-right: 1em; /* 🔥 Added: Start with margin */
 }
 /*--MENU--*/
 /*DASHBOARD*/
@@ -228,12 +234,41 @@ p {
 }
 /*--END OF MENU--*/
 /*----TRANSITIONS----*/
+.sidebar:not(.active) {
+    width: 60px;
+    overflow: hidden;
+}
+
+.sidebar:not(.active) .SSIS {
+    display: none;
+    max-width: 0;
+    opacity: 0;
+}
+
+.sidebar:not(.active) .sidebar-title {
+    justify-content: center;
+}
+
+.sidebar:not(.active) span,
+.sidebar:not(.active) button:not(.menu-btn) {
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sidebar:not(.active) .menu-btn {
+    grid-column: auto;
+    justify-self: auto;
+    margin-right: 0;
+}
+
 .sidebar.active {
     width: var(--sidebar-expanded-width); 
     transition: width 0.2s ease-in, opacity 0.15s ease-out;
     position: sticky;
     overflow: visible; 
 }
+
 /*SIDEBAR TITLE*/
 .sidebar.active .SSIS {
     display: block;
