@@ -23,52 +23,8 @@
 }
 
 
-/* Navigation text-styles */
-.drop-content {
-    font-family: var(--main-fonts);
-    font-size: var(--font-size-regular);
-    color: var(--main-color);
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    font-size: 0.95rem;
-    gap: 6px;
-    margin: 24px 0px -24px 12px;
-}
 
-.drop-content a {
-    background: #e8f0fe;
-    color: #1a73e8;
-    text-decoration: none;
-    padding: 6px 12px;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-    font-weight: 500;
-}
 
-.drop-content a:hover {
-    background: #d2e3fc;
-    transform: translateY(-1px);
-}
-
-.drop-content .separator {
-    color: #999;
-    margin: 0 4px;
-    font-weight: bold;
-}
-
-.drop-content .active {
-    background: #1a73e8;
-    color: #fff;
-    cursor: default;
-    font-weight: 600;
-    pointer-events: none;
-}
-
-/* Optional: subtle fade animation */
-.drop-content {
-    animation: fadeIn 0.6s ease-in-out;
-}
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-5px); }
