@@ -80,6 +80,7 @@ p {
     top: 0;
     left: 0;
     z-index: 100;
+    overflow: hidden; 
 }
 .main-content {
     flex-grow: 1;
@@ -127,6 +128,7 @@ p {
     opacity: 0;
     max-height: 0;
     transition: max-height .1s ease-out, opacity .1s ease-out;
+    pointer-events: none;
 }
 .menu {
     padding: 2em 1em 1em 1em; 
@@ -230,6 +232,7 @@ p {
     width: var(--sidebar-expanded-width); 
     transition: width 0.2s ease-in, opacity 0.15s ease-out;
     position: sticky;
+    overflow: visible; 
 }
 /*SIDEBAR TITLE*/
 .sidebar.active .SSIS {
@@ -247,6 +250,7 @@ p {
     max-height: 100%;
     opacity: 1;
     transition: max-height .5s ease-out, opacity .5s ease-out;
+    pointer-events: auto;
 }
 .sub-nav.active {
     color: #E1A23C;
@@ -416,6 +420,7 @@ p {
 }
 .modal-content {
     position: relative;
+    color: black;
     background-color: #fefefe;
     margin: 5% auto;
     padding: 20px;
@@ -428,6 +433,11 @@ p {
     font-family: var(--main-fonts);
 }
 
+.modal-container {
+    height: 100%; width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+}
 
 .close {
     position: absolute;
