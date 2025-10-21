@@ -2,7 +2,7 @@
 
 :root {
   --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  --card-bg: rgba(112, 190, 226, 0.282);
+  --card-bg: rgb(36 186 255 / 28%);
   --text-color: #120303;
   --accent-color: #00b4d8;
   --hover-accent: #48cae4;
@@ -11,7 +11,17 @@
   --base-padding: 2rem;
   --card-padding: 1.5rem;
   --gap-size: 1.5rem;
+  --font-main: "Poppins", "Segoe UI", sans-serif;
+  font-family: "Poppins", "Segoe UI", sans-serif;
 }
+
+.bg-image {
+  background-image: url('./assets/imgs/white.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 
 body {
   font-family: 'Poppins', sans-serif;
@@ -24,12 +34,14 @@ body {
 
 /* ---- CLOCK SECTION ---- */
 .gradient-background {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 0;
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex ;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0;
+    background: #3e9ec4;
+    border-bottom: 8px solid #d7fbff94;
+    border-radius: 12px;
+    margin: 12px;
 }
 
 .clock-container {
@@ -40,11 +52,13 @@ body {
   font-size: 2.5rem;
   font-weight: 600;
   letter-spacing: 3px;
+  color: white;
 }
 
 .date {
   font-size: 1rem;
   opacity: 0.85;
+  color: white;
 }
 
 /* ---- DASHBOARD HYPERLINKS ---- */
@@ -61,13 +75,16 @@ body {
 }
 
 .all-hyperlinks-wrapper > div {
-  background: var(--card-bg);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: var(--border-radius);
   padding: var(--card-padding);
   backdrop-filter: blur(10px);
   transition: var(--transition);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border: none;
+  border-bottom: 4px solid transparent;
+  background: #6c3838;
+  background-clip: padding-box;
+  -webkit-background-clip: text;
+  border-radius: 20px;
 }
 
 .all-hyperlinks-wrapper:hover > div {
@@ -77,9 +94,12 @@ body {
 }
 
 .data-link-title {
-  font-size: 1.2rem;
-  margin-bottom: 0.8rem;
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+    color: #1c4a72;
 }
+
 
 .total-count {
   font-size: 2rem;
@@ -93,7 +113,7 @@ body {
   font-weight: 600;
   margin: var(--base-padding);
   text-transform: uppercase;
-  border-left: 5px solid var(--accent-color);
+  border-left: 5px solid #18ce13;
   padding-left: 0.8rem;
 }
 
@@ -120,6 +140,11 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.students-data-wrapper{
+  padding: inherit;
+}
+
+
 .chart-loading {
   text-align: center;
   opacity: 0.7;
@@ -130,11 +155,11 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--gap-size);
-  margin-top: 1.5rem;
+  margin: 2rem;
 }
 
 .card {
-  background: var(--card-bg);
+  background:  rgb(36 186 255 / 28%);
   border-radius: var(--border-radius);
   padding: 1.2rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -170,6 +195,13 @@ body {
   backdrop-filter: blur(8px);
 }
 
+.custom-line {
+  border: none;
+  border-top: 3px solid #76c2da;
+  width: 100%;
+  margin: 11px auto;         /* Vertical spacing + centering */
+}
+
 .pending-enrollments-header {
   display: flex;
   justify-content: space-between;
@@ -184,6 +216,7 @@ body {
   text-decoration: none;
   font-size: 0.95rem;
   transition: var(--transition);
+  font-weight: 500;
 }
 
 .big-card-hyperlink:hover {
@@ -201,9 +234,15 @@ body {
 .pending-enrollments-table th, 
 .pending-enrollments-table td {
   text-align: left;
-  padding: 0.8rem 0.6rem;
+  padding: 0.8rem 3.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.95rem;
+}
+
+.pending-enrollments-table th{
+    font-weight: 900;
+    background: rgb(21 182 255 / 27%);
+    color: #f2f2f2;
 }
 
 .pending-enrollments-table tr:hover {
@@ -214,6 +253,13 @@ body {
 .quick-action-card h3 {
   font-weight: 600;
   margin-bottom: 1rem;
+}
+
+.quick-action-line {
+  border: none;
+  border-top: 3px solid #76c2da;
+  width: 100%;
+  margin: 11px auto;
 }
 
 .quick-action-card ul {
@@ -470,6 +516,7 @@ body {
 
   .big-card-hyperlink {
     font-size: 0.85rem;
+    font-weight: 500;
   }
 
   /* Make table mobile-friendly */
