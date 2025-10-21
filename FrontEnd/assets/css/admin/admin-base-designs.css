@@ -1,13 +1,13 @@
 /*----START OF BASE DESIGNS----*/
 :root {
-    --main-fonts: 'Barlow', Arial, sans-serif;
+    --main-fonts:  "Poppins", "Segoe UI", sans-serif;
     --title-fonts: 'Barlow', Arial, sans-serif;
     --button-fonts: 'Baloo-Thambi-2';
     --link-fonts: 'Roboto', sans-serif;
     --sidebar-width: 60px;
     --sidebar-expanded-width: 20dvw;
     --title-font-size: 3em;
-    --main-color: #123b69;
+    --main-color: #1c4a72;
     --secondary-color: #F1BD22;
     --wrapper-bg-color: #fffdfdf5;
     --button-color: ;
@@ -73,7 +73,7 @@ p {
     min-height: 100vh;
     height: 100%;
     width: 60px; /* collapsed width */
-    background-image: linear-gradient(to bottom right, #003366, #123b69, #20436c, #2c4b6f);
+    background: #1c4a72;
     transition: width 0.3s ease;
     font-family: 'Barlow', 'Arial';
     position: sticky;
@@ -166,7 +166,7 @@ p {
 /*SIDEBAR TITLE*/
 .sidebar-title {
     color: white;
-    background-color: #F1BD22;
+    background-color:#f8af00;
     padding: 0.5rem;
     height: 3rem;
     display: flex;
@@ -281,9 +281,9 @@ p {
     padding: .2em;
     font-family: var(--title-fonts); 
     padding-left: 1em;
-    background: linear-gradient(to right, #595112, #634312);
+    color: white;
+    font-weight: 900;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
     font-size: 1.8rem;
     position: relative;
 }
@@ -304,7 +304,7 @@ p {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    background: linear-gradient(to right,  #Fff, #fff5ee, #F3e5ab, #e2dfd2, #E2DFD2 );
+    background: #f8af00;
     height: 3rem;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
     position: sticky;
@@ -340,6 +340,7 @@ p {
 }
 .account-settings-wrapper{
     font-weight: 700;
+    color: white;
 }
 .account-settings-btn-content-wrapper {
     display: none;

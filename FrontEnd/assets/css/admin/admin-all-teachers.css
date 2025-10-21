@@ -1,58 +1,253 @@
+/* General Container */
 .admin-all-teachers-content {
-    margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  transition: all 0.3s ease;
+  margin: 2rem;
+  border-radius: 1rem;
 }
-.content{
-    height:92vh;
-}
-table {
-    font-size: 1.3em;
-    font-family: 'Barlow';
-    border-collapse: collapse;
-    border-spacing: 5px;
-    margin: 1em;
-    cursor: default;
-    margin-left:3em;
-}
+
+/* Header Section */
 .admin-all-teachers-title-wrapper {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  background: #3e9ec4;
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(15px) saturate(180%);
+  -webkit-backdrop-filter: blur(15px) saturate(180%);
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
 }
+
 .all-teachers-title {
-    font-family: 'Baloo-Thambi-2';
-    font-size: 2em;
-    color: #003366;
-    font-weight: 900;
-}
-table tr:nth-child(even) {
-    background-color: #ebebeb;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #e9f1ff;
+  letter-spacing: 1px;
 }
 
-table tr:nth-child(odd) {
-    background-color: rgba(216, 198, 146, 0.849);
+/* Register New Teacher Button */
+#register-teacher-btn {
+  border: none;
+  color: white;
+  padding: 0.7rem 1.4rem;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+  background: #00b4d8;
+  font-weight: 500;
+  border-radius: 0.6rem;
+  transition: var(--transition);
+  font-size: 0.95rem;
 }
 
-table th {
-    background-color: rgb(255, 234, 169);
-    font-weight: 900;
-    padding: .5em;
+#register-teacher-btn:hover {
+  background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+  box-shadow: 0 0 18px rgba(59, 130, 246, 0.5);
+  transform: translateY(-2px);
 }
-table td{
-    padding: .5em;
-}
-.btn-primary {
-    padding: 8px 15px;
-    background-color: #003366;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-.btn-primary:hover {
-    background-color: #00509e;
-    color: rgb(218, 216, 216);
 
+/* Teachers Table Container */
+.table-teachers {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.06);
+  color: #e0e8ff;
+  border-radius: 1rem;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  margin-bottom: 1rem;
 }
-.register {
-    font-family: 'Barlow';
+
+.table-teachers th {
+  background: rgb(21 182 255 / 27%);
+  color: #ffffff;
+  padding: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--card-border);
+  text-shadow: 0 1.5px #0967a266;
+}
+
+.table-teachers td {
+  color: #000;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(63, 166, 210, 0.897);
+  letter-spacing: 0.5px;
+  background: #bce6f9;
+  transition: all 0.25s ease;
+}
+
+.table-teachers tr:nth-child(even) td {
+  background: #b2e0f8;
+}
+
+.table-teachers tbody tr:hover {
+  background: var(--accent-color);
+  transition: all 0.25s ease;
+}
+
+/* Action Button */
+.action-btn {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.action-btn:hover {
+  background: linear-gradient(135deg, #1e40af, #2563eb);
+  transform: translateY(-2px);
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+}
+
+/* Modal Styling */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.modal.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 1.2rem;
+  padding: 2rem;
+  width: min(95%, 600px);
+  color: #f8fafc;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Success / Error Messages */
+.success-message,
+.error-message {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  color: white;
+  font-weight: 500;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.success-message.active {
+  background: linear-gradient(135deg, #22c55e, #4ade80);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.error-message.active {
+  background: linear-gradient(135deg, #dc2626, #f87171);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===============================
+   📱 RESPONSIVENESS
+   =============================== */
+
+/* Tablet */
+@media (max-width: 992px) {
+  .admin-all-teachers-content {
+    margin: 1.5rem;
+  }
+
+  .all-teachers-title {
+    font-size: 1.5rem;
+  }
+
+  #register-teacher-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .table-teachers th,
+  .table-teachers td {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .admin-all-teachers-title-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  #register-teacher-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .table-teachers {
+    display: block;
+    overflow-x: auto;
+    border-radius: 1rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-teachers table,
+  .table-teachers th,
+  .table-teachers td {
+    white-space: nowrap;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .admin-all-teachers-content {
+    margin: 1rem;
+    gap: 1rem;
+  }
+
+  .all-teachers-title {
+    font-size: 1.3rem;
+  }
+
+  .table-teachers td {
+    font-size: 0.85rem;
+    padding: 0.6rem;
+  }
+
+  #register-teacher-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .modal-content {
+    padding: 1.2rem;
+    font-size: 0.9rem;
+  }
 }
