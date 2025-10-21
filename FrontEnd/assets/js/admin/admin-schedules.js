@@ -13,16 +13,17 @@ document.addEventListener('DOMContentLoaded', function(){
             const response = await fetchSectionSubjects();
             let subjectValues = ``;
             response.data.forEach(subject=>{
-                subjectValues += `<div class="modal-subjects"> <p class="subject-name">${subject.Subject_Name} - ${subject.Section_Name}</p> <button data-id="${subject.Section_Subjects_Id}"> create schedule</button> </div>`;
+                subjectValues += `<div class="modal-subjects"> <p class="subject-name">${subject.Subject_Name} - ${subject.Section_Name}</p> <button class="create-schedule-btn" data-id="${subject.Section_Subjects_Id}"> Create schedule</button> </div>`;
             })
             modalContent.innerHTML = modalHeader();           
-            modalContent.innerHTML += `<p>Which section do you want to create a schedule for?</p><br>` + subjectValues;
+            modalContent.innerHTML += `<p class="schedule-p">Which section do you want to create a schedule for?</p><br>` + subjectValues;
             initialModalContent = modalContent.innerHTML;
             close(modal);
             attachSectionButtonListener();
             //handler for create schedule buttons
             function attachSectionButtonListener() {
                 const sectionButtons = modalContent.querySelectorAll('button');
+
                 sectionButtons.forEach(button=>{
                 button.addEventListener('click', async function(e){
                     const sectionSubject = e.target.parentElement.querySelector('.subject-name');//get text content

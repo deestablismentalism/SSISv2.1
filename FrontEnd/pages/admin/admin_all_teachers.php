@@ -15,6 +15,9 @@ ob_start();
              <h1 class="all-teachers-title">All Teachers </h1> 
              <button class="btn btn-primary register" id="register-teacher-btn">Register a New Teacher</button>
         </div>
+
+    
+
         <table class="table-teachers">
             <?php
                 require_once __DIR__ . '/../../../BackEnd/admin/view/adminTeachersView.php';

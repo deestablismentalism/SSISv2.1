@@ -1,166 +1,240 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 :root {
-    /* Color Palette */
-    --main-color:  #123b69;
-    --secondary-color: #f2f2f2;
-    --wrapper-bg-color: #f9f9f9;
-
-    /* Font Families */
-    --main-fonts: 'Barlow', Arial, sans-serif;
-    --title-fonts: 'Barlow', Arial, sans-serif;
-
-    /* Font Sizes */
-    --font-size-small: 0.9rem;
-    --font-size-regular: 1rem;
-    --font-size-medium: 1.2rem;
-    --font-size-large: 1.5rem; /* same as your title size */
-    --font-size-xlarge: 2rem;
-
-    /* Font Weights */
-    --font-weight-regular: 400;
-    --font-weight-medium: 500;
-    --font-weight-bold: 700;
+  --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.2);
+  --text-color: #f5f5f5;
+  --accent-color: #00b4d8;
+  --hover-accent: #48cae4;
+  --border-radius: 1rem;
+  --transition: all 0.3s ease;
 }
 
-.table-title {
-    padding: 1rem;
-    background-color: white;
-    font-family: var(--main-fonts);
-    box-shadow: -.1px -1px 5px .1px #d0caca;
-    border-radius: 5px;
+/* ========== PAGE BASE ========== */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
-.schedule-title {
-    font-family: var(--title-fonts);
-    font-size: var(--title-font-size);
-    font-weight: bold;
-    color: var(--main-color);
-}
-
-.schedules-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: 1em;
-    overflow: hidden;
-    cursor: default;
-    border: none;
-    background-color: white;
-    font-family: var(--main-fonts);
-    box-shadow: -.1px -1px 5px .1px #d0caca;
-}
-
-.schedules-list-title {
-    font-family: var(--title-fonts);
-    font-size: 2em;
-    font-weight: bold;
-    color: var(--main-color);
-}
-
-th, td {
-    font-family: var(--main-fonts);
-    text-align: center;
-    padding: 1rem;
-}
-
-.schedules-table th, .schedules-table td {
-    padding: 1em;
-    text-align: left;
-}
-.schedules-table th {
-    background: #f0f0f0;
-    color: #333;
-    font-weight: 600;
-}
-
-tr:nth-child(odd) {background-color: #ffffff;}
-
-tr:nth-child(even) {background-color: #f9f9f9;}
-.view-student  {
-    background-color: yellow; /* Dark blue */
-    padding: 6px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-
+/* container beside sticky sidebar */
 .admin-schedules-content {
-    padding: 1rem;
-}
-.admin-schedules-header{
-    display: flex;
-    justify-content: space-between;
-}
-.schedules-list-container {
-    margin: 1rem;
-    padding: 2rem;
-    background-color:var(--wrapper-bg-color);
-    border-radius: 0.5rem;
-}
-.schedule-title {
-    font-size: var(--title-font-size);
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
 }
 
+/* when sidebar collapses */
+.sidebar.active ~ .admin-schedules-content {
+  margin-left: 90px;
+}
+
+/* HEADER */
+.admin-schedules-header-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.admin-schedules-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #3e9ec4;
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(15px) saturate(180%);
+  -webkit-backdrop-filter: blur(15px) saturate(180%);
+  padding: 1rem 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+.schedule-title h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+/* ADD BUTTON */
 .add-sched-btn {
-    /*DO NOT CHANGE*/
-    border: 2px solid var(--main-color);
-    color: var(--main-color);
-    background: transparent;
-    box-shadow: inset 0 0 0 0 var(--main-color);
-    cursor: pointer;
-    text-align: center;
-    transition: ease-out 0.5s;
-    font-family: var(--button-fonts);
-
-    /* Feel Free to adjust */
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    height: 50%;
-    margin-top: .6em;
+  background: var(--accent-color);
+  color: #fff;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.6rem;
+  padding: 0.7rem 1.4rem;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.95rem;
 }
 
 .add-sched-btn:hover {
-    /*DO NOT CHANGE*/
-    color: white;
-    box-shadow: inset 0 -100px 0 0 var(--main-color);
+  background: var(--hover-accent);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
 }
 
-.add-sched-btn:active {
-    /*DO NOT CHANGE*/
-    transform: scale(0.9);
+/* ========== TABLE DESIGN ========== */
+.schedules-list-container {
+  background: rgb(36 186 255 / 28%);
+  border: 1px solid var(--card-border);
+  border-radius: var(--border-radius);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  padding: 1.5rem;
+  overflow-x: auto;
 }
 
+.schedules-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-color);
+  font-size: 0.95rem;
+  text-align: left;
+  letter-spacing: 0.5px;
+}
 
-/*modal subjects list*/
+.schedules-table th {
+  background: rgb(21 182 255 / 27%);
+  color:#ffffff;
+  padding: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--card-border);
+  text-shadow: 0 1.5px #0967a266;
+}
+
+.schedules-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(63, 166, 210, 0.897);
+  transition: var(--transition);
+  color: black;
+}
+
+.schedules-table tr:hover td {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--hover-accent);
+}
+
+/* Zebra stripes for readability */
+.schedules-table tr:nth-child(even) td {
+  background: rgb(71 168 255 / 8%);
+}
+
+/* Error message styling */
+.error-message {
+  background: rgba(255, 0, 0, 0.15);
+  color: #ff6b6b;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  text-align: center;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+/* ========== MODAL ========== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  justify-content: center;
+  align-items: center;
+}
+
 
 .modal-subjects {
-    display:flex;
-    justify-content: space-between;
-    margin-bottom: 0.2rem;
+  margin-top: 1rem;
+  padding-top: 6px;
 }
 
-.modal-subjects button {
-    border: 2px solid var(--main-color);
-    color: white;
-    background: var(--main-color);
-    cursor: pointer;
-    text-align: center;
-    transition: ease-out 0.5s;
-    font-family: var(--button-fonts);
-
-    padding: 0.2rem;
-    border-radius: 0.2rem ;
+.modal.active {
+  display: flex;
 }
 
-.modal-subjects button:hover {
-    transform: scale(1.05);
+.modal-content {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 90%;
+  max-width: 600px;
+  color: var(--text-color);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
 }
 
-.modal-subjects button:active {
-    transform:var(--button-click);
+
+.create-schedule-btn {
+    background: #66e2fa4a;
+    border-radius: 12px;
+    padding: 7px;
+    box-shadow: #ffffff6e 1px 1px;
+}
+.subject-name{
+    font-weight: 600;
+    margin-bottom: 0.3rem;
 }
 
-/*modak schedule form*/
-.schedule-form {
-    display: flex;
+.schedule-p{
+    font-size: 1.3rem;
+    margin: 0;
+    font-weight: 800;
+}
+select.select {
+    color: black;
+
+}
+/* ========== RESPONSIVENESS ========== */
+@media (max-width: 1024px) {
+  .admin-schedules-content {
+    margin-left: 200px;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-schedules-content {
+    margin-left: 90px;
+    padding: 1rem;
+  }
+
+  .admin-schedules-header {
     flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .add-sched-btn {
+    width: 100%;
+  }
+
+  .schedules-table th, 
+  .schedules-table td {
+    font-size: 0.85rem;
+    padding: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .schedule-title h1 {
+    font-size: 1.3rem;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  .schedules-table th,
+  .schedules-table td {
+    font-size: 0.8rem;
+  }
 }
