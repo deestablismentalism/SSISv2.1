@@ -48,7 +48,7 @@
         <button type="submit" class="btn-primary">Log In <span style=" place-items: center;"></span></button>
         <br>
         <br>
-
+        <a class="forgot-password-link" href="./Forgot_Password.php">Forgot Password?</a>
         <p><span style="color: black;">Don't have an account?</span>
             <a href="./Registration.php" class="register-link">
                 Create a New Account

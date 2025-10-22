@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
     const form = document.getElementById("login-form");
-    const errorMessageContainer = document.querySelector('.error-msg');
-    const errorMessage = document.getElementById('em-login');
     const button = form.querySelector("button[type=submit]");
     
     form.addEventListener("submit", async function(event) {
@@ -68,10 +66,8 @@ async function postLoginVerify(formData) {
             data = await response.json();
         }
         catch {
-            //throw when invalid response
             throw new Error('Invalid response');
         }
-        // HTTP-level error
         if (!response.ok) {
             return {
                 success: false,
