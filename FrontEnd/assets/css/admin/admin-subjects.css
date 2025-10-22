@@ -11,7 +11,9 @@
   transition: all 0.3s ease;
   margin: 2rem;  
 }
-
+.content {
+  background-image: url("../../imgs/paper.jpg");
+}
 /* Header */
 .admin-subject-header {
     display: flex;
@@ -46,14 +48,15 @@
   background: #00b4d8;
   font-weight: 500;
   border-radius: 0.6rem;
-  transition: var(--transition);
+  transition: s0.3s ease;
   font-size: 0.95rem;
 }
 
 .submit-button:hover {
-  background: linear-gradient(135deg, #1d4ed8, #3b82f6);
-  box-shadow: 0 0 18px rgba(59, 130, 246, 0.5);
-  transform: translateY(-2px);
+  background: #48cae4;
+  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+  transform: translateY(-3px);
+  transition: 0.3s ease;
 }
 
 /* Table Styles */
@@ -81,7 +84,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--card-border);
+    border-bottom: 1px solid rgba(63, 166, 210, 0.897);
     text-shadow: 0 1.5px #0967a266;
 }
 
