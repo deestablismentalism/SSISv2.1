@@ -21,7 +21,7 @@ class adminTeachersView {
             echo '<div class="error-message">'. htmlspecialchars($data['message']) .'</div>';
         }
         else {
-            echo '<table>';
+            echo '<div class="table-teachers-container"><table class="table-teachers">';
             $this->tableTemplate->generateHorizontalTitles('teachers-table-title', [
                 'Full Name', 'Contact Number', 'Position', 'Action'
             ]);
@@ -32,12 +32,19 @@ class adminTeachersView {
                 $fullName = $rows['Staff_Last_Name'] . ', ' . $rows['Staff_First_Name'] . ' ' . $middleName;
                 $contactNumber = $rows['Staff_Contact_Number'];
                 $position = !empty($rows['Position']) ? $rows['Position'] : 'No position set';
-                $actionButtons = new safeHTML('<button id="view-techer"> View</button> <button id="edit-teacher"> Edit </button>');
+                $actionButtons = new safeHTML('
+                <button id="view-teacher">
+                    <img class="view-icon" src="../../assets/imgs/eye-regular.svg" alt="View">
+                </button>
+                <button id="edit-teacher">
+                    <img class="edit-icon" src="../../assets/imgs/edit-yellow-green.svg" alt="Edit">
+                </button>
+                ');
                 $this->tableTemplate->generateHorizontalRows('teachers-data', [
                     $fullName, $contactNumber, $position, $actionButtons 
                 ]);
             }
-            echo '</tbody></table>';
+            echo '</tbody></table></div>';
         }
     }
 }

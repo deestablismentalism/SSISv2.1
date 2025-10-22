@@ -15,13 +15,13 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-unprocesse
     </div>
     <div class="table">
         <table class="enrollments">
-            <thead style="background-color: #ffffffff; border-bottom: 2px solid #ddd; font-weight: 900;">
+            <thead style="background-color: #ffffffff; border-bottom: 2px solid #3fa6d2e5; font-weight: 900;">
                 <th>LRN</th>
                 <th>Full Name</th>
                 <th>Handled By</th>
                 <th>Transaction Code</th>
                 <th>Enrollment Status</th>
-                <th>Handled At</th>
+                <th>Date Handled</th>
                 <th>Remarks</th>
             </thead>
             <tbody>
@@ -37,7 +37,7 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-unprocesse
     </div>
     <div class="table">
         <table class="enrollments">
-            <thead style="background-color: #ffffffff; border-bottom: 2px solid #ddd; font-weight: 900;">
+            <thead style="background-color: #ffffffff; border-bottom: 2px solid #3fa6d2e5; font-weight: 900;">
                 <th>LRN</th>
                 <th>Full Name</th>
                 <th>Handled By</th>
@@ -59,7 +59,7 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-unprocesse
     </div>
     <div class="table">
         <table class="enrollments">
-            <thead style="background-color: #ffffffff; border-bottom: 2px solid #ddd; font-weight: 900;">
+            <thead style="background-color: #ffffffff; border-bottom: 2px solid #3fa6d2e5; font-weight: 900;">
                 <th>LRN</th>
                 <th>Full Name</th>
                 <th>Handled By</th>

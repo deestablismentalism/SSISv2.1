@@ -207,13 +207,18 @@ p {
     color: white;
 }
 .teachers-ul, 
-.subjects-ul,
-.sections-ul {
+.subjects-ul{
     max-height: 0;
     opacity: 0;
     overflow: hidden;
     transition: max-height .2s ease-in, opacity .0005s ease-in;
 }
+.sections ul, .sub-nav{
+    list-style: none;
+    visibility: hidden;
+    display: none;
+}
+
 /*ENROLL*/
 .enrolls-ul a:hover {
     color: white;
@@ -265,7 +270,7 @@ p {
     grid-column: 1 / 3;
     transition: max-height .5s ease-in, opacity .3s ease-in;
 }
-.sections-ul.show, .teachers-ul.show, .enrolls-ul.show, subjects-ul.show {
+/* .sections-ul.show, */.teachers-ul.show, .enrolls-ul.show, subjects-ul.show { 
     max-height: 100vh;
     opacity: 1;
     background-color: #051F3E;

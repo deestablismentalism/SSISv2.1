@@ -6,7 +6,7 @@
 
                         
 <!-- 🧍‍♂️ Student Info Section -->
-<h1>I. Impormasyon ng Mag-aaral</h1>
+<h1 class="enrollee-modal-title">I. Impormasyon ng Mag-aaral</h1>
 <table class="modal-table">
     <tbody>
         <?php $view->enrolleeInfo(); ?>
@@ -14,7 +14,7 @@
 </table>
 
 <!-- 🎓 School Level Info Section -->
-<h1>II. Impormasyon sa Pagpapatalang Pang-Eskwela</h1>
+<h1 class="enrollee-modal-title">II. Impormasyon sa Pagpapatalang Pang-Eskwela</h1>
 <table class="modal-table">
     <tbody>
         <?php $view->schoolLevelInfo(); ?>
@@ -22,7 +22,7 @@
 </table>
 
 <!-- ♿ Special Conditions Section -->
-<h1>III. Espesyal na Kondisyon (kung mayroon)</h1>
+<h1 class="enrollee-modal-title">III. Espesyal na Kondisyon (kung mayroon)</h1>
 <table class="modal-table">
     <tr>
         <td>
@@ -30,7 +30,7 @@
         </td>
     </tr>
 </table>
-<h1>IV. Impormasyon ng mga Magulang </h1>
+<h1 class="enrollee-modal-title">IV. Impormasyon ng mga Magulang </h1>
 <table class="modal-table">
     <tr>
         <td>
@@ -40,7 +40,7 @@
 </table>
 
 <!-- 📄 PSA Image Section -->
-<h1>V. PSA Birth Certificate</h1>
+<h1 class="enrollee-modal-title">V. PSA Birth Certificate</h1>
 <table class="modal-table">
     <tr>
         <tbody>

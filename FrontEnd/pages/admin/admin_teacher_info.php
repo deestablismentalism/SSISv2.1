@@ -1,4 +1,5 @@
 <?php
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-teacher-info.css">';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
