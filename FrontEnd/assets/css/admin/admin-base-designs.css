@@ -462,10 +462,11 @@ p {
     text-align: center;
     font-size: 2rem;
     font-weight: 900;
-    color: #666;
+    color: #d40000;
 }
 .loading::after {
     content: '...';
+    color: #d40000;
     animation: dots 1.5s steps(5, end) infinite;
 }
 @keyframes dots {
