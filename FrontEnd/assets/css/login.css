@@ -249,6 +249,24 @@ a.register-link:hover {
   transform: scale(1.1);
 }
 
+.forgot-password-link {
+  color: #007bff;
+}
+
+a {
+  cursor: pointer;
+}
+
+body {
+  cursor: default;
+}
+
+input[type="text"], input[type="password"] {
+  cursor:text;
+}
+.forgot-password-link:hover, input[type="password"]:hover {
+  text-decoration: underline;
+}
 /* ===== Responsive Layout ===== */
 @media (max-width: 900px) {
   .login-container {

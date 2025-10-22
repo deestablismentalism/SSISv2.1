@@ -130,7 +130,7 @@ function createStudentDetailsModal(student) {
     modalContent.className = 'modal-content';
     
     const closeBtn = document.createElement('span');
-    closeBtn.className = 'close-btn';
+    closeBtn.className = 'close';
     closeBtn.innerHTML = '&times;';
     closeBtn.onclick = function() {
         document.body.removeChild(modalContainer);

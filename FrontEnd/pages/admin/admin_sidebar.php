@@ -25,9 +25,7 @@
                             <img src="../../assets/imgs/sections-logo.png" class="bi">
                             <span id="sections-spn" class="menu-title"> <a href="./admin_sections.php" class="admin-nav-links"> Sections </a></span>
                         </div>
-                            <ul class="sections-ul">
-                                <li> <span class="sub-nav"> View Section Details </span> </li>
-                            </ul>
+
                         <!--SUBJECTS-->
                         <div class="menu border-100sb">
                             <img src="../../assets/imgs/subjects-logo.png" class="bi">

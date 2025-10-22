@@ -54,7 +54,7 @@ class adminStudentsView {
                 <td>' .htmlspecialchars($rows['Student_Email']) .' </td>
                 <td> <span class="status status' .  $statusText . '">'  . $statusText . '</span></td>
                 <td> 
-                    <button class="view-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="../../assets/imgs/eye-regular.svg" alt="View Student Information"></button> 
+                    <button class="view-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="../../assets/imgs/eye-white.svg" alt="View Student Information"></button> 
                     <button class="edit-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="../../assets/imgs/edit-yellow-green.svg" alt="Edit Student Information"></button>
                     <button class="delete-student" data-id="'.$rows['Enrollee_Id'].'"> <img src="../../assets/imgs/trash-solid.svg" alt="Delete Student Information"></button>
                 </td>
