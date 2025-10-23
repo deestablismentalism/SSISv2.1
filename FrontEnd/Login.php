@@ -35,7 +35,7 @@
 
      <form id="login-form" action="..\BackEnd\common\postLoginVerify.php" method="post">
         <div class="input-group">
-          <input type="text" id="phone_number" name="phone_number" placeholder=" " required />
+          <input type="text" id="phone_number" name="phone_number" placeholder=" " maxlength="11" pattern="[0-9]{11}" required />
           <label for="phone_number">Phone Number</label>
         </div>
 
