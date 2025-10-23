@@ -209,7 +209,6 @@ canvas {
   font-size: 1.2rem;
   font-weight: 600;
   color: var(--text-color);
-  margin-bottom: 1rem;
 }
 
 .pending-enrollments-wrapper, 
@@ -224,8 +223,7 @@ canvas {
 .custom-line {
   border: none;
   border-top: 3px solid #76c2da;
-  width: 100%;
-  margin: 11px auto;         /* Vertical spacing + centering */
+  width: 100%;         /* Vertical spacing + centering */
 }
 
 .pending-enrollments-header {
@@ -268,6 +266,7 @@ canvas {
     font-weight: 900;
     background: rgb(21 182 255 / 27%);
     color: #f2f2f2;
+    text-shadow: 0 0px 4px #7865655e;
 }
 
 .pending-enrollments-table tr:hover {

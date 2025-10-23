@@ -37,7 +37,9 @@ class adminAllEnrolleesView {
     public function displayCount() {
         try {
             $count = $this->getAllEnrolleesCount;
-            echo htmlspecialchars($count);
+            //--Comment ko muna dabid, balik mo nalang if ever kaylangan mo ---
+            //  echo htmlspecialchars($count);
+            echo strval($count);
         }
         catch(PDOException $e) {
             die("Query Failed: " . $e->getMessage());
@@ -51,6 +53,7 @@ class adminAllEnrolleesView {
                 $parentMiddleInitial = substr($rows['Middle_Name'], 0, 1) . ".";
                 $hasLrn = $rows['Learner_Reference_Number'] == 0 ? 'No LRN' :  $rows['Learner_Reference_Number'] ;
                 $studentMiddleInitial = substr($rows['Student_Middle_Name'], 0, 1) . ".";
+
                 $status = $this->stringEquivalent((int)$rows['Enrollment_Status']);
                 
                 echo '<tr class="enrollee-row"> 
