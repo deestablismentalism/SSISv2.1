@@ -50,20 +50,46 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     function validateContactNumber(e) {
-        if(isNaN(e.key) && e.key !== "Backspace") {
+        const key = e.key;
+        const currentLength = contactNumber.value.length;
+        
+        const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+        if (allowedKeys.includes(key)) {
+            clearError("em-contact-number", contactNumber);
+            return;
+        }
+        
+        if(isNaN(key) || key === ' ') {
             e.preventDefault();
             errorMessages("em-contact-number", notNumber, contactNumber);
             checkEmptyFocus(contactNumber, "em-contact-number");
+            return;
         }
-        else if(contactNumber.value.length >= 11 && e.key !== "Backspace") {
+        
+        if(currentLength >= 11) {
             e.preventDefault();
-            errorMessages("em-contact-number", "Not a valid phone number", contactNumber);
+            errorMessages("em-contact-number", "Phone number must be exactly 11 digits", contactNumber);
             checkEmptyFocus(contactNumber, "em-contact-number");
+            return;
         }
-        else {
-            clearError("em-contact-number", contactNumber);
-        }
+        
+        clearError("em-contact-number", contactNumber);
     }
+    
+    contactNumber.addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        
+        if (this.value.length > 11) {
+            this.value = this.value.slice(0, 11);
+        }
+    });
+    
+    allTBox.forEach(({element}) => {
+        element.addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+        });
+    });
+    
     allTBox.forEach(({element,error}) =>{
         element.addEventListener('keydown', (e)=> validateTextBox(element, error, e));
     });

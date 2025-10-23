@@ -15,6 +15,7 @@
 
   <!-- JS -->
   <script src="./assets/js/registration.js" defer></script>
+  <script src="./assets/js/registration-validation.js"></script>
   <script src="./assets/js/notifications.js"></script>
 </head>
 
@@ -72,7 +73,7 @@
 
                 <!-- Guardian Contact Number -->
                 <div class="input-box">
-                    <input type="text" name="Contact-Number" id="contact-number" placeholder=" " required />
+                    <input type="text" name="Contact-Number" id="contact-number" placeholder=" " maxlength="11" pattern="[0-9]{11}" required />
                     <span class="details">Enrollee's Guardian Contact Number</span>
                     <div class="error-message">
                         <span class="contact-number"></span>
