@@ -11,16 +11,18 @@ $adminViewSectionView = new adminViewSectionView();
 
     <div class="admin-view-section-content">
         <div class="section-details-container"> 
-            <div class="button-container">
-                <button id="edit-section-btn" class="edit-section"> Edit Section details </button>
-                <button class="back-btn"> Hi</button>
+            <div class="three-container">
+                <div class="button-container">
+                    <button id="edit-section-btn" class="edit-section"> Edit Section details </button>
+                    <a href="admin_sections.php" class="back-btn"> Back </a>
+                </div>
+                <div class="section-name-container">
+                        <div class="section-name"> <h1> <?php $adminViewSectionView->displaySectionName(); ?> </h1></div>
+                </div>
+                <div class="adviser-name-container">
+                        <div class="adviser-name"> <h1> <?php $adminViewSectionView->displayAdviserName(); ?></h1></div>
+                </div>
             </div>
-           <div class="section-name-container">
-                <div class="section-name"> <h1> <?php $adminViewSectionView->displaySectionName(); ?> </h1></div>
-           </div>
-           <div class="adviser-name-container">
-                <div class="adviser-name"> <h1> <?php $adminViewSectionView->displayAdviserName(); ?></h1></div>
-           </div>
            <div class="students-list-container">
                 <div class="students-list-title-container">
                     <h1 class="students-list-title">All Students </h1>

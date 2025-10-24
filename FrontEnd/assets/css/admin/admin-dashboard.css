@@ -85,16 +85,16 @@ body {
 }
 
 .all-hyperlinks-wrapper > div {
-  padding: var(--card-padding);
-  backdrop-filter: blur(10px);
-  transition: var(--transition);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  border: none;
-  border-bottom: 4px solid transparent;
-  background: #6c3838;
-  background-clip: padding-box;
-  -webkit-background-clip: text;
-  border-radius: 20px;
+    padding: .5rem;
+    backdrop-filter: blur(10px);
+    transition: var(--transition);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    border: none;
+    border-bottom: 4px solid transparent;
+    background: #6c3838;
+    background-clip: padding-box;
+    -webkit-background-clip: text;
+    border-radius: 20px;
 }
 
 .all-hyperlinks-wrapper:hover > div {
@@ -168,6 +168,7 @@ body {
 canvas {
   max-height: 350px;
   width: 100% !important;
+  --chart-fill-color: #72d1fb; /* Add custom chart fill color */
 }
 
 /* ---- CARD GRID ---- */
@@ -176,6 +177,10 @@ canvas {
   grid-template-columns: repeat(3, 1fr);
   gap: var(--gap-size);
   margin: 2rem;
+}
+
+.pending-enrollments-table:nth-child(even) tr {
+  background: rgb(71 168 255 / 8%);
 }
 
 .card {
@@ -218,6 +223,34 @@ canvas {
   padding: var(--card-padding);
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);
+  
+  /* Add fixed dimensions */
+  width: 100%;
+  height: 44vh;
+  min-height: 300px;
+  
+  /* Add scrolling behavior */
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
+}
+
+/* Custom scrollbar styling */
+.pending-enrollments-wrapper::-webkit-scrollbar,
+.quick-actions-wrapper::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.pending-enrollments-wrapper::-webkit-scrollbar-track,
+.quick-actions-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pending-enrollments-wrapper::-webkit-scrollbar-thumb,
+.quick-actions-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(62, 158, 196, 0.5);
+  border-radius: 20px;
 }
 
 .custom-line {
@@ -258,12 +291,12 @@ canvas {
 .pending-enrollments-table td {
   text-align: left;
   padding: 0.8rem 3.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgb(0 185 255 / 64%);
   font-size: 0.95rem;
 }
 
-.pending-enrollments-table th{
-    font-weight: 900;
+.pending-enrollments-table th {
+  font-weight: 900;
     background: rgb(21 182 255 / 27%);
     color: #f2f2f2;
     text-shadow: 0 0px 4px #7865655e;
@@ -311,6 +344,51 @@ canvas {
 .quick-action-card a:hover {
   color: var(--hover-accent);
   transform: translateX(3px);
+}
+
+/* ---- ENROLLEES COUNT BOX ---- */
+.all-enrollees-count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.count-box-icon {
+    width: 122px;
+    height: 134px;
+    opacity: 0.7;
+    order: 1;
+    padding-right: 24px;
+}
+  
+.count-box-content {
+    flex: 1;
+    order: 2;
+    width: 114px;
+    padding: 1.5rem;
+}
+
+/* ---- DENIED/FOLLOW-UP COUNT BOX ---- */
+.all-denied-follow-up-count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.all-students-count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.all-students-count .count-box-icon {
+    width: 149px;
+    height: 134px;
+    opacity: 0.7;
+    order: 1;
 }
 
 /* ============================================ */
@@ -460,6 +538,11 @@ canvas {
   .students-data-wrapper {
     padding: 1rem;
     margin: 0 1.25rem 1.25rem;
+  }
+
+  .enrollees-by-day-container:hover {
+    transform: translateY(-3px);
+    border-color: white;
   }
 
   .radio-container {

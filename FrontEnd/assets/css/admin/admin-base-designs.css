@@ -1,7 +1,7 @@
 /*----START OF BASE DESIGNS----*/
 :root {
     --main-fonts:  "Poppins", "Segoe UI", sans-serif;
-    --title-fonts: 'Barlow', Arial, sans-serif;
+    --title-fonts: "Barlow", sans-serif;
     --button-fonts: 'Baloo-Thambi-2';
     --link-fonts: 'Roboto', sans-serif;
     --sidebar-width: 60px;
@@ -10,10 +10,21 @@
     --main-color: #1c4a72;
     --secondary-color: #F1BD22;
     --wrapper-bg-color: #fffdfdf5;
+    --title-main-color: #3e9ec4;
+    --container-color: rgba(36, 186, 255, 0.28);
     --button-color: ;
     --button-hover-color: ;
     --button-click: scale(.9);
+    --border-radius: 1rem;
+    --title-h1-font-size: 1.6rem;
+    --title-font-weight: 600;
+    --title-letter-spacing: 1px;
+    --card-border: rgba(255, 255, 255, 0.2);
+    --warning: #ffcc00;
+    --danger: #ff5f5f;
+    --success: #44d07b;
 }
+
 body {
     background-color: rgb(235, 231, 231);
     display: flex;

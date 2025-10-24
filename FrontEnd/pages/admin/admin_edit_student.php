@@ -43,10 +43,8 @@ $pageCss= '<link rel="stylesheet" href="../../assets/css/admin/admin-edit-studen
     <div class="main-content">
         <div class="content">
             <div class="page-title">
-                <div class="title-left">
+                <div class="title">
                     <h2>Edit Student Information</h2>
-                </div>
-                <div class="title-right">
                     <a href="admin_all_students.php" class="back-button"><img src="../../assets/imgs/arrow-left-solid.svg"></a>
                 </div>
             </div>

@@ -10,6 +10,7 @@ $pageJs = '<script src="../../assets/js/admin/admin-all-enrollees.js" defer></sc
     <div class="enrollment-access">
         <div class="admin-all-enrollees-header">
             <div class="header-left">
+                <img src="../../assets/imgs/all-enrollees.png" alt="Enrollees Icon" class="header-icon">
                 <div class="count-display">
                     Total Enrollees: <span class="count-number">
                     <?php

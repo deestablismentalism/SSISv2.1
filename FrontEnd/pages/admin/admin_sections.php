@@ -36,7 +36,7 @@ $pageJs= '<script type="module" src="../../assets/js/admin/admin-sections.js" de
         </div>
       </template>
 
-    <div class="sections-list-container"></div>
+        <div class="sections-list-container"></div>
     </div>
     <div id="add-section-modal"class="modal">
         <div class="modal-content"></div>

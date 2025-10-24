@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 data.forEach(teacher=>{
                     const isChecked = !teacher.isChecked ? '' : 'checked';
                    radioValues += `<label> <input type="radio" name="subject-teacher" value="${teacher.Staff_Id}" ${isChecked}> 
-                            ${teacher.Staff_Last_Name}, ${teacher.Staff_First_Name} </label><br>`;
+                            ${teacher.Staff_Last_Name}, ${teacher.Staff_First_Name} </label><br><br>`;
                 })
                 
                 modalContent.innerHTML = `<span class="close">&times;</span>

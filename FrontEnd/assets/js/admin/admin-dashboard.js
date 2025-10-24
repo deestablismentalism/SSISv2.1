@@ -379,7 +379,7 @@ function EnrolleeByDaybarGraph(data, title) {
             datasets: [{
                 label: 'Submitted Enrollment Forms',
                 data: values,
-                backgroundColor: '#000d23'
+                backgroundColor: '#31c1ffff'
             }]
         },
         options: {
@@ -398,4 +398,4 @@ function EnrolleeByDaybarGraph(data, title) {
             }
         }
     });
-} 
+}
