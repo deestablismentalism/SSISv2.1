@@ -39,11 +39,13 @@
           <label for="phone_number">Phone Number</label>
         </div>
 
-        <div class="input-group">
+        <div class="input-group password-group">
           <input type="password" id="password" name="password" placeholder=" " required />
           <label for="password">Password</label>
+          <button type="button" class="password-toggle" id="toggle-password">
+            <img src="./assets/imgs/eye-regular.svg" alt="Toggle Password" class="eye-icon" />
+          </button>
         </div>
-
 
         <button type="submit" class="btn-primary">Log In <span style=" place-items: center;"></span></button>
         <br>
