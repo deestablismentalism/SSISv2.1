@@ -7,10 +7,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeModalBtns = document.querySelectorAll('.close-modal');
     const otpInputs = document.querySelectorAll('.otp-input');
     const resendBtn = document.getElementById('resend-otp-btn');
+    const phoneInput = document.getElementById('phone-number');
     
     let countdownInterval;
     let phoneNumber = '';
     let otpToken = '';
+
+    phoneInput.addEventListener('input', function(e) {
+        this.value = this.value.replace(/\D/g, '').substring(0, 11);
+    });
 
     phoneForm.addEventListener('submit', async function(e) {
         e.preventDefault();

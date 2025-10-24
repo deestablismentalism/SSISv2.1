@@ -2,25 +2,28 @@ document.addEventListener("DOMContentLoaded", function() {
     const form = document.getElementById("login-form");
     const button = form.querySelector("button[type=submit]");
     const phoneNumber = document.getElementById("phone_number");
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("toggle-password");
     
-    // Phone number validation
+    togglePassword.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+    });
+    
     phoneNumber.addEventListener('keydown', function(e) {
         const key = e.key;
         const currentLength = phoneNumber.value.length;
         
-        // Allow control keys
         const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
         if (allowedKeys.includes(key)) {
             return;
         }
         
-        // Check if key is a number
         if(isNaN(key) || key === ' ') {
             e.preventDefault();
             return;
         }
         
-        // Check if length would exceed 11
         if(currentLength >= 11) {
             e.preventDefault();
             return;

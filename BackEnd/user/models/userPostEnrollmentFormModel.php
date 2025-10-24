@@ -6,29 +6,27 @@ require_once __DIR__ . '/../../core/Exception/DatabaseException.php';
 
 class userPostEnrollmentFormModel {
     protected $conn;
-    
-    //automatically run and connect database
+    public const INITIAL_SCHOOL_NAME = "South II Elementary School";
+    public const INITIAL_SCHOOL_ID = 109732; 
+    public const INITIAL_SCHOOL_ADDRESS = "Teody Street, Capitol Homesite, Brgy. Cotta, Lucena, Philippines";
+
     public function __construct() {
         $db = new Connect();
         $this->conn = $db->getConnection();
     }
     
-    // Insert educational information function
     private function educational_information(int $School_Year_Start, int $School_Year_End, int $If_LRNN_Returning, 
                                     int $Enrolling_Grade_Level, ?string $Last_Grade_Level, ?string $Last_Year_Attended) :int {
         try {
-            // Prepare and execute query with validated data
             $sql = "INSERT INTO educational_information (School_Year_Start, School_Year_End, If_LRN_Returning, Enrolling_Grade_Level, Last_Grade_Level, Last_Year_Attended) 
             VALUES (:School_Year_Start, :School_Year_End, :If_LRN_Returning, :Enrolling_Grade_Level,:Last_Grade_Level, :Last_Year_Attended)";
             $stmt = $this->conn->prepare($sql); 
-            // Bind parameters with explicit types
             $stmt->bindValue(':School_Year_Start', $School_Year_Start, PDO::PARAM_INT);
             $stmt->bindValue(':School_Year_End', $School_Year_End, PDO::PARAM_INT);
             $stmt->bindValue(':If_LRN_Returning', $If_LRNN_Returning, PDO::PARAM_INT);
             $stmt->bindValue(':Enrolling_Grade_Level', $Enrolling_Grade_Level, PDO::PARAM_STR);
             $stmt->bindValue(':Last_Grade_Level', $Last_Grade_Level ?: null, PDO::PARAM_STR);
             $stmt->bindValue(':Last_Year_Attended', $Last_Year_Attended, $Last_Year_Attended === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
-            // Execute and check for errors
             if (!$insert_educational_information->execute()) {
                 $errorInfo = $insert_educational_information->errorInfo();
                 error_log('SQL Error: ' . json_encode($errorInfo));
@@ -54,9 +52,15 @@ class userPostEnrollmentFormModel {
             $stmt->bindParam(':School_Id', $School_Id);
             $stmt->bindParam(':School_Address', $School_Address);
             $stmt->bindParam(':School_Type', $School_Type);
+
+            $initialSchoolChoice = self::INITIAL_SCHOOL_NAME;
+            $initialSchoolId = self::INITIAL_SCHOOL_ID;
+            $initialSchoolAddress = self::INITIAL_SCHOOL_ADDRESS;
+            
             $stmt->bindParam(':Initial_School_Choice', $Initial_School_Choice);
             $stmt->bindParam(':Initial_School_Id', $Initial_School_Id);
             $stmt->bindParam(':Initial_School_Address', $Initial_School_Address);
+            
             if (!$stmt->execute()) {
                 throw new PDOException('Failed to execute educational background insert');
             }
@@ -313,19 +317,19 @@ class userPostEnrollmentFormModel {
             } 
             // If the enrollee is successfully inserted, get the last inserted ID
             $enrolleeId = (int)$this->conn->lastInsertId();
-            //attempt father insert to enrollee parents
+
             $insertFatherToEnrolleeParents = $this->insertParentToEnrolleeParents($enrolleeId,$fatherInformationId,$fatherParentType);
             if(!$insertFatherToEnrolleeParents) {
                 $this->conn->rollBack();
                 throw new PDOException('Failed to insert father to enrollee parents');
             }
-            //attempt mother insert to enrollee parents
+
             $insertMotherToEnrolleeParents = $this->insertParentToEnrolleeParents($enrolleeId, $motherInformationId, $motherParentType);
             if(!$insertMotherToEnrolleeParents) {
                 $this->conn->rollBack();
                 throw new PDOException('Failed to insert mother to enrollee parents');
             }
-            //attempt guardian insert to enrollee parents
+
             $insertGuardianToEnrolleeParents = $this->insertParentToEnrolleeParents($enrolleeId, $guardianInformationId,$guardianParentType);
             if(!$insertGuardianToEnrolleeParents) {
                 $this->conn->rollBack();
@@ -335,13 +339,11 @@ class userPostEnrollmentFormModel {
             return true;
         }
         catch(PDOException $e) {
-            //rollback if something goes wrong
             $this->conn->rollBack();
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to insert enrollee',0,$e);
         }
     }
-    //check matching numeric values in the database
     public function checkLRN(int $lrn, ?int $enrolleeId) : bool {
         try {
             $sql = 'SELECT 1 FROM enrollee WHERE Learner_Reference_Number = :lrn';
