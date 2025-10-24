@@ -124,7 +124,7 @@ label{
 
 .previous-school-wrapper {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .student-information-wrapper {
@@ -163,7 +163,6 @@ label{
     padding: 1em;
 }
 .heducation {
-    border-right :1px solid #295077;
     padding: 1em;
 }
 

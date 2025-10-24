@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ .'/../../core/dbconnection.php';
-require_once __DIR__ . '/../../core/Exception/DatabaseException.php';
-
 
 class userPostEnrollmentFormModel {
     protected $conn;
@@ -15,28 +13,29 @@ class userPostEnrollmentFormModel {
         $this->conn = $db->getConnection();
     }
     
-    private function educational_information(int $School_Year_Start, int $School_Year_End, int $If_LRNN_Returning, 
-                                    int $Enrolling_Grade_Level, ?string $Last_Grade_Level, ?string $Last_Year_Attended) :int {
+    private function educational_information(int $School_Year_Start, int $School_Year_End, int $If_LRN_Returning, 
+                                    string $Enrolling_Grade_Level, ?string $Last_Grade_Level, ?int $Last_Year_Attended) :int {
         try {
             $sql = "INSERT INTO educational_information (School_Year_Start, School_Year_End, If_LRN_Returning, Enrolling_Grade_Level, Last_Grade_Level, Last_Year_Attended) 
             VALUES (:School_Year_Start, :School_Year_End, :If_LRN_Returning, :Enrolling_Grade_Level,:Last_Grade_Level, :Last_Year_Attended)";
             $stmt = $this->conn->prepare($sql); 
             $stmt->bindValue(':School_Year_Start', $School_Year_Start, PDO::PARAM_INT);
             $stmt->bindValue(':School_Year_End', $School_Year_End, PDO::PARAM_INT);
-            $stmt->bindValue(':If_LRN_Returning', $If_LRNN_Returning, PDO::PARAM_INT);
+            $stmt->bindValue(':If_LRN_Returning', $If_LRN_Returning, PDO::PARAM_INT);
             $stmt->bindValue(':Enrolling_Grade_Level', $Enrolling_Grade_Level, PDO::PARAM_STR);
-            $stmt->bindValue(':Last_Grade_Level', $Last_Grade_Level ?: null, PDO::PARAM_STR);
+            $stmt->bindValue(':Last_Grade_Level', $Last_Grade_Level, $Last_Grade_Level === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
             $stmt->bindValue(':Last_Year_Attended', $Last_Year_Attended, $Last_Year_Attended === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
-            if (!$insert_educational_information->execute()) {
-                $errorInfo = $insert_educational_information->errorInfo();
+            
+            if (!$stmt->execute()) {
+                $errorInfo = $stmt->errorInfo();
                 error_log('SQL Error: ' . json_encode($errorInfo));
                 throw new PDOException('Failed to execute educational information insert: ' . $errorInfo[2]);
             }
             return (int)$this->conn->lastInsertId();
         }
         catch (PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert educational background',0,$e);
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
+            throw $e;
         }
     }
 
@@ -68,7 +67,7 @@ class userPostEnrollmentFormModel {
         } 
         catch (PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert educational background',0,$e);
+            throw $e;
         }
     }
 
@@ -90,7 +89,7 @@ class userPostEnrollmentFormModel {
         } 
         catch (PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert disabled student',0,$e);
+            throw $e;
         } 
     }
     // Insert enrollee address function
@@ -119,7 +118,7 @@ class userPostEnrollmentFormModel {
         }
         catch (PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert enrollee address',0,$e);
+            throw $e;
         }
     }
     // Insert father information function
@@ -145,7 +144,7 @@ class userPostEnrollmentFormModel {
         }
         catch (PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert father information',0,$e);
+            throw $e;
         }
     }
     // Insert mother information function
@@ -171,7 +170,7 @@ class userPostEnrollmentFormModel {
         }
         catch (PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert mother information',0,$e);
+            throw $e;
         }
     }
     // Insert guardian information function
@@ -197,7 +196,7 @@ class userPostEnrollmentFormModel {
         }
         catch (PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert guardian information',0,$e);
+            throw $e;
         }
     }
 
@@ -215,7 +214,8 @@ class userPostEnrollmentFormModel {
             return (int)$this->conn->lastInsertId();
         } 
         catch (PDOException $e) {
-            return ['status' => 'error', 'message' => 'image query failed: ' . $e->getMessage() ];
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
+            throw $e;
         }
     }   
     private function insertParentToEnrolleeParents(int $enrolleeId,int $parentId,string $relationship) : bool{
@@ -233,34 +233,96 @@ class userPostEnrollmentFormModel {
         }
         catch(PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert enrollee parernts',0,$e);
+            throw $e;
         }
     }
     // Insert enrollee function MAIN FUNCTION!!!!
-    public function insert_enrollee(int $userId,int $schoolYearStart,int $schoolYearEnd,int $hasLrn,int $enrollingGradeLevel,?int $lastGradeLevel,?int $lastYearAttended,
-    string $lastSchoolAttended,int $schoolId,string $schoolAddress,string $schoolType,string $initialSchoolChoice,int $initialSchoolId,string $initialSchoolAddress,
-    int $hasSpecialCondition,int $hasAssistiveTech, ?string $specialCondition, ?string $assistiveTech,
-    int $houseNumber,string $subdName, string $brgyName,int $brgyCode,string $municipalityName,int $municipalityCode,string $provinceName,int $provinceCode, 
-    string $region,int $regionCode,
-    string $fatherFirstName,string $Father_Last_Name,?string $fatherMiddleName,string $fatherEducationalAttainment, string $fatherCpNumber, 
-    int $isFather4ps,
-    string $motherFirstName,string $motherLastName,?string $motherMiddleName,string $motherEducationalAttainment, 
-    string $motherCpNumber, int $isMother4ps,
-    string $guardianFirstName,string $guardianLastName,?string $guardianMiddleName,string $guardianEducationalAttainment,
-    string $guardianCpNumber , $GIf_4Ps,
-    string $studentFirstName,string $studentLastName,?string $studentMiddleName,?string $studentSuffix,?int $lrn,int $psaNumber,string $birthDate, 
-    int $age,string $sex,string $religion, 
-    string $nativeLanguage,int $isCultural,?string $culturalGroup,string $studentEmail,int $enrollmentStatus,string $filename,string $directory) : bool {
+    // FIX: Changed $enrollingGradeLevel and $lastGradeLevel from int to string
+    public function insert_enrollee(
+        int $userId,
+        int $schoolYearStart,
+        int $schoolYearEnd,
+        int $hasLrn,
+        string $enrollingGradeLevel,  // FIX: Changed from int to string
+        ?string $lastGradeLevel,       // FIX: Changed from ?int to ?string
+        ?int $lastYearAttended,
+        string $lastSchoolAttended,
+        int $schoolId,
+        string $schoolAddress,
+        string $schoolType,
+        string $initialSchoolChoice,
+        int $initialSchoolId,
+        string $initialSchoolAddress,
+        int $hasSpecialCondition,
+        int $hasAssistiveTech, 
+        ?string $specialCondition, 
+        ?string $assistiveTech,
+        int $houseNumber,
+        string $subdName, 
+        string $brgyName,
+        int $brgyCode,
+        string $municipalityName,
+        int $municipalityCode,
+        string $provinceName,
+        int $provinceCode, 
+        string $region,
+        int $regionCode,
+        string $fatherFirstName,
+        string $Father_Last_Name,
+        ?string $fatherMiddleName,
+        string $fatherEducationalAttainment, 
+        string $fatherCpNumber, 
+        int $isFather4ps,
+        string $motherFirstName,
+        string $motherLastName,
+        ?string $motherMiddleName,
+        string $motherEducationalAttainment, 
+        string $motherCpNumber, 
+        int $isMother4ps,
+        string $guardianFirstName,
+        string $guardianLastName,
+        ?string $guardianMiddleName,
+        string $guardianEducationalAttainment,
+        string $guardianCpNumber, 
+        int $GIf_4Ps,
+        string $studentFirstName,
+        string $studentLastName,
+        ?string $studentMiddleName,
+        ?string $studentSuffix,
+        ?int $lrn,
+        int $psaNumber,
+        string $birthDate, 
+        int $age,
+        string $sex,
+        string $religion, 
+        string $nativeLanguage,
+        int $isCultural,
+        ?string $culturalGroup,
+        string $studentEmail,
+        int $enrollmentStatus,
+        string $filename,
+        string $directory
+    ) : bool {
         //Initialize variable for parent types
         $fatherParentType = 'Father';
         $motherParentType = 'Mother';
         $guardianParentType = 'Guardian';
+        
         try{
             // If even one of the queries fail, none of the queries will be executed
             $this->conn->beginTransaction();
+            
             // Call the functions to insert data
-            //function1
-            $educationalInformationId = $this->educational_information($schoolYearStart, $schoolYearEnd, $hasLrn, $enrollingGradeLevel, $lastGradeLevel, $lastYearAttended);
+            //function1 - Now passing string types correctly
+            $educationalInformationId = $this->educational_information(
+                $schoolYearStart, 
+                $schoolYearEnd, 
+                $hasLrn, 
+                $enrollingGradeLevel,  // Now correctly a string
+                $lastGradeLevel,        // Now correctly a ?string
+                $lastYearAttended
+            );
+            
             //function2
             $educationalBackgroundId = $this->educational_background($lastSchoolAttended, $schoolId, $schoolAddress, $schoolType, 
             $initialSchoolChoice, $initialSchoolId, $initialSchoolAddress);
@@ -279,7 +341,7 @@ class userPostEnrollmentFormModel {
             $guardianInformationId = $this->guardian_information($guardianFirstName, $guardianLastName, $guardianMiddleName, $guardianParentType, 
             $guardianEducationalAttainment, $guardianCpNumber, $GIf_4Ps);
             //function8
-            $psaDirectoryId = $this->images($filename, $directory);
+            $psaDirectoryId = $this->psa_directory($filename, $directory);
             // Insert enrollee
             $sql = "INSERT INTO enrollee (User_Id,Student_First_Name, Student_Middle_Name, Student_Last_Name, Student_Extension, Learner_Reference_Number, Psa_Number, Birth_Date, Age, Sex, Religion, 
                             Native_Language, If_Cultural, Cultural_Group, Student_Email, Enrollment_Status, Enrollee_Address_Id,
@@ -290,7 +352,8 @@ class userPostEnrollmentFormModel {
 
             // just binding parameters
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':User_Id', $User_Id);
+            // FIX: Changed $User_Id to $userId (parameter name)
+            $stmt->bindParam(':User_Id', $userId);
             $stmt->bindParam(':Student_First_Name', $studentFirstName);
             $stmt->bindParam(':Student_Middle_Name', $studentMiddleName);
             $stmt->bindParam(':Student_Last_Name', $studentLastName);
@@ -341,7 +404,7 @@ class userPostEnrollmentFormModel {
         catch(PDOException $e) {
             $this->conn->rollBack();
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert enrollee',0,$e);
+            throw $e;
         }
     }
     public function checkLRN(int $lrn, ?int $enrolleeId) : bool {
@@ -361,7 +424,7 @@ class userPostEnrollmentFormModel {
         }
         catch(PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to check LRN',0,$e);
+            throw $e;
         }
     }
     public function checkPSA(int $psa, ?int $enrolleeId) : bool {
@@ -381,7 +444,7 @@ class userPostEnrollmentFormModel {
         }
         catch(PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to check PSA',0,$e);
+            throw $e;
         }
     }
 }
