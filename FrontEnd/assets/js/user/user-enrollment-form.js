@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', function() {
         notNumber: "This field must be a number",
         
         isEmpty(element) {
+            // FIX: Check if element exists and is not null
+            if (!element || element === null) {
+                return true;
+            }
+            // FIX: Check if element.value exists
+            if (!element.value) {
+                return true;
+            }
             return !element.value.trim();
         },
         
@@ -108,9 +116,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const lschool = document.getElementById("lschool");
     const lschoolAddr = document.getElementById("lschoolAddress");
     const lschoolId = document.getElementById("lschoolID");
-    const fschool = document.getElementById("fschool");
-    const fschoolAddr = document.getElementById("fschoolAddress");
-    const fschoolId = document.getElementById("fschoolID");
     const enrollingGradeLevel = document.getElementById("grades-tbe");
     const lastGradeLevel = document.getElementById("last-grade");
 
@@ -829,17 +834,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function validateSchoolId(element, errorElement) {
+        // FIX: Add null check before validation
+        if (!element || element === null) {
+            console.error('School ID element not found:', errorElement);
+            return false;
+        }
+        
         if (ValidationUtils.isEmpty(element)) {
             return ValidationUtils.errorMessages(errorElement, ValidationUtils.emptyError, element);
         }
-        else if(!idRegex.test(element.value)) {
-            return ValidationUtils.errorMessages(errorElement, "Not a valid school Id", element);
+        
+        // Remove non-numeric characters
+        const numericValue = element.value.replace(/\D/g, '');
+        
+        // Check if it's exactly 6 digits
+        if (numericValue.length !== 6) {
+            return ValidationUtils.errorMessages(errorElement, "School ID must be exactly 6 digits", element);
         }
+        
+        // Update the input value with cleaned numeric value
+        element.value = numericValue;
+        
         ValidationUtils.clearError(errorElement, element);
         return true;
     }
 
     function validateSchool(element, errorElement){
+        // FIX: Add null check before validation
+        if (!element || element === null) {
+            console.error('School element not found:', errorElement);
+            return false;
+        }
+        
         if (ValidationUtils.isEmpty(element)) { 
             return ValidationUtils.errorMessages(errorElement, ValidationUtils.emptyError, element);
         }
@@ -853,27 +879,30 @@ document.addEventListener('DOMContentLoaded', function() {
     function validatePreviousSchoolInfo() {
         let isValid = true;
 
+        // ONLY validate last school fields - removed fschool references completely
         const fields = [
             {element: lschool, error: "em-lschool"},
-            {element: lschoolAddr, error: "em-lschoolAddress"},
-            {element: fschool, error: "em-fschool"},
-            {element: fschoolAddr, error: "em-fschoolAddress"}
+            {element: lschoolAddr, error: "em-lschoolAddress"}
         ];
 
         fields.forEach(({element, error}) => {
-            if (!validateSchool(element, error)) {
-                isValid = false;
+            if (element && element !== null) {
+                if (!validateSchool(element, error)) {
+                    isValid = false;
+                }
             }
         });
 
+        // ONLY validate last school ID - removed fschoolId reference completely
         const idFields = [
-            {element: lschoolId, error: "em-lschoolID"},
-            {element: fschoolId, error: "em-fschoolID"}
+            {element: lschoolId, error: "em-lschoolID"}
         ];
 
         idFields.forEach(({element, error}) => {
-            if (!validateSchoolId(element, error)) {
-                isValid = false;
+            if (element && element !== null) {
+                if (!validateSchoolId(element, error)) {
+                    isValid = false;
+                }
             }
         });
 
@@ -1000,50 +1029,73 @@ document.addEventListener('DOMContentLoaded', function() {
             body: formData
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
+            console.log('Response status:', response.status);
+            console.log('Response headers:', response.headers);
+            
+            // Get the raw text first to see what we're actually receiving
+            return response.text().then(text => {
+                console.log('Raw response:', text);
+                
+                // Try to parse as JSON
+                try {
+                    const data = JSON.parse(text);
+                    return data;
+                } catch (e) {
+                    console.error('JSON Parse Error:', e);
+                    console.error('Response was:', text.substring(0, 500)); // Show first 500 chars
+                    throw new Error('Server returned invalid JSON. Check console for details.');
+                }
+            });
         })
         .then(data => {
+            console.log('Parsed data:', data);
+            
             if(data.success) {
                 const successMessage = document.getElementById('success-message');
-                successMessage.style.display = 'block';
-                successMessage.innerHTML = data.message || 'Enrollment form submitted successfully!';
-                //get psa and lrn value upon submission
+                if (successMessage) {
+                    successMessage.style.display = 'block';
+                    successMessage.innerHTML = data.message || 'Enrollment form submitted successfully!';
+                }
+                
+                // Update localStorage
                 let lrnValue = localStorage.getItem('lrn');
                 let psaValue = localStorage.getItem('psa');
-
                 const currentLRN = parseInt(lrnValue);
                 const currentPSA = parseInt(psaValue);
-                //incerment if submission is successful
                 localStorage.setItem('lrn', currentLRN + 1);
                 localStorage.setItem('psa', currentPSA + 1);
+                
                 setTimeout(() => {
                     window.location.href = './user_enrollees.php';
                 }, 2000);
             } else {
                 const errorMessage = document.getElementById('error-message');
+                if (errorMessage) {
+                    errorMessage.style.display = 'block';
+                    errorMessage.innerHTML = data.message || 'Failed to submit enrollment form. Please try again.';
+                    setTimeout(() => {
+                        errorMessage.style.display = 'none';
+                    }, 5000);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            console.error('Error stack:', error.stack);
+            
+            const errorMessage = document.getElementById('error-message');
+            if (errorMessage) {
                 errorMessage.style.display = 'block';
-                errorMessage.innerHTML = data.message || 'Failed to submit enrollment form. Please try again.';
+                errorMessage.textContent = 'An error occurred while submitting the form. Check the console for details.';
                 setTimeout(() => {
                     errorMessage.style.display = 'none';
                 }, 5000);
             }
         })
-        .catch(error => {
-            console.error('Fetch error:', error);
-            
-            const errorMessage = document.getElementById('error-message');
-            errorMessage.style.display = 'block';
-            errorMessage.textContent = 'An error occurred while submitting the form. Please check all input fields and try again.';
-            setTimeout(() => {
-                errorMessage.style.display = 'none';
-            }, 5000);
-        })
         .finally(() => {
             submitButton.disabled = false;
             submitButton.textContent = originalButtonText;
+            submitButton.style.backgroundColor = '';
         });
     });
 
@@ -1310,37 +1362,43 @@ document.addEventListener('DOMContentLoaded', function() {
     // Previous School Events
     const schoolFields = [
         {element: lschool, error: "em-lschool"},
-        {element: lschoolAddr, error: "em-lschoolAddress"},
-        {element: fschool, error: "em-fschool"},
-        {element: fschoolAddr, error: "em-fschoolAddress"}
+        {element: lschoolAddr, error: "em-lschoolAddress"}
     ];
 
     schoolFields.forEach(({element, error}) => {
-        if (element) {
+        // FIX: Only add event listener if element exists
+        if (element && element !== null) {
             element.addEventListener('input', () => validateSchool(element, error));
+        } else {
+            console.warn('School field element not found for error:', error);
         }
     });
 
     const yearFields = [startYear, endYear, lastYear];
     yearFields.forEach(element => {
-        if (element) {
+        // FIX: Only add sanitization if element exists
+        if (element && element !== null) {
             sanitizeNumericInput(element, 4);
         }
     });
 
     const idFields = [
-        {element: lschoolId, error: "em-lschoolID"},
-        {element: fschoolId, error: "em-fschoolID"}
+        {element: lschoolId, error: "em-lschoolID"}
     ];
 
     idFields.forEach(({element, error}) => {
-        if (element) {
+        // FIX: Only add event listeners if element exists
+        if (element && element !== null) {
             sanitizeNumericInput(element, 6);
             element.addEventListener('blur', () => validateSchoolId(element, error));
+            element.addEventListener('input', () => {
+                // Auto-validate when 6 digits are entered
+                if (element.value.length === 6) {
+                    validateSchoolId(element, error);
+                }
+            });
+        } else {
+            console.warn('School ID field element not found for error:', error);
         }
     });
-
-    if (startYear) startYear.addEventListener('input', validateStartYear);
-    if (endYear) endYear.addEventListener('input', validateAcademicYear);
-    if (lastYear) lastYear.addEventListener('input', validateYearFinished);
 });

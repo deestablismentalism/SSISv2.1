@@ -96,7 +96,7 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                                 <div class="error-msg">
                                     <span class="em-lschoolID"> Error Message Here. </span>
                                 </div>
-                                <input type="number" name="lschoolID" id="lschoolID" class="textbox" min="6" max="6">
+                                <input type="number" name="lschoolID" id="lschoolID" class="textbox" minlength="6" maxlength="6">
                             </div>
                         </div>
                         <div class="last-school-address">

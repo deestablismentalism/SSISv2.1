@@ -1,0 +1,2 @@
+[2025-10-24 15:49:06] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ssis-test_database.psa_directory' doesn't exist
+[2025-10-24 15:49:07]SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ssis-test_database.psa_directory' doesn't exist
