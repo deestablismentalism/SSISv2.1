@@ -29,7 +29,7 @@ class displayEnrollmentForms {
             else {
                 echo '<table> <tbody>';
                 foreach($data['data'] as $rows) {
-                    $fname = !empty($rows['Student_First_Name']) ? $rows['Student_Last_Name'] : 'No first name';
+                    $fname = !empty($rows['Student_First_Name']) ? $rows['Student_First_Name'] : 'No first name';
                     $lname = !empty($rows['Student_Last_Name']) ? $rows['Student_Last_Name'] : 'No last name';
                     $studentMiddleInitial = !empty($rows['Student_Middle_Name']) ? substr($rows['Student_Middle_Name'], 0, 1) . "." : "";
                     //values to render

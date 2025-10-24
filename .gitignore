@@ -18,3 +18,5 @@ Thumbs.db
 # PHP specific
 *.phar
 .phpunit.result.cache
+#error log file
+/BackEnd/errorLogs.txt
