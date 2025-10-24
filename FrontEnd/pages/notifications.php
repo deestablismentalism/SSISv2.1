@@ -12,6 +12,7 @@ function renderNotification($type, $title, $message) {
     echo "
     <div class='notifications-container'>
         <div class='$type'>
+            <button class='notification-close-btn' type='button' aria-label='Close'>×</button>
             <div class='flex'>
                 <div class='flex-shrink-0'>$icon</div>
                 <div class='success-notification-prompt-wrap'>

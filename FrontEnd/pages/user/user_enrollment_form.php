@@ -96,7 +96,7 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                                 <div class="error-msg">
                                     <span class="em-lschoolID"> Error Message Here. </span>
                                 </div>
-                                <input type="number" name="lschoolID" id="lschoolID" class="textbox" min="6" max="6">
+                                <input type="number" name="lschoolID" id="lschoolID" class="textbox" minlength="6" maxlength="6">
                             </div>
                         </div>
                         <div class="last-school-address">
@@ -114,32 +114,6 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                             <label for="public">Pampubliko</label>
                         </div>
                     </div>
-
-                    <div class="nais-paaralan">
-                        <div class="fschool-wrapper">
-                            <div class="fschool">
-                                <p class="dfont">Nais na paaralan <span class="required">*</span></p>
-                                <div class="error-msg">
-                                    <span class="em-fschool"> Error Message Here. </span>
-                                </div>
-                                <input type="text" name="fschool" id="fschool" class="textbox" placeholder="South II Elementary School">
-                            </div>
-                            <div class="fschoolID">
-                                <p class="dfont">ID ng paaralan <span class="required">*</span></p>
-                                <div class="error-msg">
-                                    <span class="em-fschoolID"> Error Message Here. </span>
-                                </div>
-                                <input type="number" name="fschoolID" id="fschoolID" class="textbox" min="6" max="6">
-                            </div>
-                        </div>
-                        <div>
-                            <p class="dfont">Address ng paaralan <span class="required">*</span></p>
-                            <div class="error-msg">
-                                <span class="em-fschoolAddress"> Error Message Here. </span>
-                            </div>
-                        <input type="text" name="fschoolAddress" id="fschoolAddress" class="textbox">
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -155,14 +129,14 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                             <div class="error-msg">
                                 <span class="em-PSA-number"></span>
                             </div>
-                            <input type="number" name="PSA-number" id="PSA-number" class="textbox">
+                            <input type="text" name="PSA-number" id="PSA-number" class="textbox" maxlength="13" pattern="[0-9]{13}" inputmode="numeric">
                         </div>
                         <div class="LRN">
                             <p class="dfont">Learner's Reference Number (LRN) kung mayroon <span class="required">*</span></p>
                             <div class="error-msg">
                                 <span class="em-LRN"></span>
                             </div>
-                            <input type="number" name="LRN" id="LRN" class="textbox">
+                            <input type="text" name="LRN" id="LRN" class="textbox" maxlength="12" pattern="[0-9]{12}" inputmode="numeric">
                         </div>
                     </div>
                 <div class="student-information-wrapper">
@@ -529,7 +503,6 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
             </div>
         </form>
     </div>
-</div>
 </div>
 <div class="success-message" id="success-message"></div>
 <div class="error-message" id="error-message"></div>

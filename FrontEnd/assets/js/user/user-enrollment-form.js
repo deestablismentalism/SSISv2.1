@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', function() {
         notNumber: "This field must be a number",
         
         isEmpty(element) {
+            // FIX: Check if element exists and is not null
+            if (!element || element === null) {
+                return true;
+            }
+            // FIX: Check if element.value exists
+            if (!element.value) {
+                return true;
+            }
             return !element.value.trim();
         },
         
@@ -108,9 +116,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const lschool = document.getElementById("lschool");
     const lschoolAddr = document.getElementById("lschoolAddress");
     const lschoolId = document.getElementById("lschoolID");
-    const fschool = document.getElementById("fschool");
-    const fschoolAddr = document.getElementById("fschoolAddress");
-    const fschoolId = document.getElementById("fschoolID");
     const enrollingGradeLevel = document.getElementById("grades-tbe");
     const lastGradeLevel = document.getElementById("last-grade");
 
@@ -127,6 +132,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const yearRegex = /^(1[0-9]{3}|2[0-9]{3}|3[0-9]{3})$/;
     const idRegex = /^([0-9]){6}$/;
     const charRegex = /^[A-Za-z0-9\s.,'-]{3,100}$/;
+    const nameRegex = /^[A-Za-z\s.\-`'ñÑ]+$/;
+    const numericOnlyRegex = /^[0-9]+$/;
+    const phoneRegex = /^[0-9]{11}$/;
 
     // ===== HELPER FUNCTIONS =====
     function formatDate(date) {
@@ -145,6 +153,121 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.target.value = sanitizedValue.slice(0, maxLength);
                 const posDiff = value.length - sanitizedValue.length;
                 e.target.setSelectionRange(cursorPos - posDiff, cursorPos - posDiff);
+            } else if (value.length > maxLength) {
+                e.target.value = value.slice(0, maxLength);
+                e.target.setSelectionRange(maxLength, maxLength);
+            }
+        });
+        
+        // Prevent non-numeric keys and enforce max length on keydown
+        element.addEventListener('keydown', function(e) {
+            const currentLength = e.target.value.length;
+            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End'];
+            
+            // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+            if (e.ctrlKey && ['a', 'c', 'v', 'x'].includes(e.key.toLowerCase())) {
+                return;
+            }
+            
+            // Block if max length reached and not a control key
+            if (currentLength >= maxLength && !allowedKeys.includes(e.key)) {
+                e.preventDefault();
+                return;
+            }
+            
+            // Block non-numeric keys
+            if (!allowedKeys.includes(e.key) && (e.key < '0' || e.key > '9')) {
+                e.preventDefault();
+            }
+        });
+        
+        // Handle paste events
+        element.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const pasteData = e.clipboardData.getData('text');
+            const numericOnly = pasteData.replace(/\D/g, '').slice(0, maxLength);
+            
+            const currentValue = e.target.value;
+            const start = e.target.selectionStart;
+            const end = e.target.selectionEnd;
+            
+            const newValue = currentValue.substring(0, start) + numericOnly + currentValue.substring(end);
+            e.target.value = newValue.slice(0, maxLength);
+            
+            const newCursorPos = Math.min(start + numericOnly.length, maxLength);
+            e.target.setSelectionRange(newCursorPos, newCursorPos);
+        });
+    }
+
+    function sanitizePhoneInput(element) {
+        element.addEventListener('input', function(e) {
+            const value = e.target.value;
+            const cursorPos = e.target.selectionStart;
+            
+            // Remove any non-numeric characters
+            const sanitizedValue = value.replace(/\D/g, '');
+            
+            if (sanitizedValue.length > 11) {
+                e.target.value = sanitizedValue.slice(0, 11);
+                e.target.setSelectionRange(11, 11);
+            } else if (value !== sanitizedValue) {
+                e.target.value = sanitizedValue;
+                const newPos = Math.max(0, cursorPos - (value.length - sanitizedValue.length));
+                e.target.setSelectionRange(newPos, newPos);
+            }
+        });
+        
+        // Prevent non-numeric keys
+        element.addEventListener('keydown', function(e) {
+            const currentLength = e.target.value.length;
+            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End'];
+            
+            // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+            if (e.ctrlKey && ['a', 'c', 'v', 'x'].includes(e.key.toLowerCase())) {
+                return;
+            }
+            
+            // Block if max length (11) reached
+            if (currentLength >= 11 && !allowedKeys.includes(e.key)) {
+                e.preventDefault();
+                return;
+            }
+            
+            // Block non-numeric keys
+            if (!allowedKeys.includes(e.key) && (e.key < '0' || e.key > '9')) {
+                e.preventDefault();
+            }
+        });
+        
+        // Handle paste events
+        element.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const pasteData = e.clipboardData.getData('text');
+            const numericOnly = pasteData.replace(/\D/g, '').slice(0, 11);
+            
+            const currentValue = e.target.value;
+            const start = e.target.selectionStart;
+            const end = e.target.selectionEnd;
+            
+            const newValue = currentValue.substring(0, start) + numericOnly + currentValue.substring(end);
+            e.target.value = newValue.slice(0, 11);
+            
+            const newCursorPos = Math.min(start + numericOnly.length, 11);
+            e.target.setSelectionRange(newCursorPos, newCursorPos);
+        });
+    }
+
+    function sanitizeNameInput(element) {
+        element.addEventListener('input', function(e) {
+            const value = e.target.value;
+            const cursorPos = e.target.selectionStart;
+            
+            // Remove any characters that are not letters, spaces, periods, hyphens, or apostrophes
+            const sanitizedValue = value.replace(/[^A-Za-zñÑ\s.\-'']/g, '');
+            
+            if (value !== sanitizedValue) {
+                e.target.value = sanitizedValue;
+                e.target.setSelectionRange(cursorPos - 1, cursorPos - 1);
             }
         });
     }
@@ -161,6 +284,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+    }
+
+    function validateName(element, errorElement) {
+        const value = element.value.trim();
+        
+        if (!value) {
+            return ValidationUtils.errorMessages(errorElement, ValidationUtils.emptyError, element);
+        }
+        
+        if (!nameRegex.test(value)) {
+            return ValidationUtils.errorMessages(errorElement, "Name can only contain letters, spaces, periods, hyphens and apostrophes", element);
+        }
+        
+        if (value.length < 2) {
+            return ValidationUtils.errorMessages(errorElement, "Name must be at least 2 characters long", element);
+        }
+        
+        ValidationUtils.clearError(errorElement, element);
+        return true;
+    }
+
+    function validatePhoneNumber(element, errorElement) {
+        const value = element.value.trim();
+        
+        if (!value) {
+            return ValidationUtils.errorMessages(errorElement, ValidationUtils.emptyError, element);
+        }
+        
+        if (!numericOnlyRegex.test(value)) {
+            return ValidationUtils.errorMessages(errorElement, "Phone number must contain only numbers", element);
+        }
+        
+        if (!phoneRegex.test(value)) {
+            if (value.length < 11) {
+                return ValidationUtils.errorMessages(errorElement, "Phone number must be 11 digits", element);
+            } else {
+                return ValidationUtils.errorMessages(errorElement, "Phone number must be exactly 11 digits", element);
+            }
+        }
+        
+        ValidationUtils.clearError(errorElement, element);
+        return true;
     }
 
     // ===== STUDENT INFO VALIDATION =====
@@ -319,31 +484,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ===== PARENT INFO VALIDATION =====
-    function validatePhoneNumber(element, errorElement, e) {
-        if(ValidationUtils.isEmpty(element)) {
-            ValidationUtils.errorMessages(errorElement, ValidationUtils.emptyError, element);
-            ValidationUtils.checkEmptyFocus(element, errorElement);
-            return false;
-        }
-        
-        if(isNaN(e.key) && e.key !== "Backspace") {
-            ValidationUtils.errorMessages(errorElement, ValidationUtils.notNumber, element);
-            ValidationUtils.checkEmptyFocus(element, errorElement);
-            e.preventDefault();
-            return false;
-        }
-        
-        if(element.value.length >= 11 && e.key !== "Backspace") {
-            ValidationUtils.errorMessages(errorElement, "Not a valid phone number", element);
-            ValidationUtils.checkEmptyFocus(element, errorElement);
-            e.preventDefault();
-            return false;
-        }
-        
-        ValidationUtils.clearError(errorElement, element);
-        return true;
-    }
-
     function validateParentInfo() {
         let isValid = true;
 
@@ -369,12 +509,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
 
         phoneInfo.forEach(({element, error}) => {
-            if(ValidationUtils.isEmpty(element)) {
-                ValidationUtils.errorMessages(error, ValidationUtils.emptyError, element);
-                isValid = false;
-            }
-            else if (element.value.length !== 11) {
-                ValidationUtils.errorMessages(error, "Phone number must be 11 digits", element);
+            if (!validatePhoneNumber(element, error)) {
                 isValid = false;
             }
         });
@@ -699,17 +834,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function validateSchoolId(element, errorElement) {
+        // FIX: Add null check before validation
+        if (!element || element === null) {
+            console.error('School ID element not found:', errorElement);
+            return false;
+        }
+        
         if (ValidationUtils.isEmpty(element)) {
             return ValidationUtils.errorMessages(errorElement, ValidationUtils.emptyError, element);
         }
-        else if(!idRegex.test(element.value)) {
-            return ValidationUtils.errorMessages(errorElement, "Not a valid school Id", element);
+        
+        // Remove non-numeric characters
+        const numericValue = element.value.replace(/\D/g, '');
+        
+        // Check if it's exactly 6 digits
+        if (numericValue.length !== 6) {
+            return ValidationUtils.errorMessages(errorElement, "School ID must be exactly 6 digits", element);
         }
+        
+        // Update the input value with cleaned numeric value
+        element.value = numericValue;
+        
         ValidationUtils.clearError(errorElement, element);
         return true;
     }
 
     function validateSchool(element, errorElement){
+        // FIX: Add null check before validation
+        if (!element || element === null) {
+            console.error('School element not found:', errorElement);
+            return false;
+        }
+        
         if (ValidationUtils.isEmpty(element)) { 
             return ValidationUtils.errorMessages(errorElement, ValidationUtils.emptyError, element);
         }
@@ -723,27 +879,30 @@ document.addEventListener('DOMContentLoaded', function() {
     function validatePreviousSchoolInfo() {
         let isValid = true;
 
+        // ONLY validate last school fields - removed fschool references completely
         const fields = [
             {element: lschool, error: "em-lschool"},
-            {element: lschoolAddr, error: "em-lschoolAddress"},
-            {element: fschool, error: "em-fschool"},
-            {element: fschoolAddr, error: "em-fschoolAddress"}
+            {element: lschoolAddr, error: "em-lschoolAddress"}
         ];
 
         fields.forEach(({element, error}) => {
-            if (!validateSchool(element, error)) {
-                isValid = false;
+            if (element && element !== null) {
+                if (!validateSchool(element, error)) {
+                    isValid = false;
+                }
             }
         });
 
+        // ONLY validate last school ID - removed fschoolId reference completely
         const idFields = [
-            {element: lschoolId, error: "em-lschoolID"},
-            {element: fschoolId, error: "em-fschoolID"}
+            {element: lschoolId, error: "em-lschoolID"}
         ];
 
         idFields.forEach(({element, error}) => {
-            if (!validateSchoolId(element, error)) {
-                isValid = false;
+            if (element && element !== null) {
+                if (!validateSchoolId(element, error)) {
+                    isValid = false;
+                }
             }
         });
 
@@ -870,50 +1029,73 @@ document.addEventListener('DOMContentLoaded', function() {
             body: formData
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
+            console.log('Response status:', response.status);
+            console.log('Response headers:', response.headers);
+            
+            // Get the raw text first to see what we're actually receiving
+            return response.text().then(text => {
+                console.log('Raw response:', text);
+                
+                // Try to parse as JSON
+                try {
+                    const data = JSON.parse(text);
+                    return data;
+                } catch (e) {
+                    console.error('JSON Parse Error:', e);
+                    console.error('Response was:', text.substring(0, 500)); // Show first 500 chars
+                    throw new Error('Server returned invalid JSON. Check console for details.');
+                }
+            });
         })
         .then(data => {
+            console.log('Parsed data:', data);
+            
             if(data.success) {
                 const successMessage = document.getElementById('success-message');
-                successMessage.style.display = 'block';
-                successMessage.innerHTML = data.message || 'Enrollment form submitted successfully!';
-                //get psa and lrn value upon submission
+                if (successMessage) {
+                    successMessage.style.display = 'block';
+                    successMessage.innerHTML = data.message || 'Enrollment form submitted successfully!';
+                }
+                
+                // Update localStorage
                 let lrnValue = localStorage.getItem('lrn');
                 let psaValue = localStorage.getItem('psa');
-
                 const currentLRN = parseInt(lrnValue);
                 const currentPSA = parseInt(psaValue);
-                //incerment if submission is successful
                 localStorage.setItem('lrn', currentLRN + 1);
                 localStorage.setItem('psa', currentPSA + 1);
+                
                 setTimeout(() => {
                     window.location.href = './user_enrollees.php';
                 }, 2000);
             } else {
                 const errorMessage = document.getElementById('error-message');
+                if (errorMessage) {
+                    errorMessage.style.display = 'block';
+                    errorMessage.innerHTML = data.message || 'Failed to submit enrollment form. Please try again.';
+                    setTimeout(() => {
+                        errorMessage.style.display = 'none';
+                    }, 5000);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            console.error('Error stack:', error.stack);
+            
+            const errorMessage = document.getElementById('error-message');
+            if (errorMessage) {
                 errorMessage.style.display = 'block';
-                errorMessage.innerHTML = data.message || 'Failed to submit enrollment form. Please try again.';
+                errorMessage.textContent = 'An error occurred while submitting the form. Check the console for details.';
                 setTimeout(() => {
                     errorMessage.style.display = 'none';
                 }, 5000);
             }
         })
-        .catch(error => {
-            console.error('Fetch error:', error);
-            
-            const errorMessage = document.getElementById('error-message');
-            errorMessage.style.display = 'block';
-            errorMessage.textContent = 'An error occurred while submitting the form. Please check all input fields and try again.';
-            setTimeout(() => {
-                errorMessage.style.display = 'none';
-            }, 5000);
-        })
         .finally(() => {
             submitButton.disabled = false;
             submitButton.textContent = originalButtonText;
+            submitButton.style.backgroundColor = '';
         });
     });
 
@@ -925,10 +1107,16 @@ document.addEventListener('DOMContentLoaded', function() {
         birthDate.min = formatDate(minDate);
     }
 
-    // Set default academic year
+    // Set default academic year and make readonly
     if (startYear && endYear) {
         startYear.value = year;
         endYear.value = year + 1;
+        startYear.readOnly = true;
+        endYear.readOnly = true;
+        startYear.style.cursor = 'not-allowed';
+        endYear.style.cursor = 'not-allowed';
+        startYear.style.backgroundColor = '#e9ecef';
+        endYear.style.backgroundColor = '#e9ecef';
     }
 
     // Initialize grade level dropdowns
@@ -1025,11 +1213,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (psaNumber) {
         sanitizeNumericInput(psaNumber, 13);
         psaNumber.addEventListener('blur', validatePSA);
+        // Set maxlength attribute as fallback
+        psaNumber.setAttribute('maxlength', '13');
     }
 
     if (lrn) {
         sanitizeNumericInput(lrn, 12);
         lrn.addEventListener('blur', validateLRN);
+        // Set maxlength attribute as fallback
+        lrn.setAttribute('maxlength', '12');
     }
 
     // LRN radio buttons
@@ -1061,9 +1253,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Text field capitalization
-    document.querySelectorAll('input[type="text"]').forEach(input => {
-        capitalizeFirstLetter(input);
+    // Apply name sanitization and capitalization to all name fields
+    const nameFields = [
+        lname, fname,
+        fatherLname, fatherFname,
+        motherLname, motherFname,
+        guardianLname, guardianFname
+    ];
+
+    nameFields.forEach(field => {
+        if (field) {
+            sanitizeNameInput(field);
+            capitalizeFirstLetter(field);
+        }
+    });
+
+    // Apply sanitization to middle name and extension (optional fields)
+    const optionalNameFields = [
+        document.getElementById('mname'),
+        document.getElementById('extension'),
+        document.getElementById('Father-Middle-Name'),
+        document.getElementById('Mother-Middle-Name'),
+        document.getElementById('Guardian-Middle-Name')
+    ];
+
+    optionalNameFields.forEach(field => {
+        if (field) {
+            sanitizeNameInput(field);
+            capitalizeFirstLetter(field);
+        }
     });
 
     // Parent Info Events
@@ -1079,12 +1297,33 @@ document.addEventListener('DOMContentLoaded', function() {
     parentNameFields.forEach(({element, error}) => {
         if (element) {
             element.addEventListener('keyup', () => {
-                ValidationUtils.validateEmpty(element, error);
+                validateName(element, error);
                 validateParentInfo();
+            });
+            element.addEventListener('blur', () => {
+                validateName(element, error);
             });
         }
     });
 
+    // Student name validation
+    const studentNameFields = [
+        {element: lname, error: "em-lname"},
+        {element: fname, error: "em-fname"}
+    ];
+
+    studentNameFields.forEach(({element, error}) => {
+        if (element) {
+            element.addEventListener('keyup', () => {
+                validateName(element, error);
+            });
+            element.addEventListener('blur', () => {
+                validateName(element, error);
+            });
+        }
+    });
+
+    // Phone number fields - apply sanitization and validation
     const phoneFields = [
         {element: fatherCPnum, error: "em-f-number"},
         {element: motherCPnum, error: "em-m-number"},   
@@ -1093,13 +1332,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     phoneFields.forEach(({element, error}) => {
         if (element) {
-            element.addEventListener('keydown', (e) => validatePhoneNumber(element, error, e));
+            sanitizePhoneInput(element);
+            element.setAttribute('maxlength', '11');
+            element.setAttribute('inputmode', 'numeric');
+            element.setAttribute('pattern', '[0-9]{11}');
+            
             element.addEventListener('blur', function() {
-                if(ValidationUtils.isEmpty(element)) {
-                    ValidationUtils.errorMessages(error, ValidationUtils.emptyError, element);
-                    ValidationUtils.checkEmptyFocus(element, error);
-                }
+                validatePhoneNumber(element, error);
                 validateParentInfo();
+            });
+            
+            element.addEventListener('input', function() {
+                if (element.value.length === 11) {
+                    validatePhoneNumber(element, error);
+                }
             });
         }
     });
@@ -1116,37 +1362,43 @@ document.addEventListener('DOMContentLoaded', function() {
     // Previous School Events
     const schoolFields = [
         {element: lschool, error: "em-lschool"},
-        {element: lschoolAddr, error: "em-lschoolAddress"},
-        {element: fschool, error: "em-fschool"},
-        {element: fschoolAddr, error: "em-fschoolAddress"}
+        {element: lschoolAddr, error: "em-lschoolAddress"}
     ];
 
     schoolFields.forEach(({element, error}) => {
-        if (element) {
+        // FIX: Only add event listener if element exists
+        if (element && element !== null) {
             element.addEventListener('input', () => validateSchool(element, error));
+        } else {
+            console.warn('School field element not found for error:', error);
         }
     });
 
     const yearFields = [startYear, endYear, lastYear];
     yearFields.forEach(element => {
-        if (element) {
+        // FIX: Only add sanitization if element exists
+        if (element && element !== null) {
             sanitizeNumericInput(element, 4);
         }
     });
 
     const idFields = [
-        {element: lschoolId, error: "em-lschoolID"},
-        {element: fschoolId, error: "em-fschoolID"}
+        {element: lschoolId, error: "em-lschoolID"}
     ];
 
     idFields.forEach(({element, error}) => {
-        if (element) {
+        // FIX: Only add event listeners if element exists
+        if (element && element !== null) {
             sanitizeNumericInput(element, 6);
             element.addEventListener('blur', () => validateSchoolId(element, error));
+            element.addEventListener('input', () => {
+                // Auto-validate when 6 digits are entered
+                if (element.value.length === 6) {
+                    validateSchoolId(element, error);
+                }
+            });
+        } else {
+            console.warn('School ID field element not found for error:', error);
         }
     });
-
-    if (startYear) startYear.addEventListener('input', validateStartYear);
-    if (endYear) endYear.addEventListener('input', validateAcademicYear);
-    if (lastYear) lastYear.addEventListener('input', validateYearFinished);
-}); 
+});
