@@ -16,7 +16,7 @@
         padding: 0.2em;
     }
     .previous-school-wrapper {
-        grid-template-columns: 23% 45% 33%;
+        grid-template-columns: 45% 45%;
         gap: 2em;
     }
     .previous-school-wrapper,.student-information-wrapper,.student-disability-wrapper,.address-wrapper,
@@ -61,7 +61,7 @@
         padding: 1em 1em 1em 4em;
     }
     .previous-school-wrapper {
-        grid-template-columns: 25% 40% 35%;
+        grid-template-columns: 45% 45%;
         padding:1em 1em 1em 4em;
     }
     .student-information-wrapper {
