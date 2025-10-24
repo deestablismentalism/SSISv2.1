@@ -27,17 +27,17 @@ class teacherGradesView {
             }
             else {
                 echo '<table class="subjects-to-grade">';
-                $this->tableTemplate->generateHorizontalTitles('subjects-to-grade-header', [
+                echo $this->tableTemplate->returnHorizontalTitles([
                     'Subject Name', 'Section Name', 'Students Count', 'Display Students'
-                ]);
+                ],'subjects-to-grade-header');
                 echo '<tbody>';
                 foreach($data['data'] as $rows) {
                     $subjectName = !empty($rows['Subject_Name']) ? $rows['Subject_Name'] : 'No Subject name';
                     $sectionName = !empty($rows['Section_Name']) ? $rows['Section_Name'] : 'No section name';
-                    $button = new safeHTML('<button> Grade </button>');
-                    $this->tableTemplate->generateHorizontalRows('subjects-to-grade-data', [
+                    $button = new safeHTML('<button id="grade-button" data-id="'.$rows['Section_Subjects_Id'].'"> Grade </button>');
+                    echo $this->tableTemplate->returnHorizontalRows([
                         $subjectName, $sectionName, $rows['Student_Count'], $button
-                    ]);
+                    ],'subjects-to-grade-data');
                 }
                 echo '</tbody></table>';
             }
