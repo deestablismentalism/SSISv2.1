@@ -18,6 +18,10 @@
     border-radius: 5px;
   }
   
+  .notification-close-btn {
+    position: relative;
+    left: 97%;
+  }
   .flex {
     display: flex;
   }

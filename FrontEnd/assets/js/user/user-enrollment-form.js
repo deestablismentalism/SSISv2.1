@@ -127,6 +127,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const yearRegex = /^(1[0-9]{3}|2[0-9]{3}|3[0-9]{3})$/;
     const idRegex = /^([0-9]){6}$/;
     const charRegex = /^[A-Za-z0-9\s.,'-]{3,100}$/;
+    const nameRegex = /^[A-Za-z\s.\-`'ñÑ]+$/;
+    const numericOnlyRegex = /^[0-9]+$/;
+    const phoneRegex = /^[0-9]{11}$/;
 
     // ===== HELPER FUNCTIONS =====
     function formatDate(date) {
@@ -145,6 +148,121 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.target.value = sanitizedValue.slice(0, maxLength);
                 const posDiff = value.length - sanitizedValue.length;
                 e.target.setSelectionRange(cursorPos - posDiff, cursorPos - posDiff);
+            } else if (value.length > maxLength) {
+                e.target.value = value.slice(0, maxLength);
+                e.target.setSelectionRange(maxLength, maxLength);
+            }
+        });
+        
+        // Prevent non-numeric keys and enforce max length on keydown
+        element.addEventListener('keydown', function(e) {
+            const currentLength = e.target.value.length;
+            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End'];
+            
+            // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+            if (e.ctrlKey && ['a', 'c', 'v', 'x'].includes(e.key.toLowerCase())) {
+                return;
+            }
+            
+            // Block if max length reached and not a control key
+            if (currentLength >= maxLength && !allowedKeys.includes(e.key)) {
+                e.preventDefault();
+                return;
+            }
+            
+            // Block non-numeric keys
+            if (!allowedKeys.includes(e.key) && (e.key < '0' || e.key > '9')) {
+                e.preventDefault();
+            }
+        });
+        
+        // Handle paste events
+        element.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const pasteData = e.clipboardData.getData('text');
+            const numericOnly = pasteData.replace(/\D/g, '').slice(0, maxLength);
+            
+            const currentValue = e.target.value;
+            const start = e.target.selectionStart;
+            const end = e.target.selectionEnd;
+            
+            const newValue = currentValue.substring(0, start) + numericOnly + currentValue.substring(end);
+            e.target.value = newValue.slice(0, maxLength);
+            
+            const newCursorPos = Math.min(start + numericOnly.length, maxLength);
+            e.target.setSelectionRange(newCursorPos, newCursorPos);
+        });
+    }
+
+    function sanitizePhoneInput(element) {
+        element.addEventListener('input', function(e) {
+            const value = e.target.value;
+            const cursorPos = e.target.selectionStart;
+            
+            // Remove any non-numeric characters
+            const sanitizedValue = value.replace(/\D/g, '');
+            
+            if (sanitizedValue.length > 11) {
+                e.target.value = sanitizedValue.slice(0, 11);
+                e.target.setSelectionRange(11, 11);
+            } else if (value !== sanitizedValue) {
+                e.target.value = sanitizedValue;
+                const newPos = Math.max(0, cursorPos - (value.length - sanitizedValue.length));
+                e.target.setSelectionRange(newPos, newPos);
+            }
+        });
+        
+        // Prevent non-numeric keys
+        element.addEventListener('keydown', function(e) {
+            const currentLength = e.target.value.length;
+            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End'];
+            
+            // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+            if (e.ctrlKey && ['a', 'c', 'v', 'x'].includes(e.key.toLowerCase())) {
+                return;
+            }
+            
+            // Block if max length (11) reached
+            if (currentLength >= 11 && !allowedKeys.includes(e.key)) {
+                e.preventDefault();
+                return;
+            }
+            
+            // Block non-numeric keys
+            if (!allowedKeys.includes(e.key) && (e.key < '0' || e.key > '9')) {
+                e.preventDefault();
+            }
+        });
+        
+        // Handle paste events
+        element.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const pasteData = e.clipboardData.getData('text');
+            const numericOnly = pasteData.replace(/\D/g, '').slice(0, 11);
+            
+            const currentValue = e.target.value;
+            const start = e.target.selectionStart;
+            const end = e.target.selectionEnd;
+            
+            const newValue = currentValue.substring(0, start) + numericOnly + currentValue.substring(end);
+            e.target.value = newValue.slice(0, 11);
+            
+            const newCursorPos = Math.min(start + numericOnly.length, 11);
+            e.target.setSelectionRange(newCursorPos, newCursorPos);
+        });
+    }
+
+    function sanitizeNameInput(element) {
+        element.addEventListener('input', function(e) {
+            const value = e.target.value;
+            const cursorPos = e.target.selectionStart;
+            
+            // Remove any characters that are not letters, spaces, periods, hyphens, or apostrophes
+            const sanitizedValue = value.replace(/[^A-Za-zñÑ\s.\-'']/g, '');
+            
+            if (value !== sanitizedValue) {
+                e.target.value = sanitizedValue;
+                e.target.setSelectionRange(cursorPos - 1, cursorPos - 1);
             }
         });
     }
@@ -161,6 +279,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+    }
+
+    function validateName(element, errorElement) {
+        const value = element.value.trim();
+        
+        if (!value) {
+            return ValidationUtils.errorMessages(errorElement, ValidationUtils.emptyError, element);
+        }
+        
+        if (!nameRegex.test(value)) {
+            return ValidationUtils.errorMessages(errorElement, "Name can only contain letters, spaces, periods, hyphens and apostrophes", element);
+        }
+        
+        if (value.length < 2) {
+            return ValidationUtils.errorMessages(errorElement, "Name must be at least 2 characters long", element);
+        }
+        
+        ValidationUtils.clearError(errorElement, element);
+        return true;
+    }
+
+    function validatePhoneNumber(element, errorElement) {
+        const value = element.value.trim();
+        
+        if (!value) {
+            return ValidationUtils.errorMessages(errorElement, ValidationUtils.emptyError, element);
+        }
+        
+        if (!numericOnlyRegex.test(value)) {
+            return ValidationUtils.errorMessages(errorElement, "Phone number must contain only numbers", element);
+        }
+        
+        if (!phoneRegex.test(value)) {
+            if (value.length < 11) {
+                return ValidationUtils.errorMessages(errorElement, "Phone number must be 11 digits", element);
+            } else {
+                return ValidationUtils.errorMessages(errorElement, "Phone number must be exactly 11 digits", element);
+            }
+        }
+        
+        ValidationUtils.clearError(errorElement, element);
+        return true;
     }
 
     // ===== STUDENT INFO VALIDATION =====
@@ -319,31 +479,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ===== PARENT INFO VALIDATION =====
-    function validatePhoneNumber(element, errorElement, e) {
-        if(ValidationUtils.isEmpty(element)) {
-            ValidationUtils.errorMessages(errorElement, ValidationUtils.emptyError, element);
-            ValidationUtils.checkEmptyFocus(element, errorElement);
-            return false;
-        }
-        
-        if(isNaN(e.key) && e.key !== "Backspace") {
-            ValidationUtils.errorMessages(errorElement, ValidationUtils.notNumber, element);
-            ValidationUtils.checkEmptyFocus(element, errorElement);
-            e.preventDefault();
-            return false;
-        }
-        
-        if(element.value.length >= 11 && e.key !== "Backspace") {
-            ValidationUtils.errorMessages(errorElement, "Not a valid phone number", element);
-            ValidationUtils.checkEmptyFocus(element, errorElement);
-            e.preventDefault();
-            return false;
-        }
-        
-        ValidationUtils.clearError(errorElement, element);
-        return true;
-    }
-
     function validateParentInfo() {
         let isValid = true;
 
@@ -369,12 +504,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
 
         phoneInfo.forEach(({element, error}) => {
-            if(ValidationUtils.isEmpty(element)) {
-                ValidationUtils.errorMessages(error, ValidationUtils.emptyError, element);
-                isValid = false;
-            }
-            else if (element.value.length !== 11) {
-                ValidationUtils.errorMessages(error, "Phone number must be 11 digits", element);
+            if (!validatePhoneNumber(element, error)) {
                 isValid = false;
             }
         });
@@ -925,10 +1055,16 @@ document.addEventListener('DOMContentLoaded', function() {
         birthDate.min = formatDate(minDate);
     }
 
-    // Set default academic year
+    // Set default academic year and make readonly
     if (startYear && endYear) {
         startYear.value = year;
         endYear.value = year + 1;
+        startYear.readOnly = true;
+        endYear.readOnly = true;
+        startYear.style.cursor = 'not-allowed';
+        endYear.style.cursor = 'not-allowed';
+        startYear.style.backgroundColor = '#e9ecef';
+        endYear.style.backgroundColor = '#e9ecef';
     }
 
     // Initialize grade level dropdowns
@@ -1025,11 +1161,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (psaNumber) {
         sanitizeNumericInput(psaNumber, 13);
         psaNumber.addEventListener('blur', validatePSA);
+        // Set maxlength attribute as fallback
+        psaNumber.setAttribute('maxlength', '13');
     }
 
     if (lrn) {
         sanitizeNumericInput(lrn, 12);
         lrn.addEventListener('blur', validateLRN);
+        // Set maxlength attribute as fallback
+        lrn.setAttribute('maxlength', '12');
     }
 
     // LRN radio buttons
@@ -1061,9 +1201,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Text field capitalization
-    document.querySelectorAll('input[type="text"]').forEach(input => {
-        capitalizeFirstLetter(input);
+    // Apply name sanitization and capitalization to all name fields
+    const nameFields = [
+        lname, fname,
+        fatherLname, fatherFname,
+        motherLname, motherFname,
+        guardianLname, guardianFname
+    ];
+
+    nameFields.forEach(field => {
+        if (field) {
+            sanitizeNameInput(field);
+            capitalizeFirstLetter(field);
+        }
+    });
+
+    // Apply sanitization to middle name and extension (optional fields)
+    const optionalNameFields = [
+        document.getElementById('mname'),
+        document.getElementById('extension'),
+        document.getElementById('Father-Middle-Name'),
+        document.getElementById('Mother-Middle-Name'),
+        document.getElementById('Guardian-Middle-Name')
+    ];
+
+    optionalNameFields.forEach(field => {
+        if (field) {
+            sanitizeNameInput(field);
+            capitalizeFirstLetter(field);
+        }
     });
 
     // Parent Info Events
@@ -1079,12 +1245,33 @@ document.addEventListener('DOMContentLoaded', function() {
     parentNameFields.forEach(({element, error}) => {
         if (element) {
             element.addEventListener('keyup', () => {
-                ValidationUtils.validateEmpty(element, error);
+                validateName(element, error);
                 validateParentInfo();
+            });
+            element.addEventListener('blur', () => {
+                validateName(element, error);
             });
         }
     });
 
+    // Student name validation
+    const studentNameFields = [
+        {element: lname, error: "em-lname"},
+        {element: fname, error: "em-fname"}
+    ];
+
+    studentNameFields.forEach(({element, error}) => {
+        if (element) {
+            element.addEventListener('keyup', () => {
+                validateName(element, error);
+            });
+            element.addEventListener('blur', () => {
+                validateName(element, error);
+            });
+        }
+    });
+
+    // Phone number fields - apply sanitization and validation
     const phoneFields = [
         {element: fatherCPnum, error: "em-f-number"},
         {element: motherCPnum, error: "em-m-number"},   
@@ -1093,13 +1280,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     phoneFields.forEach(({element, error}) => {
         if (element) {
-            element.addEventListener('keydown', (e) => validatePhoneNumber(element, error, e));
+            sanitizePhoneInput(element);
+            element.setAttribute('maxlength', '11');
+            element.setAttribute('inputmode', 'numeric');
+            element.setAttribute('pattern', '[0-9]{11}');
+            
             element.addEventListener('blur', function() {
-                if(ValidationUtils.isEmpty(element)) {
-                    ValidationUtils.errorMessages(error, ValidationUtils.emptyError, element);
-                    ValidationUtils.checkEmptyFocus(element, error);
-                }
+                validatePhoneNumber(element, error);
                 validateParentInfo();
+            });
+            
+            element.addEventListener('input', function() {
+                if (element.value.length === 11) {
+                    validatePhoneNumber(element, error);
+                }
             });
         }
     });
@@ -1149,4 +1343,4 @@ document.addEventListener('DOMContentLoaded', function() {
     if (startYear) startYear.addEventListener('input', validateStartYear);
     if (endYear) endYear.addEventListener('input', validateAcademicYear);
     if (lastYear) lastYear.addEventListener('input', validateYearFinished);
-}); 
+});

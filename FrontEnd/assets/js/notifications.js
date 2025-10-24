@@ -11,8 +11,6 @@ const Notification = {
         document.body.appendChild(this.container);
     },
 
-    
-    
     show({ type = "notification", title = "", message = "" }) {
         let icon = "";
         let headingClass = "";
@@ -45,6 +43,7 @@ const Notification = {
         wrapper.innerHTML = `
             <div class="notifications-container">
                 <div class="${type}">
+                    <button class="notification-close-btn" type="button" aria-label="Close">×</button>
                     <div class="flex">
                         <div class="flex-shrink-0">${icon}</div>
                         <div class="notification-prompt-wrap">
@@ -59,11 +58,14 @@ const Notification = {
             </div>`;
 
         const notification = wrapper.firstElementChild;
+        
+        // Add event listeners for both buttons
         notification.querySelector(".notification-button-secondary")
+            .addEventListener("click", () => notification.remove());
+        notification.querySelector(".notification-close-btn")
             .addEventListener("click", () => notification.remove());
 
         this.container.appendChild(notification);
-        setTimeout(() => notification.remove(), 5000);
     }
 };
 
