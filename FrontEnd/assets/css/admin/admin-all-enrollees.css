@@ -1,3 +1,28 @@
+:root {
+    --main-fonts:  "Poppins", "Segoe UI", sans-serif;
+    --title-fonts: "Barlow", sans-serif;
+    --button-fonts: 'Baloo-Thambi-2';
+    --link-fonts: 'Roboto', sans-serif;
+    --sidebar-width: 60px;
+    --sidebar-expanded-width: 20dvw;
+    --title-font-size: 3em;
+    --main-color: #1c4a72;
+    --title-main-color: #3e9ec4;
+    --container-color: rgba(36, 186, 255, 0.28);
+    --secondary-color: #F1BD22;
+    --wrapper-bg-color: #fffdfdf5;
+    --button-color: ;
+    --button-hover-color: ;
+    --button-click: scale(.9);
+
+}
+
+.admin-all-enrollees-content {
+    padding: 2rem;
+    transition: margin-left 0.3s ease;
+    background-image: url("../../imgs/paper.jpg");
+    font-family: var(--main-fonts);
+}
 .status-cell {
     font-weight: bold;
     padding: 3px 8px;
@@ -5,44 +30,147 @@
     display: inline-block;
 }
 .status-enrolled {
-    background-color: #6EE7B7;
-    color:  #047857;
+    background: rgba(68, 208, 123, 0.15);
+    color: var(--success);
+    border: 1px solid var(--success);
 }
 .status-pending {
-    background-color: #A5B4FC;
-    color:  #4338CA;
+    background: rgba(165, 180, 252, 0.15);
+    color: #4338CA;
+    border: 1px solid #4338CA;
 }
 .status-denied {
-    background-color: #FCA5A5;
-    color: #B91C1C;
+    background: rgba(255, 95, 95, 0.15);
+    color: var(--danger);
+    border: 1px solid var(--danger);
 }
 .status-to-follow {
-    background-color:#f0c986;
-    color:  #b39843;
+    background: rgba(255, 204, 0, 0.15);
+    color: var(--warning);
+    border: 1px solid var(--warning);
+}
+
+.status-cell {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.85rem;
 }
 .count-display {
-    margin: 10px 0;
-    font-size: 1rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin: 0px;
+    color: white;
 }
+
+.enrollments th {
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-shadow: rgba(9, 103, 162, 0.4) 0px 1.5px;
+    padding: 1rem;
+}
+
+.enrollments td {
+    padding: 1rem;
+    border-top: 1px solid rgba(63, 166, 210, 0.897);
+    vertical-align: middle;
+    color: black;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+    background: #bbe5f8;
+}
+
+.menu-content {
+    margin-top: 1.5rem;
+    background: rgb(36 186 255 / 28%);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    
+    /* Add fixed dimensions */
+    width: 100%;
+    height: 70vh;
+    min-height: 400px;
+    
+    /* Add scrolling behavior */
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
+}
+
+/* Custom scrollbar styling */
+.menu-content::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.menu-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.menu-content::-webkit-scrollbar-thumb {
+    background-color: rgba(62, 158, 196, 0.5);
+    border-radius: 20px;
+}
+
+/* Remove sticky header */
+.enrollments thead {
+    /* Remove position: sticky and related properties */
+    background: rgb(21 182 255 / 27%);
+}
+
+/* Update search box with enhanced hover effects */
+.search-box {
+    background: rgba(255, 255, 255, 0.204);
+    border: 1px solid #ffffff78;
+    border-radius: 10px;
+    color: #164c8c;
+    padding: 0.45rem 0.8rem;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+    min-width: 300px;
+}
+
+.search-box:hover {
+    box-shadow: var(--wrapper-bg-color);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid #ffffffc3;
+}
+
+.search-box:focus {
+    border: 1px solid #ffffffc3;
+    background: rgba(255, 255, 255, 0.316);
+    box-shadow: 0 0 15px rgba(79, 145, 255, 0.4);
+}
+
 .count-number {
     font-weight: bold;
     font-size: 1.2rem;
 }
 table {
-    background-color: white;
+    background: rgba(21, 182, 255, 0.27);
     width: 100%;
-    table-layout: fixed;
 }
 .enrollments th, td {
     padding: 1rem;
 }
 .admin-all-enrollees-header {
-    padding: 0.8rem;
     display: flex;
     justify-content: space-between;
-    background-color: white;
-    margin: 1rem 0;
+    align-items: center;
+    background: #3e9ec4;
+    border: 1px solid var(--card-border);
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
+
 .modal-content {
     background-color: white;
     margin: auto;
@@ -50,4 +178,36 @@ table {
     border-radius: 10px;
     width: 60%;
     position: relative;
+}
+
+/* View button styling */
+.view-button {
+    width: 37px;
+    height: auto;
+    fill: #ff76f4;
+    border: 1px solid #ff76f4;
+    background: #fc529f26;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.view-button:hover {
+    fill: #ffffff;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid #ffffff;
+    transform: scale(1.1);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-icon {
+    width: 40px;
+    height: 40px;
+    opacity: 0.8;
 }

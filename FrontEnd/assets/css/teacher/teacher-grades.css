@@ -1,12 +1,97 @@
 .teacher-grades-content {
-    margin: 1rem;
+    margin: 1.5rem;
 }
+
 .subjects-to-grade-wrapper {
-    padding: 1rem;
-    background: #fff;
-    border-radius: 0.5rem;
+    background: rgb(36 186 255 / 28%);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    
+    /* Add fixed dimensions */
+    width: 100%;
+    height: 70vh; /* 70% of viewport height */
+    min-height: 500px; /* Minimum height even when empty */
+    
+    /* Add scrolling behavior */
+    overflow: auto;
+    
+    /* Optional: Hide scrollbar but keep functionality */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
 }
+
+/* Custom scrollbar styling for webkit browsers */
+.subjects-to-grade-wrapper::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.subjects-to-grade-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.subjects-to-grade-wrapper::-webkit-scrollbar-thumb {
+    background-color: rgba(62, 158, 196, 0.5);
+    border-radius: 20px;
+}
+
+/* Make the table header stick to the top while scrolling */
+.subjects-to-grade thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
 .subjects-to-grade {
     width: 100%;
     table-layout: fixed;
+}
+
+.teacher-grades-content h1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(12px);
+    background: #3e9ec4;
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: white;
+    font-family: var(--main-fonts);
+}
+
+.subjects-to-grade-wrapper th {
+    padding: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    background: rgb(21 182 255 / 27%);
+    text-transform: uppercase;
+    text-shadow: 0 1.5px #0967a266;
+    color: white;
+}
+
+.subjects-to-grade-wrapper td {
+    padding: 1rem;
+    border-top: 1px solid rgba(63, 166, 210, 0.897);
+    vertical-align: middle;
+    color: black;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+}
+
+.subjects-to-grade-wrapper tr:hover td {
+  color: var(--hover);
+  transition: all 0.25s ease-in-out; 
+}
+
+.subjects-to-grade-wrapper tr:nth-child(even) td {
+  background:#b2e0f8;
 }

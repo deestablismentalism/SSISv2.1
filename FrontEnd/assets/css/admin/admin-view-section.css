@@ -1,9 +1,9 @@
 :root {
-    --main-fonts: 'Barlow', Arial, sans-serif;
-    --title-fonts: 'Baloo-Thambi-2', sans-serif;
     --main-color: #123b69;
     --secondary-color: #F1BD22;
     --wrapper-bg-color: #fffdfdf5;
+    --accent-color: #3e9ec4;
+    --title-font-color: white;
 }
 
 .section-details-container {
@@ -15,22 +15,33 @@
     height: 100%;
 }
 
+
 .students-list-container, .subject-details-container {
     margin-top: 1rem;
 }
 
 .students-list-title, .subject-details-title {
-    font-family: var(--title-fonts);
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--main-color);
-    margin-bottom: 0.5rem;
+    font-weight: 700;
+    margin: 1.5rem 1rem;
+    text-transform: uppercase;
+    border-left: 5px solid #18ce13;
+    padding-left: 0.8rem;
+    font-family: "Poppins", "Segoe UI", sans-serif;
 }
 
 .students-list, .subject-details-list {
     margin-top: 1rem;
+    font-family: "Poppins", "Segoe UI", sans-serif;
     overflow-x: auto;
 }
+
+.section-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--main-color);
+    font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
 
 table {
     width: 100%;
@@ -45,12 +56,12 @@ th, td {
     padding: 1rem;
     text-align: center;
     border-bottom: 1px solid #ddd;
-    font-family: var(--main-fonts);
 }
 
 th {
-    background-color: #f0f0f0;
+    color: #002c54;
     font-weight: bold;
+    background: rgb(21 182 255 / 27%);
 }
 
 tr:nth-child(odd) {
@@ -66,30 +77,36 @@ tr:hover {
 }
 
 .admin-view-section-content {
-    padding: 1rem;
     background: var(--wrapper-bg-color);
-    margin: 1rem;
-    font-family: var(--main-fonts);
+    margin: 1.5rem;
 }
 
-.section-name,
-.students-list-title {
-    font-size: 2em;
-    font-weight: bold;
-    font-family: var(--title-fonts);
-    color: var(--main-color);
+.three-container {
+    background-color: var(--accent-color);
+    background-color: #3e9ec4;
+    /* color: white; */
+    padding: 1.1rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 2px 20px -14px #000000;
 }
 
 .section-name, .adviser-name {
     margin-bottom: 1rem;
-    font-family: var(--title-fonts);
-    font-size: 1.5rem;
     font-weight: bold;
-    color: var(--main-color);
+    color: var(--title-font-color);
 }
 
 .adviser-name {
-    padding: 2rem;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    font-family: "Poppins", "Segoe UI", sans-serif;
+}
+.section-name{
+    font-size: 2.3rem;
+}
+
+.subject-details-body tr:nth-child(even) td {
+    background: rgb(71 168 255 / 8%);
 }
 
 .section-name-container,
@@ -102,22 +119,26 @@ tr:hover {
     justify-content: flex-end;
     gap: 1rem;
     margin-bottom: 1rem;
+    font-family: "Poppins", "Segoe UI", sans-serif;
 }
 
 .edit-section, .back-btn {
-    background-color: var(--secondary-color);
     color: white;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 5px;
+    padding: 0.7rem 11.2px 1rem;
     cursor: pointer;
-    font-family: var(--main-fonts);
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
+    background: #00b4d8;
+    font-weight: 500;
+    border-radius: 0.6rem;
+    transition: all .3s ease;
+    font-size: 0.95rem;
+    border: 1px solid #ffffff47;
 }
 
 .edit-section:hover, .back-btn:hover {
-    background-color: #d1a11c;
+    background: #48cae4;
+    box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+    transform: translateY(-3px);
+    transition: 0.3s ease;
 }
 
 /*No students design*/
@@ -128,6 +149,7 @@ tr:hover {
 
 .no-students-container h1 {
     color: #333;
+
 }
 
 .no-students-container a {
