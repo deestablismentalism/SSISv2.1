@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 require_once __DIR__ . '/../controller/teacherAdvisoryController.php';
 require_once __DIR__ . '/../../core/tableDataTemplate.php';
@@ -14,14 +13,11 @@ class teacherAdvisoryView {
     protected $tableTemplate;
 
     public function __construct() {
-        $db = new Connect();
-        $this->conn = $db->getConnection();
         $this->advisoryController = new teacherAdvisoryController();
         $this->tableTemplate = new TableCreator();
         if(isset($_GET['adv_id'])) $this->id = (int)$_GET['adv_id']; //this is the section id
         if(isset($_SESSION['Staff']['Staff-Id'])) $this->staffId = (int)$_SESSION['Staff']['Staff-Id'];
     }
-
     public function displayAdvisoryPage() {
         $isAdviser = $this->advisoryController->viewCheckIfAdvisory($this->staffId, $this->id);
         if(!$isAdviser['success']) {
@@ -40,7 +36,6 @@ class teacherAdvisoryView {
                 .$this->returnSectionSubjects().
             '</div>';
         }
-
     }
     public function returnAdvisoryStudents() {
         $students = $this->advisoryController->viewSectionStudents($this->id);
@@ -51,19 +46,17 @@ class teacherAdvisoryView {
         }
         else {
             $html = '<table class="students-list">';
-            $html .= $this->tableTemplate->returnHorizontalTitles('students-title', ['Student Name']);
+            $html .= $this->tableTemplate->returnHorizontalTitles( ['Student Name'],'students-title');
             $html .= '<tbody>';
             foreach($students['data'] as $index =>$student) {
                 $lastName =  htmlspecialchars($student['Last_Name'] ?? '');
                 $firstName = htmlspecialchars($student['First_Name'] ?? '');
                 $middleName =  htmlspecialchars($student['Middle_Name'] ?? '');
-                $fullName = '<span>'. ($index+1) . '. </span>' . $lastName .', '. $firstName .' '. $middleName;
+                $fullName = new safeHTML('<span>'. ($index+1) . '. </span>' . $lastName .', '. $firstName .' '. $middleName);
                 $button = new safeHTML('<td class="view-student-button-wrapper"><button class="view-student-button" data-id="'. $student['Student_Id'] .'">View Information</button>');
-        
                 $isNotNullName = (!empty($lastName) || !empty($firstName)) ? $fullName : '';
-                $html .= $this->tableTemplate->returnHorizontalRows('students-data', [
-                    $isNotNullName, $button
-                ]);
+                $html .= $this->tableTemplate->returnHorizontalRows([
+                    $isNotNullName, $button],'students-data');
             }
             $html .= '</tbody></table>';
         }
@@ -84,7 +77,6 @@ class teacherAdvisoryView {
             return 'Something went wrong. Please try again Later.';
         }
     }
-
     public function returnSectionSubjects() {
         $html = '';
         $subjects = $this->advisoryController->viewSectionSubjects($this->id);
@@ -93,12 +85,11 @@ class teacherAdvisoryView {
         }
         else {
             $html = '<table class="subjects-list">';
-            $html .= $this->tableTemplate->returnHorizontalTitles('subjects-header', ['Subject Name']);
+            $html .= $this->tableTemplate->returnHorizontalTitles( ['Subject Name'],'subjects-header');
             $html .= '<tbody>';
             foreach($subjects['data'] as $rows) {
                 $subjectName = !empty($rows['Subject_Name']) ? $rows['Subject_Name'] : 'No subjects name';
-
-                $html .= $this->tableTemplate->returnHorizontalRows('subjects-data', [$subjectName]);
+                $html .= $this->tableTemplate->returnHorizontalRows([$subjectName],'subjects-data');
             }
             $html .= '</tbody></table>';
         }
