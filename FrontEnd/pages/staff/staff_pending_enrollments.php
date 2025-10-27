@@ -2,6 +2,7 @@
 <?php 
     require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
     require_once __DIR__ . '/../session_init.php';
+    require_once __DIR__ . '/../../../BackEnd/staff/views/staffPendingEnrollmentsView.php';
     if(!isset($_SESSION['Staff']['User-Id']) || !isset($_SESSION['Staff']['Staff-Type']) || 
     ($_SESSION['Staff']['Staff-Type'] != 1 && $_SESSION['Staff']['Staff-Type'] != 2)) {
         session_destroy();
@@ -9,7 +10,9 @@
         exit();
     }
     $view = new UserTypeView((int)$_SESSION['Staff']['Staff-Type']);
+    $pending = new staffPendingEnrollmentsView();
 ?>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> <?php echo $view?> - Pending Enrollments </title>
@@ -63,23 +66,7 @@
                         </div>
                     </div>
                     <div class="menu-content">
-                        <table class="enrollments">
-                            <tr>
-                                <th>Student LRN</th>
-                                <th>Student Name</th>
-                                <th> Age </th>
-                                <th> Birthdate </th>
-                                <th> Biological Sex </th>
-                                <th> Display Enrollment Information</th>
-                            </tr>
-                            <tbody id="query-table"> 
-                                <?php      
-                                require_once __DIR__ . '/../../../BackEnd/staff/staffEnrollmentStatusView.php';
-                                $enrollmentStatusView = new staffEnrollmentStatusView();
-                                $enrollmentStatusView->displayEnrollees();
-                                ?>
-                            </tbody>
-                        </table>
+                       <?php $pending->displayPendingEnrollees(); ?>
                     </div>
                     <div id="enrolleeModal" class="modal">
                         <div class="modal-content">
