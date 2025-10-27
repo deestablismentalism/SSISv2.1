@@ -115,11 +115,12 @@ class adminViewSectionView {
             }
             else {
                 echo '<table class="subject-details-table">';
-                $this->tableTemplate->generateHorizontalTitles('subject-details-head', [
+                $this->tableTemplate->returnHorizontalTitles([
                     'Subject Name',
                     'Scheduled Day',
                     'Scheduled Time'
-                ]);
+                ],
+                'subject-details-head');
                 echo '<tbody>';
                 foreach($subjectDetails['data'] as $subjects) {
                     $subjectName = !empty($subjects['Subject_Name']) ? $subjects['Subject_Name'] : 'No subject name';
@@ -127,9 +128,9 @@ class adminViewSectionView {
                     $timeStart = (!empty($subjects['Time_Start']) && !empty($subjects['Time_End'])) ? 
                     $subjects['Time_Start'] . '-' . $subjects['Time_End']  : 'No time set yet';
 
-                    $this->tableTemplate->generateHorizontalRows('subject-details-body', [
+                    $this->tableTemplate->returnHorizontalTitles([
                         $subjectName, $scheduleDay, $timeStart
-                    ]);
+                    ],'subject-details-body');
                 }
                 echo '</tbody>';
                 echo '</table>';
