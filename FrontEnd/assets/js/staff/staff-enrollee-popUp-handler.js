@@ -4,9 +4,8 @@ document.addEventListener('DOMContentLoaded',async function (){
     const modalContent = document.querySelector('.modal-content');
     document.addEventListener('click', async function (e) { 
         let initialModalContent = '';
-        const button = e.target.closest('.view-button');
-        if (button) {
-            const enrolleeId = button.getAttribute('data-id');
+        if (e.target.classList.contains('view-button')) {
+            const enrolleeId = e.target.getAttribute('data-id');
             modal.style.display = 'block';
             modalContent.innerHTML = loadingText; // Show loader while fetching data
             try {
