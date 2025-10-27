@@ -25,9 +25,9 @@ class adminSubjectsView {
             }
             else {
                 echo '<table class="subjects-table">';
-                $this->tableTemplate->generateHorizontalTitles('subject-table-head', [
+                echo $this->tableTemplate->returnHorizontalTitles([
                     'Subject Name', 'Section Name', 'Grade Level', 'Teacher Assigned', 'Actions'
-                ]);
+                ], 'subject-table-head');
                 echo '<tbody>';
                 foreach($response['data'] as $rows) {
                     $firstName = !empty($rows['Staff_First_Name']) ? htmlspecialchars($rows['Staff_First_Name']) : '';
@@ -38,15 +38,15 @@ class adminSubjectsView {
                     $fullName = (!empty($firstName) && !empty($lastName)) ?
                     htmlspecialchars($rows['Staff_Last_Name']) . ', ' . htmlspecialchars($rows['Staff_First_Name']) . ' ' . htmlspecialchars($rows['Staff_Middle_Name']) : 'No Teacher Assigned Yet';
 
-                    $this->tableTemplate->generateHorizontalRows('subject-data', [
+                    echo $this->tableTemplate->returnHorizontalRows([
                         $rows['Subject_Name'],$rows['Section_Name'],$rows['Grade_Level'], $fullName ,$button
-                    ]);
+                    ], 'subject-data');
                 }
                 echo '</tbody></table>';
             }
         }
         catch(Exception $e) {
-            $this->tableTemplate->generateHorizontalRows('exception-content', [$e->getMessage()]);
+            echo $this->tableTemplate->returnHorizontalRows([$e->getMessage()], 'exception-content');
         }
     }
 }
