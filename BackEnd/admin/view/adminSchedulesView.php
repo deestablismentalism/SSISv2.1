@@ -21,24 +21,24 @@ class adminSchedulesView {
             
             else {
                 echo '<table class="schedules-table">';
-                echo $this->tableTemplate->generateHorizontalTitles('schedules-table-title',[
+                echo $this->tableTemplate->returnHorizontalTitles([
                     'Subject Name',
                     'Section Name',
                     'Day',
                     'Time'
-                ]);
+                ], 'schedules-table-title');
                 foreach($response['data'] as $schedules) {
                     $subjectName = htmlspecialchars($schedules['Subject_Name']);
                     $sectionName = htmlspecialchars($schedules['Section_Name']);
                     $day = $schedules['Schedule_Day'];
                     $time = $schedules['Time_Start'] . '-' .  $schedules['Time_End'];
 
-                    echo $this->tableTemplate->generateHorizontalRows('schedules', [
+                    echo $this->tableTemplate->returnHorizontalRows([
                         $subjectName,
                         $sectionName,
                         $day,
                         $time
-                    ]);
+                    ], 'schedules');
                 }
                 echo '</table>';
             }
