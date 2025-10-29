@@ -18,25 +18,25 @@ class teacherSubjectsHandledView {
         $stringEqual = '';
         switch($day) {
             case 1:
-                $stringEqual = 'monday';
+                $stringEqual = 'Monday';
                 break;
             case 2:
-                $stringEqual = 'tuesday';
+                $stringEqual = 'Tuesday';
                 break;
             case 3: 
-                $stringEqual = 'wednesday';
+                $stringEqual = 'Wednesday';
                 break;
             case 4: 
-                $stringEqual = 'thursday';
+                $stringEqual = 'Thursday';
                 break;
             case 5: 
-                $stringEqual = 'friday';
+                $stringEqual = 'Friday';
                 break;
             case 6: 
-                $stringEqual = 'saturday';
+                $stringEqual = 'Saturday';
                 break;
             case 7: 
-                $stringEqual = 'sunday';
+                $stringEqual = 'Sunday';
                 break;
         }
         return $stringEqual;
