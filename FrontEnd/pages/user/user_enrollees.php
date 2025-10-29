@@ -11,8 +11,10 @@ $enrollee = new displayEnrollmentForms();
     <!--START OF THE MAIN CONTENT-->
     <div class="content" id="content">
         <div class="shadow-container">
+            <div class="title-header">
+                <p class = "title"> Enrollment Forms Submitted </p> <br> 
+            </div>
             <div class="wrapper">
-                <p class = "title"> Enrollment Forms Submitted </p> <br>
                 <div class="table-container">
                     <?php
                     $enrollee->displaySubmittedForms();
