@@ -316,14 +316,20 @@ table.enrollments tr:hover td{
 }
 
 .modal-content {
-    border-radius: 16px;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
-    background-color: #6decff36;
-    border: 1px solid #3387de;
-    backdrop-filter: blur(20px);
-    padding: 2rem;
-    max-width: 900px;
-    margin: auto;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+  background-color: #6decff36;
+  border: 1px solid #3387de;
+  backdrop-filter: blur(20px);
+  padding: 2rem;
+  max-width: 917px;
+  margin: auto;
+  height: 87vh;
+  overflow-y: scroll;
+  /* overflow: auto; */
+  scrollbar-width: thin;
+  margin-bottom: 31px;
+  scrollbar-color: rgb(53 198 255 / 83%) transparent;
 }
 
 .accept-btn {

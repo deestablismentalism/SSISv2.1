@@ -1,46 +1,32 @@
 <div class="mobile-header-wrapper">
             <button class="bar-btn-mob" onclick="sideBarMobileOpen()"></button>
             <div class="title-search-mob">
-                <h6 class="title-mob"> Welcome to South II Student Information System </h6>
                 <input type="text" name="search" placeholder="Search here...">
             </div>
             <div class="user-btn-mob"></div>
         </div>
         <!--HEADER-->
         <div class="header-wrapper" id="header-wrapper">
-            <div class="header-title">
-                <p class="header-title-text">
-                    Welcome to South II Student Information System
-                </p>
-            </div>
-            <div class="nav-wr">
-                <div class="nav-bar">
-                    <nav>
-                        <ul class="nav-list">
-                            <li class="nav-item">
-                                <a href="./user_enrollees.php" class="nav-link">
-                                    <span class="nav-link-text">
-                                        Home
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="./user_enrollment_form.php" class="nav-link">
-                                    <span class="nav-link-text">
-                                        Enrollment Form
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="./user_all_students.php" class="nav-link">
-                                    <span class="nav-link-text">
-                                        Students List
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+            <div class="nav-container-1">
+                <nav>
+                    <ul class="nav-1">
+                        <li class="nav-item">
+                            <a href="./user_enrollees.php" class="nav-link">
+                                Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./user_enrollment_form.php" class="nav-link">
+                                Enrollment Form
+                            </a>
+                        </li>
+                        <li class="nav-item">                                
+                            <a href="./user_all_students.php" class="nav-link">
+                                Students List
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
 <div class="account">
         <div class="account-settings-wrapper">

@@ -285,9 +285,9 @@ label{
 /*4PS, IMAGES AND SUBMIT BUTTON*/     
 .confirmation {
     display: grid;
-    grid-template-columns:  30% 65%;
+    grid-template-columns: 50% 50%;
     background-color: #ffffff;
-    padding: 0.5em 2em 0.5em 4em;
+    padding: 1.5em 6em 0.5em 5em;
     gap: 1em;
 }     
 
@@ -297,12 +297,17 @@ label{
 
 .submit-button {
     cursor: pointer;
-    height: 2.5em;
-    width: 5em;
-    border-radius: .8em;
+    height: 3.5em;
+    width: 11em;
+    border-radius: 1.8em;
     background-color: #0cff04;
-    padding-left: 4%;
-    box-shadow: 1px 1px 1px 1px #059200;
+    justify-self: center;
+    text-align: center;
+    margin: 0px auto;
+    background: rgb(68 208 123 / 46%);
+    color: #029a3e;
+    border: 1px solid #029a3e;
+    font-weight: bolder;
 }
 .success-message {
     display: none;
@@ -347,9 +352,9 @@ label{
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 2em;
     box-sizing: border-box;
 }
+
 
 input[type="number"] {
   -moz-appearance: textfield;
