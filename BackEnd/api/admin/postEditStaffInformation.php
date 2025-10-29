@@ -1,9 +1,29 @@
 <?php
-    require_once '../server_side/edit_staff_information.php';
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $EditInformation = new EditInformation();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+ob_start();
+header('Content-Type: application/json');
+
+require_once __DIR__ . '/../../admin/models/adminEditStaffInfoModel.php';
+
+if ($_SERVER['REQUEST_METHOD'] !== "POST") {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid request method'
+    ]);
+    exit;
+}
+
+try {
+    $EditInformation = new adminEditInformation();
+    
     if (!isset($_POST['form_type'])) {
-        echo "Error: Missing form identifier.";
+        echo json_encode([
+            'success' => false,
+            'message' => 'Missing form identifier'
+        ]);
         exit;
     }
 
@@ -41,12 +61,32 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             echo json_encode($response);
             break;
 
+        case 'update_profile_picture':
+            if (!isset($_FILES['Profile_Picture'])) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'No file uploaded'
+                ]);
+                break;
+            }
+
+            $response = $EditInformation->Update_Profile_Picture($_FILES['Profile_Picture']);
+            echo json_encode($response);
+            break;
+
         default:
-            echo "Error: Invalid form type.";
+            echo json_encode([
+                'success' => false,
+                'message' => 'Invalid form type'
+            ]);
             break;
     }
-
-
+} catch (Exception $e) {
+    echo json_encode([
+        'success' => false,
+        'message' => $e->getMessage()
+    ]);
 }
 
+ob_end_flush();
 ?>

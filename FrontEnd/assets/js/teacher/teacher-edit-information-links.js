@@ -64,11 +64,14 @@ document.addEventListener('DOMContentLoaded', function(){
 
     function capitalizeWords(element) {
         element.addEventListener('blur', function(e) {
-            const value = e.target.value;
-            e.target.value = value.split(' ').map(word => {
-                if (word.length === 0) return word;
-                return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-            }).join(' ');
+            const words = e.target.value.split(' ');
+            const capitalized = words.map(word => {
+                if (word.length > 0) {
+                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                }
+                return word;
+            });
+            e.target.value = capitalized.join(' ');
         });
     }
 
@@ -95,29 +98,29 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     function applyAddressSanitization(form) {
-        const fields = [
-            form.querySelector('#Brgy_Name'),
-            form.querySelector('#Municipality_Name'),
-            form.querySelector('#Province_Name'),
-            form.querySelector('#Region')
-        ];
+        const houseNumber = form.querySelector('#House_Number');
+        const subdivision = form.querySelector('#Subd_Name');
+        const barangay = form.querySelector('#Brgy_Name');
+        const municipality = form.querySelector('#Municipality_Name');
+        const province = form.querySelector('#Province_Name');
+        const region = form.querySelector('#Region');
 
-        fields.forEach(field => {
-            if (field) {
-                sanitizeTextInput(field);
-                capitalizeWords(field);
-            }
-        });
+        if (houseNumber) sanitizeTextInput(houseNumber);
+        if (subdivision) sanitizeTextInput(subdivision);
+        if (barangay) sanitizeTextInput(barangay);
+        if (municipality) sanitizeTextInput(municipality);
+        if (province) sanitizeTextInput(province);
+        if (region) sanitizeTextInput(region);
     }
 
     function applyIdentifiersSanitization(form) {
-        const empNum = form.querySelector('#Employee_Number');
+        const employeeNumber = form.querySelector('#Employee_Number');
         const philhealth = form.querySelector('#Philhealth_Number');
         const tin = form.querySelector('#TIN');
 
-        if (empNum) sanitizeNumericInput(empNum, 20);
+        if (employeeNumber) sanitizeNumericInput(employeeNumber, 20);
         if (philhealth) sanitizeNumericInput(philhealth, 12);
-        if (tin) sanitizeNumericInput(tin, 9);
+        if (tin) sanitizeNumericInput(tin, 12);
     }
 
     function validatePersonalInfo(form) {
@@ -161,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function(){
             Notification.show({
                 type: 'error',
                 title: 'Validation Error',
-                message: 'Email format is invalid'
+                message: 'Email is invalid'
             });
             email.focus();
             return false;
@@ -171,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function(){
             Notification.show({
                 type: 'error',
                 title: 'Validation Error',
-                message: 'Contact number must be 09XXXXXXXXX'
+                message: 'Contact number must be 11 digits starting with 09'
             });
             phone.focus();
             return false;
@@ -181,31 +184,30 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     function validateAddress(form) {
+        const houseNumber = form.querySelector('#House_Number');
+        const subdivision = form.querySelector('#Subd_Name');
+        const barangay = form.querySelector('#Brgy_Name');
+        const municipality = form.querySelector('#Municipality_Name');
+        const province = form.querySelector('#Province_Name');
+        const region = form.querySelector('#Region');
+
         const fields = [
-            { el: form.querySelector('#Brgy_Name'), name: 'Barangay' },
-            { el: form.querySelector('#Municipality_Name'), name: 'Municipality' },
-            { el: form.querySelector('#Province_Name'), name: 'Province' },
-            { el: form.querySelector('#Region'), name: 'Region' }
+            { element: houseNumber, name: 'House number' },
+            { element: subdivision, name: 'Subdivision' },
+            { element: barangay, name: 'Barangay' },
+            { element: municipality, name: 'Municipality' },
+            { element: province, name: 'Province' },
+            { element: region, name: 'Region' }
         ];
 
         for (const field of fields) {
-            const value = field.el.value.trim();
-            if (!value) {
+            if (!field.element.value.trim() || !textRegex.test(field.element.value.trim())) {
                 Notification.show({
                     type: 'error',
                     title: 'Validation Error',
-                    message: `${field.name} is required`
+                    message: `${field.name} is invalid`
                 });
-                field.el.focus();
-                return false;
-            }
-            if (!textRegex.test(value)) {
-                Notification.show({
-                    type: 'error',
-                    title: 'Validation Error',
-                    message: `${field.name} contains invalid characters`
-                });
-                field.el.focus();
+                field.element.focus();
                 return false;
             }
         }
@@ -214,17 +216,17 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     function validateIdentifiers(form) {
-        const empNum = form.querySelector('#Employee_Number');
+        const employeeNumber = form.querySelector('#Employee_Number');
         const philhealth = form.querySelector('#Philhealth_Number');
         const tin = form.querySelector('#TIN');
 
-        if (!empNum.value.trim() || !numericRegex.test(empNum.value.trim()) || empNum.value.length < 3) {
+        if (!employeeNumber.value.trim() || !numericRegex.test(employeeNumber.value.trim())) {
             Notification.show({
                 type: 'error',
                 title: 'Validation Error',
-                message: 'Employee Number must be at least 3 digits'
+                message: 'Employee number must contain only numbers'
             });
-            empNum.focus();
+            employeeNumber.focus();
             return false;
         }
 
@@ -232,17 +234,17 @@ document.addEventListener('DOMContentLoaded', function(){
             Notification.show({
                 type: 'error',
                 title: 'Validation Error',
-                message: 'PhilHealth Number must be 12 digits'
+                message: 'Philhealth number must be 12 digits'
             });
             philhealth.focus();
             return false;
         }
 
-        if (!tin.value.trim() || !numericRegex.test(tin.value.trim()) || tin.value.length !== 9) {
+        if (!tin.value.trim() || !numericRegex.test(tin.value.trim()) || tin.value.length !== 12) {
             Notification.show({
                 type: 'error',
                 title: 'Validation Error',
-                message: 'TIN must be 9 digits'
+                message: 'TIN must be 12 digits'
             });
             tin.focus();
             return false;
@@ -360,6 +362,9 @@ document.addEventListener('DOMContentLoaded', function(){
                         message: result.message || 'Information updated successfully'
                     });
                     modal.style.display = 'none';
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
                 } else {
                     Notification.show({
                         type: 'error',
@@ -377,140 +382,108 @@ document.addEventListener('DOMContentLoaded', function(){
             }
         });
     }
-    
-    console.log(modalContent);
 
     editAddressBtn.addEventListener('click', async function(){
         modal.style.display = 'block';
+        modalContent.innerHTML = loadingText;
         try {
             const formResponse = await fetchEditAddress();
             modalContent.innerHTML = modalHeader();
             modalContent.innerHTML += formResponse;
             close(modal);
             initializeFormHandler();
-            
         }
         catch(error) {
-            alert(error.message);
-            console.error(error);
-            modalContent.innerHTML += `Failed to load`;
+            Notification.show({
+                type: 'error',
+                title: 'Error',
+                message: error.message
+            });
+            modalContent.innerHTML = '<p>Failed to load form</p>';
         }    
-    })
-    
+    });
 
     editCredentialsBtn.addEventListener('click', async function(){
         modal.style.display = 'block';
+        modalContent.innerHTML = loadingText;
         try {
             const formResponse = await fetchEditIdentifiers();
             modalContent.innerHTML = modalHeader();
             modalContent.innerHTML += formResponse;
             close(modal);
             initializeFormHandler();
-            
         }
         catch(error) {
-            alert(error.message);
-            console.error(error);
-            modalContent.innerHTML += `Failed to load`;
+            Notification.show({
+                type: 'error',
+                title: 'Error',
+                message: error.message
+            });
+            modalContent.innerHTML = '<p>Failed to load form</p>';
         }    
-    })
+    });
 
     editPersonalInformationBtn.addEventListener('click', async function(){
         modal.style.display = 'block';
+        modalContent.innerHTML = loadingText;
         try {
             const formResponse = await fetchEditPersonalInformation();
             modalContent.innerHTML = modalHeader();
             modalContent.innerHTML += formResponse;
             close(modal);
             initializeFormHandler();
-            
         }
         catch(error) {
-            alert(error.message);
-            console.error(error);
-            modalContent.innerHTML += `Failed to load`;
+            Notification.show({
+                type: 'error',
+                title: 'Error',
+                message: error.message
+            });
+            modalContent.innerHTML = '<p>Failed to load form</p>';
         }    
-    })
+    });
 
     editProfilePictureBtn.addEventListener('click', async function(){
         modal.style.display = 'block';
+        modalContent.innerHTML = loadingText;
         try {
             const formResponse = await fetchEditProfilePicture();
             modalContent.innerHTML = modalHeader();
             modalContent.innerHTML += formResponse;
             close(modal);
             initializeFormHandler();
-            
         }
         catch(error) {
-            alert(error.message);
-            console.error(error);
-            modalContent.innerHTML += `Failed to load`;
+            Notification.show({
+                type: 'error',
+                title: 'Error',
+                message: error.message
+            });
+            modalContent.innerHTML = '<p>Failed to load form</p>';
         }    
-    })
+    });
 });
-
 
 async function fetchEditPersonalInformation() {
     const response = await fetch(`../../../BackEnd/templates/admin/fetchEditPersonalInformation.php`);
-
-    let data;
-    try {
-        data = await response.text();
-    }
-    catch{
-        throw new Error('Cannot proccess response');
-    }
-    if(!response.ok) {
-        throw new Error(`HTTP error: ${response.status}`);
-    }
-    return data;
+    if(!response.ok) throw new Error(`HTTP error: ${response.status}`);
+    return await response.text();
 }
 
 async function fetchEditProfilePicture() {
     const response = await fetch(`../../../BackEnd/templates/admin/fetchEditProfilePicture.php`);
-
-    let data;
-    try {
-        data = await response.text();
-    }
-    catch{
-        throw new Error('Cannot proccess response');
-    }
-    if(!response.ok) {
-        throw new Error(`HTTP error: ${response.status}`);
-    }
-    return data;
+    if(!response.ok) throw new Error(`HTTP error: ${response.status}`);
+    return await response.text();
 }
 
 async function fetchEditAddress() {
     const response = await fetch(`../../../BackEnd/templates/admin/fetchEditAddress.php`);
-
-    let data;
-    try {
-        data = await response.text();
-    }
-    catch{
-        throw new Error('Cannot proccess response');
-    }
-    if(!response.ok) {
-        throw new Error(`HTTP error: ${response.status}`);
-    }
-    return data;
+    if(!response.ok) throw new Error(`HTTP error: ${response.status}`);
+    return await response.text();
 }
 
 async function fetchEditIdentifiers() {
     const response = await fetch(`../../../BackEnd/templates/admin/fetchEditIdentifiers.php`);
-
-    let data;
-    try {
-        data = await response.text();
-    }
-    catch{
-        throw new Error('Cannot proccess response');
-    }
-    if(!response.ok) {
-        throw new Error(`HTTP error: ${response.status}`);
-    }
-    return data;
+    if(!response.ok) throw new Error(`HTTP error: ${response.status}`);
+    return await response.text();
 }

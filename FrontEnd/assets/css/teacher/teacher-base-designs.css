@@ -260,6 +260,36 @@ body {
 
 .account-settings-wrapper{
     font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.teacher-profile-pic {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.teacher-name-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.teacher-name-wrapper .name {
+    margin: 0;
+    font-size: 1rem;
+    color: white;
+}
+
+.teacher-name-wrapper span {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    color: white;
 }
 
 .account-settings-btn-content-wrapper {

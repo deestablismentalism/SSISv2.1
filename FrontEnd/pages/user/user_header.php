@@ -33,11 +33,28 @@
             <?php
                 if (isset($_SESSION['User']) && isset($_SESSION['User']['First-Name']) && isset($_SESSION['User']['Last-Name']) && isset($_SESSION['User']['User-Type'])) {
                     $name = $_SESSION['User']['First-Name'] . ", " . $_SESSION['User']['Last-Name'];
+                    
+                    // Get profile picture path
+                    $profilePicPath = null;
+                    $defaultPic = '../../assets/imgs/default-avatar.svg';
+                    
+                    if (isset($_SESSION['User']['User-Id'])) {
+                        require_once __DIR__ . '/../../../BackEnd/user/view/userProfilePictureView.php';
+                        $profilePicView = new userProfilePictureView();
+                        $profilePicPath = $profilePicView->getProfilePicturePath($_SESSION['User']['User-Id']);
+                    }
+                    
+                    echo '<div class="user-profile-info">';
+                    echo '<img src="' . ($profilePicPath ?? $defaultPic) . '" alt="Profile" class="user-profile-pic">';
+                    echo '<div class="user-text-wrapper">';
                     echo "<p class='user-name'>$name</p>";
+                    
                     $viewType = new UserTypeView((int)$_SESSION['User']['User-Type']);
+                    echo '<span>' . $viewType . '</span>';
+                    echo '</div>';
+                    echo '</div>';
                 }
             ?>
-            <span> <?php echo $viewType; ?></span>
         </div>
         <div class="account-settings-btn">
             <button class="account-btn"><img src="../../assets/imgs/chevron-down-black.svg" id="account-drop" alt=""></button>

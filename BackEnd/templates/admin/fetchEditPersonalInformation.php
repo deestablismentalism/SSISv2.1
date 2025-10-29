@@ -1,4 +1,4 @@
-<form action="../server_side/post_edit_staff_information.php" method="POST">
+<form action="/BackEnd/api/admin/postEditStaffInformation.php" method="POST">
     <p class="title">Edit Personal Information</p>
     <!-- Hidden input to identify the form type -->
     <input type="hidden" name="form_type" value="update_information">
@@ -7,7 +7,7 @@
     <input type="text" id="Staff_First_Name" name="Staff_First_Name" required>
 
     <label for="Staff_Middle_Name">Middle Name:</label>
-    <input type="text" id="Staff_Middle_Name" name="Staff_Middle_Name"><br>
+    <input type="text" id="Staff_Middle_Name" name="Staff_Middle_Name">
 
     <label for="Staff_Last_Name">Last Name:</label>
     <input type="text" id="Staff_Last_Name" name="Staff_Last_Name" required>
