@@ -1,5 +1,5 @@
 <?php  
-    require_once __DIR__ . '/../../../BackEnd/teacher/view/teacherIsAnAdviserView.php';
+    require_once __DIR__ . '/../../../BackEnd/teacher/views/teacherIsAnAdviserView.php';
     require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
     if(session_status() === PHP_SESSION_NONE) {
         session_start();
