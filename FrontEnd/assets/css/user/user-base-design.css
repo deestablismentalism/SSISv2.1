@@ -85,6 +85,46 @@ p {
     padding-right: 2em;
 }
 
+.account-settings-wrapper {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-profile-info {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.user-profile-pic {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.user-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.user-text-wrapper .user-name {
+    margin: 0;
+    font-size: 1rem;
+    color: white;
+}
+
+.user-text-wrapper span {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    color: white;
+}
+
 /*-- FIRST NAVIGATION CONTAINER DESIGN--*/
 /* .nav-list {
     display: flex;

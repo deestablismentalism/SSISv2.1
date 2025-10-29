@@ -8,16 +8,29 @@
                 <div class="account-settings-wrapper">
                     <?php 
                         $name = '';
+                        $profilePicPath = null;
+                        $defaultPic = '../../assets/imgs/default-avatar.svg';
+                        
                         if (isset($_SESSION['Staff']['First-Name']) && isset($_SESSION['Staff']['Last-Name']) && $_SESSION['Staff']['User-Type']) {
                             $name = $_SESSION['Staff']['First-Name'] . " " . $_SESSION['Staff']['Last-Name'];
+                            
+                            // Get profile picture path
+                            if (isset($_SESSION['Staff']['User-Id'])) {
+                                require_once __DIR__ . '/../../../BackEnd/teacher/view/teacherProfilePictureView.php';
+                                $profilePicView = new teacherProfilePictureView();
+                                $profilePicPath = $profilePicView->getProfilePicturePath($_SESSION['Staff']['User-Id']);
+                            }
                         } 
                         else {
-                            echo "User Name";
+                            $name = "User Name";
                         }
                     ?>   
-                    <h2 class="name"> <?php echo $name; ?></h2>
-                    <span>  <?php $viewType = new UserTypeView((int)$_SESSION['Staff']['Staff-Type']);
-                                echo $viewType; ?> </span>
+                    <img src="<?php echo $profilePicPath ?? $defaultPic; ?>" alt="Profile" class="teacher-profile-pic">
+                    <div class="teacher-name-wrapper">
+                        <h2 class="name"> <?php echo $name; ?></h2>
+                        <span>  <?php $viewType = new UserTypeView((int)$_SESSION['Staff']['Staff-Type']);
+                                    echo $viewType; ?> </span>
+                    </div>
                 </div>
                 <div class="account-settings-btn">
                     <button class="account-btn" onclick="accountDrop()"><img src="../../assets/imgs/chevron-down-black.svg" id="account-drop" alt=""></button>
@@ -29,8 +42,8 @@
                             </div>
                         </div>
                         <div class="account-edit-info-wrapper">
-                            <a href="./admin_edit_information_links.php"><img src="../../assets/imgs/edit-information.svg" class="edit-info-icon" alt="" ></a>
-                            <a href="./admin_edit_information_links.php" class="edit-info-text">Edit Profile</a>
+                            <a href="./teacher_edit_information_links.php"><img src="../../assets/imgs/edit-information.svg" class="edit-info-icon" alt="" ></a>
+                            <a href="./teacher_edit_information_links.php" class="edit-info-text">Edit Profile</a>
                         </div>  
 
                         <div class="account-link-wrapper">

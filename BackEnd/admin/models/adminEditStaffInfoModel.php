@@ -1,7 +1,6 @@
 <?php
     require_once __DIR__ . '/../../core/dbconnection.php';
     require_once __DIR__ . '/../../core/encryption_and_decryption.php';
-    session_start();
 
     class adminEditInformation {
         protected $conn;
@@ -10,9 +9,12 @@
     
         //automatically run and connect database
         public function __construct() {
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
             $db = new Connect();
             $this->conn = $db->getConnection();
-            $this->Staff_Id = $_SESSION['Admin']['Staff-Id'];
+            $this->Staff_Id = $_SESSION['Staff']['Staff-Id'];
             $this->Encryption = new Encryption();
         }
 
@@ -71,6 +73,7 @@
                 if($update_address->execute()) {
                     return [
                         'success' => true,
+                        'message' => 'Address updated successfully',
                         'Address_Id' => 'Successfully updated',
                         'Staff_Address_Id' => $address_id
                     ];
@@ -138,6 +141,7 @@
                 if($update_identifiers->execute()) {
                     return [
                         'success' => true,
+                        'message' => 'Credentials updated successfully',
                         'Identifier_Id' => $Identifier_Id
                     ];
                 } else {
@@ -167,7 +171,7 @@
                     if($update_staff->execute()) {
                         return [
                             'success' => true,
-                            'message' => 'Identifiers inserted successfully',
+                            'message' => 'Credentials added successfully',
                             'Identifier_Id' => $Identifier_Id_Insert
                         ];
                     } else {
@@ -231,6 +235,123 @@
                         'error' => 'database'
                     ];
                 }
+            }
+        }
+
+        public function Update_Profile_Picture($uploaded_file) {
+            try {
+                $allowed_types = ['image/jpeg', 'image/jpg', 'image/png'];
+                $max_size = 5 * 1024 * 1024;
+
+                if (!isset($uploaded_file['tmp_name']) || !is_uploaded_file($uploaded_file['tmp_name'])) {
+                    return [
+                        'success' => false,
+                        'message' => 'No file uploaded'
+                    ];
+                }
+
+                if (!in_array($uploaded_file['type'], $allowed_types)) {
+                    return [
+                        'success' => false,
+                        'message' => 'Invalid file type. Only JPG, JPEG, and PNG are allowed'
+                    ];
+                }
+
+                if ($uploaded_file['size'] > $max_size) {
+                    return [
+                        'success' => false,
+                        'message' => 'File size exceeds 5MB limit'
+                    ];
+                }
+
+                $extension = pathinfo($uploaded_file['name'], PATHINFO_EXTENSION);
+                $filename = 'staff_' . $this->Staff_Id . '_' . time() . '.' . $extension;
+                $upload_dir = __DIR__ . '/../../../ImageUploads/profile_pictures/';
+                $relative_dir = '/ImageUploads/profile_pictures/';
+
+                if (!is_dir($upload_dir)) {
+                    mkdir($upload_dir, 0755, true);
+                }
+
+                $upload_path = $upload_dir . $filename;
+
+                if (!move_uploaded_file($uploaded_file['tmp_name'], $upload_path)) {
+                    return [
+                        'success' => false,
+                        'message' => 'Failed to upload file'
+                    ];
+                }
+
+                $sql_get_user = "SELECT User_Id, Profile_Picture_Id FROM users WHERE Staff_Id = :Staff_Id";
+                $get_user = $this->conn->prepare($sql_get_user);
+                $get_user->bindparam(':Staff_Id', $this->Staff_Id);
+                $get_user->execute();
+                $user = $get_user->fetch(PDO::FETCH_ASSOC);
+
+                if (!$user) {
+                    unlink($upload_path);
+                    return [
+                        'success' => false,
+                        'message' => 'User not found'
+                    ];
+                }
+
+                if ($user['Profile_Picture_Id']) {
+                    $sql_get_old_pic = "SELECT File_Name, Directory FROM profile_directory WHERE Profile_Picture_Id = :Profile_Picture_Id";
+                    $get_old_pic = $this->conn->prepare($sql_get_old_pic);
+                    $get_old_pic->bindparam(':Profile_Picture_Id', $user['Profile_Picture_Id']);
+                    $get_old_pic->execute();
+                    $old_pic = $get_old_pic->fetch(PDO::FETCH_ASSOC);
+
+                    if ($old_pic && $old_pic['File_Name'] !== 'default-avatar.png') {
+                        $old_file = __DIR__ . '/../../../' . $old_pic['Directory'] . $old_pic['File_Name'];
+                        if (file_exists($old_file)) {
+                            unlink($old_file);
+                        }
+                    }
+
+                    $sql_update_pic = "UPDATE profile_directory SET File_Name = :filename, Directory = :directory WHERE Profile_Picture_Id = :Profile_Picture_Id";
+                    $update_pic = $this->conn->prepare($sql_update_pic);
+                    $update_pic->bindparam(':filename', $filename);
+                    $update_pic->bindparam(':directory', $relative_dir);
+                    $update_pic->bindparam(':Profile_Picture_Id', $user['Profile_Picture_Id']);
+                    $update_pic->execute();
+
+                    return [
+                        'success' => true,
+                        'message' => 'Profile picture updated successfully',
+                        'filename' => $filename,
+                        'path' => $relative_dir . $filename
+                    ];
+                } else {
+                    $sql_insert_pic = "INSERT INTO profile_directory (File_Name, Directory) VALUES (:filename, :directory)";
+                    $insert_pic = $this->conn->prepare($sql_insert_pic);
+                    $insert_pic->bindparam(':filename', $filename);
+                    $insert_pic->bindparam(':directory', $relative_dir);
+                    $insert_pic->execute();
+                    $pic_id = $this->conn->lastInsertId();
+
+                    $sql_update_user = "UPDATE users SET Profile_Picture_Id = :Profile_Picture_Id WHERE User_Id = :User_Id";
+                    $update_user = $this->conn->prepare($sql_update_user);
+                    $update_user->bindparam(':Profile_Picture_Id', $pic_id);
+                    $update_user->bindparam(':User_Id', $user['User_Id']);
+                    $update_user->execute();
+
+                    return [
+                        'success' => true,
+                        'message' => 'Profile picture uploaded successfully',
+                        'filename' => $filename,
+                        'path' => $relative_dir . $filename
+                    ];
+                }
+            } catch (Exception $e) {
+                if (isset($upload_path) && file_exists($upload_path)) {
+                    unlink($upload_path);
+                }
+                return [
+                    'success' => false,
+                    'message' => 'Error: ' . $e->getMessage()
+                ];
             }
         }
     }

@@ -2,8 +2,8 @@
 ob_start();
 
 $pageTitle = 'SSIS - Edit Information';
-$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-edit-information-links.css" media="all">';
-$pageJs = '<script type="module" src="../../assets/js/admin/admin-edit-information-links.js"></script>';
+$pageCss = '<link rel="stylesheet" href="../../assets/css/teacher/teacher-edit-information-links.css" media="all">';
+$pageJs = '<script type="module" src="../../assets/js/teacher/teacher-edit-information-links.js"></script>';
 
 ?>
 
@@ -34,5 +34,5 @@ $pageJs = '<script type="module" src="../../assets/js/admin/admin-edit-informati
 </div>
 <?php
 $pageContent = ob_get_clean();
-require_once __DIR__ . '/./admin_base_designs.php';
+require_once __DIR__ . '/./teacher_base_designs.php';
 ?>
