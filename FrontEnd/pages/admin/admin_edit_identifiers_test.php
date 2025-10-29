@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Update Identifiers</title>
-    <link rel="stylesheet" href="../../assets/css/admin/admin-edit-identifiers-test.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title> 
-    <?php
-        include './admin_base_designs.php'; 
-    ?>
+<?php
+ob_start();
 
+$pageTitle = 'SSIS - Edit Identifiers';
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-edit-identifiers-test.css">'
+?>
       <!--START OF THE MAIN CONTENT-->
       <div class="content">
         <form action="../server_side/post_edit_staff_information.php" method="POST">
@@ -35,6 +28,8 @@
 
       </div>
   </div>
-</body>
-<script src="../../assets/js/admin/admin-edit-staff-information.js"defer></script>
-</html>
+
+<?php
+$pageContent = ob_get_clean();
+require_once __DIR__ . '/./admin_base_designs.php';
+?>

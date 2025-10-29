@@ -1,32 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title> 
-    <link rel="stylesheet" href="../../assets/css/admin/admin-edit-information-links.css">
-    <?php
-        include './admin_base_designs.php'; 
-    ?>
-</head>
-<body>
-    <!--START OF THE MAIN CONTENT-->
-    <div class="content">
-        <div class="container">
-            <p class="title">Edit Information</p>
-            <div class="links">
-                <div class="card">
-                    <a href="./edit_personal_information.php">Update Personal Information</a>
-                </div>
-                <div class="card">
-                    <a href="./edit_address_test.php">Update Address</a>
-                </div>
-                <div class="card">
-                    <a href="./edit_identifiers_test.php">Update Credentials</a>
-                </div>
+<?php
+ob_start();
+
+$pageTitle = 'SSIS - Edit Information';
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-edit-information-links.css" media="all">';
+$pageJs = '<script type="module" src="../../assets/js/admin/admin-edit-information-links.js"></script>';
+
+?>
+
+<!--START OF THE MAIN CONTENT-->
+<div class="content">
+    <div class="container">
+        <p class="title">Edit Information</p>
+        <div class="links">
+            <div class="card">
+                <button id="edit-personal-information">Edit Personal Information</button>
+            </div>
+            <div class="card">
+                <button id="edit-address">Edit Address</button>
+            </div>
+            <div class="card">
+                <button id="edit-credentials">Edit Credentials</button>
             </div>
         </div>
     </div>
-</body>
-
-</html>
+</div>
+<div class="modal" id="information-modal">
+    <div class="modal-content" id="information-modal-content">
+        
+    </div>
+</div>
+<?php
+$pageContent = ob_get_clean();
+require_once __DIR__ . '/./admin_base_designs.php';
+?>
