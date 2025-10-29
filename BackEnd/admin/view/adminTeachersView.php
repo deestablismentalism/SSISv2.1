@@ -22,9 +22,9 @@ class adminTeachersView {
         }
         else {
             echo '<div class="table-teachers-container"><table class="table-teachers">';
-            $this->tableTemplate->generateHorizontalTitles('teachers-table-title', [
+            echo $this->tableTemplate->returnHorizontalTitles([
                 'Full Name', 'Contact Number', 'Position', 'Action'
-            ]);
+            ], 'teachers-table-title');
 
             echo '<tbody>';
             foreach($data['data'] as $rows) {
@@ -40,9 +40,9 @@ class adminTeachersView {
                     <img class="edit-icon" src="../../assets/imgs/edit-yellow-green.svg" alt="Edit">
                 </button>
                 ');
-                $this->tableTemplate->generateHorizontalRows('teachers-data', [
+                echo $this->tableTemplate->returnHorizontalRows([
                     $fullName, $contactNumber, $position, $actionButtons 
-                ]);
+                ], 'teachers-data');
             }
             echo '</tbody></table></div>';
         }

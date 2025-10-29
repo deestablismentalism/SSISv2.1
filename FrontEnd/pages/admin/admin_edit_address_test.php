@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Edit address</title> 
-    <link rel="stylesheet" href="../../assets/css/admin/admin-edit-address-test.css">
-    <?php
-        include './admin_base_designs.php'; 
-    ?>
+<?php
+ob_start();
 
+$pageTitle = 'SSIS - Edit Address';
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-edit-address-test.css">'
+?>
       <!--START OF THE MAIN CONTENT-->
         <div class="content">
             <form action="../server_side/post_edit_staff_information.php" method="POST">
@@ -41,7 +36,8 @@
             </form>
         </div>
     </div>
-</body>
-<script src="../assets/js/admin/admin-edit-staff-information.js"></script>
-</html>
 
+<?php
+$pageContent = ob_get_clean();
+require_once __DIR__ . '/./admin_base_designs.php';
+?>
