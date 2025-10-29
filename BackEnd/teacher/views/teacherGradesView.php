@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/../controller/teacherGradesController.php';
+require_once __DIR__ . '/../controllers/teacherGradesController.php';
 require_once __DIR__ . '/../../Exceptions/IdNotFoundException.php';
 require_once __DIR__ . '/../../core/tableDataTemplate.php';
 require_once __DIR__ . '/../../core/safeHTML.php';
@@ -15,7 +15,6 @@ class teacherGradesView {
         $this->controller = new teacherGradesController();
         $this->tableTemplate = new TableCreator();
     }
-
     public function displaySubjectsToGrade() {
         try {
             if(empty($this->staffId)) {
