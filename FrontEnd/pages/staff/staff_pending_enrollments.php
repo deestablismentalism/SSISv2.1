@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php 
     require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
     require_once __DIR__ . '/../session_init.php';
