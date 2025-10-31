@@ -1,7 +1,7 @@
 /*----START OF BASE DESIGNS----*/
 :root {
     --main-fonts:  "Poppins", "Segoe UI", sans-serif;
-    --title-fonts: 'Barlow', Arial, sans-serif;
+    --title-fonts: "Barlow", sans-serif;
     --button-fonts: 'Baloo-Thambi-2';
     --link-fonts: 'Roboto', sans-serif;
     --sidebar-width: 60px;
@@ -10,16 +10,27 @@
     --main-color: #1c4a72;
     --secondary-color: #F1BD22;
     --wrapper-bg-color: #fffdfdf5;
+    --title-main-color: #3e9ec4;
+    --container-color: rgba(36, 186, 255, 0.28);
     --button-color: ;
     --button-hover-color: ;
     --button-click: scale(.9);
+    --border-radius: 1rem;
+    --title-h1-font-size: 1.6rem;
+    --title-font-weight: 600;
+    --title-letter-spacing: 1px;
+    --card-border: rgba(255, 255, 255, 0.2);
+    --warning: #ffcc00;
+    --danger: #ff5f5f;
+    --success: #44d07b;
 }
 body {
     display: flex;
     background-color: rgb(235, 231, 231);
 }
 .content {
-    margin: 2em auto;
+    width: 100%;
+    min-height: 100vh;
 }
 p {
     cursor: default;
@@ -30,8 +41,10 @@ p {
     width: 100%;
     min-height: 100vh;
     height: 100%;
+    font-family: var(--main-fonts);
+    background-image: url("../../imgs/paper.jpg");
 }
-.header-title-text {
+/* .header-title-text {
     padding: .2em;
     font-family: var(--title-fonts); 
     padding-left: 1em;
@@ -52,8 +65,9 @@ p {
     width: 1.5rem;
     height: 1.5rem;
     transform: rotate(-45deg);
-}
-.header-wrapper {
+}*/
+
+.header-wrapper { 
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -64,12 +78,55 @@ p {
     position: sticky;
     top: 0;
     z-index: 10;
+    margin-bottom: 1.5rem;
 }
 .account {
     display: flex;
     padding-right: 2em;
 }
-.nav-list {
+
+.account-settings-wrapper {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-profile-info {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.user-profile-pic {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.user-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.user-text-wrapper .user-name {
+    margin: 0;
+    font-size: 1rem;
+    color: white;
+}
+
+.user-text-wrapper span {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    color: white;
+}
+
+/*-- FIRST NAVIGATION CONTAINER DESIGN--*/
+/* .nav-list {
     display: flex;
     gap: 1rem;
 }
@@ -97,7 +154,72 @@ p {
     font-family: var(--link-fonts);
     font-size: 1rem;
     font-weight: 600;
+} */
+/* END OF FIRST NAVIGATION CONTAINER DESIGNS */
+
+/* --NAVIGATION CONTAINER 1-- */
+.nav-container-1 {
+    border-radius: 12px;
+    max-width: 600px;
+    margin-left: 19px;
 }
+
+.nav-1 {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+}
+
+.nav-1 .nav-item a {
+    position: relative;
+    text-decoration: none;
+    color: #004d51;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+/*  Updated hover background to light teal with dark text */
+.nav-1 .nav-item a:hover {
+    background: rgba(19, 149, 172, 0.1);
+    color: #007084;
+    transform: translateY(-2px);
+}
+
+.nav-1 .nav-item a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    right: 20px;
+    height: 2px;
+    background: #0d6b77;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.nav-1 .nav-item a:hover::after {
+    transform: scaleX(1);
+}
+
+/*  Updated active state to use teal background with white text */
+.nav-1 .nav-item a.active {
+    background:#00a7c4;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 167, 196, 0.4);
+}
+
+.nav-1 .nav-item a.active::after {
+    transform: scaleX(1);
+    background: white;
+}
+/*--END OF NAV1 DESIGNS--*/
+
+
 .account button {
     width: 2em;
     height: 2em;

@@ -499,8 +499,8 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                     <p class="dfont">Ipasa ang malinaw na larawan ng mga Dokumento gaya ng <b>PSA BIRTH CERTIFICATE at REPORT CARD <span class="required">*</span></b></p>
                     <input type="file" name="psa-image" value="Insert Image (Di pa nagana)"> 
                 </div>
-                <button type="submit" class="submit-button" >Submit</button>
             </div>
+            <button type="submit" class="submit-button" >Submit</button>
         </form>
     </div>
 </div>

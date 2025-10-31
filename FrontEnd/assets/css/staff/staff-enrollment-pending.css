@@ -24,14 +24,40 @@ body {
   background-image: url("../../imgs/paper.jpg");  
 
 }
-.menu-content{
+.menu-content {
     background: rgb(36 186 255 / 28%);
     backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
     border-radius: 20px;
-    overflow-x: auto;
     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
     padding: 1.5rem;
+    
+    /* Add fixed dimensions */
+    width: 100%;
+    height: 70vh; /* 70% of viewport height */
+    min-height: 400px; /* Minimum height when empty */
+    
+    /* Add scrolling behavior */
+    overflow: auto;
+    
+    /* Smooth scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
+}
+
+/* Custom scrollbar styling */
+.menu-content::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.menu-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.menu-content::-webkit-scrollbar-thumb {
+    background-color: rgba(62, 158, 196, 0.5);
+    border-radius: 20px;
 }
 
 .main-content {
@@ -290,14 +316,20 @@ table.enrollments tr:hover td{
 }
 
 .modal-content {
-    border-radius: 16px;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
-    background-color: #6decff36;
-    border: 1px solid #3387de;
-    backdrop-filter: blur(20px);
-    padding: 2rem;
-    max-width: 900px;
-    margin: auto;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+  background-color: #6decff36;
+  border: 1px solid #3387de;
+  backdrop-filter: blur(20px);
+  padding: 2rem;
+  max-width: 917px;
+  margin: auto;
+  height: 87vh;
+  overflow-y: scroll;
+  /* overflow: auto; */
+  scrollbar-width: thin;
+  margin-bottom: 31px;
+  scrollbar-color: rgb(53 198 255 / 83%) transparent;
 }
 
 .accept-btn {

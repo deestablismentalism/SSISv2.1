@@ -1,4 +1,4 @@
-<form action="../server_side/post_edit_staff_information.php" method="POST">
+<form action="/BackEnd/api/admin/postEditStaffInformation.php" method="POST">
     <p class="title">Edit Address</p>           
     <!--DO NOT REMOVE!! For Switch case statement-->
     <input type="hidden" name="form_type" value="update_address">

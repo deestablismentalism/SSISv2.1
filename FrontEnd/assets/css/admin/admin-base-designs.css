@@ -1,7 +1,7 @@
 /*----START OF BASE DESIGNS----*/
 :root {
     --main-fonts:  "Poppins", "Segoe UI", sans-serif;
-    --title-fonts: 'Barlow', Arial, sans-serif;
+    --title-fonts: "Barlow", sans-serif;
     --button-fonts: 'Baloo-Thambi-2';
     --link-fonts: 'Roboto', sans-serif;
     --sidebar-width: 60px;
@@ -10,15 +10,29 @@
     --main-color: #1c4a72;
     --secondary-color: #F1BD22;
     --wrapper-bg-color: #fffdfdf5;
+    --title-main-color: #3e9ec4;
+    --container-color: rgba(36, 186, 255, 0.28);
     --button-color: ;
     --button-hover-color: ;
     --button-click: scale(.9);
+    --border-radius: 1rem;
+    --title-h1-font-size: 1.6rem;
+    --title-font-weight: 600;
+    --title-letter-spacing: 1px;
+    --card-border: rgba(255, 255, 255, 0.2);
+    --warning: #ffcc00;
+    --danger: #ff5f5f;
+    --success: #44d07b;
 }
+
 body {
     background-color: rgb(235, 231, 231);
     display: flex;
     margin: 0;
     min-height: 100vh;
+    background-image: radial-gradient(#000 1px, transparent 1px);
+    background-size: 30px 30px;
+    background-position: -19px -19px;
 }
 
 
@@ -385,6 +399,34 @@ p {
 .account-settings-wrapper{
     font-weight: 700;
     color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.admin-profile-pic {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.admin-name-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.admin-name-wrapper .name {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.admin-name-wrapper span {
+    font-size: 0.85rem;
+    opacity: 0.9;
 }
 .account-settings-btn-content-wrapper {
     display: none;
@@ -428,6 +470,38 @@ p {
 }
 .user-info-wrapper {
     display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.8rem;
+}
+
+.dropdown-profile-pic {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #003366;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.user-name {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.dropdown-user-name {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.dropdown-position {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
 }
 .show {
     display: block;

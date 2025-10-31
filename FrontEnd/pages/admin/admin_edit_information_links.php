@@ -21,6 +21,9 @@ $pageJs = '<script type="module" src="../../assets/js/admin/admin-edit-informati
             <div class="card">
                 <button id="edit-credentials">Edit Credentials</button>
             </div>
+            <div class="card">
+                <button id="edit-profile-picture">Edit Profile Picture</button>
+            </div>
         </div>
     </div>
 </div>
