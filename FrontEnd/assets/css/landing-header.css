@@ -12,8 +12,6 @@ body {
     background: #f3fffe;
 }
 
-
-
 /* Header Styles */
 .header {
     background: #f3fffe;
@@ -43,15 +41,13 @@ body {
     color: #4285f4;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     line-height: 1.6;
-
 }
+
 .logo img {
     width: 50px;
     height: auto;
     padding-right: 10px;
-    }
-
-
+}
 
 .nav-menu {
     display: flex;
@@ -116,6 +112,7 @@ body {
     cursor: pointer;
     font-size: 1em;
     line-height: normal;
+    text-decoration: none;
 }
 
 .join-btn:hover {
