@@ -24,15 +24,14 @@
     <link rel="stylesheet" href="../../assets/css/loader.css">
     <link rel="stylesheet" href="../../assets/css/notifications.css">
     <link rel="icon" href="../../../favicon.ico">
-    <script src="../../assets/js/loader.js"></script>
-    <script src="../../assets/js/notifications.js"></script>
-    <script src="../../assets/js/teacher/teacher-base-designs.js" defer></script>
     <?php if(isset($pageCss)) {echo $pageCss;} else { echo '';} ?>
 </head>
 <body>
    <?php
         require_once __DIR__ . '/../loader.php';
    ?>
+   <script src="../../assets/js/notifications.js"></script>
+   <script src="../../assets/js/teacher/teacher-base-designs.js" defer></script>
 
    <div class="main-wrapper">
         <?php require_once __DIR__ . '/./teacher_sidebar.php';?> 
