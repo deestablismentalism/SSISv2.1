@@ -19,25 +19,25 @@ class teacherSubjectsHandledView {
         $stringEqual = '';
         switch($day) {
             case 1:
-                $stringEqual = 'monday';
+                $stringEqual = 'Monday';
                 break;
             case 2:
-                $stringEqual = 'tuesday';
+                $stringEqual = 'Tuesday';
                 break;
             case 3: 
-                $stringEqual = 'wednesday';
+                $stringEqual = 'Wednesday';
                 break;
             case 4: 
-                $stringEqual = 'thursday';
+                $stringEqual = 'Thursday';
                 break;
             case 5: 
-                $stringEqual = 'friday';
+                $stringEqual = 'Friday';
                 break;
             case 6: 
-                $stringEqual = 'saturday';
+                $stringEqual = 'Saturday';
                 break;
             case 7: 
-                $stringEqual = 'sunday';
+                $stringEqual = 'Sunday';
                 break;
         }
         return $stringEqual;
@@ -54,7 +54,7 @@ class teacherSubjectsHandledView {
             }
             else {
                 echo '<table class="subjects-list">';
-                    $this->tableTemplate->generateHorizontalTitles('subject-titles', ['Subject Name', 'Day', 'Time', 'Section Name', 'Action']);
+                    echo $this->tableTemplate->returnHorizontalTitles(['Subject Name', 'Day', 'Time', 'Section Name', 'Action'], 'subject-titles');
                     echo '<tbody>';
                     foreach($subjectData['data'] as $rows) {
                         $subjectName = !empty($rows['Subject_Name']) ? $rows['Subject_Name'] : 'No Subject name yet';
@@ -62,8 +62,9 @@ class teacherSubjectsHandledView {
                         $day = !empty($rows['Schedule_Day']) ? $this->dayConvertToString($rows['Schedule_Day']) :  'No Scheduled day yet';
                         $time = (!empty($rows['Time_Start']) && !empty($rows['Time_End'])) ? $rows['Time_Start'] . '-' . $rows['Time_End'] : 'No Scheduled time yet';
                         $button = new safeHTML('<button> Grade Students</button>');
-                        $this->tableTemplate->generateHorizontalRows('subject-details',
+                        echo $this->tableTemplate->returnHorizontalRows(
                             [$subjectName,$day,$time, $sectionName, $button]
+                            ,'subject-details'
                         );
                     }
                     echo '</tbody>';
