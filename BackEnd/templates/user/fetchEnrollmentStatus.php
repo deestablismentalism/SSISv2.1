@@ -16,7 +16,6 @@ try {
     $enrollmentStatus = $model->getUserStatus($userId, $enrolleeId);
     $transactionData = $model->sendTransactionStatus($enrolleeId);
     $enrollmentInfo = $model->getEnrollmentInformation($enrolleeId);
-    
     $statusLabels = [
         1 => 'Enrolled',
         2 => 'Denied',
@@ -105,14 +104,24 @@ try {
                 </div>
                 <?php endif; ?>
                 
-                <?php if (isset($transactionData['Can_Resubmit']) && $transactionData['Can_Resubmit'] == 1): ?>
-                    <div class="action-buttons">
-                        <button class="edit-enrollment-form" data-id="<?php echo $enrolleeId; ?>">Edit Enrollment Form</button>
+                <?php 
+                $canResubmit = isset($transactionData['Can_Resubmit']) ? (int)$transactionData['Can_Resubmit'] : 0;
+                $needConsultation = isset($transactionData['Need_Consultation']) ? (int)$transactionData['Need_Consultation'] : 0;
+                ?>
+                
+                <?php if ($canResubmit === 1): ?>
+                    <div class="status-message info-message">
+                        <button class="edit-enrollment-form" data-id="<?php echo $enrolleeId; ?>" data-ajax="true">Edit Enrollment Form</button>
                         <p class="resubmit-note">Note: You can only resubmit the form once</p>
                     </div>
-                <?php elseif (isset($transactionData['Need_Consultation']) && $transactionData['Need_Consultation'] == 1): ?>
+                <?php elseif ($needConsultation === 1): ?>
                     <div class="status-message info-message">
                         <p>Your enrollment form is in need of further discussion. Please wait for the school to contact you.</p>
+                    </div>
+                <?php else: ?>
+                    <div class="status-message info-message">
+                        <button class="edit-enrollment-form" data-id="<?php echo $enrolleeId; ?>" data-ajax="true">Edit Enrollment Form</button>
+                        <p class="resubmit-note">Note: You can only resubmit the form once</p>
                     </div>
                 <?php endif; ?>
             <?php endif; ?>

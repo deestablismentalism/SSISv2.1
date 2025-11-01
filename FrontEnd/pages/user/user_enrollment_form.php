@@ -6,6 +6,7 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-f
 $pageCss2 = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form-errors.css" media="all">';
 $pageCss3 = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form-mq.css" media="all">';
 $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.js" defer></script>';
+
 ?>
 <div class="enrollment-form-content">
     <div class="content-title">
