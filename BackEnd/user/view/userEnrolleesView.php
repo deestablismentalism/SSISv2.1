@@ -27,6 +27,7 @@ class displayEnrollmentForms {
                 echo '<div class="error-message">'.htmlspecialchars($data['message']).'<a href="./user_enrollment_form.php">Submit a form?</a></div>';
             }
             else {
+                echo '<link rel="stylesheet" href="../../assets/css/user/user-enrollees-modal.css">';
                 echo '<table> <tbody>';
                 foreach($data['data'] as $rows) {
                     $fname = !empty($rows['Student_First_Name']) ? $rows['Student_First_Name'] : 'No first name';
@@ -34,12 +35,20 @@ class displayEnrollmentForms {
                     $studentMiddleInitial = !empty($rows['Student_Middle_Name']) ? substr($rows['Student_Middle_Name'], 0, 1) . "." : "";
                     //values to render
                     $fullName = $lname . ', ' . $fname . ' ' . $studentMiddleInitial;
-                    $button = new safeHTML('<a class= "Check-Status" href="../user/user_enrollment_status.php?id='. $rows['Enrollee_Id'] .'"> Check Status </a>');
+                    $button = new safeHTML('<button class="check-status-btn" data-enrollee-id="'. $rows['Enrollee_Id'] .'" data-user-id="'.$this->userId.'">Check Status</button>');
                     echo $this->tableTemplate->returnHorizontalRows([
                         $fullName, $button  
                     ], 'user-enrollees-data');
                 }      
                 echo '</tbody></table>';
+                
+                // Add modal structure
+                echo '<div class="modal" id="enrollmentStatusModal">
+                        <div class="modal-content">
+                            <span class="close-modal">&times;</span>
+                            <div id="modal-body-content"></div>
+                        </div>
+                      </div>';
             }
         }
         catch(IdNotFoundException $e) {
