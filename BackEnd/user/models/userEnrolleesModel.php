@@ -272,7 +272,7 @@ class userEnrolleesModel {
         }
     }
     //HELPERS
-    private function setResubmitStatus(int $enrolleeId) : bool { //F 3.2.1
+    public function setResubmitStatus(int $enrolleeId) : bool { //F 3.2.1
         $result = true;
         try {
             $sql = "UPDATE enrollment_transactions SET Transaction_Status = 3 WHERE Enrollee_ID = :enrolleeId";

@@ -244,7 +244,7 @@ class userEnrollmentFormController {
                     'data'=> []
                 ];
             }
-            $setTransactionStatus = $this->enrolleeModel->setResubmitStatus($enrolleeId);
+            $setTransactionStatus = $this->enrolleesModel->setResubmitStatus($enrolleeId);
             return [
                 'httpcode'=> 201,
                 'success'=> true,
