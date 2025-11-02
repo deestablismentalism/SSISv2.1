@@ -27,7 +27,7 @@ class adminEnrolleesModel {
             $sql = "SELECT ei.*, egl.Grade_Level AS E_Grade_Level, lgl.Grade_Level AS L_Grade_Level FROM enrollee AS e 
                 INNER JOIN educational_information AS ei ON ei.Educational_Information_Id = e.Educational_Information_Id 
                 INNER JOIN grade_level AS egl ON egl.Grade_Level_Id = ei.Enrolling_Grade_Level
-                INNER JOIN grade_level AS lgl ON lgl.Grade_Level_Id = ei.Last_Grade_Level 
+                LEFT JOIN grade_level AS lgl ON lgl.Grade_Level_Id = ei.Last_Grade_Level 
                 WHERE Enrollee_Id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([':id'=>$enrolleeId]);
