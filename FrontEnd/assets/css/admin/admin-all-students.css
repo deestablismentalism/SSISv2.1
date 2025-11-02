@@ -31,7 +31,7 @@ body {
 }
 
 .sidebar.active ~ .admin-all-students-content {
-  margin-left: 80px; /* Adjusts on sidebar collapse */
+  margin-left: 80px; 
 }
 
 /* ===== Header Section ===== */
@@ -106,14 +106,11 @@ body {
   border: 1px solid var(--glass-border);
   border-radius: 20px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
-  padding: 1.5rem;
   
-  /* Add fixed dimensions */
   width: 100%;
   height: 70vh;
   min-height: 400px;
   
-  /* Add scrolling behavior */
   overflow: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(62, 158, 196, 0.5) transparent;

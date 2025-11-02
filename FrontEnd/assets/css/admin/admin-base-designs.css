@@ -5,7 +5,7 @@
     --button-fonts: 'Baloo-Thambi-2';
     --link-fonts: 'Roboto', sans-serif;
     --sidebar-width: 60px;
-    --sidebar-expanded-width: 20dvw;
+    --sidebar-expanded-width: 280px;
     --title-font-size: 3em;
     --main-color: #1c4a72;
     --secondary-color: #F1BD22;
@@ -80,21 +80,24 @@ p {
 }
 /*----SIDEBAR DESIGNS----*/
 .sidebar-wrapper{
-    position: sticky;
-    top: 0;
+    position: relative;
+    height: 100vh;
 }
+
 .sidebar {
     min-height: 100vh;
-    height: 100%;
-    width: var(--sidebar-expanded-width);
+    height: 100vh;
+    width: 60px; /* Start collapsed */
     background: #1c4a72;
     transition: width 0.3s ease;
     font-family: 'Barlow', 'Arial';
-    position: sticky;
+    font-size: 1rem;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 100;
-    overflow: visible; 
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 .main-content {
     flex-grow: 1;
@@ -113,6 +116,8 @@ p {
     width: 100%;
     min-height: 100vh;
     height: 100%;
+    margin-left: 60px; /* Start with collapsed sidebar margin */
+    transition: margin-left 0.3s ease;
 }
 .menu button {
     border: none;   
@@ -145,13 +150,14 @@ p {
     pointer-events: auto; 
 }
 .menu {
-    padding: 2em 1em 1em 1em; 
+    padding: 1.8em 1em 1em 1em; 
     display: grid;
     grid-template-columns: 15% 70% 15%;
 }
 .menu-title {
     color: #FFF8F8;
     padding: 0em 1em;
+    font-size: 1rem;
 }
 .menu img {
     width: 1.3em;
@@ -159,7 +165,8 @@ p {
 }
 
 #sidebar-toggle-button {
-    height: 2em; width: 2em;
+    height: 2em; 
+    width: 2em;
 }
 .border-75 {
     position: relative;
@@ -192,6 +199,7 @@ p {
     display: flex;
     justify-content: space-between;
 }
+
 .SSIS {
     display: block;
     max-height: 2.5em; 
@@ -201,6 +209,7 @@ p {
     margin: 0.3rem;
     opacity: 1; 
 }
+
 .menu-btn {
     border: none;
     background: none;
@@ -209,9 +218,9 @@ p {
     transition: max-height .1s ease-out, opacity .1s ease-out;
     max-width: 10vh;
     width: 2em;
-    grid-column: 2/2; /* 🔥 Added: Start positioned */
-    justify-self: right; /* 🔥 Added: Start aligned right */
-    margin-right: 1em; /* 🔥 Added: Start with margin */
+    grid-column: 2/2;
+    justify-self: right;
+    margin-right: 1em;
 }
 /*--MENU--*/
 /*DASHBOARD*/
@@ -255,7 +264,10 @@ p {
 /*----TRANSITIONS----*/
 .sidebar:not(.active) {
     width: 60px;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: fixed;
+    top: 0;
 }
 
 .sidebar:not(.active) .SSIS {
@@ -281,11 +293,14 @@ p {
     margin-right: 0;
 }
 
+/* When sidebar becomes active, expand it */
 .sidebar.active {
     width: var(--sidebar-expanded-width); 
     transition: width 0.2s ease-in, opacity 0.15s ease-out;
-    position: sticky;
-    overflow: visible; 
+    position: fixed;
+    top: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /*SIDEBAR TITLE*/
@@ -297,22 +312,31 @@ p {
     padding-left: 1em;
     margin: 0.3rem;
 }
+
 .sidebar.active .sidebar-title  {
     justify-content: space-between;
 }
+
 .sidebar.active span, .sidebar.active button {
     max-height: 100%;
     opacity: 1;
     transition: max-height .5s ease-out, opacity .5s ease-out;
     pointer-events: auto;
 }
+
 .sub-nav.active {
     color: #E1A23C;
 }
+
 .sidebar.active .menu-btn {
     grid-column: 2/2;
     justify-self: right;
     margin-right: 1em;
+}
+
+/* Expand content margin when sidebar is active */
+.sidebar.active ~ .main-content .content {
+    margin-left: var(--sidebar-expanded-width);
 }
 .dashboard-ul.active {
     max-height: 100vh;
@@ -323,7 +347,8 @@ p {
     grid-column: 1 / 3;
     transition: max-height .5s ease-in, opacity .3s ease-in;
 }
-/* .sections-ul.show, */.teachers-ul.show, .enrolls-ul.show, subjects-ul.show { 
+
+.teachers-ul.show, .enrolls-ul.show, .subjects-ul.show { 
     max-height: 100vh;
     opacity: 1;
     background-color: #051F3E;
@@ -595,109 +620,229 @@ p {
     100%{content: '...';}
 }
 /*--END OF HEADER DESIGNS--*/
-/*MEDIA QUERIES*/
-@media(max-width: 1920px) {
-    .content {
-        width: 100%;
-        transition: width 0.3s ease;
-    }
-    .sidebar.active ~ .content{
-        width: 92%;
-    }
-}
 
-@media (max-width: 1510px) {
-    sidebar.active {
-        min-width: 20vw;
-        font-size: .7em;
-        transition: all .2s ease-out;
-    }
-    .header-title {
-        font-size: 1.1em;
-    }
+/*====================================*/
+/*    SIDEBAR RESPONSIVE DESIGN       */
+/*====================================*/
 
-    .account {
-        padding-right: 0em;
-        font-size: .8em;
+/* 2500px and above - Larger screens */
+@media (min-width: 2500px) {
+    :root {
+        --sidebar-expanded-width: 380px;
     }
-
-    .searchbox {
-        width: 20em;
-        font-size: .8em;
+    
+    .sidebar {
+        font-size: 1.25rem;
+        position: fixed;
+        width: 60px; /* Start collapsed */
     }
-}
-
-@media (max-width: 1440px) {
+    
     .sidebar.active {
-        width: 22vw;
+        width: var(--sidebar-expanded-width);
+        position: fixed;
     }
     
-    .header-title {
-        font-size: 1.6rem;
+    .sidebar.active ~ .main-content .content {
+        margin-left: var(--sidebar-expanded-width);
     }
     
-    .header-title::before {
-        width: 1.3rem;
-        height: 1.3rem;
+    .menu {
+        padding: 2.2em 1.4em 1.2em 1.4em;
     }
     
-    .account {
-        padding-right: 1.5em;
-        font-size: 0.95em;
+    .menu-title {
+        padding: 0em 1.4em;
+        font-size: 1.15rem;
+    }
+    
+    .menu img {
+        width: 1.5em;
+    }
+    
+    .SSIS {
+        font-size: 1.4em;
+        padding-left: 1.2em;
+    }
+    
+    .menu-btn {
+        width: 2.2em;
+        margin-right: 1.2em;
+    }
+    
+    .sidebar-title {
+        height: 3.6rem;
+        padding: 0.6rem;
+    }
+    
+    .dashboard-ul.active,
+    .teachers-ul.show, 
+    .enrolls-ul.show, 
+    .subjects-ul.show {
+        padding: 1.4em 2.6em .8em 2.6em;
+    }
+}
+
+/* 1920px - Full HD */
+@media (min-width: 1920px) and (max-width: 2499px) {
+    :root {
+        --sidebar-expanded-width: 320px;
+    }
+    
+    .sidebar {
+        font-size: 1.1rem;
+        position: fixed;
+        width: 60px; /* Start collapsed */
+    }
+    
+    .sidebar.active {
+        width: var(--sidebar-expanded-width);
+        position: fixed;
+    }
+    
+    .sidebar.active ~ .main-content .content {
+        margin-left: var(--sidebar-expanded-width);
+    }
+    
+    .menu {
+        padding: 2em 1.2em 1.1em 1.2em;
+    }
+    
+    .menu-title {
+        padding: 0em 1.2em;
+        font-size: 1.05rem;
+    }
+    
+    .menu img {
+        width: 1.4em;
+    }
+    
+    .SSIS {
+        font-size: 1.3em;
+        padding-left: 1.1em;
+    }
+    
+    .menu-btn {
+        width: 2.1em;
+        margin-right: 1.1em;
+    }
+    
+    .sidebar-title {
+        height: 3.3rem;
+    }
+    
+    .dashboard-ul.active,
+    .teachers-ul.show, 
+    .enrolls-ul.show, 
+    .subjects-ul.show {
+        padding: 1.2em 2.4em .6em 2.4em;
+    }
+}
+
+/* 1440px - Default (already set above, this is just for clarity) */
+@media (min-width: 1441px) and (max-width: 1919px) {
+    .sidebar {
+        width: 60px; /* Start collapsed */
+    }
+    
+    .sidebar.active {
+        width: var(--sidebar-expanded-width);
+    }
+    
+    .sidebar.active ~ .main-content .content {
+        margin-left: var(--sidebar-expanded-width);
+    }
+}
+
+/* 1024px - Smaller desktop */
+@media (min-width: 1024px) and (max-width: 1440px) {
+    :root {
+        --sidebar-expanded-width: 240px;
+    }
+    
+    .sidebar {
+        font-size: 0.9rem;
+        position: fixed;
+        width: 60px; /* Start collapsed */
+    }
+    
+    .sidebar.active {
+        width: var(--sidebar-expanded-width);
+        position: fixed;
+    }
+    
+    .sidebar.active ~ .main-content .content {
+        margin-left: var(--sidebar-expanded-width);
     }
     
     .menu {
         padding: 1.5em 0.8em 0.8em 0.8em;
-    }
-}
-
-@media (max-width: 1064px) {
-    .sidebar {
-        font-size: 0.9em;
-    }
-    
-    .sidebar.active {
-        width: 25vw;
-    }
-
-    .header-title {
-        font-size: 1.4rem;
-    }
-    
-    .header-title::before {
-        width: 1.2rem;
-        height: 1.2rem;
-        bottom: 0.7rem;
-    }
-
-    .account {
-        padding-right: 1em;
-        font-size: 0.9em;
-    }
-    
-    .account img, .account button {
-        width: 1.8em;
-        height: 1.8em;
-    }
-    
-    .menu {
-        padding: 1.2em 0.7em 0.7em 0.7em;
+        grid-template-columns: 18% 64% 18%;
     }
     
     .menu-title {
-        padding: 0 0.8em;
+        padding: 0em 0.8em;
+        font-size: 0.95rem;
+    }
+    
+    .menu img {
+        width: 1.2em;
+    }
+    
+    .SSIS {
+        font-size: 1.1em;
+        padding-left: 0.9em;
+        margin: 0.25rem;
+    }
+    
+    .menu-btn {
+        width: 1.9em;
+        margin-right: 0.9em;
+    }
+    
+    .sidebar-title {
+        height: 2.8rem;
+        padding: 0.4rem;
+    }
+    
+    #sidebar-toggle-button {
+        height: 1.8em;
+        width: 1.8em;
+    }
+    
+    .dashboard-ul.active,
+    .teachers-ul.show, 
+    .enrolls-ul.show, 
+    .subjects-ul.show {
+        padding: 0.9em 1.6em .4em 1.6em;
+        font-size: 0.95rem;
     }
 }
 
-@media (max-width: 1045px) {
-    .sidebar {
-        font-size: .8em;
-    }
+/*====================================*/
+/*   END SIDEBAR RESPONSIVE DESIGN    */
+/*====================================*/
 
-    .header-title {
-        font-size: 1em;
+/*MEDIA QUERIES*/
+@media(max-width: 1920px) {
+    .content {
+        width: 100%;
+        margin-left: 60px;
+        transition: margin-left 0.3s ease, width 0.3s ease;
     }
+    .sidebar.active ~ .main-content .content{
+        margin-left: var(--sidebar-expanded-width);
+    }
+}
 
+@media (min-width: 1024px) {
+    .content {
+        margin-left: 60px;
+        transition: margin-left 0.3s ease;
+    }
+    
+    .sidebar.active ~ .main-content .content {
+        margin-left: var(--sidebar-expanded-width);
+    }
 }
 
 @media (max-width: 768px) {
