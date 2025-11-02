@@ -24,8 +24,8 @@ class adminUnprocessedEnrollmentsController {
                 return ['httpcode'=> 400,'success'=>false,'message'=>'Enrollment status provided was not valid','data'=>[]];
             }
             if($enrollmentStatus === 1) {
-                if(!$this->enrolleesModel->updateEnrollee($enrolleeId,$enrollmentStatus) && !$this->enrolleesModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE) 
-                    && !$this->transactionsModel->updateIsApprovedToTrue($enrolleeId,self::BOOL_TRUE)) {
+                if(!$this->enrolleesModel->updateEnrollee($enrolleeId,$enrollmentStatus) || !$this->enrolleesModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE) 
+                    || !$this->transactionsModel->updateIsApprovedToTrue($enrolleeId,self::BOOL_TRUE)) {
                     return ['httpcode'=> 500,'success'=> false,'message'=> "Failed to update Enrollee's statuses",'data'=>[]];
                 }
                 if(!$this->studentsModel->insertEnrolleeToStudent($enrolleeId)) {
@@ -34,8 +34,8 @@ class adminUnprocessedEnrollmentsController {
                 return ['httpcode'=> 200,'success'=> true,'message'=> 'Successfully enrolled Enrollee and inserted to student','data'=>[]];
             }
             else if($enrollmentStatus === 2){
-                if(!$this->enrolleesModel->updateEnrollee($enrolleeId,$enrollmentStatus) && !$this->enrolleesModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE)
-                    && !$this->transactionsModel->updateIsApprovedToTrue($enrolleeId,self::BOOL_TRUE)) {
+                if(!$this->enrolleesModel->updateEnrollee($enrolleeId,$enrollmentStatus) || !$this->enrolleesModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE)
+                    || !$this->transactionsModel->updateIsApprovedToTrue($enrolleeId,self::BOOL_TRUE)) {
                     return ['httpcode'=> 500,'success'=> false,'message'=> "Failed to update Enrollee's statuses",'data'=>[]];
                 }
                 return ['httpcode'=> 200,'success'=> true,'message'=> 'Enrollee was updated and denied','data'=>[]];
