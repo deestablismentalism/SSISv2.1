@@ -1,5 +1,5 @@
 <?php 
-    require_once __DIR__ . '/../../teacher/teacherStudentInformationView.php';
+    require_once __DIR__ . '/../../teacher/view/teacherStudentInformationView.php';
 
     $view = new teacherStudentInformationView();
 ?>
@@ -12,15 +12,9 @@
         <?php $view->displayStudentInformation(); ?>
     </tbody>
 </table>
-<h1> Address ng Estudyante </h1>
+<h1> Mga Grades ng Estudyante </h1>
 <table class="modal-table">
     <tbody>
-        <?php $view->displayAddress(); ?>
-    </tbody>
-</table>
-<h1> Magulang ng Estudyante </h1>
-<table class="modal-table">
-    <tbody>
-        <?php $view->displayStudentParents(); ?>
+        <?php $view->displayStudentGrades(); ?>
     </tbody>
 </table>
