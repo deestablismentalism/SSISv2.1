@@ -27,7 +27,7 @@ body {
 
 /* container beside sticky sidebar */
 .admin-schedules-content {
-  padding: 1.9rem; /* Increased from 1.8rem */
+  padding: 1.8rem; /* Base for 1440px */
   transition: margin-left 0.3s ease;
 }
 
@@ -40,7 +40,7 @@ body {
 .admin-schedules-header-container {
   display: flex;
   flex-direction: column;
-  gap: 1.6rem; /* Increased from 1.5rem */
+  gap: 1.5rem; /* Base for 1440px */
 }
 
 .admin-schedules-header {
@@ -51,13 +51,13 @@ body {
   border: 1px solid var(--card-border);
   backdrop-filter: blur(15px) saturate(180%);
   -webkit-backdrop-filter: blur(15px) saturate(180%);
-  padding: 1.05rem 1.6rem; /* Increased from 1rem 1.5rem */
-  border-radius: var(--border-radius);
+  padding: 1rem 1.5rem; /* Base for 1440px */
+  border-radius: var(--border-radius); /* 1rem base */
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
 .schedule-title h1 {
-  font-size: 1.7rem; /* Increased from 1.6rem */
+  font-size: 1.6rem; /* Base for 1440px */
   font-weight: 600;
   letter-spacing: 1px;
   margin: 0;
@@ -69,11 +69,11 @@ body {
   color: #fff;
   font-weight: 500;
   border: none;
-  border-radius: 0.65rem; /* Increased from 0.6rem */
-  padding: 0.75rem 1.5rem; /* Increased from 0.7rem 1.4rem */
+  border-radius: 0.6rem; /* Base for 1440px */
+  padding: 0.7rem 1.4rem; /* Base for 1440px */
   cursor: pointer;
   transition: var(--transition);
-  font-size: 1.0rem; /* Increased from 0.95rem */
+  font-size: 0.95rem; /* Base for 1440px */
 }
 
 .add-sched-btn:hover {
@@ -86,15 +86,15 @@ body {
 .schedules-list-container {
   background: rgb(36 186 255 / 28%);
   border: 1px solid var(--card-border);
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius); /* 1rem base */
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
-  padding: 1.6rem; /* Increased from 1.5rem */
+  padding: 1.5rem; /* Base for 1440px */
   
   width: 100%;
-  height: 70vh;
-  min-height: 420px; /* Increased from 400px */
+  height: 70vh; /* Base for 1440px */
+  min-height: 400px; /* Base for 1440px */
   
   overflow: auto;
   scrollbar-width: thin;
@@ -120,7 +120,7 @@ body {
   width: 100%;
   border-collapse: collapse;
   color: var(--text-color);
-  font-size: 1.0rem; /* Increased from 0.95rem */
+  font-size: 0.95rem; /* Base for 1440px */
   text-align: left;
   letter-spacing: 0.5px;
 }
@@ -128,7 +128,7 @@ body {
 .schedules-table th {
   background: rgb(21 182 255 / 27%);
   color:#ffffff;
-  padding: 1.05rem; /* Increased from 1rem */
+  padding: 1rem; /* Base for 1440px */
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -137,7 +137,7 @@ body {
 }
 
 .schedules-table td {
-  padding: 0.95rem 1.05rem; /* Increased from 0.9rem 1rem */
+  padding: 0.9rem 1rem; /* Base for 1440px */
   border-bottom: 1px solid rgba(63, 166, 210, 0.897);
   transition: var(--transition);
   color: black;
@@ -209,7 +209,7 @@ body {
 }
 
 .schedule-p{
-    font-size: 1.35rem; /* Increased from 1.3rem */
+    font-size: 1.3rem; /* Base for 1440px */
     margin: 0;
     font-weight: 800;
 }

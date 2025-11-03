@@ -17,7 +17,7 @@
 }
 
 .admin-all-enrollees-content {
-    padding: 2.1rem; /* Increased from 2rem */
+    padding: 2rem; /* Base for 1440px */
     transition: margin-left 0.3s ease;
     background-image: url("../../imgs/paper.jpg");
     font-family: var(--main-fonts);
@@ -55,14 +55,14 @@
 }
 
 .status-cell {
-    padding: 0.42rem 0.85rem; /* Increased from 0.4rem 0.8rem */
-    border-radius: 21px; /* Increased from 20px */
+    padding: 0.4rem 0.8rem; /* Base for 1440px */
+    border-radius: 20px; /* Base for 1440px */
     font-weight: 500;
-    font-size: 0.9rem; /* Increased from 0.85rem */
+    font-size: 0.85rem; /* Base for 1440px */
 }
 
 .count-display {
-    font-size: 1.7rem; /* Increased from 1.6rem */
+    font-size: 1.6rem; /* Base for 1440px */
     font-weight: 700;
     letter-spacing: 1px;
     margin: 0px;
@@ -75,11 +75,11 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     text-shadow: rgba(9, 103, 162, 0.4) 0px 1.5px;
-    padding: 1.05rem; /* Increased from 1rem */
+    padding: 1rem; /* Base for 1440px */
 }
 
 .enrollments td {
-    padding: 1.05rem; /* Increased from 1rem */
+    padding: 1rem; /* Base for 1440px */
     border-top: 1px solid rgba(63, 166, 210, 0.897);
     vertical-align: middle;
     color: black;
@@ -89,17 +89,17 @@
 }
 
 .menu-content {
-    margin-top: 1.6rem; /* Increased from 1.5rem */
+    margin-top: 1.5rem; /* Base for 1440px */
     background: rgb(36 186 255 / 28%);
     backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
-    border-radius: 21px; /* Increased from 20px */
+    border-radius: 20px; /* Base for 1440px */
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-    padding: 1.6rem; /* Increased from 1.5rem */
+    padding: 1.5rem; /* Base for 1440px */
     
     width: 100%;
-    height: 70vh;
-    min-height: 420px; /* Increased from 400px */
+    height: 70vh; /* Base for 1440px */
+    min-height: 400px; /* Base for 1440px */
     
     overflow: auto;
     scrollbar-width: thin;
@@ -128,13 +128,13 @@
 .search-box {
     background: rgba(255, 255, 255, 0.204);
     border: 1px solid #ffffff78;
-    border-radius: 11px; /* Increased from 10px */
+    border-radius: 10px; /* Base for 1440px */
     color: #164c8c;
-    padding: 0.48rem 0.85rem; /* Increased from 0.45rem 0.8rem */
-    font-size: 1.0rem; /* Increased from 0.95rem */
+    padding: 0.45rem 0.8rem; /* Base for 1440px */
+    font-size: 0.95rem; /* Base for 1440px */
     outline: none;
     transition: all 0.3s ease;
-    min-width: 315px; /* Increased from 300px */
+    min-width: 300px; /* Base for 1440px */
 }
 
 .search-box:hover {
@@ -151,7 +151,7 @@
 
 .count-number {
     font-weight: bold;
-    font-size: 1.25rem; /* Increased from 1.2rem */
+    font-size: 1.2rem; /* Base for 1440px */
 }
 
 table {
@@ -169,8 +169,8 @@ table {
     align-items: center;
     background: #3e9ec4;
     border: 1px solid var(--card-border);
-    padding: 1.05rem 1.6rem; /* Increased from 1rem 1.5rem */
-    border-radius: var(--border-radius);
+    padding: 1rem 1.5rem; /* Base for 1440px */
+    border-radius: var(--border-radius); /* Base for 1440px */
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
@@ -184,15 +184,15 @@ table {
 }
 
 .view-button {
-    width: 39px; /* Increased from 37px */
+    width: 37px; /* Base for 1440px */
     height: auto;
     fill: #ff76f4;
     border: 1px solid #ff76f4;
     background: #fc529f26;
     cursor: pointer;
     transition: all 0.3s ease;
-    padding: 5.5px; /* Increased from 5px */
-    border-radius: 5.5px; /* Increased from 5px */
+    padding: 5px; /* Base for 1440px */
+    border-radius: 5px; /* Base for 1440px */
 }
 
 .view-button:hover {
@@ -209,8 +209,8 @@ table {
 }
 
 .header-icon {
-    width: 42px; /* Increased from 40px */
-    height: 42px;
+    width: 40px; /* Base for 1440px */
+    height: 40px; /* Base for 1440px */
     opacity: 0.8;
 }
 
