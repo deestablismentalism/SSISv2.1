@@ -1,20 +1,8 @@
 <?php 
-    require_once __DIR__ . '/../../teacher/view/teacherStudentInformationView.php';
-
+    require_once __DIR__ . '/../../teacher/views/teacherStudentInformationView.php';
     $view = new teacherStudentInformationView();
 ?>
-
-<span class="close"> &times; </span>
-
 <h1> Impormasyon ng Estudyante</h1>
-<table class="modal-table">
-    <tbody>
-        <?php $view->displayStudentInformation(); ?>
-    </tbody>
-</table>
-<h1> Mga Grades ng Estudyante </h1>
-<table class="modal-table">
-    <tbody>
-        <?php $view->displayStudentGrades(); ?>
-    </tbody>
-</table>
+<?php $view->displayStudentInformation(); ?>
+<h1> Mga grado ng Estudyante </h1>
+<?php $view->displayStudentGrades(); ?>
