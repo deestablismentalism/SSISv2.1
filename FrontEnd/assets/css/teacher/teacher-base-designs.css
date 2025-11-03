@@ -329,3 +329,19 @@ body {
     text-decoration: none;
     cursor: pointer;
 }
+/* global loading animation*/
+.loading {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #666;
+}
+.loading::after {
+    content: '...';
+    animation: dots 1.5s steps(5, end) infinite;
+}
+@keyframes dots {
+    0%, 20% {content: '.';}
+    40%{content: '..';}
+    100%{content: '...';}
+}
