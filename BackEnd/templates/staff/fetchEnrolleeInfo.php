@@ -9,7 +9,7 @@
 <h1 class="enrollee-modal-title">I. Impormasyon ng Mag-aaral</h1>
 <table class="modal-table">
     <tbody>
-        <?php $view->enrolleeInfo(); ?>
+        <?php $view->displayEnrolleePersonalInfo(); ?>
     </tbody>
 </table>
 
@@ -17,7 +17,7 @@
 <h1 class="enrollee-modal-title">II. Impormasyon sa Pagpapatalang Pang-Eskwela</h1>
 <table class="modal-table">
     <tbody>
-        <?php $view->schoolLevelInfo(); ?>
+        <?php $view->displayEnrolleeEducationalInfo(); ?>
     </tbody>
 </table>
 
@@ -26,7 +26,7 @@
 <table class="modal-table">
     <tr>
         <td>
-            <?php $view->ifDisabled(); ?>
+            <?php $view->displayDisabledInfo(); ?>
         </td>
     </tr>
 </table>
@@ -34,7 +34,7 @@
 <table class="modal-table">
     <tr>
         <td>
-            <?php $view->parentInfo(); ?>
+            <?php $view->displayParentInfo(); ?>
         </td>
     </tr>
 </table>
