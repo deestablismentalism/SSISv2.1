@@ -6,6 +6,8 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-f
 $pageCss2 = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form-errors.css" media="all">';
 $pageCss3 = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form-mq.css" media="all">';
 $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.js" defer></script>';
+require_once __DIR__ .'/../../../BackEnd/common/getGradeLevels.php';
+$view = new getGradeLevels();
 ?>
 <div class="enrollment-form-content">
     <div class="content-title">
@@ -48,32 +50,30 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                 <div class="previous-school-wrapper">
                     
                     <div class="grade">
-
-                        <p class="dfont">Baitang na nais ipatala <span class="required">*</span></p>
-                        <div class="error-msg">
-                                <span class="em-enrolling-grade-level"> Error Message Here. </span>
-                            </div>
-                        <select name="grades-tbe" id="grades-tbe" class="select">
-                            <option value=""> Select a grade level </option>
-                            <?php
-                                require_once __DIR__ .'/../../../BackEnd/common/getGradeLevels.php';
-                                $view = new getGradeLevels();
-                                $view->createSelectValues();
-                            ?>
-                        </select>
-
-                        <p class="dfont">Huling baitang na natapos <span class="required">*</span></p>
-                        <div class="error-msg">
-                                <span class="em-last-grade-level"> Error Message Here. </span>
-                            </div>
-                        <select name="last-grade" id="last-grade" class="select">
-                            <option value=""> Select a grade level </option>
-                            <?php 
-                                $view = new getGradeLevels();
-                                $view->createSelectValues();
-                            ?>
-                        </select>
-
+                        <div class="enrolling-grade-level-container">
+                            <p class="dfont">Baitang na nais ipatala <span class="required">*</span></p>
+                            <div class="error-msg">
+                                    <span class="em-enrolling-grade-level"> Error Message Here. </span>
+                                </div>
+                            <select name="grades-tbe" id="grades-tbe" class="select">
+                                <option value=""> Select a grade level </option>
+                                <?php
+                                    $view->createSelectValues();
+                                ?>
+                            </select>
+                        </div>
+                        <div class="last-grade-level-container">
+                            <p class="dfont">Huling baitang na natapos <span class="required">*</span></p>
+                            <div class="error-msg">
+                                    <span class="em-last-grade-level"> Error Message Here. </span>
+                                </div>
+                            <select name="last-grade" id="last-grade" class="select">
+                                <option value=""> Select a grade level </option>
+                                <?php 
+                                    $view->createSelectValues();
+                                ?>
+                            </select>
+                        </div>
                         <div class="last-year-finished">
                             <p class="dfont">Huling natapos na taon <span class="required">*</span></p>
                             <div class="error-msg">
@@ -114,7 +114,6 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                             <label for="public">Pampubliko</label>
                         </div>
                     </div>
-
                     <div class="nais-paaralan">
                         <div class="fschool-wrapper">
                             <div class="fschool">
@@ -142,7 +141,6 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                     </div>
                 </div>
             </div>
-
             <!--IMPORMASYON NG STUDYANTE-->
             <div class="student-information border-75">
                 <div class="student-information-title">
@@ -166,7 +164,6 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                         </div>
                     </div>
                 <div class="student-information-wrapper">
-                
                     <!--ROW 2-->
                     <div class="student-info-row-2">
                         <div class="lname">
@@ -529,7 +526,6 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
             </div>
         </form>
     </div>
-</div>
 </div>
 <div class="success-message" id="success-message"></div>
 <div class="error-message" id="error-message"></div>
