@@ -13,14 +13,14 @@ class adminDashboardModel {
         try {
             $sql = "SELECT DATE(Enrolled_At) as day, COUNT(*) as count 
                 FROM enrollee 
-                WHERE Enrolled_At >= DATE_SUB(CURDATE(), INTERVAL $days DAY) 
+                WHERE Enrolled_At >= DATE_SUB(CURDATE(), INTERVAL ($days -1) DAY) 
                 GROUP BY DATE(Enrolled_At) 
                 ORDER BY day DESC";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $count = [];
-            for($i = 0; $i < $days; $i++) {
+            for($i = 0; $i < $days ; $i++) {
                 $day = date('Y-m-d', strtotime("-$i days"));
                 $count[$day] = 0;
             }
