@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/../controllers/teacherSubjectsHandledController.php';
+require_once __DIR__ . '/../controller/teacherSubjectsHandledController.php';
 require_once __DIR__ . '/../../core/tableDataTemplate.php';
 require_once __DIR__ . '/../../core/safeHTML.php';
 
