@@ -125,7 +125,16 @@ class adminSectionsModel {
     }
     public function getApplicableSubjectsByGradeLevel(int $sectionId) : array {
         try {
-            $sql = "SELECT s.Subject_Name, ss.Schedule_Day, 
+            $sql = "SELECT s.Subject_Name, 
+                    CASE ss.Schedule_Day
+                        WHEN 1 THEN 'Monday'
+                        WHEN 2 THEN 'Tuesday'
+                        WHEN 3 THEN 'Wednesday'
+                        WHEN 4 THEN 'Thursday'
+                        WHEN 5 THEN 'Friday'
+                        WHEN 6 THEN 'Saturday'
+                        WHEN 7 THEN 'Sunday'
+                    END AS Day_Name,
                     DATE_FORMAT(ss.Time_Start, '%H:%i') AS Time_Start, DATE_FORMAT(ss.Time_End, '%H:%i') AS Time_End FROM grade_level_subjects AS gls
                     JOIN sections AS se ON se.Grade_Level_Id = gls.Grade_Level_Id
                     JOIN subjects AS s ON s.Subject_Id = gls.Subject_Id
