@@ -9,6 +9,12 @@ html {
     height: 100%;
     font-family: Arial, sans-serif;
     background-color: #f3fffe;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
 
 /* Add default header style */
@@ -100,23 +106,24 @@ body {
         }
 
         p.hero-subtitle {
-            font-size: 1rem;
+            font-size: clamp(0.75rem, 1.8vw, 1rem);
             animation: slideInUp 1s ease 0.3s forwards;
-            margin: -130px 0 102px 0px;
+            margin: 0 auto clamp(2rem, 3vw, 6rem);
+            padding-top: clamp(1rem, 2vw, 3rem);
         }
 
         .hero-subtitle img {
-            width: 30px;
+            width: clamp(20px, 4vw, 30px);
             height: auto;
             vertical-align: middle;
-            margin-right: 10px;
+            margin-right: clamp(5px, 1vw, 10px);
         }
 
 
         .hero-title {
-            font-size: 3.5rem;
+            font-size: clamp(2rem, 6vw, 3.5rem);
             font-weight: 700;
-            margin-bottom: 2rem;
+            margin-bottom: clamp(1rem, 3vw, 2rem);
             line-height: 1.2;
             opacity: 0;
             color: white;
@@ -287,13 +294,16 @@ body {
     align-items: center;
     display: flex;
     justify-content: center;
-    margin: 20px auto;
-    padding: 5px;
+    margin: clamp(10px, 3vw, 20px) auto;
+    padding: clamp(3px, 1vw, 5px);
+    max-width: 1400px;
     width: 100%;
 }
 
 .quote img {
     width: 100%;
+    height: auto;
+    display: block;
 }
 
 
@@ -301,37 +311,34 @@ body {
         .container {
             max-width: 1226px;
             margin: 0 auto;
-            padding: 20px;
+            padding: clamp(10px, 3vw, 20px);
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 30px;
-           /* min-height: 80vh;  Set a minimum height
-           /* max-height: 90vh;  Prevent it from expanding too much */
-            margin-bottom: 80px; /* Add space for footer */
-            z-index: 1; /* Ensure content is above any background */
-            position: relative; /* For absolute positioning of footer */
-            display: flex;
-            flex-direction: column;
+            gap: clamp(15px, 4vw, 30px);
+            margin-bottom: clamp(40px, 8vw, 80px);
+            z-index: 1;
+            position: relative;
         }
 
 
         .event-item {
-        display: flex;
-        margin-bottom: 25px;
-        padding: 20px;
-        background: #feffff;
-        border-radius: 10px;
-        transition: all 0.3s 
-        cubic-bezier(0.44, 0.16, 0.22, 0.9);
-        border-bottom: 1.7px solid rgb(226 185 50 / 30%);
-        box-shadow: 0 0 0 1px rgb(227 213 113 / 14%);
+            display: flex;
+            margin-bottom: clamp(15px, 3vw, 25px);
+            padding: clamp(15px, 2.5vw, 20px);
+            background: #feffff;
+            border-radius: 10px;
+            transition: all 0.3s 
+            cubic-bezier(0.44, 0.16, 0.22, 0.9);
+            border-bottom: 1.7px solid rgb(226 185 50 / 30%);
+            box-shadow: 0 0 0 1px rgb(227 213 113 / 14%);
+            flex-wrap: wrap;
         }
 
         .event-item:hover {
-        background: #fcffe3c4;
-        transform: translateX(5px);
-        transform: translateY(-10px);
-        box-shadow: 0 12px 24px rgb(65 64 0 / 20%);
+            background: #fcffe3c4;
+            transform: translateX(5px);
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgb(65 64 0 / 20%);
         }
 
         .event-item:last-child {
@@ -339,19 +346,19 @@ body {
         }
 
       .date-box {
-         background: linear-gradient(135deg, #102572, #5dc0d6);
-        color: #ffffff;
-        width: 80px;
-        height: 80px;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin-right: 20px;
-        font-weight: bold;
-        transition: transform 0.3s ease;
-        flex-shrink: 0;
+            background: linear-gradient(135deg, #102572, #5dc0d6);
+            color: #ffffff;
+            width: clamp(60px, 10vw, 80px);
+            height: clamp(60px, 10vw, 80px);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-right: clamp(10px, 2.5vw, 20px);
+            font-weight: bold;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
       }
 
         .event-item:hover .date-box {
@@ -359,23 +366,24 @@ body {
         }
 
         .date-number {
-            font-size: 24px;
+            font-size: clamp(18px, 3vw, 24px);
             font-weight: 700;
         }
 
         .date-month {
-            font-size: 12px;
+            font-size: clamp(10px, 1.5vw, 12px);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .event-details {
             flex: 1;
-            min-width: 0; /* Allow text to wrap properly */
+            min-width: 0;
+            min-width: 200px;
         }
 
         .event-title {
-            font-size: 18px;
+            font-size: clamp(14px, 2.2vw, 18px);
             font-weight: 600;
             color: #2c3e50;
             margin-bottom: 8px;
@@ -557,9 +565,3 @@ body {
         .event-item:nth-child(2) { animation-delay: 0.2s; }
         .event-item:nth-child(3) { animation-delay: 0.3s; }
         .event-item:nth-child(4) { animation-delay: 0.4s; }
-
-        /* Footer spacing */
-        .footer {
-            position: absolute;
-            top: 20px;
-        }
