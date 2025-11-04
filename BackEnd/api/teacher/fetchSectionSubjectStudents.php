@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/../../teacher/controllers/teacherGradesController.php';
+require_once __DIR__ . '/../../teacher/controller/teacherGradesController.php';
 require_once  __DIR__ . '/../../Exceptions/IdNotFoundException.php';
 session_start();
 header('Content-Type: application/json');
