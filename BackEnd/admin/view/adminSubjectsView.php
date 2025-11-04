@@ -33,7 +33,7 @@ class adminSubjectsView {
                     $firstName = !empty($rows['Staff_First_Name']) ? htmlspecialchars($rows['Staff_First_Name']) : '';
                     $lastName = !empty($rows['Staff_Last_Name']) ? htmlspecialchars($rows['Staff_Last_Name']) : '';
                     $middleName = !empty($rows['Staff_Middle_Name']) ? htmlspecialchars($rows['Staff_Middle_Name']) : '';
-                    $button = new safeHTML('<button data-id="'.$rows['Section_Subjects_Id'].'" class="assign-teacher"> <img src="../../assets/imgs/edit-white.png" loading="lazy" alt="edit"></button>');
+                    $button = new safeHTML('<button data-id="'.$rows['Section_Subjects_Id'].'" class="assign-teacher"> <img src="../../assets/imgs/edit-yellow-green.svg" loading="lazy" alt="edit"></button>');
                     
                     $fullName = (!empty($firstName) && !empty($lastName)) ?
                     htmlspecialchars($rows['Staff_Last_Name']) . ', ' . htmlspecialchars($rows['Staff_First_Name']) . ' ' . htmlspecialchars($rows['Staff_Middle_Name']) : 'No Teacher Assigned Yet';
