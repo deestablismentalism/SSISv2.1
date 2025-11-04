@@ -38,12 +38,18 @@ $view = new getGradeLevels();
                     <div class="learner-radio">
                         <p class="dfont">I-check lamang naaangkop <span class="required">*</span></p>
                         <div class="lrn-radio-buttons-selections">
-                            <input type="radio" id="no-lrn" name="bool-LRN" value="0" class="radio">
-                            <label for="no-lrn">Walang LRN</label>
-                            <input type="radio" id="with-lrn" name="bool-LRN" value="1" class="radio">
-                            <label for="with-lrn">Mayroong LRN</label>
-                            <input type="radio" id="returning" name="bool-LRN" value="0" class="radio">
-                            <label for="returning">Returning (Balik Aral)</label>
+                            <div class="radio-option">
+                                <input type="radio" id="no-lrn" name="bool-LRN" value="0" class="radio">
+                                <label for="no-lrn">Walang LRN</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="with-lrn" name="bool-LRN" value="1" class="radio">
+                                <label for="with-lrn">Mayroong LRN</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="returning" name="bool-LRN" value="0" class="radio">
+                                <label for="returning">Returning (Balik Aral)</label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -108,10 +114,14 @@ $view = new getGradeLevels();
                         </div> 
                         <p class="dfont">Anong klase ng paaralan <span class="required">*</span></p>
                         <div> 
-                        <input type="radio" name="school-type" id="private" class="radio" value="Private">
-                            <label for="private">Pribado</label>
-                            <input type="radio" name="school-type" id="public" class="radio" value="Public">
-                            <label for="public">Pampubliko</label>
+                            <div class="radio-option">
+                                <input type="radio" name="school-type" id="private" class="radio" value="Private">
+                                <label for="private">Pribado</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="school-type" id="public" class="radio" value="Public">
+                                <label for="public">Pampubliko</label>
+                            </div>
                         </div>
                     </div>
                     <div class="nais-paaralan">
@@ -215,20 +225,28 @@ $view = new getGradeLevels();
                             <div class="gender">
                                 <p class="dfont">Kasarian <span class="required">*</span></p>
                                 <div> 
-                                    <input type="radio" name="gender" id="male" class="radio" value="Male">
-                                    <label for="male">Lalake</label>                                
-                                    <input type="radio" name="gender" id="female" class="radio" value="Female">
-                                    <label for="female">Babae</label>
+                                    <div class="radio-option">
+                                        <input type="radio" name="gender" id="male" class="radio" value="Male">
+                                        <label for="male">Lalake</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" name="gender" id="female" class="radio" value="Female">
+                                        <label for="female">Babae</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="community">
                                 <p class="dfont">Nabibilang sa katutubong grupo/ <br class="responsive-text-break">
                                             Komunidad ng Katutubong Kultural <span class="required">*</span></p>
                                 <div>
-                                    <input type="radio" name="group" id="is-ethnic" class="radio" value="1">
-                                    <label for="is-ethnic">Oo</label>
-                                    <input type="radio" name="group" id="not-ethnic" class="radio" value="0">
-                                    <label for="not-ethnic">Hindi</label>
+                                    <div class="radio-option">
+                                        <input type="radio" name="group" id="is-ethnic" class="radio" value="1">
+                                        <label for="is-ethnic">Oo</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" name="group" id="not-ethnic" class="radio" value="0">
+                                        <label for="not-ethnic">Hindi</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -277,10 +295,16 @@ $view = new getGradeLevels();
                 <div class="student-disability-wrapper">
                     <div class="special-needs">
                         <p class="dfont">Ang mag-aaral ba ay nangangailangan ng espesyal na tulong sa pag-aaral? (e.g ADHD) <span class="required">*</span></p>
-                        <input type="radio" name="sn" id="is-disabled" class="radio" value="1">
-                        <label for="is-disabled">Mayroon</label>
-                        <input type="radio" name="sn" id="not-disabled" class="radio" value="0">
-                        <label for="not-disabled">Wala</label>
+                        <div>
+                            <div class="radio-option">
+                                <input type="radio" name="sn" id="is-disabled" class="radio" value="1">
+                                <label for="is-disabled">Mayroon</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="sn" id="not-disabled" class="radio" value="0">
+                                <label for="not-disabled">Wala</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="truespecialneeds">
                         <p class="dfont">Kung MAYROON, isulat kung ano ang natatanging kalagayan ng bata:</p>
@@ -291,10 +315,16 @@ $view = new getGradeLevels();
                     </div>
                     <div class="assisttech">
                         <p class="dfont">May nagagamit bang "assistive technology devices" (e.g Braille)<span class="required">*</span></p>
-                        <input type="radio" name="at" id="has-assistive-tech" class="radio" value="1">
-                        <label for="has-assistive-tech">Oo</label>
-                        <input type="radio" name="at" id="no-assistive-tech" class="radio" value="0">
-                        <label for="no-assistive-tech">Hindi</label>
+                        <div>
+                            <div class="radio-option">
+                                <input type="radio" name="at" id="has-assistive-tech" class="radio" value="1">
+                                <label for="has-assistive-tech">Oo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="at" id="no-assistive-tech" class="radio" value="0">
+                                <label for="no-assistive-tech">Hindi</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="trueassisttech">
                         <p class="dfont">Kung MAYROON, isulat kung ano ito</p>
@@ -513,10 +543,16 @@ $view = new getGradeLevels();
             <div class="confirmation border-75">
                 <div class="fourPS">
                     <p class="dfont">Kabilang ba ang inyong pamilya sa 4Ps ng DSWD? <span class="required">*</span></p>
-                    <input type="radio" name="fourPS" id="is-4ps" class="radio" value="yes">
-                    <label for="is-4ps">Oo</label>
-                    <input type="radio" name="fourPS" id="not-4ps" class="radio" value="no">
-                    <label for="not-4ps">Hinde</label>
+                    <div>
+                        <div class="radio-option">
+                            <input type="radio" name="fourPS" id="is-4ps" class="radio" value="yes">
+                            <label for="is-4ps">Oo</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="fourPS" id="not-4ps" class="radio" value="no">
+                            <label for="not-4ps">Hinde</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="image-confirm">
                     <p class="dfont">Ipasa ang malinaw na larawan ng mga Dokumento gaya ng <b>PSA BIRTH CERTIFICATE at REPORT CARD <span class="required">*</span></b></p>
