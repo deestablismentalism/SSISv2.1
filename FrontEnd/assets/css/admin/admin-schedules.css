@@ -40,7 +40,7 @@ body {
 .admin-schedules-header-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem; /* Base for 1440px */
+  gap: 1.5rem; 
 }
 
 .admin-schedules-header {
@@ -63,17 +63,16 @@ body {
   margin: 0;
 }
 
-/* ADD BUTTON */
 .add-sched-btn {
   background: var(--accent-color);
   color: #fff;
   font-weight: 500;
   border: none;
-  border-radius: 0.6rem; /* Base for 1440px */
-  padding: 0.7rem 1.4rem; /* Base for 1440px */
+  border-radius: 0.6rem;
+  padding: 0.7rem 1.4rem; 
   cursor: pointer;
   transition: var(--transition);
-  font-size: 0.95rem; /* Base for 1440px */
+  font-size: 0.95rem;
 }
 
 .add-sched-btn:hover {
@@ -82,26 +81,21 @@ body {
   box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
 }
 
-/* ========== TABLE DESIGN ========== */
 .schedules-list-container {
   background: rgb(36 186 255 / 28%);
   border: 1px solid var(--card-border);
-  border-radius: var(--border-radius); /* 1rem base */
+  border-radius: var(--border-radius); 
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
-  padding: 1.5rem; /* Base for 1440px */
-  
   width: 100%;
-  height: 70vh; /* Base for 1440px */
-  min-height: 400px; /* Base for 1440px */
-  
+  height: 70vh;
+  min-height: 400px; 
   overflow: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
 }
 
-/* Custom scrollbar styling */
 .schedules-list-container::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -120,7 +114,7 @@ body {
   width: 100%;
   border-collapse: collapse;
   color: var(--text-color);
-  font-size: 0.95rem; /* Base for 1440px */
+  font-size: 0.95rem;
   text-align: left;
   letter-spacing: 0.5px;
 }
@@ -128,7 +122,7 @@ body {
 .schedules-table th {
   background: rgb(21 182 255 / 27%);
   color:#ffffff;
-  padding: 1rem; /* Base for 1440px */
+  padding: 1rem; 
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -137,10 +131,11 @@ body {
 }
 
 .schedules-table td {
-  padding: 0.9rem 1rem; /* Base for 1440px */
+  padding: 0.9rem 1rem;
   border-bottom: 1px solid rgba(63, 166, 210, 0.897);
   transition: var(--transition);
   color: black;
+  vertical-align: middle;
 }
 
 .schedules-table tr:hover td {
@@ -148,23 +143,20 @@ body {
   color: var(--hover-accent);
 }
 
-/* Zebra stripes for readability */
 .schedules-table tr:nth-child(even) td {
   background: rgb(71 168 255 / 8%);
 }
 
-/* Error message styling */
 .error-message {
   background: rgba(255, 0, 0, 0.15);
   color: #ff6b6b;
-  padding: 1rem; /* Base for 1440px */
+  padding: 1rem;
   border-radius: var(--border-radius);
   text-align: center;
   font-weight: 500;
-  margin-top: 1rem; /* Base for 1440px */
+  margin-top: 1rem;
 }
 
-/* ========== MODAL ========== */
 .modal {
   display: none;
   position: fixed;
@@ -176,7 +168,7 @@ body {
 }
 
 .modal-subjects {
-  margin-top: 1rem; /* Base for 1440px */
+  margin-top: 1rem;
   padding-top: 6px;
 }
 
@@ -187,10 +179,10 @@ body {
 .modal-content {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 1rem; /* Base for 1440px */
-  padding: 2rem; /* Base for 1440px */
+  border-radius: 1rem; 
+  padding: 2rem; 
   width: 90%;
-  max-width: 600px; /* Base for 1440px */
+  max-width: 600px; 
   color: var(--text-color);
   backdrop-filter: blur(20px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
@@ -198,18 +190,18 @@ body {
 
 .create-schedule-btn {
     background: #66e2fa4a;
-    border-radius: 12px; /* Base for 1440px */
-    padding: 7px; /* Base for 1440px */
+    border-radius: 12px;
+    padding: 7px; 
     box-shadow: #ffffff6e 1px 1px;
 }
 
 .subject-name{
     font-weight: 600;
-    margin-bottom: 0.3rem; /* Base for 1440px */
+    margin-bottom: 0.3rem;
 }
 
 .schedule-p{
-    font-size: 1.3rem; /* Base for 1440px */
+    font-size: 1.3rem; 
     margin: 0;
     font-weight: 800;
 }
@@ -218,9 +210,6 @@ select.select {
     color: black;
 }
 
-/*====================================*/
-/* SCHEDULES RESPONSIVE DESIGN PC     */
-/*====================================*/
 
 /* 2500px and above - Larger screens */
 @media (min-width: 2500px) {
@@ -250,7 +239,6 @@ select.select {
   
   .schedules-list-container {
     border-radius: 1.4rem;
-    padding: 2rem;
     height: 72vh;
     min-height: 550px;
   }
@@ -332,7 +320,6 @@ select.select {
   
   .schedules-list-container {
     border-radius: 1.2rem;
-    padding: 1.8rem;
     height: 71vh;
     min-height: 480px;
   }
@@ -419,7 +406,6 @@ select.select {
   
   .schedules-list-container {
     border-radius: 0.75rem;
-    padding: 1.15rem;
     height: 67vh;
     min-height: 330px;
   }

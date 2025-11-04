@@ -1,53 +1,96 @@
-/* General Container */
-.admin-subjects-content {
-  display: flex;
-  flex-direction: column;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #fff;
+/* ===== Root Theme Colors ===== */
+:root {
+  --bg-gradient: linear-gradient(135deg, rgba(20, 30, 48, 0.95), rgba(36, 59, 85, 0.95));
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --hover-glow: rgba(255, 255, 255, 0.3);
+  --text-color: #e8edf3;
+  --accent-color: #00bcd4;
+  --success: #44d07b;
+  --warning: #ffcc00;
+  --danger: #ff5f5f;
+  --font-main: "Poppins", "Segoe UI", sans-serif;
   font-family: "Poppins", "Segoe UI", sans-serif;
-  transition: all 0.3s ease;
-  margin: 2rem;  
+  --hover-accent: #48cae4;   
+  border-radius: 1.5rem;   
 }
+
+/* ===== Overall Layout ===== */
+body {
+  background: var(--bg-gradient);
+  font-family: var(--font-main);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
 .content {
   background-image: url("../../imgs/paper.jpg");
 }
-/* Header */
+
+.admin-subjects-content {
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+  background-image: url("../../imgs/paper.jpg");
+}
+
+.sidebar.active ~ .admin-subjects-content {
+  margin-left: 80px;
+}
+
+/* ===== Header Section ===== */
 .admin-subject-header {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #3e9ec4;
-    border: 1px solid var(--card-border);
-    backdrop-filter: blur(15px) saturate(180%);
-    padding: 1rem 1.5rem;
-    border-radius: 1rem;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(12px);
+  background: #3e9ec4;
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  margin-bottom: 1.5rem;
 }
 
 .admin-subject-title {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #e9f1ff;
   letter-spacing: 1px;
+  color: white;
+  margin: 0;
 }
 
+/* Add Subject Button */
+.submit-button {
+  border: none;
+  color: white;
+  padding: 0.7rem 1.4rem;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+  background: var(--accent-color);
+  font-weight: 500;
+  border-radius: 0.6rem;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.submit-button:hover {
+  background: var(--hover-accent);
+  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+  transform: translateY(-3px);
+}
+
+/* ===== Table Container ===== */
 .subjects-list {
-  margin-top: 2em;
   background: rgb(36 186 255 / 28%);
   backdrop-filter: blur(10px);
-  border-radius: 1.5rem;
-  padding: 1.5rem;
-  
-  /* Add fixed dimensions */
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  padding: 0;
   width: 100%;
   height: 70vh;
   min-height: 400px;
-  
-  /* Add scrolling behavior */
   overflow: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
@@ -68,115 +111,78 @@
   border-radius: 20px;
 }
 
-.subjects-list h2 {
-  margin-bottom: 1em;
-  color: #333;
-  font-size: 1.5em;
-  font-weight: bold;
+.subjects-list::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(62, 158, 196, 0.7);
 }
 
-/* Add Subject Button */
-.submit-button {
-  border: none;
-  color: white;
-  padding: 0.7rem 1.4rem;
-  cursor: pointer;
-  box-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
-  background: #00b4d8;
-  font-weight: 500;
-  border-radius: 0.6rem;
-  transition: s0.3s ease;
-  font-size: 0.95rem;
-}
-
-.submit-button:hover {
-  background: #48cae4;
-  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
-  transform: translateY(-3px);
-  transition: 0.3s ease;
-}
-
-
-/* Table Styles */
-.subjects-list {
-  overflow-x: auto;
-  padding: 1.5em;
-  background: rgb(36 186 255 / 28%);
-  border-radius: 1.5rem;
+/* Make table header stick while scrolling */
+.subjects-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .subjects-table {
   width: 100%;
   border-collapse: collapse;
-  backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.06);
-  overflow: hidden;
-  color: #e0e8ff;
+  color: var(--text-color);
+  font-size: 0.95rem;
 }
 
-
-.subjects-table thead th {
-    background: rgb(21 182 255 / 27%);
-    color: #ffffff;
-    padding: 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid rgba(63, 166, 210, 0.897);
-    text-shadow: 0 1.5px #0967a266;
+.subjects-table thead {
+  background: rgba(255, 255, 255, 0.12);
+  text-align: left;
 }
 
-.subjects-table tbody tr {
-  transition: all 0.25s ease-in-out;
-  color: #48cae4;
+.subjects-table th {
+  padding: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  background: rgb(97 206 255);
+  text-transform: uppercase;
+  text-shadow: 0 1.5px #0967a266;
+  white-space: nowrap;
 }
-
-.subjects-table tbody tr:hover {
-  background: var(--accent-color);
-  transition: all 0.25s ease-in-out;
-}
-
-.subjects-table tr:nth-child(even) td {
-  background:#b2e0f8;
-}
-
 
 .subjects-table td {
-  color: #000000;
   padding: 1rem;
-  letter-spacing: 0.5px;
-  border-bottom: 1px solid rgba(63, 166, 210, 0.897);
-  transition: var(--transition);
-  background: #bce6f9;
+  border-top: 1px solid rgba(63, 166, 210, 0.897);
+  vertical-align: middle;
+  color: black;
+  letter-spacing: 0.5px;  
+  font-weight: 400;
+}
+
+/* Zebra stripes for readability */
+.subjects-table tr:nth-child(even) td {
+  background: rgb(71 168 255 / 8%);
 }
 
 .subjects-table tr:hover td {
-  color: var(--accent-color);
+  color: var(--hover-accent);
   transition: all 0.25s ease-in-out;
 }
 
-/* Assign Teacher Button */
+.subjects-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transition: 0.3s ease;
+}
+
+/* ===== Action Buttons ===== */
 .assign-teacher {
-  background: linear-gradient(135deg, #22c55e, #4ade80);
   border: none;
-  padding: 0.4rem 0.8rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.25s ease;
+  margin-right: 4.5px;
+  transition: 0.25s ease;
+  border-radius: 6px;
+  padding: 6px;
+  width: 31px;
+  background: transparent;
 }
 
 .assign-teacher:hover {
-  background: linear-gradient(135deg, #16a34a, #22c55e);
-  transform: translateY(-2px);
-  box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
-}
-
-.assign-teacher img {
-  width: 18px;
-  height: 18px;
-  filter: brightness(1.2);
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.1);
 }
 
 .modal-content {
@@ -395,21 +401,6 @@ select option:focus {
   color: black;
 }
 
-.assign-teacher {
-  background-color: #007bff;
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-  cursor: pointer;
-}
 
-.assign-teacher:hover {
-  background-color: #0056b3;
-}
-.assign-teacher:active {
-  transform: var(--button-click);
-}
 
-.assign-teacher img {
-  width: 1.5rem;
-  height: 1.5rem;
-}
+

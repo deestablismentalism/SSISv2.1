@@ -211,13 +211,13 @@ body {
 
 /* ===== Action Buttons ===== */
 .students td button {
-  border: none;
-  cursor: pointer;
-  margin-right: 6px; /* Base for 1440px */
-  transition: 0.25s ease;
-  border-radius: 8px; /* Base for 1440px */
-  padding: 4px; /* Base for 1440px */
-  width: 31px; /* Base for 1440px */
+border: none;
+    cursor: pointer;
+    margin-right: 4.5px;
+    transition: 0.25s ease;
+    border-radius: 6px;
+    padding: 6px;
+    width: 31px;
 }
 
 .students td button:hover {
@@ -225,6 +225,11 @@ body {
   transform: scale(1.1);
 }
 
+.view-student, .edit-student, .delete-student {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
 .modal {
   display: none;
@@ -494,10 +499,13 @@ body {
   }
   
   .students td button {
+    border: none;
+    cursor: pointer;
     margin-right: 4.5px;
+    transition: 0.25s ease;
     border-radius: 6px;
     padding: 3px;
-    width: 25px;
+    width: 31px;
   }
   
   .modal-content {
