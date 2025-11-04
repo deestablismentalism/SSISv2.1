@@ -373,9 +373,9 @@ class adminStudentsModel {
     }
     public function insertEnrolleeToStudent(int $enrolleeId) : bool {
         try {
-            $sql = "INSERT INTO students(Enrollee_Id, First_Name, Last_Name, Middle_Name, Age, Sex, LRN, Grade_Level_Id, Student_Status)
+            $sql = "INSERT INTO students(Enrollee_Id, First_Name, Last_Name, Middle_Name, Suffix,Birthday,Age, Sex, LRN, Grade_Level_Id, Student_Status)
                     SELECT e.Enrollee_Id, e.Student_First_Name, e.Student_Last_Name, 
-                    e.Student_Middle_Name, e.Age, e.Sex, e.Learner_Reference_Number, Enrolling_Grade_Level, 1 AS Status FROM enrollee AS e
+                    e.Student_Middle_Name, e.Student_Extension, e.Birth_Date,e.Age, e.Sex, e.Learner_Reference_Number, Enrolling_Grade_Level, 1 AS Status FROM enrollee AS e
                      JOIN educational_information AS ei ON e.Educational_Information_Id = ei.Educational_Information_Id
                      WHERE e.Enrollee_Id = :id";
             $stmt = $this->conn->prepare($sql);
