@@ -46,7 +46,7 @@ class adminSubjectsView {
             }
         }
         catch(Exception $e) {
-            $this->tableTemplate->generateHorizontalRows('exception-content', [$e->getMessage()]);
+            echo $this->tableTemplate->returnHorizontalRows([$e->getMessage()], 'exception-content');
         }
     }
 }

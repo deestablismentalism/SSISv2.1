@@ -24,6 +24,7 @@
     margin-right: auto;
     position: relative;
     width: 90vw;
+    max-width: 1400px;
     height: 100%;
 }
 #age.textbox {
@@ -43,12 +44,14 @@
 }
 .textbox {
     border-radius: 8px;
-    border: 1px solid #616161 ;     
+    border: 1px solid #616161;
     background-color: #f7f4f4;
     width: 13em;
-    height: 1.5rem;     
+    max-width: 100%;
+    height: 1.5rem;
     padding: 5px;
-    margin-top: 2%;   
+    margin-top: 2%;
+    box-sizing: border-box;
 }
 
 .textbox:focus {
@@ -89,15 +92,16 @@ label{
     text-align: start;
     appearance: auto;
     box-sizing: border-box;
-    border-radius: 2px;
+    border-radius: 8px;
     align-items: center;
     background-color: #f7f4f4;
     cursor: default;
-    margin-top: .3em;
+    width: 13em;
+    max-width: 100%;
+    height: 2em;
     white-space: pre;
-    border-width: 1px;
-    border-style: solid;
-    border-color: light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+    border: 1px solid #616161;
+    text-align: center;
 }
 /*ANTAS NG IMPORMASYON NG PAARALAN*/
 .acad-year-tbox {
@@ -194,6 +198,7 @@ label{
 
 #lschoolAddress, #fschoolAddress {
     width: 24rem;
+    max-width: 100%;
 }
 .lrn-radio-buttons-selections {
     padding-top: 10px;
@@ -262,15 +267,15 @@ label{
     text-align: start;
     appearance: auto;
     box-sizing: border-box;
-    border-radius: 2px;
+    border-radius: 8px;
     align-items: center;
     background-color: #f7f4f4;
     cursor: default;
     width: 13em;
+    max-width: 100%;
     height: 2em;
     white-space: pre;
     border: 1px solid #616161;
-    border-radius: 8px;
     text-align: center;
 }
 
