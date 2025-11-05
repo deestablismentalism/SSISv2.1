@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-
 require_once __DIR__ .'/../../core/dbconnection.php';
 require_once __DIR__ . '/../../Exceptions/DatabaseException.php';
 
@@ -8,33 +7,39 @@ class adminStudentsModel {
     protected $conn;
 
     public function __construct() {
-        $db = new Connect();
-        $this->conn = $db->getConnection();
+        $this->checkConnection();
+    }
+    private function checkConnection():void {
+        try {
+            $db = new Connect();
+            $this->conn = $db->getConnection();
+        }
+        catch(DatabaseConnectionException $e) {
+            header("Location: ../../../FrontEnd/pages/errorPage/500.php?from=admin/admin_dashboard.php");
+            die();
+        }
     }
     public function getAllStudents() : array{
         try {
-            $sql = "SELECT  e.Enrollee_Id,
-                            e.Student_First_Name,
-                            e.Student_Middle_Name,
-                            e.Student_Last_Name,
-                            e.Learner_Reference_Number,
+            $sql = "SELECT  s.*,
+                            CASE s.Student_Status
+                            WHEN 1 THEN 'Active'
+                            WHEN 2 THEN 'Inactive'
+                            WHEN 3 THEN 'Dropped'
+                            ELSE 'Unknown'
+                            END AS Status,
                             g.Grade_Level,
-                            se.Section_Name,
-                            e.Student_Email,
-                            s.Student_Status
+                            se.Section_Name
                     FROM students AS s
-                    LEFT JOIN enrollee AS e ON s.Enrollee_Id = e.Enrollee_Id
                     LEFT JOIN grade_level AS g ON s.Grade_Level_Id = g.Grade_Level_Id
-                    LEFT JOIN sections AS se ON s.Section_Id = se.Section_Id
-                    ORDER BY FIELD(g.Grade_Level, 
-                    'Kinder I', 'Kinder II', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6');";
+                    LEFT JOIN sections AS se ON s.Section_Id = se.Section_Id";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch all the students',0,$e);
         }
     }
@@ -58,6 +63,7 @@ class adminStudentsModel {
             return $result ?:null;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch the students by their ID',0,$e);
         }
     }
@@ -87,6 +93,7 @@ class adminStudentsModel {
             return $result ?:null;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch student information',0,$e);
         }
     }
@@ -228,6 +235,7 @@ class adminStudentsModel {
         }
         catch(PDOException $e) {
             $this->conn->rollBack();
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('failed to update student data',0,$e);
         }
     }
@@ -241,6 +249,7 @@ class adminStudentsModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch all grade levels',0,$e);
         }
     }
@@ -255,6 +264,7 @@ class adminStudentsModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch sections per grade level', 0,$e);
         }
     }
@@ -271,6 +281,7 @@ class adminStudentsModel {
             return $result;
         }    
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Fetching available students failed', 0, $e);
         }
     }
@@ -285,6 +296,7 @@ class adminStudentsModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Fetching checked students failed', 0, $e);
         }
     }
@@ -302,6 +314,7 @@ class adminStudentsModel {
             return $result;
         }    
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Fetching available students failed', 0, $e);
         }
     }
@@ -317,6 +330,7 @@ class adminStudentsModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to update section',0,$e);
         }
     }
@@ -331,6 +345,7 @@ class adminStudentsModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to update the unchecked students',0,$e);
         }
     }
@@ -368,6 +383,7 @@ class adminStudentsModel {
             return $results;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to update student changes',0,$e);
         }
     }
@@ -388,6 +404,7 @@ class adminStudentsModel {
         }
         catch(PDOException $e) {
             $this->conn->rollBack();
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to insert the enrollee to student',0,$e);
         }
     }
@@ -403,7 +420,80 @@ class adminStudentsModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to search for students',0, $e);
+        }
+    }
+    private function deleteStudent(int $studentId):bool {
+        try {
+            $sql = "DELETE FROM students WHERE Student_Id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':id'=>$studentId]);
+            if($stmt->rowCount()=== 0) {
+                return false;
+            }
+            return true;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException("Failed to delete student",0,$e);
+        }
+    }
+    private function archiveStudent(int $studentId):bool {
+        try {
+            $sql = "INSERT INTO archive_students SELECT * FROM students WHERE Student_Id =:id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':id'=>$studentId]);
+            if($stmt->rowCount() === 0) {
+                return false;
+            }
+            return true;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to archive the Student',0,$e);
+        }
+    }
+    public function deleteAndArchiveStudent(int $studentId) :array {
+        $result = [
+            'success'=> true,
+            'message'=> ''
+        ];
+        try {
+            $this->conn->beginTransaction();
+            $archived = $this->archiveStudent($studentId);
+            $deleted = $this->deleteStudent($studentId);
+            if(!$archived && !$deleted) {
+                $this->conn->rollBack();
+                $result = [
+                    'success'=> false,
+                    'message'=> 'Student deletion and archiving failed'
+                ];
+            }
+            if(!$archived) {
+                $this->conn->rollBack();
+                $result = [
+                    'success'=> false,
+                    'message'=> 'Student deletion failed. Archive operation failed'
+                ];
+            }
+            if(!$deleted) {
+                $this->conn->rollBack();
+                $result = [
+                    'success'=> true,
+                    'message'=> 'Student deletion operation failed'
+                ];
+            }
+            $this->conn->commit();
+            $result = [
+                'success'=> true,
+                'message'=> 'Student successfully deleted. Please check the Students archive to restore'
+            ];
+            return $result;
+        }
+        catch(PDOException $e) {
+            $this->conn->rollBack();
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to archive the Student',0,$e);
         }
     }
 }

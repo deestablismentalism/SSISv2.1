@@ -36,14 +36,14 @@ ob_start();
                         <th>Student LRN</th>
                         <th>Grade Level</th>
                         <th>Section</th>
-                        <th>Student Email</th>
+                        <th>Student Birthdate</th>
                         <th>Student Status</th>
                         <th>Student Actions</th>
                     </tr>
                 </thead>
                 <tbody class="student-info">
                     <?php 
-                        include_once __DIR__ . '/../../../BackEnd/admin/views/adminStudentsView.php';
+                        require_once __DIR__ . '/../../../BackEnd/admin/views/adminStudentsView.php';
                         $view = new adminStudentsView();
                         $view->displayStudents();
                     ?>
@@ -53,6 +53,5 @@ ob_start();
    </div>
 <?php 
 $pageContent = ob_get_clean();
-
 require_once __DIR__ . '/./admin_base_designs.php';
 ?>
