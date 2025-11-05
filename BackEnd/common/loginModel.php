@@ -9,13 +9,15 @@ Class loginModel {
     public function __construct() {
         $this->checkConnection();
     }
-    private function checkConnection():void {
+    private function checkConnection(): void {
         try {
             $db = new Connect();
             $this->conn = $db->getConnection();
         }
         catch(DatabaseConnectionException $e) {
-            header("Location: ../../FrontEnd/pages/errorPage/500.php");
+            throw new DatabaseException(
+            'There was a server problem. Please check your Internet connection and contact us upon confirming that you have a connection',
+            $e->getCode(),$e);
         }
     }
     private function log_user(int $userId):bool {
@@ -168,4 +170,3 @@ Class loginModel {
         }
     }
 }
-?>
