@@ -1,13 +1,11 @@
 <?php  
+require_once __DIR__ . '/../session_init.php';
+if(!isset($_SESSION['Staff']) || $_SESSION['Staff']['Staff-Type'] !== 2) {
+    header('Location: ../../Login.php');
+    exit();
+}
     require_once __DIR__ . '/../../../BackEnd/teacher/views/teacherIsAnAdviserView.php';
     require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
-    if(session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    if(!isset($_SESSION['Staff']) || $_SESSION['Staff']['Staff-Type'] !== 2) {
-        header('Location: ../../Login.php');
-        exit();
-    }
     $teacherIsAnAdviser = new teacherIsAnAdviserView();
     $userType = new UserTypeView((int)$_SESSION['Staff']['Staff-Type']);
     $pageTitle_full = (string)$userType;

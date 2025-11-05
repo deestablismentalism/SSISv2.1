@@ -1,10 +1,10 @@
 <?php
 require_once __DIR__ . '/../session_init.php';
-require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
 if (!isset($_SESSION['User']['User-Id']) || !isset($_SESSION['User']['Registration-Id'])) {
     header("Location: ../../Login.php");
     exit();
 }
+require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
 $extraCss1 = isset($pageCss2) ? $pageCss2 : '';
 $extraCss2 = isset($pageCss3) ? $pageCss3 : '';
 ?>
