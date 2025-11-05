@@ -4,7 +4,7 @@ require_once __DIR__ . '/../session_init.php';
 $pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-enrollees.css">';
 $pageJs = '<script src="../../assets/js/user/user-enrollees-modal.js" defer></script>';
 $pageTitle = 'My Enrollees';
-require_once __DIR__ . '/../../../BackEnd/user/view/userEnrolleesView.php';
+require_once __DIR__ . '/../../../BackEnd/user/views/userEnrolleesView.php';
 $enrollee = new displayEnrollmentForms();
 ?>
 </head>

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types =1);
-require_once __DIR__ . '/../controller/userStudentsController.php';
+require_once __DIR__ . '/../controllers/userStudentsController.php';
 require_once __DIR__ . '/../../Exceptions/IdNotFoundException.php';
 
 class userAllStudentsView {

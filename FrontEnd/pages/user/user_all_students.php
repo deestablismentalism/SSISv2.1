@@ -1,7 +1,7 @@
 <?php 
 ob_start();    
 require_once __DIR__ . '/../session_init.php';
-require_once __DIR__ . '/../../../BackEnd/user/view/userAllStudentsView.php';
+require_once __DIR__ . '/../../../BackEnd/user/views/userAllStudentsView.php';
 $pageTitle = 'Submitted Forms';
 $pageCss = '<link rel="stylesheet" href="../../assets/user/user-all-students.css">';
 ?>
