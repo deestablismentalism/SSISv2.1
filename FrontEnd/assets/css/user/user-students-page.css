@@ -21,3 +21,10 @@
     width: 1rem;
     height: 1rem;
 }
+.student-navigation-list label {
+    cursor: pointer;
+}
+.student-navigation-list label:has(input[type="radio"]:checked) {
+    text-decoration: underline;
+    text-decoration-color: #F8AF00;
+}
