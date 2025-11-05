@@ -1,13 +1,12 @@
 <?php 
-    require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
-    require_once __DIR__ . '/../session_init.php';
-    require_once __DIR__ . '/../../../BackEnd/staff/views/staffPendingEnrollmentsView.php';
-    if(!isset($_SESSION['Staff']['User-Id']) || !isset($_SESSION['Staff']['Staff-Type']) || 
-    ($_SESSION['Staff']['Staff-Type'] != 1 && $_SESSION['Staff']['Staff-Type'] != 2)) {
-        session_destroy();
-        header("Location: ../../Login.php");
-        exit();
-    }
+require_once __DIR__ . '/../session_init.php';
+if(!isset($_SESSION['Staff']['User-Id']) || !isset($_SESSION['Staff']['Staff-Type']) || 
+($_SESSION['Staff']['Staff-Type'] != 1 && $_SESSION['Staff']['Staff-Type'] != 2)) {
+    header("Location: ../../Login.php");
+    exit();
+}
+require_once __DIR__ . '/../../../BackEnd/staff/views/staffPendingEnrollmentsView.php';
+require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
     $view = new UserTypeView((int)$_SESSION['Staff']['Staff-Type']);
     $pending = new staffPendingEnrollmentsView();
 ?>
