@@ -43,7 +43,7 @@ ob_start();
                 </thead>
                 <tbody class="student-info">
                     <?php 
-                        include_once __DIR__ . '/../../../BackEnd/admin/view/adminStudentsView.php';
+                        include_once __DIR__ . '/../../../BackEnd/admin/views/adminStudentsView.php';
                         $view = new adminStudentsView();
                         $view->displayStudents();
                     ?>

@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require_once __DIR__ . '/../../admin/controller/adminTeacherController.php';
+require_once __DIR__ . '/../../admin/controllers/adminTeacherController.php';
 header('Content-Type: application/json');
 try {
     if($_SERVER['REQUEST_METHOD'] !== 'POST') {

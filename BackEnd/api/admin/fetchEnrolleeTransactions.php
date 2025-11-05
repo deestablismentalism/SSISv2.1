@@ -2,7 +2,7 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../../core/dbconnection.php';
 require_once __DIR__ . '/../../Exceptions/IdNotFoundException.php';
-require_once __DIR__ . '/../../admin/controller/adminUnprocessedEnrollmentsController.php';
+require_once __DIR__ . '/../../admin/controllers/adminUnprocessedEnrollmentsController.php';
 header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] !== 'GET' || !isset($_GET['id'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid request']);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../controller/adminStudentsController.php';
+require_once __DIR__ . '/../controllers/adminStudentsController.php';
 
 class adminStudentsView {
     protected $studentsController;

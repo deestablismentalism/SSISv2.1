@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 header('Content-Type: application/json');
-require_once __DIR__ . '/../../admin/controller/adminUnprocessedEnrollmentsController.php';
+require_once __DIR__ . '/../../admin/controllers/adminUnprocessedEnrollmentsController.php';
 try {
     if($_SERVER['REQUEST_METHOD'] !== 'POST') {
         echo json_encode(['success'=> false, 'message' => 'Wrong method']);

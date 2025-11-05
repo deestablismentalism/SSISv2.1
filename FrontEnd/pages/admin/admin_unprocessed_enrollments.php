@@ -3,7 +3,7 @@ ob_start();
 $pageTitle = "Admin Unhandled Enrollments";
 $pageJs = '<script type="module" src="../../assets/js/admin/admin-unhandled-enrollments.js" defer></script>';
 $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-unprocessed-enrollments.css">';
-    require_once __DIR__ . '/../../../BackEnd/admin/view/adminUnprocessedEnrollmentsView.php';
+    require_once __DIR__ . '/../../../BackEnd/admin/views/adminUnprocessedEnrollmentsView.php';
     $view = new adminUnhandledEnrollmentsView();
 ?>
     <!--START OF THE MAIN CONTENT-->

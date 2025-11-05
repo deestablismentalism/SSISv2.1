@@ -1,8 +1,8 @@
 <?php 
 
 declare(strict_types=1);
-require_once __DIR__ . '/../controller/adminSectionsController.php';
-require_once __DIR__ . '/../controller/adminViewSectionController.php';
+require_once __DIR__ . '/../controllers/adminSectionsController.php';
+require_once __DIR__ . '/../controllers/adminViewSectionController.php';
 require_once __DIR__ . '/../../core/tableDataTemplate.php';
 
 class adminViewSectionView {

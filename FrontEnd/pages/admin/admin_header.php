@@ -16,7 +16,7 @@
                             $name = $_SESSION['Staff']['First-Name'];
                             
                             if (isset($_SESSION['Staff']['User-Id'])) {
-                                require_once __DIR__ . '/../../../BackEnd/admin/view/adminProfilePictureView.php';
+                                require_once __DIR__ . '/../../../BackEnd/admin/views/adminProfilePictureView.php';
                                 $profilePicView = new adminProfilePictureView();
                                 $profilePicPath = $profilePicView->getProfilePicturePath($_SESSION['Staff']['User-Id']);
                             }

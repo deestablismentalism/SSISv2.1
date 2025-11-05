@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../../admin/controller/adminSchedulesController.php';
+require_once __DIR__ . '/../../admin/controllers/adminSchedulesController.php';
 
 try {
     $controller = new adminSchedulesController();

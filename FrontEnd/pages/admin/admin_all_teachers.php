@@ -16,7 +16,7 @@ ob_start();
              <button class="btn btn-primary register" id="register-teacher-btn">Register a New Teacher</button>
         </div>
         <?php
-            require_once __DIR__ . '/../../../BackEnd/admin/view/adminTeachersView.php';
+            require_once __DIR__ . '/../../../BackEnd/admin/views/adminTeachersView.php';
             $table = new adminTeachersView();
             $table->displayAllTeachers();
         ?>
