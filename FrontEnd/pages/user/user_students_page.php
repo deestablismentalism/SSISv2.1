@@ -8,7 +8,7 @@ $view = new studentClassDetailsView();
 ?>
 <div class="user-students-page-content">
     <div class="back-button">
-        <button> <img src="../../assets/imgs/arrow-left-solid.svg"> Back to students list page</button>
+        <button onclick="window.location.href='./user_all_students.php'"> <img src="../../assets/imgs/arrow-left-solid.svg"> Back to students list page</button>
     </div>
     <div class="user-students-page-header">
     <div class="student-details">
