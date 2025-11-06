@@ -19,11 +19,9 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 $studentId = intval($_GET['id']);
 
 try {
-    // Create database connection
     $db = new Connect();
     $conn = $db->getConnection();
     
-    // Prepare and execute query to get student details
     $sql = "SELECT s.Student_Id, s.Enrollee_Id, s.Grade_Level_Id, s.Section_Id, s.Student_Status,
                    e.Student_First_Name, e.Student_Middle_Name, e.Student_Last_Name, 
                    e.Learner_Reference_Number, e.Student_Email,
@@ -38,7 +36,6 @@ try {
     $stmt->bindParam(':id', $studentId, PDO::PARAM_INT);
     $stmt->execute();
     
-    // Fetch the student data
     $student = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if ($student) {
