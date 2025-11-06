@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Load files
+
     async function loadFiles() {
         loadingState.style.display = 'flex';
         filesGrid.style.display = 'none';

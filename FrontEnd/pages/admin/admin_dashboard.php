@@ -140,7 +140,7 @@ $pageJs = '<script type="module" src="../../assets/js/admin/admin-dashboard.js" 
                 </thead>
                 <tbody>
                 <?php
-                    include_once __DIR__ . '/../../../BackEnd/admin/view/adminDashboardView.php';
+                    include_once __DIR__ . '/../../../BackEnd/admin/views/adminDashboardView.php';
                     $dashboard = new adminDashboardView();
                     $dashboard->displayPendingEnrolleesInformation();
                 ?>
