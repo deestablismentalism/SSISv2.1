@@ -5,7 +5,7 @@ ob_start();
 $pageTitle = 'Admin view section';
 $pageCss = '<link rel="stylesheet" href= "../../assets/css/admin/admin-view-section.css">';
 $pageJs = '<script type="module" src="../../assets/js/admin/admin-view-section.js" defer></script>';
-require_once __DIR__ . '/../../../BackEnd/admin/view/adminViewSectionView.php';
+require_once __DIR__ . '/../../../BackEnd/admin/views/adminViewSectionView.php';
 $adminViewSectionView = new adminViewSectionView();
 ?>
 

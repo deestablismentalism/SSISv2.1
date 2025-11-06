@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/../controller/teacherStudentInformationController.php';
+require_once __DIR__ . '/../controllers/teacherStudentInformationController.php';
 require_once __DIR__ . '/../../Exceptions/IdNotFoundException.php';
 require_once __DIR__ . '/../../core/tableDataTemplate.php';
 class teacherStudentInformationView {

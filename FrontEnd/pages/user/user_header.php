@@ -39,7 +39,7 @@
                     $defaultPic = '../../assets/imgs/default-avatar.svg';
                     
                     if (isset($_SESSION['User']['User-Id'])) {
-                        require_once __DIR__ . '/../../../BackEnd/user/view/userProfilePictureView.php';
+                        require_once __DIR__ . '/../../../BackEnd/user/views/userProfilePictureView.php';
                         $profilePicView = new userProfilePictureView();
                         $profilePicPath = $profilePicView->getProfilePicturePath($_SESSION['User']['User-Id']);
                     }

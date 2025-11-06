@@ -312,19 +312,11 @@ class adminViewSectionController {
     public function viewSectionSubjectDetails(int $sectionId) : array {
         try {
             $data = $this->sectionsModel->getApplicableSubjectsByGradeLevel($sectionId);
-
             if(empty($data)) {
                 return [
                     'success'=> false,
                     'message'=> 'No subject details yet',
                     'data' => []
-                ];
-            }
-            if(!$data) {
-                return [
-                    'success'=> false,
-                    'message'=> 'Failed to get section subjects',
-                    'data'=> []
                 ];
             }
             return [

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types =1);
-require_once __DIR__ . '/../controller/userEnrolleesController.php';
+require_once __DIR__ . '/../controllers/userEnrolleesController.php';
 require_once __DIR__ . '/../../Exceptions/IdNotFoundException.php';
 require_once __DIR__ . '/../../core/tableDataTemplate.php';
 require_once __DIR__ . '/../../core/safeHTML.php';

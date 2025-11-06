@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/../controller/adminEnrolleesController.php';
+require_once __DIR__ . '/../controllers/adminEnrolleesController.php';
 require_once __DIR__ . '/../../core/tableDataTemplate.php';
 require_once __DIR__ . '/../../core/safeHTML.php';
 class adminAllEnrolleesView {
@@ -86,4 +86,4 @@ class adminAllEnrolleesView {
         echo '<div class="error-message">There was a syntax problem. Please wait for it to be fixed</div>';
     }
     }
-} 
+}

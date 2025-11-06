@@ -1,8 +1,7 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/../models/adminEnrolleesModel.php';
 require_once __DIR__ . '/../../core/tableDataTemplate.php';
-require_once __DIR__ . '/../controller/adminEnrolleesController.php';
+require_once __DIR__ . '/../controllers/adminEnrolleesController.php';
 class adminEnrolleeInfo {
     protected $tableTemplate;
     protected $enrolleeId;

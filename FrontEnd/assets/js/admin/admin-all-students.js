@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
     viewButtons.forEach(button => {
         button.addEventListener('click', function() {
             Loader.show();
-            const studentId = this.getAttribute('data-id');
+            const studentId = this.getAttribute('data-enrollee');
             viewStudentDetails(studentId);
         });
     });
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
     editButtons.forEach(button => {
         button.addEventListener('click', function() {
             Loader.show();
-            const studentId = this.getAttribute('data-id');
+            const studentId = this.getAttribute('data-enrollee');
             editStudentDetails(studentId);
         });
     });
@@ -94,9 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Delete Student button with loader
     const deleteButtons = document.querySelectorAll('.delete-student');
     deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const studentId = this.getAttribute('data-id');
-            deleteStudent(studentId);
+        button.addEventListener('click', async function() {
+            const studentId = this.getAttribute('data-student');
+            deleteAndArchiveStudent(studentId);
         });
     });
 });
@@ -182,34 +182,65 @@ function editStudentDetails(studentId) {
     window.location.href = `../admin/admin_edit_student.php?id=${studentId}`;
 }
 
-function deleteStudent(studentId) {
+async function deleteAndArchiveStudent(studentId) {
     if (confirm('Are you sure you want to delete this student? This action cannot be undone.')) {
         Loader.show();
-        fetch('../server_side/deleteStudent.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `id=${studentId}`
-        })
-        .then(response => response.json())
-        .then(data => {
+        const result = await deleteAndArchive(studentId);
+        if(!result.success) {
+            alert(result.message);
             Loader.hide();
-            if (data.success) {
-                alert('Student deleted successfully');
-                location.reload();
-            } else {
-                alert('Error deleting student: ' + data.message);
-            }
-        })
-        .catch(error => {
-            Loader.hide();
-            console.error('Error:', error);
-            alert('An error occurred while deleting the student.');
-        });
+        }
+        else {
+            alert(result.message);
+            setTimeout(()=>window.location.reload(), 1000);
+        }
     }
 }
-
+const TIME_OUT = 20000;
+async function deleteAndArchive(studentId) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(()=> controller.abort(),TIME_OUT);
+    try {
+        const response = await fetch(`../../../BackEnd/api/admin/postDeleteAndArchiveStudent.php`,{
+            signal: controller.signal,
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/x-www-form-urlencoded',
+            },
+            body: `id=${studentId}`
+        });
+        clearTimeout(timeoutId);
+        let data;
+        try {
+            data = await response.json();
+        }
+        catch {
+            throw new Error('Invalid response');
+        }
+        if(!response.ok) {
+            return {
+                success: false,
+                message: data.message || `HTTP ERROR ${response.status}`,
+                data: null
+            };
+        }
+        return data;
+    }
+    catch(error) {
+        if(error.name === "AbortError") {
+            return {
+                success: false,
+                message: `Response timeout. Server took too long to response: Took ${TIME_OUT/1000} seconds`,
+                data: null
+            };
+        }
+        return {
+            success: false,
+            message: error.message || `Something went wrong`,
+            data: null
+        };
+    }
+}
 // Helper function to convert status number to text
 function getStatusText(status) {
     switch(parseInt(status)) {

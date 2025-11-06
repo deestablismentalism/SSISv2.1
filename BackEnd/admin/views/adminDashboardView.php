@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../controller/adminDashboardController.php';
+require_once __DIR__ . '/../controllers/adminDashboardController.php';
 
 class adminDashboardView {
     protected $controller;

@@ -35,7 +35,7 @@ ob_start();
                     <p class="teacher-status">Status</p>
                     <p class="status" id="statusDisplay">
                         <?php
-                            require_once __DIR__ . '/../../../BackEnd/admin/adminTeacherInfoView.php';
+                            require_once __DIR__ . '/../../../BackEnd/admin/views/adminTeacherInfoView.php';
                             $teacherInfo = new adminTeacherInformationView();
                             $teacherInfo->displayStatus();
                         ?>

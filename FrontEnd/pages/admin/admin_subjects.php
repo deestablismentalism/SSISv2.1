@@ -11,7 +11,7 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-subjects.c
     </div>
     <div class="subjects-list">
         <?php 
-            require_once __DIR__ . '/../../../BackEnd/admin/view/adminSubjectsView.php';
+            require_once __DIR__ . '/../../../BackEnd/admin/views/adminSubjectsView.php';
             $view = new adminSubjectsView();
             $view->displaySubjects();
         ?>

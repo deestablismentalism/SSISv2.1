@@ -1,7 +1,7 @@
 <?php 
 require_once __DIR__ . '/../session_init.php';
 ob_start();
-require_once __DIR__ . '/../../../BackEnd/teacher/view/teacherGradesView.php';
+require_once __DIR__ . '/../../../BackEnd/teacher/views/teacherGradesView.php';
 $view = new teacherGradesView();
 $pageTitle = 'Grade Students';
 $pageJs = '<script type="module" src="../../assets/js/teacher/teacher-grades.js" defer></script>';
@@ -23,7 +23,10 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/teacher/teacher-grades
         </div>
     </div>
 </div>
+<div class="modal">
+    <div class="modal-content"></div>
+</div>
 <?php
-    $pageContent = ob_get_clean();
+    $pageContent = ob_get_clean();  
     require_once __DIR__ . '/./teacher_base_designs.php';
 ?>

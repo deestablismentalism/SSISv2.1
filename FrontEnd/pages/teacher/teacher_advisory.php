@@ -1,6 +1,6 @@
 <?php 
     ob_start();
-    require_once __DIR__ . '/../../../BackEnd/teacher/view/teacherAdvisoryView.php';
+    require_once __DIR__ . '/../../../BackEnd/teacher/views/teacherAdvisoryView.php';
     $teacherAdvisoryView = new teacherAdvisoryView();
     $pageTitle = 'Advisory';
     $pageCss = '<link rel="stylesheet" href="../../assets/css/teacher/teacher-advisory.css">';

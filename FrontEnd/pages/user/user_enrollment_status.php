@@ -1,7 +1,7 @@
 <?php 
 ob_start();
 require_once __DIR__ . '/../session_init.php';
-require_once __DIR__ . '/../../../BackEnd/user/view/userEnrollmentStatusView.php';
+require_once __DIR__ . '/../../../BackEnd/user/views/userEnrollmentStatusView.php';
 $status = new userEnrollmentStatusView();
 $pageTitle = 'Enrollment Status';
 $pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-status.css">';

@@ -39,10 +39,7 @@ class userEditFormModel {
             }
 
             // Get parent information
-            $parentSql = "SELECT pi.*, ep.Relationship
-                         FROM enrollee_parents ep
-                         JOIN parent_information pi ON ep.Parent_Id = pi.Parent_Id
-                         WHERE ep.Enrollee_Id = :enrolleeId";
+            $parentSql = 
             
             $parentStmt = $this->conn->prepare($parentSql);
             $parentStmt->bindParam(':enrolleeId', $enrolleeId);

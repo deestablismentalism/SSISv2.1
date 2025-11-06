@@ -16,7 +16,7 @@
                             
                             // Get profile picture path
                             if (isset($_SESSION['Staff']['User-Id'])) {
-                                require_once __DIR__ . '/../../../BackEnd/teacher/view/teacherProfilePictureView.php';
+                                require_once __DIR__ . '/../../../BackEnd/teacher/views/teacherProfilePictureView.php';
                                 $profilePicView = new teacherProfilePictureView();
                                 $profilePicPath = $profilePicView->getProfilePicturePath($_SESSION['Staff']['User-Id']);
                             }

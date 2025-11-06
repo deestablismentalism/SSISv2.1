@@ -1,8 +1,8 @@
 <?php 
 
 declare(strict_types=1);
-require_once __DIR__ . '/../controller/adminSectionsController.php';
-require_once __DIR__ . '/../controller/adminViewSectionController.php';
+require_once __DIR__ . '/../controllers/adminSectionsController.php';
+require_once __DIR__ . '/../controllers/adminViewSectionController.php';
 require_once __DIR__ . '/../../core/tableDataTemplate.php';
 
 class adminViewSectionView {
@@ -109,13 +109,12 @@ class adminViewSectionView {
     public function displaySubjectDetails() {
         try {
             $subjectDetails = $this->viewSectionController->viewSectionSubjectDetails($this->id);
-
             if(!$subjectDetails['success']) {
-                echo $subjectDetails['message'];
+                echo '<div>'. $subjectDetails['message'] .'<div>';
             }
             else {
                 echo '<table class="subject-details-table">';
-                $this->tableTemplate->returnHorizontalTitles([
+                echo $this->tableTemplate->returnHorizontalTitles([
                     'Subject Name',
                     'Scheduled Day',
                     'Scheduled Time'
@@ -124,16 +123,15 @@ class adminViewSectionView {
                 echo '<tbody>';
                 foreach($subjectDetails['data'] as $subjects) {
                     $subjectName = !empty($subjects['Subject_Name']) ? $subjects['Subject_Name'] : 'No subject name';
-                    $scheduleDay = !empty($subjects['Schedule_Day']) ? $subjects['Schedule_Day'] : 'No scheduled day yet';
+                    $scheduleDay = !empty($subjects['Day_Name']) ? $subjects['Day_Name'] : 'No scheduled day yet';
                     $timeStart = (!empty($subjects['Time_Start']) && !empty($subjects['Time_End'])) ? 
                     $subjects['Time_Start'] . '-' . $subjects['Time_End']  : 'No time set yet';
 
-                    $this->tableTemplate->returnHorizontalTitles([
+                   echo  $this->tableTemplate->returnHorizontalTitles([
                         $subjectName, $scheduleDay, $timeStart
                     ],'subject-details-body');
                 }
-                echo '</tbody>';
-                echo '</table>';
+                echo '</tbody></table>';
             }
         }
         catch(Exception $e) {

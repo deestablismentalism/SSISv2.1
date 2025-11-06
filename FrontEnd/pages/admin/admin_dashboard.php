@@ -32,7 +32,7 @@ $pageJs = '<script type="module" src="../../assets/js/admin/admin-dashboard.js" 
                     <h1 class="data-link-title"> All Enrollees </h1>
                     <span id="total-enrollees" class="total-count">
                         <?php 
-                        include_once __DIR__.'/../../../BackEnd/admin/view/adminDashboardView.php';
+                        include_once __DIR__.'/../../../BackEnd/admin/views/adminDashboardView.php';
                         $dashboard = new adminDashboardView();
                         $total_enrollees = $dashboard->displayEnrolleesCount();
                         echo $total_enrollees;

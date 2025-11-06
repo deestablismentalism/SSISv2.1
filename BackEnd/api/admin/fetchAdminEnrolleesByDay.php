@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require_once __DIR__ . '/../../admin/controller/adminDashboardController.php';
+require_once __DIR__ . '/../../admin/controllers/adminDashboardController.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

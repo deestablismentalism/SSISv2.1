@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-require_once __DIR__ . '/../../admin/controller/adminViewSectionController.php';
+require_once __DIR__ . '/../../admin/controllers/adminViewSectionController.php';
 
 header('Content-Type: application/json');
 

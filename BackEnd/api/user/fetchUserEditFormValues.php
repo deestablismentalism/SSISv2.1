@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/../../user/controller/userEnrolleesController.php';
+require_once __DIR__ . '/../../user/controllers/userEnrolleesController.php';
 require_once __DIR__ . '/../../Exceptions/IdNotFoundException.php';
 
 header('Content-Type: application/json');

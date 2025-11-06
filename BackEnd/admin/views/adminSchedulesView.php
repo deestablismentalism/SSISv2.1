@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/../controller/adminSchedulesController.php';
+require_once __DIR__ . '/../controllers/adminSchedulesController.php';
 require_once __DIR__ . '/../../core/tableDataTemplate.php';
 
 class adminSchedulesView {
