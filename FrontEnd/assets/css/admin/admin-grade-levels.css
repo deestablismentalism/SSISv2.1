@@ -122,7 +122,6 @@ body {
   box-shadow: 0 8px 30px rgb(0 0 0 / 14%);
   overflow: hidden;
   transition: var(--transition);
-  margin-bottom: .8rem;
 }
 
 .grade-level-item:hover {
@@ -139,7 +138,6 @@ body {
   cursor: pointer;
   transition: var(--transition);
   background: rgba(62, 158, 196, 0.2);
-  border-bottom: 1px solid var(--accent-color); 
 }
 
 .grade-level-header:hover {
@@ -155,8 +153,7 @@ body {
 .grade-level-name {
   font-size: 1.3rem;
   font-weight: 600;
-   color: #008fac;
-  padding: 0.5rem;
+  color: var(--hover-accent);
 }
 
 .sections-count {
@@ -190,7 +187,7 @@ body {
 
 /* ========== GRADE LEVEL CONTENT ========== */
 .grade-level-content {
-  padding: .5rem;
+  padding: 1.5rem;
   background: rgba(255, 255, 255, 0.05);
 }
 
@@ -204,7 +201,6 @@ body {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 0.5rem;
   overflow: hidden;
-  border-radius: 0rem 0rem 1rem 1rem; 
 }
 
 .sections-table thead {
@@ -215,7 +211,7 @@ body {
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-    color: #006477;
+  color: var(--hover-accent);
   font-size: 0.95rem;
   border-bottom: 2px solid rgba(0, 180, 216, 0.3);
 }
@@ -223,7 +219,7 @@ body {
 .sections-table td {
   padding: 0.9rem 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: #2197c6;
+  color: var(--text-color);
   font-size: 0.9rem;
 }
 
