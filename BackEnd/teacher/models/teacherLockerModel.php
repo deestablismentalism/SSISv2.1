@@ -66,13 +66,11 @@ class teacherLockerModel {
 
     public function deleteFile(int $fileId, int $staffId) : bool {
         try {
-            // First get file path to delete physical file
             $file = $this->getFileById($fileId, $staffId);
             if (!$file) {
                 return false;
             }
 
-            // Delete database record
             $sql = "DELETE FROM locker_files 
                     WHERE Locker_File_Id = :fileId AND Staff_Id = :staffId";
             $stmt = $this->conn->prepare($sql);
@@ -80,7 +78,6 @@ class teacherLockerModel {
             $stmt->bindParam(':staffId', $staffId, PDO::PARAM_INT);
             $result = $stmt->execute();
 
-            // Delete physical file
             if ($result && isset($file['File_Path']) && file_exists($file['File_Path'])) {
                 unlink($file['File_Path']);
             }
