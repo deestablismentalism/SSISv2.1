@@ -25,27 +25,22 @@ RUN apk add --no-cache \
         xml \
         simplexml \
         fileinfo
-
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy only composer files to cache dependencies
+# Copy only composer files first for caching
 COPY composer.json composer.lock ./
 
-# Install PHP dependencies
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+# Install PHP dependencies without dev packages (production ready)
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
 # Copy the rest of the project
 COPY . .
 
-# Configure PHP upload settings
-RUN echo "upload_max_filesize = 50M" >> /usr/local/etc/php/conf.d/uploads.ini \
-    && echo "post_max_size = 50M" >> /usr/local/etc/php/conf.d/uploads.ini \
-    && echo "max_execution_time = 300" >> /usr/local/etc/php/conf.d/uploads.ini \
-    && echo "max_input_time = 300" >> /usr/local/etc/php/conf.d/uploads.ini \
-    && echo "memory_limit = 256M" >> /usr/local/etc/php/conf.d/uploads.ini
+# Expose PHP-FPM port
+EXPOSE 9000
 
-EXPOSE 3000
+CMD ["php-fpm"]

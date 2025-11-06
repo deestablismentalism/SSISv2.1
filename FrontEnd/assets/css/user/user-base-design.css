@@ -219,28 +219,6 @@ p {
 }
 /*--END OF NAV1 DESIGNS--*/
 
-
-.account button {
-    width: 2em;
-    height: 2em;
-    border-radius: 50%;
-    margin-right: 1em;
-    cursor: pointer;
-}
-
-.account img {
-    width: 2em;
-    height: 2em;
-    border-radius: 50%;
-    margin-right: 1em;
-}
-
-.account #account-drop {
-    width: 1.3em;
-    height: 1.3em;
-    padding-left: .4em;
-}
-
 .account-settings-btn {
     position: relative;
     display: inline-block;
@@ -250,49 +228,211 @@ p {
     display: none;
     position: absolute;
     top: 120%;
-    right:10px;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    right: 10px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.98));
+    backdrop-filter: blur(10px);
+    min-width: 280px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+    animation: slideDown 0.3s ease-out;
 }
 
-.account-settings-btn-content-wrapper a{
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.account-settings-btn-content-wrapper a {
     cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
-.account-link-wrapper, .account-logout-wrapper{
+.account-link-wrapper, 
+.account-logout-wrapper {
     display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 1.2rem;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    position: relative;
 }
 
-.account-link-wrapper:hover, .account-logout-wrapper:hover{
-    background-color: #a7a39d;
+.account-link-wrapper {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.user-icon, .change-pass-icon, .account .logout-icon {
-    padding: .4em;
-    margin: .5em;
-    background-color: #cfcbc4;
-    border: #a7a39d 1px solid;
+.account-link-wrapper:hover, 
+.account-logout-wrapper:hover {
+    background: linear-gradient(90deg, rgba(62, 158, 196, 0.08), rgba(72, 202, 228, 0.08));
+    padding-left: 1.5rem;
 }
 
-.logout-text, .update-password, .account-type {
-    width: 100%;
-    height: 100%;
-    padding: 1em;
-    margin: auto;
-    margin-left: .2em;
+.account-link-wrapper:hover::before,
+.account-logout-wrapper:hover::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, #3e9ec4, #48cae4);
+}
+
+.account-link-wrapper a:last-child,
+.account-logout-wrapper a:last-child {
+    color: #2c3e50;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.account-link-wrapper:hover a:last-child,
+.account-logout-wrapper:hover a:last-child {
+    color: #3e9ec4;
+}
+
+.user-icon, 
+.change-pass-icon, 
+.account .logout-icon {
+    width: 1.2rem !important;
+    height: 1.2rem !important;
+    display: block;
+    object-fit: contain;
+}
+
+.account-link-wrapper a:first-child img,
+.account-logout-wrapper a:first-child img,
+.account-link-wrapper .user-icon,
+.account-link-wrapper .change-pass-icon,
+.account-logout-wrapper .logout-icon {
+    width: 1.2rem !important;
+    height: 1.2rem !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    display: block;
+    object-fit: contain;
+}
+
+.account-link-wrapper a:first-child,
+.account-logout-wrapper a:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border: 1px solid rgba(62, 158, 196, 0.2);
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.account-link-wrapper:hover a:first-child,
+.account-logout-wrapper:hover a:first-child {
+    background: linear-gradient(135deg, #3e9ec4, #48cae4);
+    border-color: #3e9ec4;
+    transform: scale(1.1);
+}
+
+.account-link-wrapper:hover .change-pass-icon,
+.account-link-wrapper:hover .user-icon,
+.account-logout-wrapper:hover .logout-icon {
+    filter: brightness(0) invert(1);
+}
+
+.logout-text, 
+.update-password, 
+.account-type {
+    margin: 0;
+    flex: 1;
+    color: #2c3e50;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .user-info-wrapper {
     display: flex;
-    border-bottom: 2px solid #e1a23c;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1.2rem;   
+    background: linear-gradient(135deg, #3e9ec4, #48cae4);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-info-wrapper img,
+.user-info-wrapper .user-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    filter: brightness(0) invert(1);
+}
+
+.user-info-wrapper .user-name {
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+    margin: 0;
+}
+
+.user-info-wrapper .account-type {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.9rem;
+}
+
+.account-logout-wrapper {
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.account-logout-wrapper:hover {
+    background: linear-gradient(90deg, rgba(255, 95, 95, 0.05), rgba(255, 95, 95, 0.08));
+}
+
+.account-logout-wrapper:hover::before {
+    background: linear-gradient(180deg, #ff5f5f, #ff4444);
+}
+
+.account-logout-wrapper:hover a:last-child,
+.account-logout-wrapper:hover .logout-text {
+    color: #ff5f5f;
 }
 
 .show {
     display: block;
 }
+
+.account-settings-btn-content-wrapper.show {
+    display: block !important;
+    animation: slideDown 0.3s ease-out;
+}
+
+/* Override any old icon container styles */
+.account-settings-btn-content-wrapper img {
+    max-width: none !important;
+    width: 1.2rem !important;
+    height: 1.2rem !important;
+}
+
+.account-settings-btn-content-wrapper .user-icon,
+.account-settings-btn-content-wrapper .change-pass-icon,
+.account-settings-btn-content-wrapper .logout-icon {
+    background-color: transparent !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
 .mobile-header-wrapper {
     display: none;
 }
@@ -348,6 +488,322 @@ p {
 @media (max-width: 940px) {
     .sidebar {
         min-width: 5vw;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 260px;
+    }
+}
+
+/* ===== Dropdown Responsive Design ===== */
+@media screen and (min-width: 2560px) {
+    .header-wrapper {
+        height: 4rem;
+        padding: 0 2.5rem;
+    }
+    
+    .nav-container-1 {
+        margin-left: 30px;
+    }
+    
+    .nav-1 .nav-item a {
+        font-size: 18px;
+        padding: 12px 24px;
+    }
+    
+    .account {
+        padding-right: 2.5rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 320px;
+    }
+    
+    .user-profile-pic {
+        width: 3rem;
+        height: 3rem;
+    }
+    
+    .user-text-wrapper .user-name {
+        font-size: 1.2rem;
+    }
+    
+    .user-text-wrapper span {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (min-width: 1920px) and (max-width: 2559px) {
+    .header-wrapper {
+        height: 3.5rem;
+        padding: 0 2rem;
+    }
+    
+    .nav-1 .nav-item a {
+        font-size: 17px;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 300px;
+    }
+}
+
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+    .header-wrapper {
+        height: 3.2rem;
+        padding: 0 1.5rem;
+    }
+    
+    .nav-1 .nav-item a {
+        font-size: 16px;
+        padding: 10px 18px;
+    }
+}
+
+@media screen and (max-width: 1439px) {
+    .header-wrapper {
+        padding: 0 1rem;
+    }
+    
+    .nav-container-1 {
+        margin-left: 15px;
+    }
+    
+    .nav-1 {
+        gap: 12px;
+    }
+    
+    .nav-1 .nav-item a {
+        font-size: 15px;
+        padding: 8px 16px;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 260px;
+    }
+}
+
+@media screen and (max-width: 1023px) {
+    .header-wrapper {
+        height: auto;
+        padding: 0.8rem 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .nav-container-1 {
+        order: 3;
+        width: 100%;
+        margin: 0.5rem 0 0 0;
+        max-width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .nav-1 {
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .nav-1 .nav-item a {
+        font-size: 14px;
+        padding: 8px 14px;
+    }
+    
+    .account {
+        padding-right: 1rem;
+    }
+    
+    .user-profile-pic {
+        width: 2.2rem;
+        height: 2.2rem;
+    }
+    
+    .user-text-wrapper .user-name {
+        font-size: 0.95rem;
+    }
+    
+    .user-text-wrapper span {
+        font-size: 0.8rem;
+    }
+    
+    .account-settings-wrapper {
+        gap: 0.6rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 240px;
+        right: 5px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .header-wrapper {
+        padding: 0.6rem 0.8rem;
+    }
+    
+    .nav-container-1 {
+        margin: 0.4rem 0 0 0;
+    }
+    
+    .nav-1 .nav-item a {
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+    
+    .user-profile-pic {
+        width: 2rem;
+        height: 2rem;
+    }
+    
+    .user-text-wrapper {
+        display: none;
+    }
+    
+    .account {
+        padding-right: 0.5rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 260px;
+        right: 0;
+        left: auto;
+    }
+    
+    .account-link-wrapper, 
+    .account-logout-wrapper {
+        padding: 0.8rem 1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header-wrapper {
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .nav-container-1 {
+        margin: 0.3rem 0 0 0;
+    }
+    
+    .nav-1 {
+        gap: 6px;
+    }
+    
+    .nav-1 .nav-item a {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+    
+    .user-profile-pic {
+        width: 1.8rem;
+        height: 1.8rem;
+    }
+    
+    .account {
+        padding-right: 0;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 240px;
+        max-width: calc(100vw - 20px);
+    }
+    
+    .user-info-wrapper {
+        padding: 0.8rem 1rem;
+    }
+    
+    .account-link-wrapper, 
+    .account-logout-wrapper {
+        padding: 0.7rem 0.9rem;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .nav-1 .nav-item a {
+        font-size: 11px;
+        padding: 5px 8px;
+    }
+    
+    .user-profile-pic {
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 220px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .header-wrapper {
+        padding: 0.4rem;
+    }
+    
+    .nav-container-1 {
+        margin: 0.2rem 0 0 0;
+    }
+    
+    .nav-1 {
+        gap: 4px;
+    }
+    
+    .nav-1 .nav-item a {
+        font-size: 10px;
+        padding: 4px 6px;
+    }
+    
+    .user-profile-pic {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 200px;
+    }
+    
+    .user-info-wrapper .user-name,
+    .account-link-wrapper a:last-child,
+    .account-logout-wrapper a:last-child {
+        font-size: 0.85rem;
+    }
+    
+    .user-info-wrapper .account-type {
+        font-size: 0.8rem;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .account-link-wrapper:hover, 
+    .account-logout-wrapper:hover {
+        padding-left: 1.2rem;
+    }
+    
+    .account-link-wrapper:active, 
+    .account-logout-wrapper:active {
+        background: linear-gradient(90deg, rgba(62, 158, 196, 0.15), rgba(72, 202, 228, 0.15));
+    }
+}
+
+/* Landscape orientation for small devices */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .header-wrapper {
+        height: auto;
+        padding: 0.5rem 0.8rem;
+    }
+    
+    .user-text-wrapper .user-name {
+        font-size: 0.85rem;
+    }
+    
+    .user-text-wrapper span {
+        font-size: 0.75rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        max-height: 80vh;
+        overflow-y: auto;
     }
 }
 
