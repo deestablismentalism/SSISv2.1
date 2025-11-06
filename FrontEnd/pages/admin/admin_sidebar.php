@@ -45,6 +45,11 @@
                             <img src="../../assets/imgs/subjects-logo.png" class="bi">
                             <span id="locker-spn" class="menu-title"> <a href="./admin_locker.php" class="admin-nav-links"> Locker</a></span>
                         </div>
+                        <!--SYSTEM MANAGEMENT -->
+                        <div class="menu border-100sb">
+                            <img src="../../assets/imgs/check-list.png" class="bi">
+                            <span id="sysmanagement-spn" class="menu-title"> <a href="./admin_system_management.php" class="admin-nav-links"> System Management</a></span>
+                        </div>
                     </nav>
                     <!--TEACHERS-->
                     <div class="menu border-100sb" id="teachers">
@@ -57,8 +62,6 @@
                                 <a href="./admin_all_teachers.php" class="allTeachers">All Teachers</a>
                             </li>
                         </ul>
-                
-
                     <!--ENROLLS-->
                     <div class="menu border-100sb" id="enrolls">
                         <img src="../../assets/imgs/enrolls.svg" class="bi">
