@@ -146,3 +146,329 @@ tr:nth-child(even) {background: rgb(71 168 255 / 8%);}
   font-weight: 600;
   letter-spacing: 1px;
 }
+
+/* ===== Responsive Design ===== */
+
+/* 4K and Ultra-Wide Displays */
+@media screen and (min-width: 2560px) {
+    .content {
+        width: 50vw;
+        height: 85vh;
+    }
+    
+    table {
+        width: 45vw;
+    }
+    
+    .title {
+        font-size: 32px;
+    }
+    
+    .title-header {
+        padding: 1.5rem 2rem;
+    }
+    
+    .wrapper {
+        height: 70vh;
+        padding: 2rem;
+    }
+    
+    th, td {
+        padding: 12px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Full HD Displays */
+@media screen and (min-width: 1920px) and (max-width: 2559px) {
+    .content {
+        width: 48vw;
+    }
+    
+    table {
+        width: 43vw;
+    }
+    
+    .title {
+        font-size: 28px;
+    }
+}
+
+/* Large Desktops */
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+    .content {
+        width: 50vw;
+    }
+    
+    table {
+        width: 45vw;
+    }
+    
+    .title {
+        font-size: 26px;
+    }
+}
+
+/* Standard Desktops */
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+    .content {
+        width: 60vw;
+    }
+    
+    table {
+        width: 55vw;
+    }
+    
+    .wrapper {
+        height: 70vh;
+        padding: 1.2rem;
+    }
+    
+    .title {
+        font-size: 22px;
+    }
+    
+    .title-header {
+        padding: 0.8rem 1.2rem;
+    }
+}
+
+/* Tablets (Landscape) */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .content {
+        width: 75vw;
+        height: 85vh;
+    }
+    
+    table {
+        width: 70vw;
+    }
+    
+    .wrapper {
+        height: 65vh;
+        padding: 1rem;
+    }
+    
+    .title {
+        font-size: 20px;
+    }
+    
+    .title-header {
+        padding: 0.8rem 1rem;
+    }
+    
+    th, td {
+        padding: 8px;
+        font-size: 0.95rem;
+    }
+    
+    .Check-Status {
+        width: 90%;
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Tablets (Portrait) and Large Phones */
+@media screen and (min-width: 600px) and (max-width: 767px) {
+    .main-content {
+        padding: 1rem;
+    }
+    
+    .content {
+        width: 90vw;
+        height: auto;
+    }
+    
+    table {
+        width: 85vw;
+        font-size: 0.9rem;
+    }
+    
+    .wrapper {
+        height: auto;
+        max-height: 70vh;
+        padding: 0.8rem;
+    }
+    
+    .title {
+        font-size: 18px;
+    }
+    
+    .title-header {
+        padding: 0.7rem 0.8rem;
+        margin-bottom: 1rem;
+    }
+    
+    th, td {
+        padding: 6px;
+        font-size: 0.85rem;
+    }
+    
+    .Check-Status {
+        width: 95%;
+        padding: 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    .enrollee-link {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Mobile Phones */
+@media screen and (max-width: 599px) {
+    .main-content {
+        padding: 0.5rem;
+    }
+    
+    .content {
+        width: 95vw;
+        height: auto;
+    }
+    
+    table {
+        width: 90vw;
+        font-size: 0.85rem;
+    }
+    
+    .wrapper {
+        height: auto;
+        max-height: 65vh;
+        padding: 0.6rem;
+        border-radius: 1rem;
+    }
+    
+    .title {
+        font-size: 16px;
+    }
+    
+    .title-header {
+        padding: 0.6rem;
+        margin-bottom: 0.8rem;
+        border-radius: 0.8rem;
+    }
+    
+    th, td {
+        padding: 5px;
+        font-size: 0.8rem;
+    }
+    
+    .Check-Status {
+        width: 100%;
+        padding: 0.4rem;
+        font-size: 0.8rem;
+    }
+    
+    .Check-Status:hover {
+        width: 98%;
+    }
+    
+    .enrollee-link {
+        padding: 6px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Small Mobile Phones */
+@media screen and (max-width: 375px) {
+    .content {
+        width: 98vw;
+    }
+    
+    table {
+        width: 95vw;
+        font-size: 0.75rem;
+    }
+    
+    .wrapper {
+        padding: 0.5rem;
+        max-height: 60vh;
+    }
+    
+    .title {
+        font-size: 14px;
+    }
+    
+    .title-header {
+        padding: 0.5rem;
+    }
+    
+    th, td {
+        padding: 4px;
+        font-size: 0.75rem;
+    }
+    
+    .Check-Status {
+        padding: 0.35rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Extra Small Mobile Phones */
+@media screen and (max-width: 320px) {
+    table {
+        width: 98vw;
+        font-size: 0.7rem;
+    }
+    
+    .wrapper {
+        padding: 0.4rem;
+        max-height: 55vh;
+    }
+    
+    .title {
+        font-size: 13px;
+    }
+    
+    th, td {
+        padding: 3px;
+        font-size: 0.7rem;
+    }
+    
+    .Check-Status {
+        padding: 0.3rem;
+        font-size: 0.7rem;
+    }
+    
+    .enrollee-link {
+        padding: 4px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Landscape Orientation for Small Devices */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .content {
+        height: auto;
+    }
+    
+    .wrapper {
+        height: auto;
+        max-height: 60vh;
+    }
+    
+    .title-header {
+        padding: 0.5rem 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .title {
+        font-size: 16px;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .Check-Status {
+        min-height: 44px;
+    }
+    
+    .enrollee-link {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
