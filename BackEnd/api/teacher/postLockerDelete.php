@@ -19,7 +19,7 @@ if (!isset($_SESSION['Staff']['User-Id']) || !isset($_SESSION['Staff']['Staff-Id
 }
 
 try {
-    require_once __DIR__ . '/../../teacher/controller/teacherLockerController.php';
+    require_once __DIR__ . '/../../teacher/controllers/teacherLockerController.php';
     
     $staffId = (int)$_SESSION['Staff']['Staff-Id'];
     

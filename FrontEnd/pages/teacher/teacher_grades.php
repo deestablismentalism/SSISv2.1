@@ -23,9 +23,6 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/teacher/teacher-grades
         </div>
     </div>
 </div>
-<div class="modal">
-    <div class="modal-content"></div>
-</div>
 <?php
     $pageContent = ob_get_clean();  
     require_once __DIR__ . '/./teacher_base_designs.php';
