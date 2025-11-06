@@ -25,20 +25,24 @@ RUN apk add --no-cache \
         xml \
         simplexml \
         fileinfo
+
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy only composer files first for caching
-COPY composer.json composer.lock ./
+# Copy composer files first for caching
+COPY composer.json composer.lock* ./
 
-# Install PHP dependencies without dev packages (production ready)
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+# Install PHP dependencies (allow dev for development)
+RUN composer install --no-interaction --prefer-dist || true
 
 # Copy the rest of the project
 COPY . .
+
+# Set proper permissions
+RUN chown -R www-data:www-data /var/www/html
 
 # Expose PHP-FPM port
 EXPOSE 9000

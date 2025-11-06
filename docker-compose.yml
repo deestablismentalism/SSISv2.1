@@ -8,15 +8,21 @@ services:
       - db
     env_file:
       - .env
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor
     networks:
       - ssis
 
   web:
     image: nginx:alpine
     container_name: ssis_web
+    ports:
+      - "3000:80"
     depends_on:
       - app
     volumes:
+      - .:/var/www/html
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     networks:
       - ssis
