@@ -3,7 +3,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../models/userPostEnrollmentFormModel.php';
 require_once __DIR__ . '/../models/userEnrolleesModel.php';
 require_once __DIR__ . '/../../Exceptions/DatabaseException.php';
-require_once __DIR__ . '/../../core/normalzieName.php';
+require_once __DIR__ . '/../../core/normalizeName.php';
 
 class userEnrollmentFormController {
     protected $postFormModel;
