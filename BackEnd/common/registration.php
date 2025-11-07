@@ -4,6 +4,7 @@ require_once __DIR__ . '/../core/dbconnection.php';
 require_once __DIR__ . '/./sendPassword.php';
 require_once __DIR__ . '/../core/generatePassword.php';
 require_once __DIR__ . '/../Exceptions/DatabaseException.php';
+require_once __DIR__ . '/../core/normalizeName.php';
 
 class Registration {
     protected $conn;
@@ -15,7 +16,7 @@ class Registration {
         $this->conn = $db->getConnection();
         $this->generatePassword = new generatePassword();
     }
-    private function insertToRegistration(string $fName,string $lName, string $mName, string $cpNumber) : int {
+    private function insertToRegistration(string $fName,string $lName, ?string $mName, string $cpNumber) : int {
         $sql = "INSERT INTO registrations(First_Name, Last_Name, Middle_Name, Contact_Number)
                                 VALUES (:First_Name, :Last_Name, :Middle_Name, :Contact_Number)";
         $stmt = $this->conn->prepare($sql);
@@ -42,7 +43,7 @@ class Registration {
 
         return $result;
     }
-    public function registerAndInsert(string $First_Name, string $Last_Name, string $Middle_Name, string $Contact_Number,int $userType) : array {
+    public function registerAndInsert(string $First_Name, string $Last_Name, ?string $Middle_Name, string $Contact_Number,int $userType) : array {
         $this->conn->beginTransaction();
         try {
             if(empty($First_Name) || empty($Last_Name)) {
@@ -69,6 +70,11 @@ class Registration {
                     'data'=> []
                 ];
             }
+            //===NORMALIZE NAME===
+            $normalize = fn($n)=>(new normalizeName($n))->validatedNormalize();
+            $First_Name = $normalize($First_Name);
+            $Last_Name = $normalize($Last_Name); 
+            $Middle_Name = !empty($Middle_Name) ? $normalize($Middle_Name) : null;
             //Registration
             $registrationId = $this->insertToRegistration($First_Name, $Last_Name, $Middle_Name, $Contact_Number);
             $password = $this->generatePassword->getPassword();

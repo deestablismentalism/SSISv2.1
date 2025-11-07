@@ -3,6 +3,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../models/userPostEnrollmentFormModel.php';
 require_once __DIR__ . '/../models/userEnrolleesModel.php';
 require_once __DIR__ . '/../../Exceptions/DatabaseException.php';
+require_once __DIR__ . '/../../core/normalzieName.php';
 
 class userEnrollmentFormController {
     protected $postFormModel;
@@ -109,6 +110,21 @@ class userEnrollmentFormController {
                     'data'=> []
                 ];
             }
+            //===NORMALIZE NAMES===
+            $normalize = fn($n)=>(new Normalize($n))->validatedNormalize();
+            $fFname = $normalize($fFName); 
+            $fLName = $normalize($fLName);
+            $mFName = $normalize($mFName);
+            $mLName = $normalize($mLName);
+            $gFName = $normalize($gFName);
+            $gLName = $normalize($gLName);
+            $stuFName = $normalize($stuFName);
+            $stuLName = $normalize($stuLName);
+            //===NORMALIZE MIDDLE NAMES IF NOT EMPTY===
+            $fMName = !empty($fMName) ? $normalize($fMName) : null;
+            $mMName = !empty($mMName) ? $normalize($mMName) : null;
+            $gMName = !empty($gMName) ? $normalize($gMName) : null;
+            $stuMName = !empty($stuMName) ? $normalize($stuMName) : null;
             //get diretory if success is true
             $filename = $saveImage['filename'];
             $filePath = $saveImage['filepath'];
