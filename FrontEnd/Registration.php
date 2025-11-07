@@ -53,7 +53,7 @@
 
                 <!-- Guardian Middle Name -->
                 <div class="input-box">
-                    <input type="text" name="Guardian-Middle-Name" id="guardian-middle-name" placeholder=" " required />
+                    <input type="text" name="Guardian-Middle-Name" id="guardian-middle-name" placeholder=" " />
                     <span class="details">Enrollee's Guardian Middle Name</span>
                 </div>
 

@@ -20,6 +20,21 @@ class adminSystemManagementModel {
         }
     }
     //GETTERS
+    public function getSchoolYearDateFormat():array {
+        try {
+            $sql = "SELECT School_Year_Details_Id, 
+                    Starting_Date, Ending_Date
+                FROM school_year_details";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ?:[];
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch school year details',0,$e);
+        }
+    }
     public function getSchoolYearDetails():array {
         try {
             $sql = "SELECT School_Year_Details_Id, 
