@@ -8,3 +8,27 @@
 [2025-10-19 21:09:15]SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '21' for key 'Section_Subjects_Id'
 [2025-10-19 21:11:07]SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '21' for key 'Section_Subjects_Id'
 [2025-10-23 17:09:03]SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '21' for key 'Section_Subjects_Id'
+[2025-11-07 17:34:57]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in C:\xampp\htdocs\SSISv2.1\BackEnd\admin\controllers\adminSystemManagementController.php:206
+Stack trace:
+#0 C:\xampp\htdocs\SSISv2.1\BackEnd\admin\views\adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 C:\xampp\htdocs\SSISv2.1\BackEnd\admin\views\adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 C:\xampp\htdocs\SSISv2.1\FrontEnd\pages\admin\admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 17:35:48]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in C:\xampp\htdocs\SSISv2.1\BackEnd\admin\controllers\adminSystemManagementController.php:206
+Stack trace:
+#0 C:\xampp\htdocs\SSISv2.1\BackEnd\admin\views\adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 C:\xampp\htdocs\SSISv2.1\BackEnd\admin\views\adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 C:\xampp\htdocs\SSISv2.1\FrontEnd\pages\admin\admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 17:36:40]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in C:\xampp\htdocs\SSISv2.1\BackEnd\admin\controllers\adminSystemManagementController.php:206
+Stack trace:
+#0 C:\xampp\htdocs\SSISv2.1\BackEnd\admin\views\adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 C:\xampp\htdocs\SSISv2.1\BackEnd\admin\views\adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 C:\xampp\htdocs\SSISv2.1\FrontEnd\pages\admin\admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 17:36:40]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in C:\xampp\htdocs\SSISv2.1\BackEnd\admin\controllers\adminSystemManagementController.php:206
+Stack trace:
+#0 C:\xampp\htdocs\SSISv2.1\BackEnd\admin\views\adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 C:\xampp\htdocs\SSISv2.1\BackEnd\admin\views\adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 C:\xampp\htdocs\SSISv2.1\FrontEnd\pages\admin\admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}

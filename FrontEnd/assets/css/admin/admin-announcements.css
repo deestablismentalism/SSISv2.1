@@ -13,6 +13,8 @@
     padding: 1.5rem;
     border-radius: 1rem;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    padding: 1.5rem;
+    border-radius: 1rem;
 }
 
 .announcements-title {
@@ -27,21 +29,21 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: #fff;
-    color: #3e9ec4;
+    background: var(--accent-color);
+    color: #fff;
     border: none;
-    border-radius: 0.5rem;
+    border-radius: 12px;
+    padding: 0.6rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 0 12px rgba(0, 188, 212, 0.4);
 }
 
 .add-announcement-btn:hover {
-    background: #f0f0f0;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: scale(1.05);
+    box-shadow: 0 0 18px var(--hover-glow);
 }
 
 .loading-container {
@@ -67,11 +69,41 @@
     100% { transform: rotate(360deg); }
 }
 
+/* ===== Announcements List Container ===== */
 .announcements-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 1.5rem;
     margin-top: 2rem;
+    background: rgb(36 186 255 / 28%);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    min-height: 400px;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
+}
+
+/* Custom scrollbar styling */
+.announcements-list::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.announcements-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.announcements-list::-webkit-scrollbar-thumb {
+    background-color: rgba(62, 158, 196, 0.5);
+    border-radius: 20px;
+}
+
+.announcements-list::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(62, 158, 196, 0.7);
 }
 
 .announcement-card {
@@ -96,10 +128,15 @@
 }
 
 .announcement-content {
-    padding: 1.5rem;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    transition: margin-left 0.3s ease;
+    background-image: url("../../imgs/paper.jpg");
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(10px);
 }
 
 .announcement-title {
@@ -387,6 +424,155 @@
 .submit-btn:hover {
     background: #2d7fa0;
 }
+
+/*====================================*/
+/*  ANNOUNCEMENTS RESPONSIVE DESIGN   */
+/*====================================*/
+
+/* 2500px and above - Larger screens */
+@media (min-width: 2500px) {
+    .announcements-container {
+        padding: 2.8rem;
+    }
+    
+    .announcements-header {
+        border-radius: 26px;
+        padding: 1.4rem 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .announcements-title {
+        font-size: 2.4rem;
+        letter-spacing: 1.3px;
+    }
+    
+    .add-announcement-btn {
+        border-radius: 16px;
+        padding: 0.8rem 2rem;
+        font-size: 1.3rem;
+    }
+    
+    .announcements-list {
+        border-radius: 26px;
+        padding: 2rem;
+        min-height: 520px;
+        gap: 2rem;
+    }
+    
+    .announcement-card {
+        border-radius: 1.4rem;
+    }
+    
+    .announcement-content {
+        padding: 2rem;
+    }
+    
+    .announcement-title {
+        font-size: 1.6rem;
+    }
+    
+    .announcement-text {
+        font-size: 1.15rem;
+    }
+}
+
+/* 1920px - Full HD */
+@media (min-width: 1920px) and (max-width: 2499px) {
+    .announcements-container {
+        padding: 2.4rem;
+    }
+    
+    .announcements-header {
+        border-radius: 23px;
+        padding: 1.2rem 1.8rem;
+        margin-bottom: 1.8rem;
+    }
+    
+    .announcements-title {
+        font-size: 2.1rem;
+        letter-spacing: 1.2px;
+    }
+    
+    .add-announcement-btn {
+        border-radius: 14px;
+        padding: 0.7rem 1.8rem;
+        font-size: 1.15rem;
+    }
+    
+    .announcements-list {
+        border-radius: 23px;
+        padding: 1.8rem;
+        min-height: 460px;
+        gap: 1.8rem;
+    }
+    
+    .announcement-card {
+        border-radius: 1.2rem;
+    }
+    
+    .announcement-content {
+        padding: 1.8rem;
+    }
+    
+    .announcement-title {
+        font-size: 1.45rem;
+    }
+    
+    .announcement-text {
+        font-size: 1.05rem;
+    }
+}
+
+/* 1024px - Smaller desktop */
+@media (min-width: 1024px) and (max-width: 1440px) {
+    .announcements-container {
+        padding: 1.5rem;
+    }
+    
+    .announcements-header {
+        border-radius: 15px;
+        padding: 0.75rem 1.15rem;
+        margin-bottom: 1.15rem;
+    }
+    
+    .announcements-title {
+        font-size: 1.45rem;
+        letter-spacing: 0.75px;
+    }
+    
+    .add-announcement-btn {
+        border-radius: 9px;
+        padding: 0.48rem 1.15rem;
+        font-size: 0.88rem;
+    }
+    
+    .announcements-list {
+        border-radius: 15px;
+        padding: 1.15rem;
+        min-height: 340px;
+        gap: 1.15rem;
+    }
+    
+    .announcement-card {
+        border-radius: 0.8rem;
+    }
+    
+    .announcement-content {
+        padding: 1.15rem;
+    }
+    
+    .announcement-title {
+        font-size: 1.1rem;
+    }
+    
+    .announcement-text {
+        font-size: 0.83rem;
+    }
+}
+
+/*====================================*/
+/* END ANNOUNCEMENTS RESPONSIVE DESIGN */
+/*====================================*/
 
 /* Responsive */
 @media (max-width: 768px) {

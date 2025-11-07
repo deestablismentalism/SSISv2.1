@@ -115,8 +115,11 @@ function viewStudentDetails(studentId) {
         })
         .catch(error => {
             Loader.hide();
-            console.error('Error:', error);
-            alert('An error occurred while fetching student details.');
+            Notification.show({
+                type: data.success ? "error" : "error",
+                title: data.success ? "Error" : "Error",
+                message: data.message
+            });
         });
 }
 
@@ -139,6 +142,21 @@ function createStudentDetailsModal(student) {
     const studentDetails = document.createElement('div');
     studentDetails.className = 'student-details';
     
+    // Helper function to format disability info
+    const getSpecialCondition = () => {
+        if (!student.Have_Special_Condition || student.Have_Special_Condition === 0 || student.Have_Special_Condition === '0') {
+            return 'None';
+        }
+        return student.Special_Condition || 'Yes (No details provided)';
+    };
+    
+    const getAssistiveTech = () => {
+        if (!student.Have_Assistive_Tech || student.Have_Assistive_Tech === 0 || student.Have_Assistive_Tech === '0') {
+            return 'None';
+        }
+        return student.Assistive_Tech || 'Yes (No details provided)';
+    };
+    
     studentDetails.innerHTML = `
         <h2>${student.Student_First_Name} ${student.Student_Middle_Name ? student.Student_Middle_Name + ' ' : ''}${student.Student_Last_Name}</h2>
         <div class="details-grid">
@@ -157,6 +175,14 @@ function createStudentDetailsModal(student) {
             <div class="detail-item">
                 <label>Email:</label>
                 <span>${student.Student_Email}</span>
+            </div>
+            <div class="detail-item">
+                <label>Special Condition:</label>
+                <span>${getSpecialCondition()}</span>
+            </div>
+            <div class="detail-item">
+                <label>Assistive Technology:</label>
+                <span>${getAssistiveTech()}</span>
             </div>
             <div class="detail-item">
                 <label>Status:</label>

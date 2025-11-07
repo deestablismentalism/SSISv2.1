@@ -19,7 +19,7 @@ if (!isset($_SESSION['Staff']['User-Id']) || !isset($_SESSION['Staff']['Staff-Id
 }
 
 try {
-    require_once __DIR__ . '/../../admin/controller/adminAnnouncementsController.php';
+    require_once __DIR__ . '/../../admin/controllers/adminAnnouncementsController.php';
     
     $announcementId = isset($_POST['announcement_id']) ? (int)$_POST['announcement_id'] : 0;
     $title = $_POST['title'] ?? '';
