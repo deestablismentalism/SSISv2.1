@@ -138,7 +138,7 @@ class adminViewSectionController {
             if(!$adviser) {
                 return [
                     'success'=> false,
-                    'message'=> 'Update failed',
+                    'message'=> 'Adviser name udpate failed',
                     'data'=> []
                 ];
             }
