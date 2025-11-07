@@ -29,6 +29,7 @@ if(!isset($_SESSION['Staff']) || $_SESSION['Staff']['Staff-Type'] !== 2) {
    <?php
         require_once __DIR__ . '/../loader.php';
    ?>
+   <script src="../../assets/js/loader.js"></script>
    <script src="../../assets/js/notifications.js"></script>
    <script src="../../assets/js/teacher/teacher-base-designs.js" defer></script>
 
