@@ -66,16 +66,304 @@ document.addEventListener('DOMContentLoaded',function(){
     minDate.setFullYear(today.getFullYear() - 25);
     const maxDate = new Date();
     maxDate.setFullYear(today.getFullYear() - 3);
-    // === REGEX ===
+    
+    // === VALIDATION REGEX (for final validation) ===
+    const nameRegex = /^[A-Za-z]+(\s[A-Za-z]+)*$/; // Only letters, single space between words
+    const numberRegex = /^[0-9]+$/; // Digits only
+    const addressRegex = /^[A-Za-z0-9\s,.]+$/; // Alphanumeric, space, comma, period
+    
+    // === LEGACY REGEX (keeping for backward compatibility) ===
     const lrnRegex = /^([0-9]){12}$/;
     const bCertRegex = /^([0-9]){13}$/;
     const yearRegex = /^(1[0-9]{3}|2[0-9]{3}|3[0-9]{3})$/;
     const idRegex = /^([0-9]){6}$/;
     const charRegex = /^[A-Za-z0-9\s.,'-]{3,100}$/;
     const onlyDigits = /^[0-9]+$/;
+    
+    // === INPUT FILTERING REGEX (real-time character filtering) ===
+    const REGEX_PATTERNS = {
+        // Names - STRICT: Only letters and spaces
+        NAME: /^[A-Za-z\s]*$/,
+        NAME_SINGLE_CHAR: /[A-Za-z\s]/,
+        
+        // Numbers only - digits only
+        NUMBERS_ONLY: /^[0-9]*$/,
+        NUMBER_SINGLE_CHAR: /[0-9]/,
+        
+        // Phone - digits only, max 11
+        PHONE: /^[0-9]{0,11}$/,
+        PHONE_SINGLE_CHAR: /[0-9]/,
+        
+        // Address - STRICT: alphanumeric, spaces, comma, period ONLY
+        ADDRESS: /^[A-Za-z0-9\s,.]*$/,
+        ADDRESS_SINGLE_CHAR: /[A-Za-z0-9\s,.]/,
+        
+        // Year - 4 digits
+        YEAR: /^[0-9]{0,4}$/,
+        YEAR_SINGLE_CHAR: /[0-9]/,
+        
+        // General text - alphanumeric, spaces, comma, period
+        GENERAL_TEXT: /^[A-Za-z0-9\s,.]*$/,
+        GENERAL_TEXT_SINGLE_CHAR: /[A-Za-z0-9\s,.]/,
+        
+        // Text only - letters and spaces only
+        TEXT_ONLY: /^[A-Za-z\s]*$/,
+        TEXT_ONLY_SINGLE_CHAR: /[A-Za-z\s]/
+    };
+    
     // |=============================|
     // |===== VALIDATION UTILS ======|
     // |=============================|
+    
+    /**
+     * Trim and clean input based on field type
+     */
+    function trimInput(value, type = 'default') {
+        if (!value) return '';
+        
+        // Remove leading/trailing whitespace
+        let cleaned = value.trim();
+        
+        // Type-specific cleaning
+        switch(type) {
+            case 'name':
+                // Remove multiple consecutive spaces (allow only single space)
+                cleaned = cleaned.replace(/\s{2,}/g, ' ');
+                // Remove leading/trailing spaces
+                cleaned = cleaned.trim();
+                break;
+                
+            case 'address':
+                // Remove multiple consecutive spaces
+                cleaned = cleaned.replace(/\s{2,}/g, ' ');
+                // Remove multiple consecutive commas or periods
+                cleaned = cleaned.replace(/[,.]{2,}/g, match => match[0]);
+                // Remove leading/trailing punctuation and spaces
+                cleaned = cleaned.replace(/^[,.\s]+|[,.\s]+$/g, '');
+                break;
+                
+            case 'number':
+                // Remove all non-digits
+                cleaned = cleaned.replace(/\D/g, '');
+                break;
+                
+            case 'text':
+                // Remove multiple consecutive spaces
+                cleaned = cleaned.replace(/\s{2,}/g, ' ');
+                // Remove leading/trailing spaces
+                cleaned = cleaned.trim();
+                break;
+                
+            default:
+                // Remove multiple consecutive spaces
+                cleaned = cleaned.replace(/\s{2,}/g, ' ');
+                break;
+        }
+        
+        return cleaned;
+    }
+    
+    /**
+     * Filter input in real-time - prevents typing invalid characters
+     */
+    function filterInput(element, pattern, maxLength = null) {
+        element.addEventListener('beforeinput', function(e) {
+            // Allow special keys (backspace, delete, arrow keys, etc.)
+            if (e.inputType === 'deleteContentBackward' || 
+                e.inputType === 'deleteContentForward' ||
+                e.inputType === 'deleteByCut') {
+                return;
+            }
+            
+            // Check if input type is text insertion
+            if (e.inputType === 'insertText' || e.inputType === 'insertFromPaste') {
+                const newChar = e.data;
+                
+                if (!newChar) return;
+                
+                // Check against single character pattern
+                if (pattern && !pattern.test(newChar)) {
+                    e.preventDefault();
+                    return;
+                }
+                
+                // Check max length
+                if (maxLength) {
+                    const currentLength = element.value.length;
+                    const selectionLength = element.selectionEnd - element.selectionStart;
+                    const newLength = currentLength - selectionLength + newChar.length;
+                    
+                    if (newLength > maxLength) {
+                        e.preventDefault();
+                        return;
+                    }
+                }
+            }
+        });
+        
+        // Additional paste protection
+        element.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+            const filteredText = pastedText.split('').filter(char => pattern.test(char)).join('');
+            
+            if (maxLength && filteredText.length > maxLength) {
+                return;
+            }
+            
+            // Insert filtered text
+            const start = element.selectionStart;
+            const end = element.selectionEnd;
+            const currentValue = element.value;
+            const newValue = currentValue.substring(0, start) + filteredText + currentValue.substring(end);
+            
+            if (!maxLength || newValue.length <= maxLength) {
+                element.value = newValue;
+                element.setSelectionRange(start + filteredText.length, start + filteredText.length);
+                element.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        });
+    }
+    
+    /**
+     * Apply name filtering and trimming - STRICT: letters and single space only
+     */
+    function applyNameFilter(element) {
+        filterInput(element, REGEX_PATTERNS.NAME_SINGLE_CHAR);
+        
+        element.addEventListener('blur', function() {
+            this.value = trimInput(this.value, 'name');
+            // Additional validation: ensure only single space between words
+            if (this.value) {
+                this.value = this.value.replace(/\s+/g, ' ').trim();
+            }
+        });
+        
+        element.addEventListener('input', function() {
+            // Real-time pattern validation - only letters and spaces
+            if (this.value && !REGEX_PATTERNS.NAME.test(this.value)) {
+                this.value = this.value.split('').filter(char => 
+                    REGEX_PATTERNS.NAME_SINGLE_CHAR.test(char)
+                ).join('');
+            }
+            // Prevent multiple consecutive spaces while typing
+            this.value = this.value.replace(/\s{2,}/g, ' ');
+        });
+    }
+    
+    /**
+     * Apply number filtering and trimming
+     */
+    function applyNumberFilter(element, maxLength = null) {
+        filterInput(element, REGEX_PATTERNS.NUMBER_SINGLE_CHAR, maxLength);
+        
+        element.addEventListener('blur', function() {
+            this.value = trimInput(this.value, 'number');
+        });
+        
+        element.addEventListener('input', function() {
+            // Ensure only digits
+            this.value = this.value.replace(/\D/g, '');
+            
+            // Enforce max length
+            if (maxLength && this.value.length > maxLength) {
+                this.value = this.value.substring(0, maxLength);
+            }
+        });
+    }
+    
+    /**
+     * Apply phone number filtering
+     */
+    function applyPhoneFilter(element) {
+        filterInput(element, REGEX_PATTERNS.PHONE_SINGLE_CHAR, 11);
+        
+        element.addEventListener('blur', function() {
+            this.value = trimInput(this.value, 'number');
+        });
+        
+        element.addEventListener('input', function() {
+            // Ensure only digits and max 11
+            this.value = this.value.replace(/\D/g, '').substring(0, 11);
+        });
+    }
+    
+    /**
+     * Apply address filtering and trimming - STRICT: alphanumeric, space, comma, period only
+     */
+    function applyAddressFilter(element) {
+        filterInput(element, REGEX_PATTERNS.ADDRESS_SINGLE_CHAR);
+        
+        element.addEventListener('blur', function() {
+            this.value = trimInput(this.value, 'address');
+        });
+        
+        element.addEventListener('input', function() {
+            // Real-time pattern validation - only alphanumeric, space, comma, period
+            if (this.value && !REGEX_PATTERNS.ADDRESS.test(this.value)) {
+                this.value = this.value.split('').filter(char => 
+                    REGEX_PATTERNS.ADDRESS_SINGLE_CHAR.test(char)
+                ).join('');
+            }
+            // Prevent multiple consecutive spaces
+            this.value = this.value.replace(/\s{2,}/g, ' ');
+        });
+    }
+    
+    /**
+     * Apply text-only filtering (for religion, language, etc.) - STRICT: letters and spaces only
+     */
+    function applyTextFilter(element) {
+        filterInput(element, REGEX_PATTERNS.TEXT_ONLY_SINGLE_CHAR);
+        
+        element.addEventListener('blur', function() {
+            this.value = trimInput(this.value, 'text');
+        });
+        
+        element.addEventListener('input', function() {
+            // Real-time pattern validation - only letters and spaces
+            if (this.value && !REGEX_PATTERNS.TEXT_ONLY.test(this.value)) {
+                this.value = this.value.split('').filter(char => 
+                    REGEX_PATTERNS.TEXT_ONLY_SINGLE_CHAR.test(char)
+                ).join('');
+            }
+            // Prevent multiple consecutive spaces
+            this.value = this.value.replace(/\s{2,}/g, ' ');
+        });
+    }
+    
+    /**
+     * Apply year filtering
+     */
+    function applyYearFilter(element) {
+        filterInput(element, REGEX_PATTERNS.YEAR_SINGLE_CHAR, 4);
+        
+        element.addEventListener('input', function() {
+            // Ensure only digits and max 4
+            this.value = this.value.replace(/\D/g, '').substring(0, 4);
+        });
+    }
+    
+    /**
+     * Apply general text filtering (disability, assistive tech)
+     */
+    function applyGeneralTextFilter(element) {
+        filterInput(element, REGEX_PATTERNS.GENERAL_TEXT_SINGLE_CHAR);
+        
+        element.addEventListener('blur', function() {
+            this.value = trimInput(this.value, 'text');
+        });
+        
+        element.addEventListener('input', function() {
+            if (this.value && !REGEX_PATTERNS.GENERAL_TEXT.test(this.value)) {
+                this.value = this.value.split('').filter(char => 
+                    REGEX_PATTERNS.GENERAL_TEXT_SINGLE_CHAR.test(char)
+                ).join('');
+            }
+            this.value = this.value.replace(/\s{2,}/g, ' ');
+        });
+    }
+
     function initialSelectValue(selectElement, parentElement) {
         selectElement.innerHTML = `<option value=""> Select a ${parentElement} first </option>`;
     }
@@ -586,6 +874,85 @@ document.addEventListener('DOMContentLoaded',function(){
     // |============================|
     // |===== INITIALIZATIONS ======|
     // |============================|
+    // === APPLY INPUT FILTERS TO ALL FIELDS ===
+    
+    // Name fields - student
+    const studentNameFields = [lname, fname, nativeGroup];
+    studentNameFields.forEach(field => {
+        if (field) applyNameFilter(field);
+    });
+    
+    // Name fields - parents/guardians
+    const parentNameFields = [fatherLname, fatherFname, motherLname, motherFname, guardianLname, guardianFname];
+    parentNameFields.forEach(field => {
+        if (field) applyNameFilter(field);
+    });
+    
+    // Middle names and extensions (optional fields) - also use name filter
+    const optionalNameFields = document.querySelectorAll('#mname, #extension, #Father-Middle-Name, #Mother-Middle-Name, #Guardian-Middle-Name');
+    optionalNameFields.forEach(field => {
+        if (field) applyNameFilter(field);
+    });
+    
+    // Phone numbers (exactly 11 digits)
+    const phoneFieldsList = [fatherCPnum, motherCPnum, guardianCPnum];
+    phoneFieldsList.forEach(field => {
+        if (field) applyPhoneFilter(field);
+    });
+    
+    // Number fields with specific lengths
+    if (psaNumber) applyNumberFilter(psaNumber, 13);  // PSA: 13 digits
+    if (lrn) applyNumberFilter(lrn, 12);              // LRN: 12 digits
+    if (lschoolId) applyNumberFilter(lschoolId, 6);   // School ID: 6 digits
+    if (fschoolId) applyNumberFilter(fschoolId, 6);   // School ID: 6 digits
+    
+    // Year fields (4 digits)
+    const yearFieldsList = [startYear, endYear, lastYear];
+    yearFieldsList.forEach(field => {
+        if (field) applyYearFilter(field);
+    });
+    
+    // Make start year and end year readonly
+    if (startYear) {
+        startYear.readOnly = true;
+        startYear.style.backgroundColor = '#f0f0f0';
+        startYear.style.cursor = 'not-allowed';
+    }
+    if (endYear) {
+        endYear.readOnly = true;
+        endYear.style.backgroundColor = '#f0f0f0';
+        endYear.style.cursor = 'not-allowed';
+    }
+    
+    // Address fields (alphanumeric + space, comma, period)
+    const addressFieldsList = [lschoolAddr, fschoolAddr, subdivsion];
+    addressFieldsList.forEach(field => {
+        if (field) applyAddressFilter(field);
+    });
+    
+    // School names (treated as address - alphanumeric + punctuation)
+    const schoolNameFields = [lschool, fschool];
+    schoolNameFields.forEach(field => {
+        if (field) applyAddressFilter(field);
+    });
+    
+    // Text-only fields (religion, language - letters only)
+    const textOnlyFieldsList = [religion, language];
+    textOnlyFieldsList.forEach(field => {
+        if (field) applyTextFilter(field);
+    });
+    
+    // House number (numbers only)
+    if (houseNumber) {
+        applyNumberFilter(houseNumber);
+    }
+    
+    // Disability and assistive tech fields (general text)
+    const generalTextFieldsList = [disability, assistiveTech];
+    generalTextFieldsList.forEach(field => {
+        if (field) applyGeneralTextFilter(field);
+    });
+    
     // === PREVIOUS SCHOOL INFO INIT ===
     // INIT pampublikong paaralan radio button
     const publicSchool = document.getElementById('public');
@@ -751,27 +1118,27 @@ document.addEventListener('DOMContentLoaded',function(){
     ];
     schoolFields.forEach(({element, error}) => {
         if (element) {
+            // Filter already applied in initialization
             element.addEventListener('input', () => validateSchool(element, error));
         }
     });
+    
     const idFields = [
         {element: lschoolId, error: "em-lschoolID"},
         {element: fschoolId, error: "em-fschoolID"}
     ];
     idFields.forEach(({element, error}) => {
         if (element) {
-            checkIfNumericInput(element);
+            // Filter already applied, just add validation
             element.addEventListener('input', () => validateSchoolId(element, error));
         }
     });
-    const yearFields = [startYear, endYear, lastYear];
-    yearFields.forEach(element => {
-        if (element) {
-            checkIfNumericInput(element);
-        }
-    });
+    
+    // Year fields - filters already applied
+    // Note: startYear and endYear are readonly, so no user input validation needed
     if (startYear) startYear.addEventListener('input', validateStartYear);
     if (endYear) endYear.addEventListener('input', validateAcademicYear);
+    
     //VARIABLE FOR SAVING VALUE
     let saveYear = null;
     if (lastYear) {
@@ -812,8 +1179,8 @@ document.addEventListener('DOMContentLoaded',function(){
                 nativeGroup.style.opacity = 1;
                 nativeGroup.value = saveNativeGroup || '';
                 if (saveNativeGroup && saveNativeGroup.trim() !== '') {
-                    field.dispatchEvent(new Event('input'));
-                };  // run once after enabling
+                    nativeGroup.dispatchEvent(new Event('input'));
+                };
             }
         })
     })
@@ -823,14 +1190,16 @@ document.addEventListener('DOMContentLoaded',function(){
     if (birthDate) {
         birthDate.addEventListener('change', getAge);
     }
+    
+    // PSA and LRN - filters already applied
     if (psaNumber) {
-        checkIfNumericInput(psaNumber);
         psaNumber.addEventListener('blur', validatePSA);
     }
+    
     if (lrn) {
-        checkIfNumericInput(lrn);
         lrn.addEventListener('blur', validateLRN);
     }
+    
     radios.forEach(radio => {
         radio.addEventListener('change', function() {
             if (radio.value === "0") {
@@ -912,7 +1281,7 @@ document.addEventListener('DOMContentLoaded',function(){
         });
     }
     // === PARENT INFO EVENTS ===
-    const parentNameFields = [
+    const parentNameFieldsList = [
         {element: fatherLname, error: "em-father-last-name"},
         {element: fatherFname, error: "em-father-first-name"},
         {element: motherLname, error: "em-mother-last-name"},
@@ -920,13 +1289,15 @@ document.addEventListener('DOMContentLoaded',function(){
         {element: guardianLname, error: "em-guardian-last-name"},
         {element: guardianFname, error: "em-guardian-first-name"}
     ];
-    parentNameFields.forEach(({element, error}) => {
+    parentNameFieldsList.forEach(({element, error}) => {
         if (element) {
+            // Filter already applied
             element.addEventListener('keyup', () => {
                 ValidationUtils.validateEmpty(element, error);
             });
         }
     });
+    
     const phoneFields = [
         {element: fatherCPnum, error: "em-f-number"},
         {element: motherCPnum, error: "em-m-number"},   
@@ -934,7 +1305,7 @@ document.addEventListener('DOMContentLoaded',function(){
     ];
     phoneFields.forEach(({element, error}) => {
         if (element) {
-            checkIfNumericInput(element);
+            // Filter already applied
             element.addEventListener('input',() => validatePhoneNumber(element, error));
         }
     });
