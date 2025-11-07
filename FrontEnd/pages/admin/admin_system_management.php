@@ -22,8 +22,8 @@ $view = new adminSystemManagementView();
         </div>
         <div id="edit-mode" class="edit-mode-container" style="display:none;">
             <form id="school-year-details-form">
-                <input type="date" name="school-year-start">
-                <input type="date" name="school-year-end">
+                <input type="date" name="school-year-start" <?php $view->startYearValue();?>>
+                <input type="date" name="school-year-end" <?php $view->endYearValue();?>>
                 <div class="actions">
                     <button type="button" id="cancel-btn">Cancel</button>
                     <button type="submit" id="save-btn">Save</button>
