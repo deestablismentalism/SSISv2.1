@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../../admin/controller/adminViewSectionController.php';
+require_once __DIR__ . '/../../admin/controllers/adminViewSectionController.php';
 
 $controller = new adminViewSectionController();
 ?>
