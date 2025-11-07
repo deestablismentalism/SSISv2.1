@@ -1,14 +1,13 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-require_once __DIR__ . '/../../../BackEnd/common/userTypeView.php';
-if (!isset($_SESSION['Staff']) && $_SESSION['Staff']['Staff-Type'] !== 1) {
+require_once __DIR__ . '/../session_init.php';
+if (!isset($_SESSION['Staff']) || $_SESSION['Staff']['Staff-Type'] !== 1) {
     header("Location: ../../Login.php");
     exit();
 }
+require_once __DIR__ . '/../../../BackEnd/common/userTypeView.php';
 ?>
 <!DOCTYPE html>
+<html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> <?php if(isset($pageTitle)) {echo $pageTitle;}else{echo "Page";} ?></title>
@@ -17,12 +16,13 @@ if (!isset($_SESSION['Staff']) && $_SESSION['Staff']['Staff-Type'] !== 1) {
     <link rel="stylesheet" href="../../assets/css/admin/admin-base-designs.css">
     <link rel="stylesheet" href="../../assets/css/reset.css">
     <link rel="stylesheet" href="../../assets/css/loader.css">
+    <link rel="stylesheet" href="../../assets/css/notifications.css">
     <link rel="icon" href="../../../favicon.ico">
-    <link rel="stylesheet" href="/SSISV2.1/FrontEnd/assets/css/notifications.css">
     <?php if (isset($pageCss)) echo $pageCss; ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
     <img src="../../assets/imgs/graduation-cap.png" alt="graduation-cap" fetchpriority="high" aria-hidden="true" hidden>
-    <script src="/SSISV2.1/FrontEnd/assets/js/notifications.js"></script>
+    <script src="../../assets/js/loader.js"></script>
+    <script src="../../assets/js/notifications.js"></script>
 </head>
 <body>
         <?php

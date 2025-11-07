@@ -20,7 +20,6 @@
         <?php
             include './Landing_Header.php';
         ?>    
-    <div class = "header">
         <!-- Hero Section -->
         <section class="hero">
             <div class="hero-slideshow">
@@ -72,49 +71,52 @@
                 </svg>
             </div>
         </section>
-    </header>
 
     <script>
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const navMenu = document.getElementById('navMenu');
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navMenu = document.getElementById('navMenu');
 
-        mobileMenuBtn.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            mobileMenuBtn.textContent = navMenu.classList.contains('active') ? '✕' : '☰';
-        });
+            if (mobileMenuBtn && navMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                    mobileMenuBtn.textContent = navMenu.classList.contains('active') ? '✕' : '☰';
+                });
 
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-                navMenu.classList.remove('active');
-                mobileMenuBtn.textContent = '☰';
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                        navMenu.classList.remove('active');
+                        mobileMenuBtn.textContent = '☰';
+                    }
+                });
             }
-        });
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Add scroll effect to header
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('.header');
+                if (window.scrollY > 100) {
+                    header.style.background = 'rgba(255, 255, 255, 0.95)';
+                    header.style.backdropFilter = 'blur(10px)';
+                } else {
+                    header.style.background = 'white';
+                    header.style.backdropFilter = 'none';
                 }
             });
-        });
-
-        // Add scroll effect to header
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('.header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(255, 255, 255, 0.95)';
-                header.style.backdropFilter = 'blur(10px)';
-            } else {
-                header.style.background = 'white';
-                header.style.backdropFilter = 'none';
-            }
         });
         </script>
         <!-- Hero Section End-->

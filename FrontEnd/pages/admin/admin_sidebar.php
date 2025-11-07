@@ -20,10 +20,10 @@
                             <img src="../../assets/imgs/student.svg" class="bi">
                             <span id="students-spn" class="menu-title"> <a href="./admin_all_students.php" class="admin-nav-links">Students </a></span> 
                         </div>    
-                        <!--SECTIONS-->
+                        <!--GRADE LEVELS-->
                         <div class="menu border-100sb">
                             <img src="../../assets/imgs/sections-logo.png" class="bi">
-                            <span id="sections-spn" class="menu-title"> <a href="./admin_sections.php" class="admin-nav-links"> Sections </a></span>
+                            <span id="grade-levels-spn" class="menu-title"> <a href="./admin_grade_levels.php" class="admin-nav-links"> Grade Levels </a></span>
                         </div>
 
                         <!--SUBJECTS-->
@@ -40,6 +40,21 @@
                             <img src="../../assets/imgs/calendar.png" class="bi">
                             <span id="sections-spn" class="menu-title"> <a href="./admin_schedules.php" class="admin-nav-links"> Schedules</a></span>
                         </div>
+                        <!--LOCKER-->
+                        <div class="menu border-100sb">
+                            <img src="../../assets/imgs/subjects-logo.png" class="bi">
+                            <span id="locker-spn" class="menu-title"> <a href="./admin_locker.php" class="admin-nav-links"> Locker</a></span>
+                        </div>
+                        <!--SYSTEM MANAGEMENT -->
+                        <div class="menu border-100sb">
+                            <img src="../../assets/imgs/check-list.png" class="bi">
+                            <span id="sysmanagement-spn" class="menu-title"> <a href="./admin_system_management.php" class="admin-nav-links"> System Management</a></span>
+                        </div>
+                        <!--ANNOUNCEMENTS-->
+                        <div class="menu border-100sb">
+                            <img src="../../assets/imgs/subjects-logo.png" class="bi">
+                            <span id="announcements-spn" class="menu-title"> <a href="./admin_announcements.php" class="admin-nav-links"> Announcements</a></span>
+                        </div>
                     </nav>
                     <!--TEACHERS-->
                     <div class="menu border-100sb" id="teachers">
@@ -52,8 +67,6 @@
                                 <a href="./admin_all_teachers.php" class="allTeachers">All Teachers</a>
                             </li>
                         </ul>
-                
-
                     <!--ENROLLS-->
                     <div class="menu border-100sb" id="enrolls">
                         <img src="../../assets/imgs/enrolls.svg" class="bi">

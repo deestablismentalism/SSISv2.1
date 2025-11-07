@@ -1,23 +1,867 @@
+/* ===== Root Theme Colors ===== */
+:root {
+  --main-fonts: "Poppins", "Segoe UI", sans-serif;
+  --title-fonts: "Barlow", sans-serif;
+  --main-color: #1c4a72;
+  --title-main-color: #3e9ec4;
+  --container-color: rgba(36, 186, 255, 0.28);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --hover-accent: #48cae4;
+  --accent-color: #00bcd4;
+  --success: #44d07b;
+  --warning: #ffcc00;
+  --danger: #ff5f5f;
+  --text-color: #e8edf3;
+}
+
+/* ===== Overall Layout ===== */
+body {
+  font-family: var(--main-fonts);
+  margin: 0;
+  padding: 0;
+}
+
 .user-students-page-content {
-    margin: 1rem;
+  padding: 2rem; /* Base padding for 1440px */
+  transition: margin-left 0.3s ease;
+  background-image: url('../../imgs/paper.jpg');
+  font-family: var(--main-fonts);
 }
-.user-students-page-header {
-    display: flex;
-    justify-content: space-between;
-    background-color: white;
-    padding: 1rem;
+
+.student-dynamic-content h1 {
+    font-size: 20px;
+    font-weight: 700;
+    padding: 17px 0px;
+    color: var(--accent-color);
 }
-.student-navigation-list {
-    display: flex;
+/* ===== Back Button ===== */
+.back-button {
+  margin-bottom: 1.5rem; /* Base for 1440px */
 }
-.student-navigation-list li {
-    padding: 0.8rem;
-}
+
 .back-button button {
-    padding: 1rem;
-    background-color: gray;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
+  color: white;
+  border: none;
+  border-radius: 12px; /* Base for 1440px */
+  padding: 0.8rem 1.5rem; /* Base for 1440px */
+  font-size: 0.95rem; /* Base for 1440px */
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
 }
+
+.back-button button:hover {
+  background: linear-gradient(135deg, var(--hover-accent), var(--accent-color));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
+}
+
+.back-button button:active {
+  transform: translateY(0);
+}
+
 .back-button img {
+  width: 1.2rem; /* Base for 1440px */
+  height: 1.2rem; /* Base for 1440px */
+  filter: invert(1);
+}
+
+/* ===== Header Section ===== */
+.user-students-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(12px);
+  background: rgb(36 186 255 / 28%);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px; /* Base for 1440px */
+  padding: 1.5rem; /* Base for 1440px */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  margin-bottom: 1.5rem; /* Base for 1440px */
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.student-details {
+  flex: 1;
+  min-width: 250px;
+}
+
+.student-details h2 {
+  font-size: 1.8rem; /* Base for 1440px */
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--title-main-color);
+  margin: 0 0 0.5rem 0;
+}
+
+.student-details p {
+  font-size: 1rem; /* Base for 1440px */
+  color: var(--main-color);
+  margin: 0.3rem 0;
+  font-weight: 500;
+}
+
+/* ===== Navigation Tabs ===== */
+.student-navigation-list-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.student-navigation-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem; /* Base for 1440px */
+  flex-wrap: wrap;
+}
+
+.student-navigation-list li {
+  padding: 0; /* Base for 1440px */
+}
+
+.student-navigation-list label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.8rem 1.2rem; /* Base for 1440px */
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px; /* Base for 1440px */
+  font-size: 0.95rem; /* Base for 1440px */
+  font-weight: 500;
+  color: var(--main-color);
+  transition: all 0.3s ease;
+}
+
+.student-navigation-list label:hover {
+  background: rgba(62, 158, 196, 0.15);
+  border-color: var(--hover-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(62, 158, 196, 0.2);
+}
+
+.student-navigation-list input[type="radio"] {
+  display: none;
+}
+
+.student-navigation-list label:has(input[type="radio"]:checked) {
+  background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
+  color: white;
+  border-color: var(--accent-color);
+  box-shadow: 0 4px 12px rgba(62, 158, 196, 0.4);
+  transform: translateY(-2px);
+}
+
+/* ===== Dynamic Content Container ===== */
+.student-dynamic-container {
+  background: rgb(36 186 255 / 28%);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px; /* Base for 1440px */
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  padding: 1.5rem; /* Base for 1440px */
+  min-height: 400px; /* Base for 1440px */
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
+}
+
+/* Custom scrollbar styling */
+.student-dynamic-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.student-dynamic-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.student-dynamic-container::-webkit-scrollbar-thumb {
+  background-color: rgba(62, 158, 196, 0.5);
+  border-radius: 20px;
+}
+
+.student-dynamic-content {
+  width: 100%;
+}
+
+/* ===== Table Styling (for schedules/grades) ===== */
+.student-dynamic-content table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--main-color);
+  font-size: 0.95rem; /* Base for 1440px */
+}
+
+.student-dynamic-content thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: rgb(97 206 255);
+}
+
+.student-dynamic-content th {
+  padding: 1rem; /* Base for 1440px */
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  text-shadow: 0 1.5px rgba(9, 103, 162, 0.4);
+  color: white;
+}
+
+.student-dynamic-content td {
+  padding: 1rem; /* Base for 1440px */
+  border-top: 1px solid rgba(63, 166, 210, 0.897);
+  vertical-align: middle;
+  color: black;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  background: #bbe5f8;
+}
+
+/* Zebra stripes for readability */
+.student-dynamic-content tr:nth-child(even) td {
+  background: rgb(71 168 255 / 8%);
+}
+
+.student-dynamic-content tr:hover td {
+  color: var(--hover-accent);
+  transition: all 0.25s ease-in-out;
+}
+
+.student-dynamic-content tbody tr:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transition: 0.3s ease;
+}
+
+/* ===== Loading Modal ===== */
+.loading-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 2rem;
+}
+
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid rgba(62, 158, 196, 0.2);
+  border-top: 6px solid var(--title-main-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--title-main-color);
+  text-align: center;
+  letter-spacing: 0.5px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/*====================================*/
+/*  STUDENTS PAGE RESPONSIVE DESIGN   */
+/*====================================*/
+
+/* 2500px and above - Larger screens */
+@media (min-width: 2500px) {
+  .user-students-page-content {
+    padding: 2.8rem;
+  }
+  
+  .back-button {
+    margin-bottom: 2rem;
+  }
+  
+  .back-button button {
+    border-radius: 16px;
+    padding: 1.1rem 2rem;
+    font-size: 1.2rem;
+  }
+  
+  .back-button img {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+  
+  .user-students-page-header {
+    border-radius: 26px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .student-details h2 {
+    font-size: 2.4rem;
+    letter-spacing: 1.3px;
+  }
+  
+  .student-details p {
+    font-size: 1.3rem;
+  }
+  
+  .student-navigation-list {
+    gap: 0.8rem;
+  }
+  
+  .student-navigation-list label {
+    padding: 1.1rem 1.6rem;
+    border-radius: 14px;
+    font-size: 1.2rem;
+  }
+  
+  .student-dynamic-container {
+    border-radius: 26px;
+    padding: 2rem;
+    min-height: 520px;
+  }
+  
+  .student-dynamic-content table {
+    font-size: 1.2rem;
+  }
+  
+  .student-dynamic-content th {
+    padding: 1.4rem;
+    letter-spacing: 0.6px;
+    font-size: 1.15rem;
+  }
+  
+  .student-dynamic-content td {
+    padding: 1.4rem;
+    letter-spacing: 0.7px;
+  }
+  
+  .loading-modal {
+    min-height: 520px;
+  }
+  
+  .loading-spinner {
+    width: 80px;
+    height: 80px;
+    border-width: 8px;
+  }
+  
+  .loading-text {
+    font-size: 1.4rem;
+  }
+}
+
+/* 1920px - Full HD */
+@media (min-width: 1920px) and (max-width: 2499px) {
+  .user-students-page-content {
+    padding: 2.4rem;
+  }
+  
+  .back-button {
+    margin-bottom: 1.8rem;
+  }
+  
+  .back-button button {
+    border-radius: 14px;
+    padding: 1rem 1.8rem;
+    font-size: 1.1rem;
+  }
+  
+  .back-button img {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+  
+  .user-students-page-header {
+    border-radius: 23px;
+    padding: 1.8rem;
+    margin-bottom: 1.8rem;
+  }
+  
+  .student-details h2 {
+    font-size: 2.1rem;
+    letter-spacing: 1.2px;
+  }
+  
+  .student-details p {
+    font-size: 1.15rem;
+  }
+  
+  .student-navigation-list {
+    gap: 0.7rem;
+  }
+  
+  .student-navigation-list label {
+    padding: 1rem 1.4rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+  }
+  
+  .student-dynamic-container {
+    border-radius: 23px;
+    padding: 1.8rem;
+    min-height: 460px;
+  }
+  
+  .student-dynamic-content table {
+    font-size: 1.1rem;
+  }
+  
+  .student-dynamic-content th {
+    padding: 1.2rem;
+    letter-spacing: 0.5px;
+    font-size: 1.05rem;
+  }
+  
+  .student-dynamic-content td {
+    padding: 1.2rem;
+    letter-spacing: 0.6px;
+  }
+  
+  .loading-modal {
+    min-height: 460px;
+  }
+  
+  .loading-spinner {
+    width: 70px;
+    height: 70px;
+    border-width: 7px;
+  }
+  
+  .loading-text {
+    font-size: 1.25rem;
+  }
+}
+
+/* 1440px - Default (already set above, this is just for clarity) */
+@media (min-width: 1441px) and (max-width: 1919px) {
+  /* Default styles apply - no changes needed */
+}
+
+/* 1024px - Smaller desktop */
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .user-students-page-content {
+    padding: 1.5rem;
+  }
+  
+  .back-button {
+    margin-bottom: 1.15rem;
+  }
+  
+  .back-button button {
+    border-radius: 9px;
+    padding: 0.6rem 1.15rem;
+    font-size: 0.83rem;
+  }
+  
+  .back-button img {
     width: 1rem;
     height: 1rem;
+  }
+  
+  .user-students-page-header {
+    border-radius: 15px;
+    padding: 1.15rem;
+    margin-bottom: 1.15rem;
+  }
+  
+  .student-details h2 {
+    font-size: 1.45rem;
+    letter-spacing: 0.75px;
+  }
+  
+  .student-details p {
+    font-size: 0.83rem;
+  }
+  
+  .student-navigation-list {
+    gap: 0.4rem;
+  }
+  
+  .student-navigation-list label {
+    padding: 0.6rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.83rem;
+  }
+  
+  .student-dynamic-container {
+    border-radius: 15px;
+    padding: 1.15rem;
+    min-height: 340px;
+  }
+  
+  .student-dynamic-content table {
+    font-size: 0.83rem;
+  }
+  
+  .student-dynamic-content th {
+    padding: 0.75rem;
+    letter-spacing: 0.28px;
+    font-size: 0.88rem;
+  }
+  
+  .student-dynamic-content td {
+    padding: 0.75rem;
+    letter-spacing: 0.38px;
+  }
+  
+  .loading-modal {
+    min-height: 340px;
+  }
+  
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+    border-width: 5px;
+  }
+  
+  .loading-text {
+    font-size: 0.95rem;
+  }
 }
+
+/* Tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .user-students-page-content {
+    padding: 1.2rem;
+  }
+  
+  .back-button {
+    margin-bottom: 1rem;
+  }
+  
+  .back-button button {
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .back-button img {
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  .user-students-page-header {
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .student-details h2 {
+    font-size: 1.3rem;
+    letter-spacing: 0.6px;
+  }
+  
+  .student-details p {
+    font-size: 0.85rem;
+  }
+  
+  .student-navigation-list {
+    gap: 0.3rem;
+    width: 100%;
+  }
+  
+  .student-navigation-list label {
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+  }
+  
+  .student-dynamic-container {
+    border-radius: 12px;
+    padding: 1rem;
+    min-height: 300px;
+  }
+  
+  .student-dynamic-content table {
+    font-size: 0.8rem;
+  }
+  
+  .student-dynamic-content th {
+    padding: 0.7rem;
+    font-size: 0.85rem;
+  }
+  
+  .student-dynamic-content td {
+    padding: 0.7rem;
+  }
+  
+  .loading-modal {
+    min-height: 300px;
+    padding: 1.5rem;
+  }
+  
+  .loading-spinner {
+    width: 45px;
+    height: 45px;
+    border-width: 4px;
+    margin-bottom: 1rem;
+  }
+  
+  .loading-text {
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .user-students-page-content {
+    padding: 1rem;
+  }
+  
+  .back-button {
+    margin-bottom: 0.8rem;
+  }
+  
+  .back-button button {
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.75rem;
+  }
+  
+  .back-button img {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+  
+  .user-students-page-header {
+    border-radius: 10px;
+    padding: 0.8rem;
+    margin-bottom: 0.8rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+  
+  .student-details {
+    width: 100%;
+  }
+  
+  .student-details h2 {
+    font-size: 1.1rem;
+    letter-spacing: 0.4px;
+  }
+  
+  .student-details p {
+    font-size: 0.75rem;
+  }
+  
+  .student-navigation-list-wrapper {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .student-navigation-list {
+    gap: 0.3rem;
+    flex-wrap: nowrap;
+  }
+  
+  .student-navigation-list label {
+    padding: 0.5rem 0.7rem;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+  
+  .student-dynamic-container {
+    border-radius: 10px;
+    padding: 0.8rem;
+    min-height: 280px;
+  }
+  
+  .student-dynamic-content table {
+    font-size: 0.75rem;
+    min-width: 600px;
+  }
+  
+  .student-dynamic-content th {
+    padding: 0.6rem 0.4rem;
+    font-size: 0.75rem;
+  }
+  
+  .student-dynamic-content td {
+    padding: 0.6rem 0.4rem;
+  }
+  
+  .loading-modal {
+    min-height: 280px;
+    padding: 1rem;
+  }
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border-width: 4px;
+    margin-bottom: 0.8rem;
+  }
+  
+  .loading-text {
+    font-size: 0.85rem;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .user-students-page-content {
+    padding: 0.8rem;
+  }
+  
+  .back-button button {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.7rem;
+  }
+  
+  .back-button img {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+  
+  .user-students-page-header {
+    padding: 0.6rem;
+  }
+  
+  .student-details h2 {
+    font-size: 1rem;
+  }
+  
+  .student-details p {
+    font-size: 0.7rem;
+  }
+  
+  .student-navigation-list label {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.65rem;
+  }
+  
+  .student-dynamic-container {
+    padding: 0.6rem;
+    min-height: 250px;
+    overflow-x: auto;
+  }
+  
+  .student-dynamic-content th {
+    padding: 0.5rem 0.3rem;
+    font-size: 0.7rem;
+  }
+  
+  .student-dynamic-content td {
+    padding: 0.5rem 0.3rem;
+    font-size: 0.7rem;
+  }
+  
+  .loading-modal {
+    min-height: 250px;
+    padding: 0.8rem;
+  }
+  
+  .loading-spinner {
+    width: 35px;
+    height: 35px;
+    border-width: 3px;
+    margin-bottom: 0.8rem;
+  }
+  
+  .loading-text {
+    font-size: 0.75rem;
+  }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 374px) {
+  .user-students-page-content {
+    padding: 0.6rem;
+  }
+  
+  .back-button button {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.65rem;
+  }
+  
+  .back-button img {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+  
+  .user-students-page-header {
+    padding: 0.5rem;
+    border-radius: 8px;
+  }
+  
+  .student-details h2 {
+    font-size: 0.9rem;
+  }
+  
+  .student-details p {
+    font-size: 0.65rem;
+  }
+  
+  .student-navigation-list label {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.6rem;
+  }
+  
+  .student-dynamic-container {
+    padding: 0.5rem;
+    min-height: 220px;
+    border-radius: 8px;
+  }
+  
+  .student-dynamic-content th {
+    padding: 0.4rem 0.25rem;
+    font-size: 0.65rem;
+  }
+  
+  .student-dynamic-content td {
+    padding: 0.4rem 0.25rem;
+    font-size: 0.65rem;
+  }
+  
+  .loading-modal {
+    min-height: 220px;
+    padding: 0.6rem;
+  }
+  
+  .loading-spinner {
+    width: 30px;
+    height: 30px;
+    border-width: 3px;
+    margin-bottom: 0.6rem;
+  }
+  
+  .loading-text {
+    font-size: 0.7rem;
+  }
+}
+
+/* Landscape */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .student-dynamic-container {
+    min-height: 250px;
+  }
+  
+  .user-students-page-content {
+    padding: 0.8rem;
+  }
+}
+
+/*====================================*/
+/* END STUDENTS PAGE RESPONSIVE DESIGN*/
+/*====================================*/

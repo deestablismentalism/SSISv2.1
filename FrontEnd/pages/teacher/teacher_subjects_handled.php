@@ -3,7 +3,7 @@ if(session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 ob_start();
-require_once __DIR__ . '/../../../BackEnd/teacher/view/teacherSubjectsHandledView.php';
+require_once __DIR__ . '/../../../BackEnd/teacher/views/teacherSubjectsHandledView.php';
 $view = new teacherSubjectsHandledView();
 $pageTitle = 'Subjects Handled';
 $pageCss = '<link rel="stylesheet" href="../../assets/css/teacher/teacher-subjects-handled.css">';
@@ -12,9 +12,13 @@ $pageJs = '<script src="../../assets/js/teacher/teacher-subjects-handled.js" def
 ?>
 
 <div class="teacher-subjects-handled-content">
-    <h1> Your Subjects Handled</h1>
-    <div class="subjects-list-wrapper">
+    <div class="subjects-handled-wrapper">
+        <div class="subjects-handled-header">
+            <h1>Your Subjects Handled</h1>
+        </div>
+        <div class="subjects-list-wrapper">
             <?php $view->displaySubjects(); ?>
+        </div>
     </div>
 </div>
 <?php

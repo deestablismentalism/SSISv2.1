@@ -28,37 +28,46 @@ $pageJs = '<script type="module" src="../../assets/js/admin/admin-dashboard.js" 
     <div class="dashboard-hyperlinks">
         <a href="admin_all_enrollees.php" class="all-hyperlinks-wrapper"> 
             <div class="all-enrollees-count">
-                <h1 class="data-link-title"> All Enrollees </h1>
-                <span id="total-enrollees" class="total-count">
-                    <?php 
-                    include_once __DIR__.'/../../../BackEnd/admin/view/adminDashboardView.php';
-                    $dashboard = new adminDashboardView();
-                    $total_enrollees = $dashboard->displayEnrolleesCount();
-                    echo $total_enrollees;
-                    ?>
-                </span> 
+                <div class="count-box-content">
+                    <h1 class="data-link-title"> All Enrollees </h1>
+                    <span id="total-enrollees" class="total-count">
+                        <?php 
+                        include_once __DIR__.'/../../../BackEnd/admin/views/adminDashboardView.php';
+                        $dashboard = new adminDashboardView();
+                        $total_enrollees = $dashboard->displayEnrolleesCount();
+                        echo $total_enrollees;
+                        ?>
+                    </span> 
+                </div>
+                <img src="../../assets/imgs/all-enrollees.png" alt="Enrollees Icon" class="count-box-icon">
             </div>
         </a>
         <a href="admin_all_students.php" class="all-hyperlinks-wrapper">
             <div class="all-students-count">
-                <h1 class="data-link-title"> All Students </h1>
-                <span id="total-students" class="total-count">
-                    <?php 
-                        $total_students = $dashboard->displayStudentsCount();
-                        echo $total_students;
-                    ?>
-                </span>
+                <div class="count-box-content">
+                    <h1 class="data-link-title"> All Students </h1>
+                    <span id="total-students" class="total-count">
+                        <?php 
+                            $total_students = $dashboard->displayStudentsCount();
+                            echo $total_students;
+                        ?>
+                    </span>
+                </div>
+                <img src="../../assets/imgs/all-students.png" alt="Students Icon" class="count-box-icon">
             </div>
         </a>
         <a href="admin_denied_followup.php" class="all-hyperlinks-wrapper">
             <div class="all-denied-follow-up-count">
-                <h1 class="data-link-title"> Denied Follow Up </h1>
-                <span id="total-denied-follow-up" class="total-count">
-                    <?php
-                        $total_denied_follow_up = $dashboard->displayDeniedAndToFollowUpCount();
-                        echo $total_denied_follow_up;
-                    ?>
-                </span>
+                <div class="count-box-content">
+                    <h1 class="data-link-title"> Denied / Follow Up </h1>
+                    <span id="total-denied-follow-up" class="total-count">
+                        <?php
+                            $total_denied_follow_up = $dashboard->displayDeniedAndToFollowUpCount();
+                            echo $total_denied_follow_up;
+                        ?>
+                    </span>
+                </div>
+                <img src="../../assets/imgs/deniedOrDenied.png" alt="Denied Icon" class="count-box-icon">
             </div>
         </a>
     </div>
@@ -115,38 +124,42 @@ $pageJs = '<script type="module" src="../../assets/js/admin/admin-dashboard.js" 
     <div class="big-card-wrapper">
     <!--PENDING ENROLLMENTS BIG-->
     <div class="pending-enrollments-wrapper">
-        <div class="pending-enrollments-header">
-            <h3 class="big-card-title"> Recently Submitted</h3> 
-            <a class="big-card-hyperlink" href="../staff/staff_pending_enrollments.php"> View All Pending Enrollees</a>
-            <hr class="custom-line">
+        <div class="wrapper-content">
+            <div class="pending-enrollments-header">
+                <h3 class="big-card-title"> Recently Submitted</h3> 
+                <a class="big-card-hyperlink" href="../staff/staff_pending_enrollments.php"> View All Pending Enrollees</a>
+                <hr class="custom-line">
+            </div>
+            <table class="pending-enrollments-table">
+                <thead>
+                <tr>
+                    <th>LRN</th>
+                    <th>Name</th>
+                    <th>Level</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                    include_once __DIR__ . '/../../../BackEnd/admin/views/adminDashboardView.php';
+                    $dashboard = new adminDashboardView();
+                    $dashboard->displayPendingEnrolleesInformation();
+                ?>
+                </tbody>
+            </table>
         </div>
-        <table class="pending-enrollments-table">
-            <thead>
-            <tr>
-                <th>LRN</th>
-                <th>Name</th>
-                <th>Level</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
-                include_once __DIR__ . '/../../../BackEnd/admin/view/adminDashboardView.php';
-                $dashboard = new adminDashboardView();
-                $dashboard->displayPendingEnrolleesInformation();
-            ?>
-            </tbody>
-        </table>
     </div>
     <div class="quick-actions-wrapper">
-    <div class="quick-action-card">
-        <h3>Quick Actions</h3>
-        <hr class="quick-action-line">
-        <ul>
-            <li><a href="Admin_Subjects.php"> Add a subject</a></li>
-            <li><a href="Admin_Sections.php"> Add a section</a></li>
-            <li><a href="Admin_Schedules.php"> Create schedules</a></li>
-        </ul>
-    </div>
+        <div class="wrapper-content">
+            <div class="quick-action-card">
+                <h3>Quick Actions</h3>
+                <hr class="quick-action-line">
+                <ul>
+                    <li><a href="Admin_Subjects.php"> Add a subject</a></li>
+                    <li><a href="Admin_Sections.php"> Add a section</a></li>
+                    <li><a href="Admin_Schedules.php"> Create schedules</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
     </div>
     </div>

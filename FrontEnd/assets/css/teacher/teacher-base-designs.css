@@ -1,3 +1,37 @@
+/*----START OF BASE DESIGNS----*/
+:root {
+    --main-fonts:  "Poppins", "Segoe UI", sans-serif;
+    --button-fonts: 'Baloo-Thambi-2';
+    --link-fonts: 'Roboto', sans-serif;
+    --sidebar-width: 60px;
+    --sidebar-expanded-width: 20dvw;
+    --title-font-size: 3em;
+    --main-color: #1c4a72;
+    --secondary-color: #F1BD22;
+    --wrapper-bg-color: #fffdfdf5;
+    --title-main-color: #3e9ec4;
+    --hover: #48cae4;
+    --container-color: rgba(36, 186, 255, 0.28);
+    --button-color: ;
+    --button-hover-color: ;
+    --button-click: scale(.9);
+    --border-radius: 1rem;
+    --title-h1-font-size: 1.6rem;
+    --title-font-weight: 600;
+    --title-letter-spacing: 1px;
+    --card-border: rgba(255, 255, 255, 0.2);
+    --warning: #ffcc00;
+    --danger: #ff5f5f;
+    --success: #44d07b;
+    --status-active: #44d07b;
+    --status-inactive: #ffc107;
+    --status-dropped: #ff6b6b;
+}
+
+.content {
+  background-image: url("../../imgs/paper.jpg");
+}
+
 body {
     background-color: rgb(235, 231, 231);
     display: flex;
@@ -45,7 +79,7 @@ body {
 }  
 .sidebar-title {
     color: white;
-    background-color: #F1BD22;
+    background: #f8af00;
     display: grid;
     height: 3em;
     grid-template-columns: 50% 50%;
@@ -163,8 +197,8 @@ body {
     padding-left: 1em;
     background: linear-gradient(to right, #595112, #634312);
     background-clip: text;
-    -webkit-text-fill-color: transparent;
     font-size: 1.8rem;
+    color: white;
     position: relative;
 }
 .header-title::before {
@@ -180,16 +214,17 @@ body {
     transform: rotate(-45deg);
 }
 .header-wrapper {
-    width: 100%;
-    display:flex;
+    display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    background: linear-gradient(to right,  #Fff, #fff5ee, #F3e5ab, #e2dfd2, #E2DFD2 );
+    background: #f8af00;
     height: 3rem;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 6px 0px 4px 1px rgba(0, 0, 0, 0.2);
     position: sticky;
     top: 0;
+    color: white;
+    z-index: 10;
 }
 .account {
     display: flex;
@@ -225,57 +260,345 @@ body {
 
 .account-settings-wrapper{
     font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.teacher-profile-pic {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.teacher-name-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.teacher-name-wrapper .name {
+    margin: 0;
+    font-size: 1rem;
+    color: white;
+}
+
+.teacher-name-wrapper span {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    color: white;
 }
 
 .account-settings-btn-content-wrapper {
     display: none;
     position: absolute;
     top: 120%;
-    right:10px;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-.account-link-wrapper:hover, .account-logout-wrapper:hover, .account-edit-info-wrapper:hover {
-    background-color: #a7a39d;
-}
-
-.account-settings-btn-content-wrapper a{
-    cursor: pointer;
+    right: 10px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.98));
+    backdrop-filter: blur(10px);
+    min-width: 280px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+    animation: slideDown 0.3s ease-out;
 }
 
-.account-link-wrapper, .account-logout-wrapper, .account-edit-info-wrapper{
-    display: flex;
-}
-.account-link-wrapper, .account-logout-wrapper, .account-edit-info-wrapper{
-    display: flex;
-}
-
-.update-password {
-    margin: auto 0px;
-}
-
-.account .change-pass-icon, .account .logout-icon, .account .edit-info-icon{
-    padding: .4em;
-    margin: .5em;
-    border-radius: 50%;
-    background-color: #cfcbc4;
-    border: #a7a39d 1px solid;
-}
-
-.logout-text, .edit-info-text {
-    width: 100%;
-    height: 100%;
-    padding: 1em;
-    margin: auto;
-    margin-left: .2em;
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .user-info-wrapper {
     display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1.2rem;
+    background: linear-gradient(135deg, #3e9ec4, #48cae4);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
 }
+
+.user-info-wrapper img {
+    width: 1.8rem;
+    height: 1.8rem;
+    filter: brightness(0) invert(1);
+}
+
+.user-name {
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+}
+
+.account-type {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.9rem;
+}
+
+.account-link-wrapper, 
+.account-logout-wrapper, 
+.account-edit-info-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 1.2rem;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.account-edit-info-wrapper {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.account-link-wrapper {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.account-link-wrapper:hover, 
+.account-logout-wrapper:hover, 
+.account-edit-info-wrapper:hover {
+    background: linear-gradient(90deg, rgba(62, 158, 196, 0.08), rgba(72, 202, 228, 0.08));
+    padding-left: 1.5rem;
+}
+
+.account-link-wrapper:hover::before,
+.account-logout-wrapper:hover::before,
+.account-edit-info-wrapper:hover::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, #3e9ec4, #48cae4);
+}
+
+.account-settings-btn-content-wrapper a {
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.account-link-wrapper a:last-child,
+.account-logout-wrapper a:last-child,
+.account-edit-info-wrapper a:last-child {
+    color: #2c3e50;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.account-link-wrapper:hover a:last-child,
+.account-logout-wrapper:hover a:last-child,
+.account-edit-info-wrapper:hover a:last-child {
+    color: #3e9ec4;
+}
+
+.update-password,
+.logout-text,
+.edit-info-text {
+    margin: 0;
+    flex: 1;
+    color: #2c3e50;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.account-link-wrapper a:first-child,
+.account-logout-wrapper a:first-child,
+.account-edit-info-wrapper a:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border: 1px solid rgba(62, 158, 196, 0.2);
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.account .change-pass-icon, 
+.account .logout-icon, 
+.account .edit-info-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    display: block;
+    object-fit: contain;
+}
+
+.account-link-wrapper:hover a:first-child,
+.account-logout-wrapper:hover a:first-child,
+.account-edit-info-wrapper:hover a:first-child {
+    background: linear-gradient(135deg, #3e9ec4, #48cae4);
+    border-color: #3e9ec4;
+    transform: scale(1.1);
+}
+
+.account-link-wrapper:hover .change-pass-icon,
+.account-logout-wrapper:hover .logout-icon,
+.account-edit-info-wrapper:hover .edit-info-icon {
+    filter: brightness(0) invert(1);
+}
+
+.account-logout-wrapper {
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.account-logout-wrapper:hover {
+    background: linear-gradient(90deg, rgba(255, 95, 95, 0.05), rgba(255, 95, 95, 0.08));
+}
+
+.account-logout-wrapper:hover::before {
+    background: linear-gradient(180deg, #ff5f5f, #ff4444);
+}
+
+.account-logout-wrapper:hover a:last-child,
+.account-logout-wrapper:hover .logout-text {
+    color: #ff5f5f !important;
+}
+
+
+@media screen and (min-width: 2560px) {
+    .header-wrapper {
+        height: 4rem;
+    }
+    
+    .header-title {
+        font-size: 2.2rem;
+    }
+    
+    .teacher-profile-pic {
+        width: 3rem;
+        height: 3rem;
+    }
+    
+    .teacher-name-wrapper .name {
+        font-size: 1.2rem;
+    }
+    
+    .teacher-name-wrapper span {
+        font-size: 1rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 320px;
+    }
+}
+
+@media screen and (min-width: 1920px) and (max-width: 2559px) {
+    .header-wrapper {
+        height: 3.5rem;
+    }
+    
+    .header-title {
+        font-size: 2rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 300px;
+    }
+}
+
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+    .header-wrapper {
+        height: 3.2rem;
+    }
+}
+
+@media screen and (max-width: 1439px) {
+    .header-title {
+        font-size: 1.6rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 260px;
+    }
+}
+
+@media screen and (max-width: 1023px) {
+    .header-wrapper {
+        height: auto;
+        padding: 0.8rem 1rem;
+    }
+    
+    .header-title {
+        font-size: 1.4rem;
+    }
+    
+    .teacher-profile-pic {
+        width: 2.2rem;
+        height: 2.2rem;
+    }
+    
+    .teacher-name-wrapper .name {
+        font-size: 0.95rem;
+    }
+    
+    .teacher-name-wrapper span {
+        font-size: 0.8rem;
+    }
+    
+    .account-settings-wrapper {
+        gap: 0.6rem;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .account-link-wrapper:hover, 
+    .account-logout-wrapper:hover, 
+    .account-edit-info-wrapper:hover {
+        padding-left: 1.2rem;
+    }
+    
+    .account-link-wrapper:active, 
+    .account-logout-wrapper:active, 
+    .account-edit-info-wrapper:active {
+        background: linear-gradient(90deg, rgba(62, 158, 196, 0.15), rgba(72, 202, 228, 0.15));
+    }
+}
+    
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .header-wrapper {
+        height: auto;
+        padding: 0.5rem 0.8rem;
+    }
+    
+    .header-title {
+        font-size: 0.9rem;
+    }
+    
+    .teacher-name-wrapper {
+        display: flex;
+    }
+    
+    .teacher-name-wrapper .name {
+        font-size: 0.85rem;
+    }
+    
+    .teacher-name-wrapper span {
+        font-size: 0.75rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+}
+
 .show {
     display: block;
 }
@@ -297,22 +620,31 @@ body {
     z-index: 100;
     width: 100%;
     height: 100%;
-    padding-top: 2rem;
     left: 0;
-    right: 0;
+    top: 0;
     background-color: rgba(0,0,0,0.4);
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+.modal[style*="display: block"],
+.modal.show {
+    display: flex !important;
 }
 .modal-content {
     position: relative;
     background-color: #fefefe;
-    margin: 5% auto;
+    margin: auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
     max-width: 800px;
     border-radius: 8px;
-    max-height: 80vh;
+    max-height: 90vh;
     overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 .close {
     position: absolute;
@@ -328,4 +660,20 @@ body {
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+/* global loading animation*/
+.loading {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #666;
+}
+.loading::after {
+    content: '...';
+    animation: dots 1.5s steps(5, end) infinite;
+}
+@keyframes dots {
+    0%, 20% {content: '.';}
+    40%{content: '..';}
+    100%{content: '...';}
 }

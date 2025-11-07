@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  app:
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor # prevents overwriting vendor
+    expose:
+      - 9000
+
+  web:
+    ports:
+      - "3000:80"
+    volumes:
+      - .:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+  db:
+    ports:
+      - "3306:3306"
+
+  pma:
+    image: phpmyadmin/phpmyadmin
+    container_name: ssis_f_pma
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${USERNAME}
+      PMA_PASSWORD: ${PASSWORD}
+    depends_on:
+      - db
+    networks:
+      - ssis

@@ -2,17 +2,19 @@
 ob_start();
 require_once __DIR__ . '/../session_init.php';
 $pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-enrollees.css">';
-$pageJs = '<script src="../../assets/js/user/user-enrollees.js"defer></script>';
-$pageTitle = 'Home';
-require_once __DIR__ . '/../../../BackEnd/user/view/userEnrolleesView.php';
+$pageJs = '<script src="../../assets/js/user/user-enrollees-modal.js" defer></script>';
+$pageTitle = 'My Enrollees';
+require_once __DIR__ . '/../../../BackEnd/user/views/userEnrolleesView.php';
 $enrollee = new displayEnrollmentForms();
 ?>
 </head>
     <!--START OF THE MAIN CONTENT-->
     <div class="content" id="content">
         <div class="shadow-container">
+            <div class="title-header">
+                <p class = "title"> Enrollment Forms Submitted </p> <br> 
+            </div>
             <div class="wrapper">
-                <p class = "title"> Enrollment Forms Submitted </p> <br>
                 <div class="table-container">
                     <?php
                     $enrollee->displaySubmittedForms();

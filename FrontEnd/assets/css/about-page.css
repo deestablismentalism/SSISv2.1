@@ -1,26 +1,23 @@
 html{ 
-        background-color: #f3fffe
+    background-color: #f3fffe
 }
 
-
-.header {
-    background-color: #f3fffe;
-}
 .body {
     background-color: #f3fffe; /* Light background for contrast */
     font-family: "PT Serif", serif;
 }
 .page-title {
-    font-size: 2.75em;
+    font-size: clamp(1.5rem, 4vw, 2.75em);
     color: #ffffff;
     text-align: center;
     margin-top: 20px;
     background-color: #003366;
-    height: 350px; /* Set a fixed height */
+    height: clamp(200px, 40vw, 350px);
     display: flex;
-    align-items: center; /* Vertical center */
-    justify-content: center; /* Horizontal center */
+    align-items: center;
+    justify-content: center;
     box-sizing: border-box;
+    padding: 0 clamp(10px, 2vw, 20px);
 }
 
 .border-100-title {
@@ -51,11 +48,12 @@ html{
 }
 
 .content-text {
-    font-size: 2em;
-    color: #000000; /* Changed from white to black for better contrast */
-    margin-top: 40px;
+    font-size: clamp(1.3rem, 3vw, 2em);
+    color: #000000;
+    margin-top: clamp(20px, 4vw, 40px);
     text-align: center;
     width: 100%;
+    padding: 0 clamp(10px, 2vw, 20px);
 }
 
 .border-50-underline {
@@ -144,14 +142,15 @@ html{
         }
 
         .hero-subtitle {
-            font-size: 1rem;
+            font-size: clamp(0.85rem, 2vw, 1rem);
             animation: slideInUp 1s ease 0.3s forwards;
-            margin: -164px 0 102px 0px;
+            padding-top: 2rem;
+            margin-bottom: clamp(3rem, 8vw, 6rem);
             text-shadow: 2px 4px 10px rgb(0, 27, 33);
         }
 
         .hero-subtitle img {
-            width: 30px;
+            width: clamp(25px, 5vw, 30px);
             height: auto;
             vertical-align: middle;
             margin-right: 10px;
@@ -160,7 +159,7 @@ html{
 
 
         .hero-title {
-            font-size: 3.5rem;
+            font-size: clamp(2rem, 6vw, 3.5rem);
             font-weight: 700;
             margin-bottom: 2rem;
             line-height: 1.2;
@@ -219,7 +218,7 @@ html{
             position: relative;
             display: block;
             width: calc(100% + 1.3px);
-            height: 50px;
+            height: clamp(30px, 6vw, 50px);
         }
 
         .wave .shape-fill {
@@ -250,7 +249,7 @@ html{
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .nav-container {
+           .nav-container {
                 padding: 1rem;
             }
 
@@ -277,6 +276,37 @@ html{
                 display: flex;
                 animation: slideDown 0.3s ease;
             }
+            
+            
+            .nav-menu a {
+                text-decoration: none;
+                color:  #4cb4fa;
+                font-weight: 500;
+                transition: color 0.3s ease, transform 0.3s ease;
+                position: relative;
+            }
+
+            .nav-menu a:hover {
+                color: #4285f4;
+                transform: translateY(-2px);
+            }
+
+            .nav-menu a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: -5px;
+                left: 50%;
+                background-color: #4285f4;
+                transition: all 0.3s ease;
+                transform: translateX(-50%);
+            }
+
+            .nav-menu a:hover::after {
+                width: 100%;
+            }
+
 
             .mobile-menu-btn {
                 display: block;
@@ -333,15 +363,15 @@ html{
 
 /* Leadership Section - FIXED */
 .about-text {
-    font-size: 31px;
-    margin-top: 40px;
+    font-size: clamp(1.3rem, 4vw, 2rem);
+    margin-top: clamp(20px, 4vw, 40px);
     text-align: center;
     width: 100%;
     color: #0093ff;
-    margin: 30px 0px 30px 0px;
+    margin: clamp(20px, 3vw, 30px) 0;
     font-family: "PT Serif", light;
-    /* text-shadow: 1px 1px 7px rgb(222 222 163); */
     font-weight: 800;
+    padding: 0 clamp(10px, 2vw, 20px);
 }
 
 .teachers {
@@ -349,26 +379,25 @@ html{
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 3rem;
-    padding: 3rem;
-    max-width: 1245px;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    padding: clamp(1.5rem, 3vw, 3rem);
+    max-width: 1400px;
     margin: 0 auto;
-    /* background-image: url("./assets/imgs/soft-paper-bg.jpg") no-repeat center center; 
-    background-size: cover;   /* makes sure it covers the box fully */
     border-radius: 12px;
     background-color: #3fc4f48f;
 }
+
 .teachers-text {
-    flex: 1 1 450px; /* Adjusted flex basis */
-    min-width: 300px;
+    flex: 1 1 450px;
+    min-width: 280px;
 }
 
 .teachers-image {
-    flex: 1 1 450px; /* Adjusted flex basis */
+    flex: 1 1 450px;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 300px;
+    min-width: 280px;
 }
 
 .teachers-image:hover {
@@ -377,7 +406,7 @@ html{
 }
 
 .teachers-text h1 {
-    font-size: 1.8rem;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
     margin: 0 0 1rem;
     color: #224890;
     line-height: 1.3;
@@ -391,13 +420,13 @@ html{
     color: #0f2e3e;
     margin-bottom: 1.5rem;
     font-family: "PT Serif";
-    text-shadow: 2 3 #3e1a1a;
     text-shadow: 1px 1px 12px rgb(207 209 210);
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
 }
 
 .counters {
     display: flex;
-    gap: 2rem;
+    gap: clamp(1rem, 2vw, 2rem);
     margin-top: 1.5rem;
     flex-wrap: wrap;
     border-color: #bcffff;
@@ -406,20 +435,20 @@ html{
 
 .counter {
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
     text-align: center;
     flex: 1;
-    min-width: 120px;
+    min-width: 100px;
     background-color: rgba(66, 133, 244, 0.4);
     border-radius: 100px;
-    padding-top: 9px;
+    padding-top: clamp(6px, 1.5vw, 9px);
     border-color: #bcffff;
     box-shadow: 0 4px 15px rgb(50 89 158 / 42%);
 }
 
 .counter span {
     color: #daf49de8;
-    font-size: 26px;
+    font-size: clamp(1.3rem, 3vw, 1.625rem);
     text-shadow: 1px 1px 12px rgb(153 184 194);
 }
 
@@ -431,30 +460,32 @@ html{
 
 
 .counter p {
-    font-size: 1rem;
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
     color: #dcf8f6;
     margin-top: 0.3rem;
     text-shadow: 1px 1px 0px rgb(130 201 236);
 }
 
 .teachers-image img {
-    width: 111%;
+    width: 100%;
     max-width: 620px;
     border-radius: 9px;
-    height: 24em;
+    height: auto;
+    min-height: clamp(250px, 30vw, 24em);
+    object-fit: cover;
     box-shadow: 0 4px 15px rgb(50 89 158 / 42%);
 }
 
 .team {
-  padding: 2rem;
-  max-width: 1200px;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  max-width: 1400px;
   margin: auto;
 }
 
 .team-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
+    gap: clamp(1rem, 2vw, 1.5rem);
     justify-items: center;
 }
 
@@ -497,6 +528,7 @@ html{
     font-family: 'PT Serif';
     text-shadow: 1px 2px 3px #cefaff;
     font-weight: 1000;
+    font-size: clamp(1rem, 2vw, 1.2rem);
 }
 
 .position {
@@ -504,16 +536,289 @@ html{
     font-weight: bold;
     margin-bottom: 0.5rem;
     font-family: 'PT Serif';
+    font-size: clamp(0.85rem, 1.5vw, 0.95rem);
 }
 
 .team-card p {
   color: #555;
-  font-size: 0.9rem;
+  font-size: clamp(0.85rem, 1.5vw, 0.9rem);
   padding: 0 1rem 1rem;
   line-height: 1.4;
-}s
+}
   /* Footer spacing */
   .footer {
     position: absolute;
     top: 20px;
-  }
+}
+
+
+/* ====================================
+   COMPREHENSIVE RESPONSIVE DESIGN
+   ==================================== */
+
+/* Ultra Large Screens (2560px+) */
+@media screen and (min-width: 2560px) {
+    .hero-content {
+        max-width: 1200px;
+    }
+    
+    .teachers {
+        max-width: 1800px;
+        padding: 4rem;
+    }
+    
+    .team {
+        max-width: 1800px;
+    }
+}
+
+/* Extra Extra Large Screens (1920px - 2559px) */
+@media screen and (min-width: 1920px) and (max-width: 2559px) {
+    .hero-content {
+        max-width: 1000px;
+    }
+    
+    .teachers {
+        max-width: 1600px;
+    }
+    
+    .team {
+        max-width: 1600px;
+    }
+}
+
+/* Extra Large Screens (1440px - 1919px) */
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+    .teachers {
+        max-width: 1500px;
+    }
+}
+
+/* Large Desktop (1200px - 1439px) */
+@media screen and (min-width: 1200px) and (max-width: 1439px) {
+    .teachers {
+        max-width: 1400px;
+    }
+}
+
+/* Desktop (1024px - 1199px) */
+@media screen and (max-width: 1199px) {
+    .teachers {
+        gap: 2.5rem;
+        padding: 2.5rem;
+    }
+}
+
+/* Tablet Landscape (992px - 1023px) */
+@media screen and (max-width: 1023px) {
+    .hero {
+        min-height: 70vh;
+    }
+    
+    .teachers {
+        gap: 2rem;
+        padding: 2rem;
+    }
+}
+
+/* Tablet Portrait (768px - 991px) */
+@media screen and (max-width: 991px) {
+    .hero {
+        min-height: 65vh;
+    }
+    
+    .hero-content {
+        padding: 1.5rem;
+    }
+    
+    .page-title {
+        margin-top: 10px;
+    }
+    
+    .teachers {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 2rem;
+    }
+
+    .teachers-text, .teachers-image {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+    
+    .teachers-image img {
+        max-width: 100%;
+    }
+}
+
+/* Mobile Landscape & Small Tablet (640px - 767px) */
+@media screen and (max-width: 767px) {
+    .hero {
+        min-height: 60vh;
+    }
+    
+    .hero-content {
+        padding: 1.2rem;
+    }
+    
+    .hero-subtitle {
+        padding-top: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+    
+    .teachers {
+        flex-direction: column;
+        padding: 1.5rem;
+    }
+
+    .teachers-text, .teachers-image {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    .counters {
+        gap: 1rem;
+    }
+
+    .counter {
+        font-size: 1.2rem;
+        min-width: 90px;
+    }
+    
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.2rem;
+    }
+}
+
+/* Mobile Portrait Large (480px - 639px) */
+@media screen and (max-width: 639px) {
+    .hero {
+        min-height: 55vh;
+    }
+    
+    .hero-subtitle {
+        padding-top: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .teachers {
+        padding: 1.3rem;
+    }
+    
+    .counters {
+        gap: 0.8rem;
+    }
+    
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .team-card {
+        max-width: 100%;
+    }
+}
+
+/* Mobile Portrait Medium (375px - 479px) */
+@media screen and (max-width: 479px) {
+    .hero {
+        min-height: 50vh;
+    }
+    
+    .hero-content {
+        padding: 1rem;
+    }
+    
+    .hero-subtitle {
+        padding-top: 0.8rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .border-75-underline::after {
+        width: 200%;
+    }
+    
+    .teachers {
+        padding: 1.2rem;
+    }
+    
+    .counters {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .counter {
+        font-size: 1.1rem;
+        min-width: 80px;
+    }
+    
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+    }
+}
+
+/* Mobile Portrait Small (320px - 374px) */
+@media screen and (max-width: 374px) {
+    .hero {
+        min-height: 45vh;
+    }
+    
+    .hero-content {
+        padding: 0.8rem;
+    }
+    
+    .hero-subtitle {
+        padding-top: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .border-75-underline::after {
+        width: 180%;
+    }
+
+    .teachers {
+        padding: 1rem;
+    }
+
+    .counters {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+
+    .counter {
+        font-size: 1rem;
+        min-width: 70px;
+    }
+
+    .counter span {
+        font-size: 1.1rem;
+    }
+
+    .counter p {
+        font-size: 0.75rem;
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+    
+    .team-card {
+        max-width: 100%;
+    }
+}
+
+/* Landscape orientation for mobile devices */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        min-height: 100vh;
+    }
+    
+    .hero-subtitle {
+        padding-top: 0.5rem;
+        margin-bottom: 1rem;
+    }
+}
+

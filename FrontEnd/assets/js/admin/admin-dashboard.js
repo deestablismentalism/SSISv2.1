@@ -121,20 +121,15 @@ document.addEventListener('DOMContentLoaded', function(){
 
     //initial enrollee by day 
     const enrolleeByDayCanva = document.getElementById('enrollee-by-day');
-    const currentSelected = document.querySelector("input[name='days-filter']:checked").value;
-    enrolleeByDay(currentSelected).then(data=>{
-        if(data) {
-            EnrolleeByDaybarGraph(data, enrolleeByDayCanva);
-        }
-    });
     //change depending on button input
     const radio = document.querySelectorAll('input[type="radio"]');
-    radio.forEach(element=> {
-        element.addEventListener('change', function() {
-            const currentSelected = document.querySelector("input[name=days-filter]:checked").value;
-            enrolleeByDay(currentSelected);
-        });
-    });
+    async function updateEnrolleeByDay() {
+        const currentSelected = document.querySelector("input[name='days-filter']:checked").value;
+        const data = await enrolleeByDay(currentSelected);
+        if (data) EnrolleeByDaybarGraph(data, enrolleeByDayCanva);
+    }
+    updateEnrolleeByDay(); // initial load
+    radio.forEach(el => el.addEventListener('change', updateEnrolleeByDay));
 });
 //outside DOM event listener
 function StudentsPieChart(data, title) {
@@ -379,7 +374,7 @@ function EnrolleeByDaybarGraph(data, title) {
             datasets: [{
                 label: 'Submitted Enrollment Forms',
                 data: values,
-                backgroundColor: '#000d23'
+                backgroundColor: '#31c1ffff'
             }]
         },
         options: {
@@ -398,4 +393,4 @@ function EnrolleeByDaybarGraph(data, title) {
             }
         }
     });
-} 
+}

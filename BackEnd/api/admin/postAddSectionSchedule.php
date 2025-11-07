@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/../../admin/controller/adminSchedulesController.php';
+require_once __DIR__ . '/../../admin/controllers/adminSchedulesController.php';
 header('Content-Type: application/json');
 
 try {

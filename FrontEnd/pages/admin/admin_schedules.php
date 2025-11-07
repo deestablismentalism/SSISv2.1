@@ -3,7 +3,7 @@ ob_start();
 $pageJs = '<script type="module" src="../../assets/js/admin/admin-schedules.js"></script>';
 $pageTitle = 'Admin Schedules';
 $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-schedules.css">';
-require_once __DIR__ . '/../../../BackEnd/admin/view/adminSchedulesView.php';
+require_once __DIR__ . '/../../../BackEnd/admin/views/adminSchedulesView.php';
 $view = new adminSchedulesView();
 ?>
 

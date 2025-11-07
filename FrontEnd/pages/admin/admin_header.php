@@ -9,25 +9,38 @@
                 <div class="account-settings-wrapper">
                     <?php 
                         $name = '';
-                        if (isset($_SESSION['Staff']['First-Name']) && isset($_SESSION['Staff']['Last-Name']) && $_SESSION['Staff']['User-Type']) {
-                            $name = $_SESSION['Staff']['First-Name'] . " " . $_SESSION['Staff']['Last-Name'];
+                        $profilePicPath = null;
+                        $defaultPic = '../../assets/imgs/default-avatar.svg';
+                        
+                        if (isset($_SESSION['Staff']['First-Name']) && $_SESSION['Staff']['User-Type']) {
+                            $name = $_SESSION['Staff']['First-Name'];
+                            
+                            if (isset($_SESSION['Staff']['User-Id'])) {
+                                require_once __DIR__ . '/../../../BackEnd/admin/views/adminProfilePictureView.php';
+                                $profilePicView = new adminProfilePictureView();
+                                $profilePicPath = $profilePicView->getProfilePicturePath($_SESSION['Staff']['User-Id']);
+                            }
                         } 
                         else {
-                            echo "User Name";
+                            $name = "User Name";
                         }
                     ?>   
-                    <h2 class="name"> <?php echo $name; ?></h2>
-                    <span>  <?php $viewType = new UserTypeView((int)$_SESSION['Staff']['Staff-Type']); 
-                            echo $viewType; ?> </span>
+                    <img src="<?php echo $profilePicPath ?? $defaultPic; ?>" alt="Profile" class="admin-profile-pic">
+                    <div class="admin-name-wrapper">
+                        <h2 class="name"> <?php echo $name; ?></h2>
+                        <span>  <?php $viewType = new UserTypeView((int)$_SESSION['Staff']['Staff-Type']); 
+                                echo $viewType; ?> </span>
+                    </div>
                     <!-- end of account-settings-wrapper -->
                 </div>
                     <div class="account-settings-btn">
                        <div> <button class="account-btn dropdown" ><img src="../../assets/imgs/chevron-down-black.svg" id="account-drop" alt=""></button></div>
                             <div class="account-settings-btn-content-wrapper drop-content">
                                 <div class="user-info-wrapper border-100sb">
-                                    <img src="../../assets/imgs/check2-circle.svg" alt="">
+                                    <img src="<?php echo $profilePicPath ?? $defaultPic; ?>" alt="Profile" class="dropdown-profile-pic">
                                     <div class="user-name">
-                                        <p class="account-type">User</p>
+                                        <p class="dropdown-user-name"><?php echo $_SESSION['Staff']['First-Name']; ?></p>
+                                        <p class="dropdown-position"><?php $userType = new UserTypeView((int)$_SESSION['Staff']['Staff-Type']); echo $userType; ?></p>
                                     <!-- end of user-name -->
                                     </div>
                             <!-- end of user-info-wrapper -->

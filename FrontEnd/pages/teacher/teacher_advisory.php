@@ -1,10 +1,13 @@
-<?php 
-    ob_start();
-    require_once __DIR__ . '/../../../BackEnd/teacher/view/teacherAdvisoryView.php';
+<?php
+if(session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+ob_start();
+require_once __DIR__ . '/../../../BackEnd/teacher/views/teacherAdvisoryView.php';
     $teacherAdvisoryView = new teacherAdvisoryView();
     $pageTitle = 'Advisory';
     $pageCss = '<link rel="stylesheet" href="../../assets/css/teacher/teacher-advisory.css">';
-    $pageJs = '<script src="../../assets/js/teacher/teacher-advisory.js" defer></script>';
+    $pageJs = '<script type="module" src="../../assets/js/teacher/teacher-advisory.js" defer></script>';
 ?>
 <div class="teacher-advisory-content">
     <div class="advisory-wrapper">

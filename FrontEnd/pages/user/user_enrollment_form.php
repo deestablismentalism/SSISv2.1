@@ -6,6 +6,8 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-f
 $pageCss2 = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form-errors.css" media="all">';
 $pageCss3 = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form-mq.css" media="all">';
 $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.js" defer></script>';
+require_once __DIR__ .'/../../../BackEnd/common/getGradeLevels.php';
+$view = new getGradeLevels();
 ?>
 <div class="enrollment-form-content">
     <div class="content-title">
@@ -36,44 +38,48 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                     <div class="learner-radio">
                         <p class="dfont">I-check lamang naaangkop <span class="required">*</span></p>
                         <div class="lrn-radio-buttons-selections">
-                            <input type="radio" id="no-lrn" name="bool-LRN" value="0" class="radio">
-                            <label for="no-lrn">Walang LRN</label>
-                            <input type="radio" id="with-lrn" name="bool-LRN" value="1" class="radio">
-                            <label for="with-lrn">Mayroong LRN</label>
-                            <input type="radio" id="returning" name="bool-LRN" value="0" class="radio">
-                            <label for="returning">Returning (Balik Aral)</label>
+                            <div class="radio-option">
+                                <input type="radio" id="no-lrn" name="bool-LRN" value="0" class="radio">
+                                <label for="no-lrn">Walang LRN</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="with-lrn" name="bool-LRN" value="1" class="radio">
+                                <label for="with-lrn">Mayroong LRN</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="returning" name="bool-LRN" value="0" class="radio">
+                                <label for="returning">Returning (Balik Aral)</label>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="previous-school-wrapper">
                     
                     <div class="grade">
-
-                        <p class="dfont">Baitang na nais ipatala <span class="required">*</span></p>
-                        <div class="error-msg">
-                                <span class="em-enrolling-grade-level"> Error Message Here. </span>
-                            </div>
-                        <select name="grades-tbe" id="grades-tbe" class="select">
-                            <option value=""> Select a grade level </option>
-                            <?php
-                                require_once __DIR__ .'/../../../BackEnd/common/getGradeLevels.php';
-                                $view = new getGradeLevels();
-                                $view->createSelectValues();
-                            ?>
-                        </select>
-
-                        <p class="dfont">Huling baitang na natapos <span class="required">*</span></p>
-                        <div class="error-msg">
-                                <span class="em-last-grade-level"> Error Message Here. </span>
-                            </div>
-                        <select name="last-grade" id="last-grade" class="select">
-                            <option value=""> Select a grade level </option>
-                            <?php 
-                                $view = new getGradeLevels();
-                                $view->createSelectValues();
-                            ?>
-                        </select>
-
+                        <div class="enrolling-grade-level-container">
+                            <p class="dfont">Baitang na nais ipatala <span class="required">*</span></p>
+                            <div class="error-msg">
+                                    <span class="em-enrolling-grade-level"> Error Message Here. </span>
+                                </div>
+                            <select name="grades-tbe" id="grades-tbe" class="select">
+                                <option value=""> Select a grade level </option>
+                                <?php
+                                    $view->createSelectValues();
+                                ?>
+                            </select>
+                        </div>
+                        <div class="last-grade-level-container">
+                            <p class="dfont">Huling baitang na natapos <span class="required">*</span></p>
+                            <div class="error-msg">
+                                    <span class="em-last-grade-level"> Error Message Here. </span>
+                                </div>
+                            <select name="last-grade" id="last-grade" class="select">
+                                <option value=""> Select a grade level </option>
+                                <?php 
+                                    $view->createSelectValues();
+                                ?>
+                            </select>
+                        </div>
                         <div class="last-year-finished">
                             <p class="dfont">Huling natapos na taon <span class="required">*</span></p>
                             <div class="error-msg">
@@ -96,7 +102,7 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                                 <div class="error-msg">
                                     <span class="em-lschoolID"> Error Message Here. </span>
                                 </div>
-                                <input type="number" name="lschoolID" id="lschoolID" class="textbox" min="6" max="6">
+                                <input type="number" name="lschoolID" id="lschoolID" class="textbox">
                             </div>
                         </div>
                         <div class="last-school-address">
@@ -108,13 +114,16 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                         </div> 
                         <p class="dfont">Anong klase ng paaralan <span class="required">*</span></p>
                         <div> 
-                        <input type="radio" name="school-type" id="private" class="radio" value="Private">
-                            <label for="private">Pribado</label>
-                            <input type="radio" name="school-type" id="public" class="radio" value="Public">
-                            <label for="public">Pampubliko</label>
+                            <div class="radio-option">
+                                <input type="radio" name="school-type" id="private" class="radio" value="Private">
+                                <label for="private">Pribado</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="school-type" id="public" class="radio" value="Public">
+                                <label for="public">Pampubliko</label>
+                            </div>
                         </div>
                     </div>
-
                     <div class="nais-paaralan">
                         <div class="fschool-wrapper">
                             <div class="fschool">
@@ -129,7 +138,7 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                                 <div class="error-msg">
                                     <span class="em-fschoolID"> Error Message Here. </span>
                                 </div>
-                                <input type="number" name="fschoolID" id="fschoolID" class="textbox" min="6" max="6">
+                                <input type="number" name="fschoolID" id="fschoolID" class="textbox">
                             </div>
                         </div>
                         <div>
@@ -142,7 +151,6 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                     </div>
                 </div>
             </div>
-
             <!--IMPORMASYON NG STUDYANTE-->
             <div class="student-information border-75">
                 <div class="student-information-title">
@@ -151,7 +159,7 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                 <!--ROW 1-->
                 <div class="student-info-row-1">
                     <div class="PSA-number">
-                            <p class="dfont">Numero na nakalagay sa Sertipiko ng Kapanganakan (Birth Certificate) <br><br class="responsive-text-break">mula sa PSA (kung may dala na kopya) <span class="required">*</span></p>
+                            <p class="dfont">Numero na nakalagay sa Sertipiko ng Kapanganakan <br class="responsive-text-break">(Birth Certificate) mula sa PSA (kung may dala na kopya) <span class="required">*</span></p>
                             <div class="error-msg">
                                 <span class="em-PSA-number"></span>
                             </div>
@@ -166,7 +174,6 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                         </div>
                     </div>
                 <div class="student-information-wrapper">
-                
                     <!--ROW 2-->
                     <div class="student-info-row-2">
                         <div class="lname">
@@ -218,20 +225,28 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                             <div class="gender">
                                 <p class="dfont">Kasarian <span class="required">*</span></p>
                                 <div> 
-                                    <input type="radio" name="gender" id="male" class="radio" value="Male">
-                                    <label for="male">Lalake</label>                                
-                                    <input type="radio" name="gender" id="female" class="radio" value="Female">
-                                    <label for="female">Babae</label>
+                                    <div class="radio-option">
+                                        <input type="radio" name="gender" id="male" class="radio" value="Male">
+                                        <label for="male">Lalake</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" name="gender" id="female" class="radio" value="Female">
+                                        <label for="female">Babae</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="community">
                                 <p class="dfont">Nabibilang sa katutubong grupo/ <br class="responsive-text-break">
                                             Komunidad ng Katutubong Kultural <span class="required">*</span></p>
                                 <div>
-                                    <input type="radio" name="group" id="is-ethnic" class="radio" value="1">
-                                    <label for="is-ethnic">Oo</label>
-                                    <input type="radio" name="group" id="not-ethnic" class="radio" value="0">
-                                    <label for="not-ethnic">Hindi</label>
+                                    <div class="radio-option">
+                                        <input type="radio" name="group" id="is-ethnic" class="radio" value="1">
+                                        <label for="is-ethnic">Oo</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" name="group" id="not-ethnic" class="radio" value="0">
+                                        <label for="not-ethnic">Hindi</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -280,10 +295,16 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                 <div class="student-disability-wrapper">
                     <div class="special-needs">
                         <p class="dfont">Ang mag-aaral ba ay nangangailangan ng espesyal na tulong sa pag-aaral? (e.g ADHD) <span class="required">*</span></p>
-                        <input type="radio" name="sn" id="is-disabled" class="radio" value="1">
-                        <label for="is-disabled">Mayroon</label>
-                        <input type="radio" name="sn" id="not-disabled" class="radio" value="0">
-                        <label for="not-disabled">Wala</label>
+                        <div>
+                            <div class="radio-option">
+                                <input type="radio" name="sn" id="is-disabled" class="radio" value="1">
+                                <label for="is-disabled">Mayroon</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="sn" id="not-disabled" class="radio" value="0">
+                                <label for="not-disabled">Wala</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="truespecialneeds">
                         <p class="dfont">Kung MAYROON, isulat kung ano ang natatanging kalagayan ng bata:</p>
@@ -294,10 +315,16 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
                     </div>
                     <div class="assisttech">
                         <p class="dfont">May nagagamit bang "assistive technology devices" (e.g Braille)<span class="required">*</span></p>
-                        <input type="radio" name="at" id="has-assistive-tech" class="radio" value="1">
-                        <label for="has-assistive-tech">Oo</label>
-                        <input type="radio" name="at" id="no-assistive-tech" class="radio" value="0">
-                        <label for="no-assistive-tech">Hindi</label>
+                        <div>
+                            <div class="radio-option">
+                                <input type="radio" name="at" id="has-assistive-tech" class="radio" value="1">
+                                <label for="has-assistive-tech">Oo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="at" id="no-assistive-tech" class="radio" value="0">
+                                <label for="no-assistive-tech">Hindi</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="trueassisttech">
                         <p class="dfont">Kung MAYROON, isulat kung ano ito</p>
@@ -516,10 +543,16 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
             <div class="confirmation border-75">
                 <div class="fourPS">
                     <p class="dfont">Kabilang ba ang inyong pamilya sa 4Ps ng DSWD? <span class="required">*</span></p>
-                    <input type="radio" name="fourPS" id="is-4ps" class="radio" value="yes">
-                    <label for="is-4ps">Oo</label>
-                    <input type="radio" name="fourPS" id="not-4ps" class="radio" value="no">
-                    <label for="not-4ps">Hindi</label>
+                    <div>
+                        <div class="radio-option">
+                            <input type="radio" name="fourPS" id="is-4ps" class="radio" value="yes">
+                            <label for="is-4ps">Oo</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="fourPS" id="not-4ps" class="radio" value="no">
+                            <label for="not-4ps">Hinde</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="image-confirm">
                     <p class="dfont">Ipasa ang malinaw na larawan ng mga Dokumento gaya ng <b>PSA BIRTH CERTIFICATE at REPORT CARD <span class="required">*</span></b></p>
@@ -529,7 +562,6 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.
             </div>
         </form>
     </div>
-</div>
 </div>
 <div class="success-message" id="success-message"></div>
 <div class="error-message" id="error-message"></div>

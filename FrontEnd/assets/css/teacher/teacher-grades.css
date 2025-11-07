@@ -1,12 +1,322 @@
 .teacher-grades-content {
-    margin: 1rem;
+    margin: 1.5rem;
+    font-family: var(--main-fonts);
 }
+
+.grades-wrapper {
+    padding: 2rem;
+    background: rgb(36 186 255 / 28%);
+    backdrop-filter: blur(10px);
+    border-radius: 1.5rem;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.grades-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #3e9ec4 0%, #2d7a9a 100%);
+    min-height: 90px;
+    padding: 1.5rem 2rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1.5rem;
+}
+
+.grades-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: white;
+    font-family: var(--main-fonts);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 0;
+}
+
 .subjects-to-grade-wrapper {
-    padding: 1rem;
-    background: #fff;
-    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
+    padding: 1.5rem;
+    max-height: 70vh;
+    min-height: 500px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
 }
+
+/* Custom scrollbar styling for webkit browsers */
+.subjects-to-grade-wrapper::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.subjects-to-grade-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.subjects-to-grade-wrapper::-webkit-scrollbar-thumb {
+    background-color: rgba(62, 158, 196, 0.5);
+    border-radius: 20px;
+}
+
 .subjects-to-grade {
     width: 100%;
     table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Make the table header stick to the top while scrolling */
+.subjects-to-grade thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.subjects-to-grade-wrapper th {
+    padding: 1.2rem 1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #3e9ec4 0%, #2d7a9a 100%);
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 0.95rem;
+    border: none;
+}
+
+.subjects-to-grade-wrapper tbody tr {
+    transition: all 0.2s ease;
+}
+
+.subjects-to-grade-wrapper td {
+    padding: 1.2rem 1rem;
+    border-top: 1px solid rgba(62, 158, 196, 0.2);
+    vertical-align: middle;
+    color: #333;
+    letter-spacing: 0.3px;
+    font-weight: 400;
+    font-size: 0.95rem;
+}
+
+.subjects-to-grade-wrapper tbody tr:hover {
+    background: rgba(62, 158, 196, 0.1) !important;
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.subjects-to-grade-wrapper tbody tr:hover td {
+    color: #2d7a9a;
+}
+
+.subjects-to-grade-wrapper tbody tr:nth-child(even) td {
+    background: rgba(178, 224, 248, 0.3);
+}
+
+.subjects-to-grade-wrapper tbody tr:nth-child(odd) td {
+    background: rgba(187, 229, 248, 0.2);
+}
+
+/* Column alignment */
+.subjects-to-grade-wrapper th:first-child,
+.subjects-to-grade-wrapper td:first-child {
+    text-align: left;
+}
+
+.subjects-to-grade-wrapper th:nth-child(2),
+.subjects-to-grade-wrapper td:nth-child(2) {
+    text-align: left;
+}
+
+.subjects-to-grade-wrapper th:nth-child(3),
+.subjects-to-grade-wrapper td:nth-child(3) {
+    text-align: center;
+}
+
+.subjects-to-grade-wrapper th:last-child,
+.subjects-to-grade-wrapper td:last-child {
+    text-align: right;
+}
+
+/* Grade Button Styling */
+.grade-button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#grade-button {
+    background: linear-gradient(135deg, #3e9ec4 0%, #2d7a9a 100%);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
+    text-transform: uppercase;
+    min-width: 100px;
+}
+
+#grade-button:hover {
+    background: linear-gradient(135deg, #2d7a9a 0%, #1f5a73 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
+}
+
+#grade-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(62, 158, 196, 0.3);
+}
+
+#grade-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(62, 158, 196, 0.3);
+}
+
+/* Modal improvements */
+.modal {
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px 8px 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.close {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.close:hover {
+    color: #000;
+}
+
+.grade-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+.grade-table th {
+    background: linear-gradient(135deg, #3e9ec4 0%, #2d7a9a 100%);
+    color: white;
+    padding: 0.75rem;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.grade-table th:first-child {
+    text-align: left;
+}
+
+.grade-table td {
+    padding: 0.75rem;
+    border: 1px solid rgba(62, 158, 196, 0.2);
+    background: white;
+    text-align: center;
+}
+
+.grade-table td:first-child {
+    text-align: left;
+    font-weight: 500;
+    color: #2d7a9a;
+}
+
+.grade-table tr:nth-child(even) td {
+    background: #f8f9fa;
+}
+
+.grade-table tbody tr:hover td {
+    background: rgba(62, 158, 196, 0.1);
+}
+
+.grade-table input[type="number"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.grade-table input[type="number"]:focus {
+    outline: none;
+    border-color: #3e9ec4;
+    box-shadow: 0 0 0 3px rgba(62, 158, 196, 0.1);
+}
+
+.save-grades-btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.75rem 2rem;
+    background: linear-gradient(135deg, #3e9ec4 0%, #2d7a9a 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
+    letter-spacing: 0.5px;
+}
+
+.save-grades-btn:hover {
+    background: linear-gradient(135deg, #2d7a9a 0%, #1f5a73 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
+}
+
+.save-grades-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(62, 158, 196, 0.3);
+}
+
+.save-grades-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
 }

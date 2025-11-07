@@ -1,0 +1,470 @@
+        .footer {
+            background-repeat: no-repeat;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            margin-top: auto;
+            min-height: fit-content;
+            padding: clamp(1rem, 3vw, 2rem) 0;
+        }
+
+
+        .footer::before {
+            content: '';            
+            position: absolute;
+            inset: 0;   
+            background: linear-gradient(rgb(4 60 116 / 84%), rgb(15 71 124));
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.1); /* Optional: add some transparency */
+            background-size: cover;
+            pointer-events: none; /* Let clicks through */
+        }
+
+        .footer::after {
+            content: '';
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            content: '';
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4); /* adjust opacity */
+            z-index: 0;
+            background-size: cover;
+            z-index: 0;
+        }
+
+        .footerContainer {
+            max-width: 1600px;
+            position: relative;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(20px, 6vw, 80px);
+            align-items: start;
+            background-image: url('/imgs/teachers.jpg') no-repeat center center;
+            background-size: cover;
+            z-index: 1;
+            padding: clamp(1.5rem, 3vw, 3rem) clamp(1rem, 3vw, 3rem);
+        }
+        
+        .teachers-bg {
+            background-size: cover;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .school-info {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+        }
+            
+        .emailNlocation, .fbNsched {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(12px, 2vw, 20px);
+        }
+
+        .school-name {
+            font-family: "PT Serif", serif;
+            color: #ddecff;
+            font-weight: 900;
+            font-size: clamp(18px, 2.3vw, 38px);
+            margin: 9px 0px 3px;
+            word-wrap: break-word;
+        }
+
+        .school-description {
+            font-size: clamp(14px, 1.5vw, 18px);
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .school-info img {
+            width: clamp(31px, 4vw, 52px);
+            height: auto;
+            border-radius: 25%;
+            margin-right: clamp(5px, 1vw, 12px);
+            vertical-align: middle;
+            background-color:rgba(255, 255, 255, 0.61);
+        }
+
+        .school-text {
+        font-family: "PT Serif", serif;
+        color: #ddecff;
+        font-weight: 500;
+        font-size: clamp(5px, 1.3vw, 28px);
+        margin: 9px 0px 3px;
+        word-wrap: break-word;
+        text-align: center;
+        }
+
+        .contact-section {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+            /* Link styling for contact items */
+        .contact-link {
+            display: flex;
+            align-items: center;
+            color:white;
+            text-decoration:none;
+        }
+
+        .sched-container {
+            display: flex;
+
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: clamp(8px, 1.5vw, 24px);
+            flex-wrap: wrap;
+        }
+
+        .contact-link:nth-child(2) { animation: fadeInLeft 1s ease-out 0.7s forwards; }
+        .contact-link:nth-child(3) { animation: fadeInLeft 1s ease-out 0.9s forwards; }
+        .contact-link:nth-child(4) { animation: fadeInLeft 1s ease-out 1.1s forwards; }
+        .contact-link:nth-child(5) { animation: fadeInLeft 1s ease-out 1.3s forwards; }
+
+        .contact-item:nth-child(2) { animation: fadeInLeft 1s ease-out 0.7s forwards; }
+        .contact-item:nth-child(3) { animation: fadeInLeft 1s ease-out 0.9s forwards; }
+        .contact-item:nth-child(4) { animation: fadeInLeft 1s ease-out 1.1s forwards; }
+        .contact-item:nth-child(5) { animation: fadeInLeft 1s ease-out 1.3s forwards; }
+
+        .contact-link:hover, .contact-item:hover {
+            color: #ffd700;
+        }
+        .contact-text {
+            flex: 1;
+            min-width: 200px;
+            word-wrap: break-word;
+        }
+
+        .contact-title {
+            font-size: clamp(13px, 1.5vw, 18px);
+            font-weight: bold;
+            margin-bottom: 2px;
+            word-wrap: break-word;
+        }
+
+        .contact-detail {
+            font-size: clamp(12px, 1.3vw, 16px);
+            color: #b0b0b0;
+        }
+
+        .schedule-hours {
+            font-size: clamp(12px, 1.3vw, 16px);
+            color: #b0b0b0;
+            line-height: 1.4;
+        }
+
+        /* Additional footer links section */
+        .info-container-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            justify-content: center;
+        }
+
+        .info-container-links a {
+            position: relative;
+            text-decoration: none;
+            color: white;
+            font-size: clamp(12px, 1.2vw, 16px);
+        }
+
+        .info-container-links a:hover {
+            text-decoration: underline;
+            text-decoration-color: #006dc1;
+        }
+
+        .info-container-links a:not(:first-child)::before {
+            content: "•";
+            margin: 0 6px;
+            color: #888;
+        }
+
+        .copyright {
+            text-align: center;
+            padding: clamp(5px, 1.5vw, 12px) 0 clamp(15px, 4vw, 40px) 0;
+            border-top: 1px solid #eeb534;
+            font-size: clamp(11px, 1.5vw, 16px);
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.5s forwards;
+            color: rgb(201, 201, 201);
+            overflow: hidden;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Large screens optimization */
+        @media (min-width: 1440px) {
+            .footerContainer {
+                max-width: 1600px;
+                padding: 2.5rem 3rem;
+            }
+
+            .contact-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: clamp(20px, 2vw, 40px);
+            }
+
+            .emailNLocation, .fbNsched {
+                gap: 20px;
+            }
+        }
+
+        @media (min-width: 1920px) {
+            .footerContainer {
+                max-width: 1800px;
+                padding: 3rem 4rem;
+            }
+
+            .school-name {
+                font-size: 38px;
+            }
+
+            .contact-title {
+                font-size: 18px;
+            }
+
+            .contact-detail,
+            .schedule-hours {
+                font-size: 16px;
+            }
+
+            .copyright {
+                font-size: 16px;
+            }
+        }
+
+        @media (min-width: 2560px) {
+            .footerContainer {
+                max-width: 2000px;
+                padding: 4rem 5rem;
+            }
+
+            .school-name {
+                font-size: 42px;
+            }
+
+            .contact-title {
+                font-size: 20px;
+            }
+
+            .contact-detail,
+            .schedule-hours {
+                font-size: 18px;
+            }
+
+            .copyright {
+                font-size: 18px;
+            }
+
+            .emailNLocation, .fbNsched {
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .footerContainer {
+                grid-template-columns: 1fr;
+                gap: clamp(20px, 4vw, 30px);
+            }
+            
+            .contact-container {
+                display: grid;
+                grid-template-columns: auto auto;
+                padding: 6px 79px;
+            }
+
+            .school-name {
+                text-align: center;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            .footerContainer {
+                gap: 20px;
+                text-align: center;
+            }
+
+            .school-info {
+                text-align: center;
+            }
+            
+            .contact-link,
+            .contact-item {
+                justify-content: center;
+                text-align: center;
+                flex-direction: column;
+                align-items: center;
+            }
+            .contact-text {
+                text-align: center;
+            }
+
+            .info-container-links {
+                flex-direction: column;
+                gap: 15px;
+                display: inline-block;
+            }
+
+            .contact-container {
+                display: grid;
+                grid-template-columns: auto auto;
+            }
+
+            .emailNlocation, .fbNsched {
+                align-items: center;
+            }
+
+            .school-name {
+                text-align: center;
+            }
+        }
+
+        @media (min-width: 421px) and (max-width: 480px) {
+            .footer {
+                padding: clamp(0.75rem, 2vw, 1rem) 0;
+            }
+
+            .footerContainer {
+                padding: 0 clamp(0.75rem, 3vw, 1rem);
+            }
+            .hero {
+                min-height: 51vh;
+            }
+
+            .contact-item {
+                margin-bottom: 12px;
+            }
+            
+            .contact-container {
+                display: grid;
+                grid-template-columns: auto auto;
+            }
+            .email {
+                margin-bottom: 50px;
+            }
+            .sched {
+                margin-right: 9px;
+            }
+            .contact-link {
+                display: flex;
+                align-items: center;
+                color: white;
+                text-decoration: none;
+                margin-left: -37px;
+            }
+            .wave svg {
+                height: 52px;
+
+            }
+        }
+
+        @media (min-width: 377px) and (max-width: 420px) {
+            .footerContainer {
+                padding: 0 0.75rem;
+            }
+
+            .contact-item {
+                margin-bottom: 10px;
+            }
+
+            .school-name {
+                font-size: 16px;
+            }
+        }
+
+        @media (min-width: 320px) and (max-width: 376px) {
+            .footerContainer {
+                padding: 0 0.5rem;
+                text-align: center;
+            }
+
+            .footer {
+                padding: 0.75rem 0;
+            }
+
+            .school-info {
+                text-align: center;
+            }
+
+            .school-name {
+                font-size: 14px;
+                line-height: 1.3;
+            }
+
+            .contact-item {
+                justify-content: center;
+                flex-direction: column;
+            }
+
+            .hero {
+                min-height: 42vh;
+            }
+
+            .contact-link {
+                justify-content: center;
+                flex-direction: column;
+            }
+
+            .contact-detail,
+            .schedule-hours {
+                font-size: 10px;
+            }
+            
+            .contact-text {
+                min-width: 100%;
+            }
+
+            .copyright {
+                font-size: 10px;
+                padding: 5px 0 15px 0;
+            }
+
+            .fb, .email, .sched, .location {
+            margin-bottom: 10px;
+            }
+
+            p.hero-subtitle {
+                margin: 0 auto clamp(0rem, 0vw, 6rem);
+            }
+            
+            .contact-container {
+                margin: 0px -21px -3px -17px;
+                display: block;
+            }
+        }

@@ -1,157 +1,223 @@
 /* admin-all-teachers.css */
+
+/* ===== Root Theme Colors ===== */
 :root {
-  --primary: #00b4d8;
-  --hover: #48cae4;
-  --bg-light: #e3f6fd;
-  --text-dark: #1a1a1a;
-  --border-radius: 16px;
-  --status-active: #44d07b;
-  --status-inactive: #ffc107;
-  --status-dropped: #ff6b6b;
+  --bg-gradient: linear-gradient(135deg, rgba(20, 30, 48, 0.95), rgba(36, 59, 85, 0.95));
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --hover-glow: rgba(255, 255, 255, 0.3);
+  --text-color: #e8edf3;
+  --accent-color: #00bcd4;
+  --success: #44d07b;
+  --warning: #ffcc00;
+  --danger: #ff5f5f;
+  --font-main: "Poppins", "Segoe UI", sans-serif;
+  --hover-accent: #48cae4;
+  --border-radius: 20px;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+/* ===== Overall Layout ===== */
+body {
+  background: var(--bg-gradient);
+  font-family: var(--font-main);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
 }
 
 .content {
-    background-image: url("../../imgs/paper.jpg");
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  background: #f2f9ff;
-  margin: 0;
-  padding: 0;
-  color: var(--text-dark);
+  background-image: url("../../imgs/paper.jpg");
 }
 
 .admin-all-teachers-content {
   padding: 2rem;
+  transition: margin-left 0.3s ease;
+  background-image: url("../../imgs/paper.jpg");
 }
 
+.sidebar.active ~ .admin-all-teachers-content {
+  margin-left: 80px;
+}
+
+/* ===== Header Section ===== */
 .admin-all-teachers-title-wrapper {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(12px);
   background: #3e9ec4;
+  border: 1px solid var(--glass-border);
   border-radius: var(--border-radius);
   padding: 1rem 1.5rem;
-  color: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   margin-bottom: 1.5rem;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.table-teachers-container {
-    background: rgb(36 186 255 / 28%);
-    border: 1px solid var(--card-border);
-    border-radius: var(--border-radius);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(12px) saturate(180%);
-    padding: 1.5rem;
-    overflow-x: auto;
 }
 
 .all-teachers-title {
   font-size: 1.8rem;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: white;
+  margin: 0;
 }
 
+/* Register Teacher Button */
 #register-teacher-btn {
-  background-color: var(--primary);
-  color: white;
   border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 12px;
+  color: white;
+  padding: 0.7rem 1.4rem;
   cursor: pointer;
+  box-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+  background: var(--accent-color);
+  font-weight: 500;
+  border-radius: 0.6rem;
   transition: all 0.3s ease;
+  font-size: 0.95rem;
 }
 
 #register-teacher-btn:hover {
-  background-color: #1ecef1;
-  transform: translateY(-3px);
-  transition: 0.3s ease;
+  background: var(--hover-accent);
   box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+  transform: translateY(-3px);
+}
+
+/* ===== Table Container ===== */
+.table-teachers-container {
+  background: rgb(36 186 255 / 28%);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  padding: 0;
+  width: 100%;
+  height: 70vh;
+  min-height: 400px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
+}
+
+/* Custom scrollbar styling */
+.table-teachers-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.table-teachers-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-teachers-container::-webkit-scrollbar-thumb {
+  background-color: rgba(62, 158, 196, 0.5);
+  border-radius: 20px;
+}
+
+.table-teachers-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(62, 158, 196, 0.7);
+}
+
+/* Make table header stick while scrolling */
+.table-teachers thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .table-teachers {
-    width: 100%;
-    border-collapse: collapse;
-    background: #bbe5f8;
-    /* border-radius: var(--border-radius); */
-    overflow: hidden;
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-color);
+  font-size: 0.95rem;
 }
 
-.table-teachers th,
+.table-teachers thead {
+  background: rgba(255, 255, 255, 0.12);
+  text-align: left;
+}
+
+.table-teachers th {
+  padding: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  background: rgb(97 206 255);
+  text-transform: uppercase;
+  text-shadow: 0 1.5px #0967a266;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
 .table-teachers td {
   padding: 1rem;
-  text-align: left;
-  font-size: 0.95rem;
-  border-bottom: 1px solid rgba(63, 166, 210, 0.897);
+  border-top: 1px solid rgba(63, 166, 210, 0.897);
+  vertical-align: middle;
+  color: black;
+  letter-spacing: 0.5px;
+  font-weight: 400;
 }
 
-.table-teachers th{
-    background: rgb(21 182 255 / 27%);
-    color: #ffffff;
-    padding: 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--card-border);
-    text-shadow: 0 1.5px #0967a266;
-}
-
+/* Zebra stripes for readability */
 .table-teachers tr:nth-child(even) td {
-    background: rgb(71 168 255 / 8%);
-}
-
-.table-teachers td {
-  color: #222;
-  border-top: 1px solid #a4d6eb;
+  background: rgb(71 168 255 / 8%);
 }
 
 .table-teachers tr:hover td {
-  background: rgba(255, 255, 255, 0.12);
-  color: #48cae4;
+  color: var(--hover-accent);
   transition: all 0.25s ease-in-out;
 }
 
-/* Status labels */
+.table-teachers tbody tr:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transition: 0.3s ease;
+}
+
+/* ===== Status Badges ===== */
 .status-active {
   background-color: rgba(68, 208, 123, 0.2);
-  color: var(--status-active);
+  color: var(--success);
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
   font-weight: 500;
+  font-size: 0.85rem;
 }
 
 .status-inactive {
   background-color: rgba(255, 193, 7, 0.2);
-  color: var(--status-inactive);
+  color: var(--warning);
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
   font-weight: 500;
+  font-size: 0.85rem;
 }
 
 .status-dropped {
   background-color: rgba(255, 107, 107, 0.2);
-  color: var(--status-dropped);
+  color: var(--danger);
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
   font-weight: 500;
+  font-size: 0.85rem;
 }
 
-.view-icon, .edit-icon {
+/* ===== Action Buttons ===== */
+.view-icon,
+.edit-icon {
   border: none;
   cursor: pointer;
-  margin-right: 9px;
+  margin-right: 4.5px;
   transition: 0.25s ease;
-  border-radius: 8px ;
-  padding: 2px;
+  border-radius: 6px;
+  padding: 6px;
   width: 31px;
-}   
+  background: transparent;
+}
 
-.view-icon:hover, .edit-icon:hover {
-  background: rgba(255, 255, 255, 0.326);
+.view-icon:hover,
+.edit-icon:hover {
+  background: rgba(255, 255, 255, 0.15);
   transform: scale(1.1);
 }
 
-img{
-    max-width: 100%;
+img {
+  max-width: 100%;
 }

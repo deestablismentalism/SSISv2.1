@@ -4,6 +4,7 @@ require_once __DIR__ . '/../core/dbconnection.php';
 require_once __DIR__ . '/./sendPassword.php';
 require_once __DIR__ . '/../core/generatePassword.php';
 require_once __DIR__ . '/../Exceptions/DatabaseException.php';
+require_once __DIR__ . '/../core/normalizeName.php';
 
 class Registration {
     protected $conn;
@@ -15,44 +16,34 @@ class Registration {
         $this->conn = $db->getConnection();
         $this->generatePassword = new generatePassword();
     }
-    private function insertToRegistration(string $fName,string $lName, string $mName, string $cpNumber) : int {
-        try {
-            $sql = "INSERT INTO registrations(First_Name, Last_Name, Middle_Name, Contact_Number)
-                                    VALUES (:First_Name, :Last_Name, :Middle_Name, :Contact_Number)";
-           $stmt = $this->conn->prepare($sql);
-           $stmt->bindParam(':First_Name', $fName);
-           $stmt->bindParam(':Last_Name', $lName);
-           $stmt->bindParam(':Middle_Name', $mName);
-           $stmt->bindParam(':Contact_Number', $cpNumber);
+    private function insertToRegistration(string $fName,string $lName, ?string $mName, string $cpNumber) : int {
+        $sql = "INSERT INTO registrations(First_Name, Last_Name, Middle_Name, Contact_Number)
+                                VALUES (:First_Name, :Last_Name, :Middle_Name, :Contact_Number)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':First_Name', $fName);
+        $stmt->bindParam(':Last_Name', $lName);
+        $stmt->bindParam(':Middle_Name', $mName);
+        $stmt->bindParam(':Contact_Number', $cpNumber);
 
-            $result = $stmt->execute();
-            if(!$result) {
-                throw new DatabaseException('Something went wrong with resigtration', 0);
-            }
-            return (int)$this->conn->lastInsertId();
+        $result = $stmt->execute();
+        if(!$result) {
+            throw new DatabaseException('Failed to insert registration', 0);
         }
-        catch(PDOException $e) {
-            throw new DatabaseException('Failed to register user',0,$e);
-        }
+        return (int)$this->conn->lastInsertId();
     }
     private function insertUser(int $registrationId, string $hashPassword, int $userType) : bool {
-        try {
-            $sql = "INSERT INTO users(Registration_Id, Password, User_Type)
-                                    VALUES (:Registration_Id, :Password, :User_Type)";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':Registration_Id', $registrationId);
-            $stmt->bindParam(':Password', $hashPassword);
-            $stmt->bindParam(':User_Type', $userType);
+        $sql = "INSERT INTO users(Registration_Id, Password, User_Type)
+                                VALUES (:Registration_Id, :Password, :User_Type)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':Registration_Id', $registrationId);
+        $stmt->bindParam(':Password', $hashPassword);
+        $stmt->bindParam(':User_Type', $userType);
 
-            $result = $stmt->execute();
+        $result = $stmt->execute();
 
-            return $result;
-        }
-        catch(PDOException $e) {
-            throw new DatabaseException('Failed to insert user',0,$e);
-        }
+        return $result;
     }
-    public function registerAndInsert(string $First_Name, string $Last_Name, string $Middle_Name, string $Contact_Number,int $userType) : array {
+    public function registerAndInsert(string $First_Name, string $Last_Name, ?string $Middle_Name, string $Contact_Number,int $userType) : array {
         $this->conn->beginTransaction();
         try {
             if(empty($First_Name) || empty($Last_Name)) {
@@ -71,7 +62,6 @@ class Registration {
                     'data'=> []
                 ];
             }
-            // Validate phone number format
             if (!preg_match('/^09\d{9}$/', $Contact_Number)) {
                 return [
                     'httpcode'=> 400,
@@ -80,12 +70,15 @@ class Registration {
                     'data'=> []
                 ];
             }
+            //===NORMALIZE NAME===
+            $normalize = fn($n)=>(new normalizeName($n))->validatedNormalize();
+            $First_Name = $normalize($First_Name);
+            $Last_Name = $normalize($Last_Name); 
+            $Middle_Name = !empty($Middle_Name) ? $normalize($Middle_Name) : null;
             //Registration
             $registrationId = $this->insertToRegistration($First_Name, $Last_Name, $Middle_Name, $Contact_Number);
-            // Generate and hash password
             $password = $this->generatePassword->getPassword();
             $hashed_password = password_hash($password, PASSWORD_DEFAULT); 
-            // Insert into users table
             $insertUser = $this->insertUser($registrationId,$hashed_password, $userType);
             if(!$insertUser) {
                 return [
@@ -137,7 +130,7 @@ class Registration {
                 return [
                     'httpcode'=> 409,
                     'success' => false,
-                    'message' => 'Registration failed: The number you entered is already registered',
+                    'message' => 'The contact number you entered is already registered in the system',
                     'error' => 'duplicate_entry'
                 ];
             }

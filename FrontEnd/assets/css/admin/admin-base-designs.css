@@ -1,24 +1,38 @@
 /*----START OF BASE DESIGNS----*/
 :root {
     --main-fonts:  "Poppins", "Segoe UI", sans-serif;
-    --title-fonts: 'Barlow', Arial, sans-serif;
+    --title-fonts: "Barlow", sans-serif;
     --button-fonts: 'Baloo-Thambi-2';
     --link-fonts: 'Roboto', sans-serif;
     --sidebar-width: 60px;
-    --sidebar-expanded-width: 20dvw;
+    --sidebar-expanded-width: 280px; /* Changed from 20dvw to fixed pixels */
     --title-font-size: 3em;
     --main-color: #1c4a72;
     --secondary-color: #F1BD22;
     --wrapper-bg-color: #fffdfdf5;
+    --title-main-color: #3e9ec4;
+    --container-color: rgba(36, 186, 255, 0.28);
     --button-color: ;
     --button-hover-color: ;
     --button-click: scale(.9);
+    --border-radius: 1rem;
+    --title-h1-font-size: 1.6rem;
+    --title-font-weight: 600;
+    --title-letter-spacing: 1px;
+    --card-border: rgba(255, 255, 255, 0.2);
+    --warning: #ffcc00;
+    --danger: #ff5f5f;
+    --success: #44d07b;
 }
+
 body {
     background-color: rgb(235, 231, 231);
     display: flex;
     margin: 0;
     min-height: 100vh;
+    background-image: radial-gradient(#000 1px, transparent 1px);
+    background-size: 30px 30px;
+    background-position: -19px -19px;
 }
 
 
@@ -68,19 +82,23 @@ p {
 .sidebar-wrapper{
     position: sticky;
     top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
+
 .sidebar {
-    min-height: 100vh;
-    height: 100%;
+    height: 100vh;
     width: var(--sidebar-expanded-width);
     background: #1c4a72;
     transition: width 0.3s ease;
     font-family: 'Barlow', 'Arial';
-    position: sticky;
-    top: 0;
-    left: 0;
+    font-size: 1rem; /* Base font size for 1440px */
     z-index: 100;
-    overflow: visible; 
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* prevent outer scrolling, scroll inside menu */
 }
 .main-content {
     flex-grow: 1;
@@ -131,13 +149,14 @@ p {
     pointer-events: auto; 
 }
 .menu {
-    padding: 2em 1em 1em 1em; 
+    padding: 1.8em 1em 1em 1em; /* Adjusted padding */
     display: grid;
     grid-template-columns: 15% 70% 15%;
 }
 .menu-title {
     color: #FFF8F8;
     padding: 0em 1em;
+    font-size: 1rem; /* Explicit font size */
 }
 .menu img {
     width: 1.3em;
@@ -145,7 +164,8 @@ p {
 }
 
 #sidebar-toggle-button {
-    height: 2em; width: 2em;
+    height: 2em; 
+    width: 2em;
 }
 .border-75 {
     position: relative;
@@ -178,6 +198,40 @@ p {
     display: flex;
     justify-content: space-between;
 }
+
+
+.sidebar.active #sidebar-menu-wrapper{
+    overflow-y: auto;
+}
+#sidebar-menu-wrapper,
+.menu-wrappper {
+    flex: 1 1 auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
+}
+
+/* Webkit scrollbar for menu area */
+#sidebar-menu-wrapper::-webkit-scrollbar,
+.menu-wrappper::-webkit-scrollbar {
+    width: 8px;
+}
+
+#sidebar-menu-wrapper::-webkit-scrollbar-track,
+.menu-wrappper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#sidebar-menu-wrapper::-webkit-scrollbar-thumb,
+.menu-wrappper::-webkit-scrollbar-thumb {
+    background-color: rgba(62, 158, 196, 0.5);
+    border-radius: 20px;
+}
+
+#sidebar-menu-wrapper::-webkit-scrollbar-thumb:hover,
+.menu-wrappper::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(62, 158, 196, 0.7);
+}
 .SSIS {
     display: block;
     max-height: 2.5em; 
@@ -195,9 +249,9 @@ p {
     transition: max-height .1s ease-out, opacity .1s ease-out;
     max-width: 10vh;
     width: 2em;
-    grid-column: 2/2; /* 🔥 Added: Start positioned */
-    justify-self: right; /* 🔥 Added: Start aligned right */
-    margin-right: 1em; /* 🔥 Added: Start with margin */
+    grid-column: 2/2;
+    justify-self: right;
+    margin-right: 1em;
 }
 /*--MENU--*/
 /*DASHBOARD*/
@@ -241,7 +295,10 @@ p {
 /*----TRANSITIONS----*/
 .sidebar:not(.active) {
     width: 60px;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
 }
 
 .sidebar:not(.active) .SSIS {
@@ -271,7 +328,9 @@ p {
     width: var(--sidebar-expanded-width); 
     transition: width 0.2s ease-in, opacity 0.15s ease-out;
     position: sticky;
-    overflow: visible; 
+    top: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /*SIDEBAR TITLE*/
@@ -309,7 +368,8 @@ p {
     grid-column: 1 / 3;
     transition: max-height .5s ease-in, opacity .3s ease-in;
 }
-/* .sections-ul.show, */.teachers-ul.show, .enrolls-ul.show, subjects-ul.show { 
+
+.teachers-ul.show, .enrolls-ul.show, .subjects-ul.show { 
     max-height: 100vh;
     opacity: 1;
     background-color: #051F3E;
@@ -328,13 +388,13 @@ p {
     color: white;
     font-weight: 900;
     background-clip: text;
-    font-size: 1.8rem;
+    font-size: 1.8rem; /* Base size for 1440px */
     position: relative;
 }
 .header-title::before {
     content: '';
-    bottom: clamp(0.8rem, 1vh, 1rem);
-    left: clamp(0.5rem, 1vw, 0.9rem);
+    bottom: 0.8rem;
+    left: 0.9rem;
     position: absolute;
     background-image: url('../../imgs/graduation-cap.png');
     background-size: contain;
@@ -349,7 +409,7 @@ p {
     align-items: center;
     flex-wrap: wrap;
     background: #f8af00;
-    height: 3rem;
+    height: 3rem; /* Base height for 1440px */
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
     position: sticky;
     top: 0;
@@ -357,7 +417,7 @@ p {
 }
 .account {
     display: flex;
-    padding-right: 2em;
+    padding-right: 2em; /* Base padding for 1440px */
     font-family: 'Arial';
 }
 .account button {
@@ -385,50 +445,793 @@ p {
 .account-settings-wrapper{
     font-weight: 700;
     color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem; /* Base gap for 1440px */
 }
+
+.admin-profile-pic {
+    width: 2.5rem; /* Base size for 1440px */
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.admin-name-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.admin-name-wrapper .name {
+    margin: 0;
+    font-size: 1rem; /* Base size for 1440px */
+}
+
+.admin-name-wrapper span {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
 .account-settings-btn-content-wrapper {
     display: none;
     position: absolute;
     top: 120%;
-    right:10px;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-.account-link-wrapper:hover, .account-logout-wrapper:hover, .account-edit-info-wrapper:hover {
-    background-color: #a7a39d;
-}
-
-.account-settings-btn-content-wrapper a{
-    cursor: pointer;
+    right: 10px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.98));
+    backdrop-filter: blur(10px);
+    min-width: 280px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+    animation: slideDown 0.3s ease-out;
 }
 
-.account-link-wrapper, .account-logout-wrapper, .account-edit-info-wrapper{
-    display: flex;
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
-.update-password {
-    margin: auto 0px;
-}
-.account .change-pass-icon, .account .logout-icon, .account .edit-info-icon{
-    padding: .4em;
-    margin: .5em;
-    border-radius: 50%;
-    background-color: #cfcbc4;
-    border: #a7a39d 1px solid;
-}
-.logout-text, .edit-info-text, .account-type, .update-password {
-    width: 100%;
-    height: 100%;
-    padding: 9px 17px;
-    margin: auto;
-    margin-left: .2em;
-    color: black;
-}
+
 .user-info-wrapper {
     display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1.2rem;
+    background: linear-gradient(135deg, #3e9ec4, #48cae4);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
 }
+
+.user-info-wrapper img {
+    width: 1.8rem;
+    height: 1.8rem;
+    filter: brightness(0) invert(1);
+}
+
+.dropdown-profile-pic {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    filter: none !important;
+}
+
+.user-name {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    color: white;
+}
+
+.dropdown-user-name {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: white;
+}
+
+.dropdown-position {
+    margin: 0;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.95);
+    font-style: italic;
+}
+
+.account-link-wrapper, 
+.account-logout-wrapper, 
+.account-edit-info-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 1.2rem;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.account-edit-info-wrapper {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.account-link-wrapper {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.account-link-wrapper:hover, 
+.account-logout-wrapper:hover, 
+.account-edit-info-wrapper:hover {
+    background: linear-gradient(90deg, rgba(62, 158, 196, 0.08), rgba(72, 202, 228, 0.08));
+    padding-left: 1.5rem;
+}
+
+.account-link-wrapper:hover::before,
+.account-logout-wrapper:hover::before,
+.account-edit-info-wrapper:hover::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, #3e9ec4, #48cae4);
+}
+
+.account-settings-btn-content-wrapper a {
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.account-link-wrapper a:first-child,
+.account-logout-wrapper a:first-child,
+.account-edit-info-wrapper a:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border: 1px solid rgba(62, 158, 196, 0.2);
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.account .change-pass-icon, 
+.account .logout-icon, 
+.account .edit-info-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    display: block;
+    object-fit: contain;
+}
+
+.account-link-wrapper:hover a:first-child,
+.account-logout-wrapper:hover a:first-child,
+.account-edit-info-wrapper:hover a:first-child {
+    background: linear-gradient(135deg, #3e9ec4, #48cae4);
+    border-color: #3e9ec4;
+    transform: scale(1.1);
+}
+
+.account-link-wrapper:hover .change-pass-icon,
+.account-logout-wrapper:hover .logout-icon,
+.account-edit-info-wrapper:hover .edit-info-icon {
+    filter: brightness(0) invert(1);
+}
+
+.account-link-wrapper a:last-child,
+.account-logout-wrapper a:last-child,
+.account-edit-info-wrapper a:last-child {
+    color: #2c3e50;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.account-link-wrapper:hover a:last-child,
+.account-logout-wrapper:hover a:last-child,
+.account-edit-info-wrapper:hover a:last-child {
+    color: #3e9ec4;
+}
+
+.update-password,
+.logout-text,
+.edit-info-text {
+    margin: 0;
+    flex: 1;
+    color: #2c3e50;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.account-logout-wrapper {
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.account-logout-wrapper:hover {
+    background: linear-gradient(90deg, rgba(255, 95, 95, 0.05), rgba(255, 95, 95, 0.08));
+}
+
+.account-logout-wrapper:hover::before {
+    background: linear-gradient(180deg, #ff5f5f, #ff4444);
+}
+
+.account-logout-wrapper:hover a:last-child,
+.account-logout-wrapper:hover .logout-text {
+    color: #ff5f5f !important;
+}
+
+/* ====================================
+   RESPONSIVE DESIGN - ACCOUNT DROPDOWN & HEADER
+   ==================================== */
+
+/* Ultra Large Screens (2560px+) */
+@media screen and (min-width: 2560px) {
+    .header-wrapper {
+        height: 4rem;
+    }
+    
+    .header-title {
+        font-size: 2.2rem;
+    }
+    
+    .admin-profile-pic {
+        width: 3rem;
+        height: 3rem;
+    }
+    
+    .admin-name-wrapper .name {
+        font-size: 1.2rem;
+    }
+    
+    .admin-name-wrapper span {
+        font-size: 1rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 320px;
+    }
+    
+    .dropdown-profile-pic {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+}
+
+/* Extra Large Screens (1920px - 2559px) */
+@media screen and (min-width: 1920px) and (max-width: 2559px) {
+    .header-wrapper {
+        height: 3.5rem;
+    }
+    
+    .header-title {
+        font-size: 2rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 300px;
+    }
+}
+
+/* Large Desktop (1440px - 1919px) */
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+    .header-wrapper {
+        height: 3.2rem;
+    }
+}
+
+/* Desktop (1024px - 1439px) */
+@media screen and (max-width: 1439px) {
+    .header-title {
+        font-size: 1.6rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 260px;
+    }
+}
+
+/* Tablet Landscape (992px - 1023px) */
+@media screen and (max-width: 1023px) {
+    .header-wrapper {
+        height: auto;
+        padding: 0.8rem 1rem;
+    }
+    
+    .header-title {
+        font-size: 1.4rem;
+    }
+    
+    .admin-profile-pic {
+        width: 2.2rem;
+        height: 2.2rem;
+    }
+    
+    .admin-name-wrapper .name {
+        font-size: 0.95rem;
+    }
+    
+    .admin-name-wrapper span {
+        font-size: 0.8rem;
+    }
+    
+    .account-settings-wrapper {
+        gap: 0.6rem;
+    }
+}
+
+/* Tablet Portrait (768px - 991px) */
+@media screen and (max-width: 991px) {
+    .header-wrapper {
+        padding: 0.6rem 0.8rem;
+    }
+    
+    .header-title {
+        font-size: 1.2rem;
+    }
+    
+    .account {
+        padding-right: 1rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 240px;
+        right: 0;
+    }
+    
+    .user-info-wrapper {
+        padding: 0.8rem 1rem;
+    }
+    
+    .account-link-wrapper, 
+    .account-logout-wrapper, 
+    .account-edit-info-wrapper {
+        padding: 0.7rem 1rem;
+    }
+    
+    .account-link-wrapper a:first-child,
+    .account-logout-wrapper a:first-child,
+    .account-edit-info-wrapper a:first-child {
+        padding: 0.45rem;
+    }
+    
+    .account .change-pass-icon, 
+    .account .logout-icon, 
+    .account .edit-info-icon {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+    
+    .dropdown-profile-pic {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+/* Mobile Landscape (640px - 767px) */
+@media screen and (max-width: 767px) {
+    .header-wrapper {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.8rem;
+        height: auto;
+    }
+    
+    .header-title {
+        font-size: 1rem;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .header-title::before {
+        width: 1.2rem;
+        height: 1.2rem;
+        bottom: 0.8rem;
+    }
+    
+    .account {
+        width: 100%;
+        justify-content: space-between;
+        padding-right: 0;
+    }
+    
+    .admin-name-wrapper {
+        display: none;
+    }
+    
+    .account-settings-wrapper {
+        gap: 0.5rem;
+    }
+    
+    .admin-profile-pic {
+        width: 2rem;
+        height: 2rem;
+    }
+    
+    .account button {
+        width: 1.8rem;
+        height: 1.8rem;
+        margin-right: 0.5rem;
+    }
+    
+    .account img {
+        width: 1.8rem;
+        height: 1.8rem;
+        margin-right: 0.5rem;
+    }
+    
+    .account #account-drop {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 220px;
+        right: -10px;
+    }
+    
+    .account-link-wrapper a:first-child,
+    .account-logout-wrapper a:first-child,
+    .account-edit-info-wrapper a:first-child {
+        padding: 0.4rem;
+    }
+    
+    .account .change-pass-icon, 
+    .account .logout-icon, 
+    .account .edit-info-icon {
+        width: 1rem;
+        height: 1rem;
+    }
+    
+    .dropdown-profile-pic {
+        width: 2.2rem;
+        height: 2.2rem;
+    }
+}
+
+/* Mobile Portrait Large (480px - 639px) */
+@media screen and (max-width: 639px) {
+    .header-title {
+        font-size: 0.9rem;
+        padding: 0 0.5rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 200px;
+        border-radius: 10px;
+    }
+    
+    .user-info-wrapper {
+        padding: 0.7rem 0.8rem;
+        gap: 0.6rem;
+    }
+    
+    .account-type {
+        font-size: 0.85rem;
+    }
+    
+    .account-link-wrapper, 
+    .account-logout-wrapper, 
+    .account-edit-info-wrapper {
+        padding: 0.6rem 0.8rem;
+        gap: 0.6rem;
+    }
+    
+    .account-link-wrapper a:last-child,
+    .account-logout-wrapper a:last-child,
+    .account-edit-info-wrapper a:last-child {
+        font-size: 0.85rem;
+    }
+    
+    .update-password,
+    .logout-text,
+    .edit-info-text {
+        font-size: 0.85rem;
+    }
+    
+    .account-link-wrapper a:first-child,
+    .account-logout-wrapper a:first-child,
+    .account-edit-info-wrapper a:first-child {
+        padding: 0.4rem;
+        border-radius: 7px;
+    }
+    
+    .account .change-pass-icon, 
+    .account .logout-icon, 
+    .account .edit-info-icon {
+        width: 1rem;
+        height: 1rem;
+    }
+    
+    .dropdown-profile-pic {
+        width: 2rem;
+        height: 2rem;
+    }
+    
+    .dropdown-user-name {
+        font-size: 0.85rem;
+    }
+    
+    .dropdown-position {
+        font-size: 0.75rem;
+    }
+}
+
+/* Mobile Portrait Medium (375px - 479px) */
+@media screen and (max-width: 479px) {
+    .header-wrapper {
+        padding: 0.6rem;
+    }
+    
+    .header-title {
+        font-size: 0.8rem;
+    }
+    
+    .header-title::before {
+        width: 1rem;
+        height: 1rem;
+        bottom: 0.6rem;
+        left: 0.5rem;
+    }
+    
+    .admin-profile-pic {
+        width: 1.8rem;
+        height: 1.8rem;
+    }
+    
+    .account button {
+        width: 1.6rem;
+        height: 1.6rem;
+        margin-right: 0.3rem;
+    }
+    
+    .account img {
+        width: 1.6rem;
+        height: 1.6rem;
+        margin-right: 0.3rem;
+    }
+    
+    .account #account-drop {
+        width: 1rem;
+        height: 1rem;
+        padding-left: 0.2rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 180px;
+        right: -15px;
+    }
+    
+    .user-info-wrapper {
+        padding: 0.6rem 0.7rem;
+        gap: 0.5rem;
+    }
+    
+    .account-link-wrapper, 
+    .account-logout-wrapper, 
+    .account-edit-info-wrapper {
+        padding: 0.5rem 0.7rem;
+        gap: 0.5rem;
+    }
+    
+    .account-link-wrapper:hover, 
+    .account-logout-wrapper:hover, 
+    .account-edit-info-wrapper:hover {
+        padding-left: 1rem;
+    }
+    
+    .account-link-wrapper a:last-child,
+    .account-logout-wrapper a:last-child,
+    .account-edit-info-wrapper a:last-child {
+        font-size: 0.8rem;
+    }
+    
+    .update-password,
+    .logout-text,
+    .edit-info-text {
+        font-size: 0.8rem;
+    }
+    
+    .account-link-wrapper a:first-child,
+    .account-logout-wrapper a:first-child,
+    .account-edit-info-wrapper a:first-child {
+        padding: 0.35rem;
+        border-radius: 6px;
+    }
+    
+    .account .change-pass-icon, 
+    .account .logout-icon, 
+    .account .edit-info-icon {
+        width: 0.9rem;
+        height: 0.9rem;
+    }
+    
+    .dropdown-profile-pic {
+        width: 1.8rem;
+        height: 1.8rem;
+    }
+    
+    .dropdown-user-name {
+        font-size: 0.8rem;
+    }
+    
+    .dropdown-position {
+        font-size: 0.7rem;
+    }
+}
+
+/* Mobile Portrait Small (320px - 374px) */
+@media screen and (max-width: 374px) {
+    .header-wrapper {
+        padding: 0.5rem;
+    }
+    
+    .header-title {
+        font-size: 0.7rem;
+        letter-spacing: 0.3px;
+    }
+    
+    .header-title::before {
+        width: 0.9rem;
+        height: 0.9rem;
+        bottom: 0.5rem;
+        left: 0.3rem;
+    }
+    
+    .admin-profile-pic {
+        width: 1.6rem;
+        height: 1.6rem;
+        border-width: 1px;
+    }
+    
+    .account button {
+        width: 1.4rem;
+        height: 1.4rem;
+        margin-right: 0.2rem;
+    }
+    
+    .account img {
+        width: 1.4rem;
+        height: 1.4rem;
+        margin-right: 0.2rem;
+    }
+    
+    .account #account-drop {
+        width: 0.9rem;
+        height: 0.9rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 160px;
+        right: -20px;
+        border-radius: 8px;
+    }
+    
+    .user-info-wrapper {
+        padding: 0.5rem 0.6rem;
+        gap: 0.4rem;
+    }
+    
+    .account-link-wrapper, 
+    .account-logout-wrapper, 
+    .account-edit-info-wrapper {
+        padding: 0.45rem 0.6rem;
+        gap: 0.4rem;
+    }
+    
+    .account-link-wrapper:hover, 
+    .account-logout-wrapper:hover, 
+    .account-edit-info-wrapper:hover {
+        padding-left: 0.9rem;
+    }
+    
+    .account-link-wrapper:hover::before,
+    .account-logout-wrapper:hover::before,
+    .account-edit-info-wrapper:hover::before {
+        width: 2px;
+    }
+    
+    .account-link-wrapper a:last-child,
+    .account-logout-wrapper a:last-child,
+    .account-edit-info-wrapper a:last-child {
+        font-size: 0.75rem;
+    }
+    
+    .update-password,
+    .logout-text,
+    .edit-info-text {
+        font-size: 0.75rem;
+    }
+    
+    .account-link-wrapper a:first-child,
+    .account-logout-wrapper a:first-child,
+    .account-edit-info-wrapper a:first-child {
+        padding: 0.3rem;
+        border-radius: 5px;
+    }
+    
+    .account .change-pass-icon, 
+    .account .logout-icon, 
+    .account .edit-info-icon {
+        width: 0.8rem;
+        height: 0.8rem;
+    }
+    
+    .account-link-wrapper:hover a:first-child,
+    .account-logout-wrapper:hover a:first-child,
+    .account-edit-info-wrapper:hover a:first-child {
+        transform: scale(1.05);
+    }
+    
+    .dropdown-profile-pic {
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+    
+    .dropdown-user-name {
+        font-size: 0.75rem;
+    }
+    
+    .dropdown-position {
+        font-size: 0.65rem;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .account-link-wrapper:hover, 
+    .account-logout-wrapper:hover, 
+    .account-edit-info-wrapper:hover {
+        padding-left: 1.2rem;
+    }
+    
+    .account-link-wrapper:active, 
+    .account-logout-wrapper:active, 
+    .account-edit-info-wrapper:active {
+        background: linear-gradient(90deg, rgba(62, 158, 196, 0.15), rgba(72, 202, 228, 0.15));
+    }
+}
+
+/* Landscape Orientation for Mobile */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .header-wrapper {
+        height: auto;
+        padding: 0.5rem 0.8rem;
+    }
+    
+    .header-title {
+        font-size: 0.9rem;
+    }
+    
+    .admin-name-wrapper {
+        display: flex;
+    }
+    
+    .admin-name-wrapper .name {
+        font-size: 0.85rem;
+    }
+    
+    .admin-name-wrapper span {
+        font-size: 0.75rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+}
+
 .show {
     display: block;
 }
@@ -521,259 +1324,180 @@ p {
     100%{content: '...';}
 }
 /*--END OF HEADER DESIGNS--*/
-/*MEDIA QUERIES*/
-@media(max-width: 1920px) {
-    .content {
-        width: 100%;
-        transition: width 0.3s ease;
-    }
-    .sidebar.active ~ .content{
-        width: 92%;
-    }
-}
-
-@media (max-width: 1510px) {
-    sidebar.active {
-        min-width: 20vw;
-        font-size: .7em;
-        transition: all .2s ease-out;
-    }
-    .header-title {
-        font-size: 1.1em;
-    }
-
-    .account {
-        padding-right: 0em;
-        font-size: .8em;
-    }
-
-    .searchbox {
-        width: 20em;
-        font-size: .8em;
-    }
-}
-
-@media (max-width: 1440px) {
-    .sidebar.active {
-        width: 22vw;
+/*====================================*/
+/*    SIDEBAR RESPONSIVE DESIGN       */
+/*====================================*/
+/* 2500px and above - Larger screens */
+@media (min-width: 2500px) {
+    :root {
+        --sidebar-expanded-width: 380px;
     }
     
-    .header-title {
-        font-size: 1.6rem;
-    }
-    
-    .header-title::before {
-        width: 1.3rem;
-        height: 1.3rem;
-    }
-    
-    .account {
-        padding-right: 1.5em;
-        font-size: 0.95em;
-    }
-    
-    .menu {
-        padding: 1.5em 0.8em 0.8em 0.8em;
-    }
-}
-
-@media (max-width: 1064px) {
     .sidebar {
-        font-size: 0.9em;
+        font-size: 1.25rem;
     }
     
     .sidebar.active {
-        width: 25vw;
-    }
-
-    .header-title {
-        font-size: 1.4rem;
-    }
-    
-    .header-title::before {
-        width: 1.2rem;
-        height: 1.2rem;
-        bottom: 0.7rem;
-    }
-
-    .account {
-        padding-right: 1em;
-        font-size: 0.9em;
-    }
-    
-    .account img, .account button {
-        width: 1.8em;
-        height: 1.8em;
+        width: var(--sidebar-expanded-width);
     }
     
     .menu {
-        padding: 1.2em 0.7em 0.7em 0.7em;
+        padding: 2.2em 1.4em 1.2em 1.4em;
     }
     
     .menu-title {
-        padding: 0 0.8em;
+        padding: 0em 1.4em;
+        font-size: 1.15rem;
+    }
+    
+    .menu img {
+        width: 1.5em;
+    }
+    
+    .SSIS {
+        font-size: 1.4em;
+        padding-left: 1.2em;
+    }
+    
+    .menu-btn {
+        width: 2.2em;
+        margin-right: 1.2em;
+    }
+    
+    .sidebar-title {
+        height: 3.6rem;
+        padding: 0.6rem;
+    }
+    
+    .dashboard-ul.active,
+    .teachers-ul.show, 
+    .enrolls-ul.show, 
+    .subjects-ul.show {
+        padding: 1.4em 2.6em .8em 2.6em;
     }
 }
 
-@media (max-width: 1045px) {
-    .sidebar {
-        font-size: .8em;
-    }
-
-    .header-title {
-        font-size: 1em;
-    }
-
-}
-
-@media (max-width: 768px) {
-    .main-wrapper {
-        flex-direction: column;
+/* 1920px - Full HD */
+@media (min-width: 1920px) and (max-width: 2499px) {
+    :root {
+        --sidebar-expanded-width: 320px;
     }
     
     .sidebar {
-        position: fixed;
-        left: -100%;
-        top: 0;
-        height: 100vh;
-        width: 280px;
-        z-index: 1000;
-        transition: left 0.3s ease;
-        font-size: 1em;
+        font-size: 1.1rem;
     }
     
     .sidebar.active {
-        left: 0;
-        width: 280px;
-    }
-    
-    .sidebar-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-    }
-    
-    .sidebar.active ~ .sidebar-overlay {
-        display: block;
-    }
-    
-    .content {
-        width: 100%;
-        margin-left: 0 !important;
-    }
-    
-    .header-wrapper {
-        flex-direction: row;
-        height: auto;
-        min-height: 3rem;
-        padding: 0.5rem;
-    }
-    
-    .header-title {
-        font-size: 1.2rem;
-        padding-left: 3rem;
-    }
-    
-    .header-title::before {
-        width: 1rem;
-        height: 1rem;
-        bottom: 0.6rem;
-        left: 0.8rem;
-    }
-    
-    .account {
-        padding-right: 0.5em;
-        font-size: 0.85em;
-    }
-    
-    .account img, .account button {
-        width: 1.6em;
-        height: 1.6em;
-        margin-right: 0.5em;
-    }
-    
-    .account-settings-btn-content-wrapper {
-        right: 0;
-        min-width: 140px;
-    }
-    
-    .user-info-wrapper {
-        display: none;
-    }
-    
-    /* Mobile menu toggle button */
-    .mobile-menu-toggle {
-        display: block;
-        position: fixed;
-        top: 0.8rem;
-        left: 0.8rem;
-        z-index: 1001;
-        background: var(--main-color);
-        color: white;
-        border: none;
-        padding: 0.5rem;
-        border-radius: 5px;
-        cursor: pointer;
-        width: 2.5rem;
-        height: 2.5rem;
-        font-size: 1.2rem;
+        width: var(--sidebar-expanded-width);
     }
     
     .menu {
-        padding: 1em 0.8em 0.8em 0.8em;
-        grid-template-columns: 20% 60% 20%;
+        padding: 2em 1.2em 1.1em 1.2em;
     }
     
-    .modal-content {
-        width: 95%;
-        margin: 2rem auto;
-        padding: 1rem;
-        max-height: 90vh;
+    .menu-title {
+        padding: 0em 1.2em;
+        font-size: 1.05rem;
+    }
+    
+    .menu img {
+        width: 1.4em;
+    }
+    
+    .SSIS {
+        font-size: 1.3em;
+        padding-left: 1.1em;
+    }
+    
+    .menu-btn {
+        width: 2.1em;
+        margin-right: 1.1em;
+    }
+    
+    .sidebar-title {
+        height: 3.3rem;
+    }
+    
+    .dashboard-ul.active,
+    .teachers-ul.show, 
+    .enrolls-ul.show, 
+    .subjects-ul.show {
+        padding: 1.2em 2.4em .6em 2.4em;
     }
 }
 
-@media (max-width: 480px) {
-    .header-title {
-        font-size: 1rem;
-        padding-left: 3rem;
+/* 1440px - Default (already set above, this is just for clarity) */
+@media (min-width: 1441px) and (max-width: 1919px) {
+    /* Default styles apply - no changes needed */
+}
+
+/* 1024px - Smaller desktop */
+@media (min-width: 1024px) and (max-width: 1440px) {
+    :root {
+        --sidebar-expanded-width: 240px;
     }
     
-    .header-title::before {
-        width: 0.9rem;
-        height: 0.9rem;
-    }
-    
-    .account {
-        font-size: 0.8em;
-    }
-    
-    .mobile-menu-toggle {
-        width: 2.2rem;
-        height: 2.2rem;
-        top: 0.7rem;
-        left: 0.7rem;
+    .sidebar {
+        font-size: 0.9rem;
     }
     
     .sidebar.active {
-        width: 260px;
+        width: var(--sidebar-expanded-width);
+    }
+    
+    .menu {
+        padding: 1.4em 0.8em 0.8em 0.8em;
+        grid-template-columns: 18% 64% 18%;
+    }
+    
+    .menu-title {
+        padding: 0em 0.8em;
+        font-size: 0.9rem;
+    }
+    
+    .menu img {
+        width: 1.2em;
+    }
+    
+    .SSIS {
+        font-size: 1.05em;
+        padding-left: 0.85em;
+        margin: 0.2rem;
+    }
+    
+    .menu-btn {
+        width: 1.85em;
+        margin-right: 0.85em;
+    }
+    
+    .sidebar-title {
+        height: 2.75rem;
+        padding: 0.4rem;
+    }
+    
+    #sidebar-toggle-button {
+        height: 1.75em;
+        width: 1.75em;
+    }
+    
+    .dashboard-ul.active,
+    .teachers-ul.show, 
+    .enrolls-ul.show, 
+    .subjects-ul.show {
+        padding: 0.85em 1.5em .35em 1.5em;
+        font-size: 0.9rem;
     }
 }
 
-/* Show mobile menu toggle only on mobile */
-.mobile-menu-toggle {
-    display: none;
-}
+/*====================================*/
+/*   END SIDEBAR RESPONSIVE DESIGN    */
+/*====================================*/
 
-@media (max-width: 768px) {
-    .mobile-menu-toggle {
-        display: block;
-    }
-}
+/*----END OF THE BASE DESIGNS----*/
+
+
+/*----START OF MAIN CONTENT----*/
+/*----END OF MAIN CONTENT----*/
 
 /*----END OF THE BASE DESIGNS----*/
 

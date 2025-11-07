@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     const tbody = document.querySelector('tbody');
 
     if (tbody.rows.length == 0) {

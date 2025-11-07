@@ -15,13 +15,8 @@
         <?php
             include './Landing_Header.php';
         ?>
-    <div class = "header">
-        <!-- Hero Section -->
         <section class="hero">
             <div class="hero-slideshow">
-                <!-- <div class="hero-slide active"
-                    style="background-image: linear-gradient(rgba(104, 165, 184, 0.32), rgba(44, 130, 156, 0.6)), url('./assets/imgs/test.png')">
-                </div> -->
                 <div class="hero-slide"
                     style="background-image: linear-gradient(rgba(104, 165, 184, 0.32), rgba(44, 130, 156, 0.6)), url('./assets/imgs/teacher.jpg')">
                 </div>
@@ -40,9 +35,7 @@
                 </h1>
             </div>
 
-            <!-- Hero Content script -->
             <script>
-                // Hero Slideshow
                 let slideIndex = 0;
                 const slides = document.querySelectorAll('.hero-slide');
 
@@ -67,62 +60,62 @@
                 </svg>
             </div>
         </section>
-    </header>
 
         <script>
-            // Mobile menu toggle
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const navMenu = document.getElementById('navMenu');
+            document.addEventListener('DOMContentLoaded', () => {
+                // Mobile menu toggle
+                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                const navMenu = document.getElementById('navMenu');
 
-            mobileMenuBtn.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                mobileMenuBtn.textContent = navMenu.classList.contains('active') ? '✕' : '☰';
-            });
+                if (mobileMenuBtn && navMenu) {
+                    mobileMenuBtn.addEventListener('click', () => {
+                        navMenu.classList.toggle('active');
+                        mobileMenuBtn.textContent = navMenu.classList.contains('active') ? '✕' : '☰';
+                    });
 
-            // Close mobile menu when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-                    navMenu.classList.remove('active');
-                    mobileMenuBtn.textContent = '☰';
+                    // Close mobile menu when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                            navMenu.classList.remove('active');
+                            mobileMenuBtn.textContent = '☰';
+                        }
+                    });
                 }
-            });
 
-            // Smooth scrolling for navigation links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth'
-                        });
+                // Smooth scrolling for navigation links
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
+
+                // Add scroll effect to header
+                window.addEventListener('scroll', () => {
+                    const header = document.querySelector('.header');
+                    if (window.scrollY > 100) {
+                        header.style.background = 'rgba(255, 255, 255, 0.95)';
+                        header.style.backdropFilter = 'blur(10px)';
+                    } else {
+                        header.style.background = 'white';
+                        header.style.backdropFilter = 'none';
                     }
                 });
-            });
-
-            // Add scroll effect to header
-            window.addEventListener('scroll', () => {
-                const header = document.querySelector('.header');
-                if (window.scrollY > 100) {
-                    header.style.background = 'rgba(255, 255, 255, 0.95)';
-                    header.style.backdropFilter = 'blur(10px)';
-                } else {
-                    header.style.background = 'white';
-                    header.style.backdropFilter = 'none';
-                }
             });
         </script>
         <!-- Hero Section End-->    
 
-
-    </div>
     <div class="main-content">
         <div class="learn-more-section">
             <h5>Take an Insight of Our Proudly to Present School</h5>
             <div class="learn-more-container">
                 <div class="learn-more-content">
                     <div class="image-text-container">
-                        <!-- <img src="./assets/imgs/student.jpg" alt="Image 1" class="image"> -->
                         <div class="text-container">
                             <h3>Our Beloved School</h3>
                             <p>Lucena South II Elementary School is dedicated to improving teaching and learning through 
@@ -135,7 +128,6 @@
                 </div>
                 <div class="learn-more-content">
                     <div class="image-text-container">
-                        <!-- <img src="./assets/imgs/grad.jpg" alt="Image 1" class="image"> -->
                         <div class="text-container">
                             <h3>History</h3>
                             <p>Lucena South II Elementary School was established in 1963 and has since played a vital 

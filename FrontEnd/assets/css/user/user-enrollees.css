@@ -1,17 +1,35 @@
+:root {
+  --main-fonts: "Poppins", "Segoe UI", sans-serif;
+  --title-fonts: "Barlow", sans-serif;
+  --main-color: #1c4a72;
+  --title-main-color: #3e9ec4;
+  --container-color: rgba(36, 186, 255, 0.28);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --hover-accent: #48cae4;
+  --accent-color: #00bcd4;
+  --success: #44d07b;
+  --warning: #ffcc00;
+  --danger: #ff5f5f;
+}
+
+.main-content {   
+    transition: margin-left 0.3s ease;
+    background-image: url("../../imgs/paper.jpg");
+    font-family: var(--main-fonts);
+}
+
 .content {
     width: 45vw;
     height: 90vh;
     display: flex;
     justify-self: center;
-    padding-top: 85px;
-    margin-bottom: 105px;   
 }
 
 .shadow-container {
     position: relative;
-    display: inline-block; /* Or block, based on layout */
+    display: inline-block;
     padding: 0;
-    border-radius: 1.5em; /* match */
+    border-radius: 1.5em;
     background-clip: padding-box;
 
   }
@@ -19,25 +37,46 @@
   .shadow-container::before {
     content: "";
     position: absolute;
-    top: -20px; left: -20px; right: -20px; bottom: -20px;
-    background: linear-gradient(to bottom , #FFF0F5, #FAF0E6);
+    top: -20px; left: -20px; right: -20px; bottom: 0px;
     filter: blur(60px);
     border-radius: 2em;
   }
   
+  .title-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #3e9ec4;
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(15px) saturate(180%);
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 30px rgb(0 0 0 / 14%);
+    margin-bottom: 1.5rem;
+    justify-content: center;
+    justify-self: center;
+  }
+
   /* Inner box */
   .wrapper {
     position: relative;
+    height: 75vh;
     z-index: 0;
-    background-color: #FAF9F6;
-    padding: 1em;
+    background: rgb(36 186 255 / 28%);
+    padding: 1.5em;
     border-radius: 1.25em;
-    overflow: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+    scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
+    overflow-y: scroll;
   }
+.scroll-container {
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */ 
+}
 .scroll-container::-webkit-scrollbar {
-    display: none;
+    display: none; /* For Chrome,
+     Safari, and Opera */
 }
 table {
     position: relative;
@@ -45,7 +84,12 @@ table {
     border-collapse: collapse;
     width: 40vw;
 }
-
+.table-container td {
+    text-align: left;
+    padding: 10px;
+    border-top: 1px solid rgba(63, 166, 210, 0.897);
+    vertical-align: middle;
+}
 .button {
     width: 30%;
     align-items: center;
@@ -65,37 +109,371 @@ th, td {
     text-decoration: underline;
     cursor: pointer;
 }
-td a:hover {
-    color: rgb(0, 0, 200);
-}
+
 .Check-Status {
-    display: block;
-    text-align: center;
-    border-radius: 5px;
-    background-color: #073f88;
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
     color: white;
-    width: 100%;
-    padding: .5em;
-    border: #1d421e 1px solid;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3 ease;
+    box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
 }
 
 .Check-Status:hover {
-    background-color: #327ee2;
-    cursor: pointer;
-    color: rgb(0, 0, 0);
-
+  background: linear-gradient(135deg, var(--hover-accent), var(--accent-color));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
 }
 
+.Check-Status:active {
+  transform: translateY(0);
+}
 
-tr:nth-child(odd) {background-color: #ffffff;}
+.wrapper tr:hover td {
+    color: var(--hover-accent);
+    transition: all 0.25s ease-in-out;
+}
 
-tr:nth-child(even) {background-color: #f4f4f4;}
+tr:nth-child(odd) {background-color: transparent;}
+
+tr:nth-child(even) {background: rgb(71 168 255 / 8%);}
 
 .title {
-    text-align: center;
-    color: #225281;
-    font-size: 24px;
-    margin-bottom: 8px;
-    font-weight: bolder ;
-    font-family: var(--main-fonts);
+  text-align: center;
+  color: #ffffff; 
+  font-size: 24px;
+  margin-bottom: 8px;
+  font-family: var(--main-fonts);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* ===== Responsive Design ===== */
+
+/* 4K and Ultra-Wide Displays */
+@media screen and (min-width: 2560px) {
+    .content {
+        width: 50vw;
+        height: 85vh;
+    }
+    
+    table {
+        width: 45vw;
+    }
+    
+    .title {
+        font-size: 32px;
+    }
+    
+    .title-header {
+        padding: 1.5rem 2rem;
+    }
+    
+    .wrapper {
+        height: 70vh;
+        padding: 2rem;
+    }
+    
+    th, td {
+        padding: 12px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Full HD Displays */
+@media screen and (min-width: 1920px) and (max-width: 2559px) {
+    .content {
+        width: 48vw;
+    }
+    
+    table {
+        width: 43vw;
+    }
+    
+    .title {
+        font-size: 28px;
+    }
+}
+
+/* Large Desktops */
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+    .content {
+        width: 50vw;
+    }
+    
+    table {
+        width: 45vw;
+    }
+    
+    .title {
+        font-size: 26px;
+    }
+}
+
+/* Standard Desktops */
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+    .content {
+        width: 60vw;
+    }
+    
+    table {
+        width: 55vw;
+    }
+    
+    .wrapper {
+        height: 70vh;
+        padding: 1.2rem;
+    }
+    
+    .title {
+        font-size: 22px;
+    }
+    
+    .title-header {
+        padding: 0.8rem 1.2rem;
+    }
+}
+
+/* Tablets (Landscape) */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .content {
+        width: 75vw;
+        height: 85vh;
+    }
+    
+    table {
+        width: 70vw;
+    }
+    
+    .wrapper {
+        height: 65vh;
+        padding: 1rem;
+    }
+    
+    .title {
+        font-size: 20px;
+    }
+    
+    .title-header {
+        padding: 0.8rem 1rem;
+    }
+    
+    th, td {
+        padding: 8px;
+        font-size: 0.95rem;
+    }
+    
+    .Check-Status {
+        width: 90%;
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Tablets (Portrait) and Large Phones */
+@media screen and (min-width: 600px) and (max-width: 767px) {
+    .main-content {
+        padding: 1rem;
+    }
+    
+    .content {
+        width: 90vw;
+        height: auto;
+    }
+    
+    table {
+        width: 85vw;
+        font-size: 0.9rem;
+    }
+    
+    .wrapper {
+        height: auto;
+        max-height: 70vh;
+        padding: 0.8rem;
+    }
+    
+    .title {
+        font-size: 18px;
+    }
+    
+    .title-header {
+        padding: 0.7rem 0.8rem;
+        margin-bottom: 1rem;
+    }
+    
+    th, td {
+        padding: 6px;
+        font-size: 0.85rem;
+    }
+    
+    .Check-Status {
+        width: 95%;
+        padding: 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    .enrollee-link {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Mobile Phones */
+@media screen and (max-width: 599px) {
+    .main-content {
+        padding: 0.5rem;
+    }
+    
+    .content {
+        width: 95vw;
+        height: auto;
+    }
+    
+    table {
+        width: 90vw;
+        font-size: 0.85rem;
+    }
+    
+    .wrapper {
+        height: auto;
+        max-height: 65vh;
+        padding: 0.6rem;
+        border-radius: 1rem;
+    }
+    
+    .title {
+        font-size: 16px;
+    }
+    
+    .title-header {
+        padding: 0.6rem;
+        margin-bottom: 0.8rem;
+        border-radius: 0.8rem;
+    }
+    
+    th, td {
+        padding: 5px;
+        font-size: 0.8rem;
+    }
+    
+    .Check-Status {
+        width: 100%;
+        padding: 0.4rem;
+        font-size: 0.8rem;
+    }
+    
+    .Check-Status:hover {
+        width: 98%;
+    }
+    
+    .enrollee-link {
+        padding: 6px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Small Mobile Phones */
+@media screen and (max-width: 375px) {
+    .content {
+        width: 98vw;
+    }
+    
+    table {
+        width: 95vw;
+        font-size: 0.75rem;
+    }
+    
+    .wrapper {
+        padding: 0.5rem;
+        max-height: 60vh;
+    }
+    
+    .title {
+        font-size: 14px;
+    }
+    
+    .title-header {
+        padding: 0.5rem;
+    }
+    
+    th, td {
+        padding: 4px;
+        font-size: 0.75rem;
+    }
+    
+    .Check-Status {
+        padding: 0.35rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Extra Small Mobile Phones */
+@media screen and (max-width: 320px) {
+    table {
+        width: 98vw;
+        font-size: 0.7rem;
+    }
+    
+    .wrapper {
+        padding: 0.4rem;
+        max-height: 55vh;
+    }
+    
+    .title {
+        font-size: 13px;
+    }
+    
+    th, td {
+        padding: 3px;
+        font-size: 0.7rem;
+    }
+    
+    .Check-Status {
+        padding: 0.3rem;
+        font-size: 0.7rem;
+    }
+    
+    .enrollee-link {
+        padding: 4px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Landscape Orientation for Small Devices */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .content {
+        height: auto;
+    }
+    
+    .wrapper {
+        height: auto;
+        max-height: 60vh;
+    }
+    
+    .title-header {
+        padding: 0.5rem 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .title {
+        font-size: 16px;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .Check-Status {
+        min-height: 44px;
+    }
+    
+    .enrollee-link {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
