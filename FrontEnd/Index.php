@@ -15,7 +15,8 @@
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        />       
+        />
+        <script src="./assets/js/announcements.js" defer></script>
     </head>
     <body>
 

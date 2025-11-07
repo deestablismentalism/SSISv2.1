@@ -6,11 +6,51 @@ require_once __DIR__ . '/../../core/tableDataTemplate.php';
 class adminSystemManagementView {
     protected $controller;
     protected $tableTemplate;
+    //SCHOOL YEAR DATE VALUES PROPERTY
+    protected $startDate;
+    protected $endDate;
     public function __construct() {
         $this->controller = new adminSystemManagementController();
         $this->tableTemplate = new tableCreator();
+        $this->passSavedSchoolYearDetails();
     }
-
+    private function passSavedSchoolYearDetails() {
+        try {
+            $data = $this->controller->viewSchoolYearDetailsDate();
+            if(!$data['success']) {
+                error_log("[".date('Y-m-d H:i:s')."]" .$data['message']."\n",3, __DIR__ . '/../../errorLogs.txt');
+                return;
+            }
+            $this->startDate = $data['data']['Starting_Date'] ?? null;
+            $this->endDate = $data['data']['Ending_Date'] ?? null;
+        }
+        catch(Throwable $t){
+            error_log("[".date('Y-m-d H:i:s')."]" .$t."\n",3, __DIR__ . '/../../errorLogs.txt');
+            return;
+        }
+    }
+    public function endYearValue():void {
+        try {
+            if(!is_null($this->endDate)) {
+                echo 'value="'.htmlspecialchars($this->endDate).'"';
+            }
+        }
+        catch(Throwable $t) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$t."\n",3, __DIR__ . '/../../errorLogs.txt');
+            return;
+        }
+    }
+    public function startYearValue():void {
+        try {
+            if(!is_null($this->startDate)) {
+                echo 'value="'.htmlspecialchars($this->startDate).'"';
+            }
+        }
+        catch(Throwable $t) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$t."\n",3, __DIR__ . '/../../errorLogs.txt');
+            return;
+        }
+    }
     public function displaySchoolYearDetails() {
         try {
             $data = $this->controller->viewSchoolYearDetails();

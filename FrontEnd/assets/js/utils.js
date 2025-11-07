@@ -6,7 +6,12 @@ export function close(modal) { // global close util
     })
     }
 }
-export const loadingText = `<div class="loading"></div>`; //global loading pop up modal
+export const loadingText = `
+    <div class="loading-modal">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Loading content, please wait...</p>
+    </div>
+`; //global loading pop up modal
 export function modalHeader(backButton = false) {
     let hasBackButton = backButton === true ? '<button class="back-button"> <img src="../../assets/imgs/arrow-left-solid.svg"> </button>' : '';
     const headerContent = `<div class="modal-header">${hasBackButton}<span class="close">&times;</span> </div><br>`;   

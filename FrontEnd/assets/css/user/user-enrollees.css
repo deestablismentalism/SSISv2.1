@@ -1,3 +1,17 @@
+:root {
+  --main-fonts: "Poppins", "Segoe UI", sans-serif;
+  --title-fonts: "Barlow", sans-serif;
+  --main-color: #1c4a72;
+  --title-main-color: #3e9ec4;
+  --container-color: rgba(36, 186, 255, 0.28);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --hover-accent: #48cae4;
+  --accent-color: #00bcd4;
+  --success: #44d07b;
+  --warning: #ffcc00;
+  --danger: #ff5f5f;
+}
+
 .main-content {   
     transition: margin-left 0.3s ease;
     background-image: url("../../imgs/paper.jpg");
@@ -95,37 +109,28 @@ th, td {
     text-decoration: underline;
     cursor: pointer;
 }
-td a:hover {
-    color: rgb(0, 0, 200);
-}
-.Check-Status {
-    display: block;
-    text-align: center;
-    border-radius: 20px;
-    /* background-color: #073f88; */
-    color: white;
-    width: 88%;
-    padding: .5em;
-    /* border: #1d421e 1px solid; */
-    background: rgb(0 255 8 / 28%);
-    color: #315e37f2;
-    border: 1px solid #00b017f2;
-    justify-self: center;
-}
 
-.Check-Status:visited {
-    color: #315e37f2;
+.Check-Status {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3 ease;
+    box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
 }
 
 .Check-Status:hover {
-    background-color: rgba(80, 255, 36, 0.195);
-    cursor: pointer;
-    color:  rgba(0, 186, 9, 0.647);
-    border: 1px solid #00c42af2;
-    transition: all 0.3s ease-in-out;
-    justify-content: center;
-    justify-self: center;
-    width: 85%;
+  background: linear-gradient(135deg, var(--hover-accent), var(--accent-color));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
+}
+
+.Check-Status:active {
+  transform: translateY(0);
 }
 
 .wrapper tr:hover td {

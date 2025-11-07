@@ -24,17 +24,29 @@ class userAllStudentsView {
                 echo '<div class="error-message">'.htmlspecialchars($studentData['message']).'</div>';
             }
             else {
-                echo '<table><tbody>';
+                echo '<table class="students">
+                        <thead>
+                            <tr>
+                                <th>Student\'s Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
                 foreach($studentData['data'] as $rows) {
                     $firstName = htmlspecialchars($rows['Student_First_Name']);
                     $middleInitial = !empty($rows['Student_Middle_Name']) ? substr($rows['Student_Middle_Name'], 0, 1) . "." : "";
                     $lastName = htmlspecialchars($rows['Student_Last_Name']);
-                    $fullName = $lastName . ',' . $firstName . ' ' . $middleInitial;
-                    echo '<tr> <td class="user-student-data">' . $fullName. '</td> 
-                                <td class="view-button"> <a href="./user_students_page.php?student-id='.$rows['Student_Id'].'"> Visit Student Page </a></td>
-                    </tr>';
+                    $fullName = $lastName . ', ' . $firstName . ' ' . $middleInitial;
+                    echo '<tr>
+                            <td class="user-student-data">' . $fullName. '</td> 
+                            <td class="view-button">
+                                <a href="./user_students_page.php?student-id='.$rows['Student_Id'].'" class="visit-btn">
+                                    Visit Student Page
+                                </a>
+                            </td>
+                          </tr>';
                 }
-                echo '</table></tbody>';   
+                echo '</tbody></table>';   
             }
         }
         catch(IdNotFoundException $e) {

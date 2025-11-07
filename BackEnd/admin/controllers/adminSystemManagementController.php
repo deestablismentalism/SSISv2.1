@@ -201,4 +201,35 @@ class adminSystemManagementController {
             ];
         }
     }
+    public function viewSchoolYearDetailsDate():array {
+        try {
+            $data = $this->adminSysModel->getSchoolYearDateFormat();
+            if(empty($data)) {
+                return [
+                    'success'=> true,
+                    'message'=> 'No School Year date yet',
+                    'data'=> []
+                ];
+            }
+            return [
+                'success'=> true,
+                'message'=> 'School year date successfully fetched',
+                'data'=> $data
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was a server problem. Please wait for it to be fixed',
+                'data'=> []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was an unexpected problem',
+                'data'=> []
+            ];
+        }
+    }
 }

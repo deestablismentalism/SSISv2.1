@@ -606,6 +606,7 @@ label[for]:hover {
     box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
     text-transform: uppercase;
     letter-spacing: 1px;
+    text-align: center;
 }
 
 .submit-button:hover:not(:disabled) {
