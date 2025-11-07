@@ -188,6 +188,84 @@ class adminSubjectsController {
             ];
         }
     }
+    public function apiGetSubjectsGrouped() : array {
+        try {
+            $data = $this->subjectsModel->getSubjectsGrouped();
+            if(empty($data)) {
+                return [
+                    'httpcode'=> 200,
+                    'success'=> false,
+                    'message'=> 'No subjects found',
+                    'data'=> []
+                ];
+            }
+            return [
+                'httpcode'=> 200,
+                'success'=> true,
+                'message'=> 'Subjects successfully fetched',
+                'data'=> $data
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'httpcode'=> 500,
+                'success'=> false,
+                'message'=> 'Database error: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'httpcode'=> 500,
+                'success'=> false,
+                'message'=> 'Error: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+    }
+    public function apiGetSectionsBySubject(int $subjectId) : array {
+        try {
+            if(empty($subjectId)) {
+                return [
+                    'httpcode'=> 400,
+                    'success'=> false,
+                    'message'=> 'Subject ID is required',
+                    'data'=> []
+                ];
+            }
+            $data = $this->subjectsModel->getSectionsBySubjectId($subjectId);
+            if(empty($data)) {
+                return [
+                    'httpcode'=> 200,
+                    'success'=> false,
+                    'message'=> 'No sections found for this subject',
+                    'data'=> []
+                ];
+            }
+            return [
+                'httpcode'=> 200,
+                'success'=> true,
+                'message'=> 'Sections successfully fetched',
+                'data'=> $data
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'httpcode'=> 500,
+                'success'=> false,
+                'message'=> 'Database error: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'httpcode'=> 500,
+                'success'=> false,
+                'message'=> 'Error: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+    }
     //VIEW 
     public function viewSubjectsPerSection() : array {
         try {
