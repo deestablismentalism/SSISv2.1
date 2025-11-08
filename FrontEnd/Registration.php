@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./assets/css/Registration.css" />
     <link rel="stylesheet" href="./assets/css/fonts.css" />
     <link rel="stylesheet" href="./assets/css/notifications.css" />
+    <link rel="stylesheet" href="./assets/css/loader.css">
 
   <!-- JS -->
   <script src="./assets/js/loader.js"></script>
