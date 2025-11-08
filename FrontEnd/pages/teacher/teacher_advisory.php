@@ -1,6 +1,9 @@
-<?php 
-    ob_start();
-    require_once __DIR__ . '/../../../BackEnd/teacher/views/teacherAdvisoryView.php';
+<?php
+if(session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+ob_start();
+require_once __DIR__ . '/../../../BackEnd/teacher/views/teacherAdvisoryView.php';
     $teacherAdvisoryView = new teacherAdvisoryView();
     $pageTitle = 'Advisory';
     $pageCss = '<link rel="stylesheet" href="../../assets/css/teacher/teacher-advisory.css">';

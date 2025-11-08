@@ -198,6 +198,56 @@ class adminSubjectsModel {
             throw new DatabaseException('Failed to fetch the subjects per level',0,$e);
         }
     }
+    public function getSubjectsGrouped() : array {
+        try {
+            $sql = "SELECT 
+                    s.Subject_Id,
+                    s.Subject_Name,
+                    COUNT(DISTINCT ss.Section_Subjects_Id) as Section_Count
+                    FROM subjects AS s
+                    INNER JOIN section_subjects AS ss ON s.Subject_Id = ss.Subject_Id
+                    GROUP BY s.Subject_Id, s.Subject_Name
+                    ORDER BY s.Subject_Name";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch grouped subjects',0,$e);
+        }
+    }
+    public function getSectionsBySubjectId(int $subjectId) : array {
+        try {
+            $sql = "SELECT
+                    ss.Section_Subjects_Id,
+                    se.Section_Name,
+                    g.Grade_Level,
+                    g.Grade_Level_Id,
+                    st.Staff_Id,
+                    st.Staff_First_Name,
+                    st.Staff_Middle_Name,
+                    st.Staff_Last_Name
+                    FROM section_subjects AS ss
+                    INNER JOIN sections AS se ON ss.Section_Id = se.Section_Id
+                    INNER JOIN grade_level AS g ON se.Grade_Level_Id = g.Grade_Level_Id
+                    LEFT JOIN staffs AS st ON ss.Staff_Id = st.Staff_Id
+                    WHERE ss.Subject_Id = :subjectId
+                    ORDER BY g.Grade_Level_Id, se.Section_Name";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':subjectId', $subjectId);
+            $stmt->execute();
+            
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch sections by subject',0,$e);
+        }
+    }
     public function insertSubjectTeacher(int $subjectId, int $staffId) : bool {
         try {
             $sql = "INSERT INTO section_subjects(Staff_ID) VALUES(:staffId) WHERE Subject_Id = :subjectId";

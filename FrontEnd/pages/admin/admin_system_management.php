@@ -39,15 +39,14 @@ $view = new adminSystemManagementView();
                         </form> 
                     </div>
                 </div>
-            </div>
-
-            <!-- USER LOGIN ACTIVITY -->
-            <div class="section-wrapper">
-                <div class="users-login-activity">
-                    <h2 class="section-title">Recent User Logins</h2>
-                    <div class="ul-table-container">
-                        <?php $view->displayUserLoginActivity();?>
-                    </div>
+        </div>
+        <div id="edit-mode" class="edit-mode-container" style="display:none;">
+            <form id="school-year-details-form">
+                <input type="date" name="school-year-start" <?php $view->startYearValue();?>>
+                <input type="date" name="school-year-end" <?php $view->endYearValue();?>>
+                <div class="actions">
+                    <button type="button" id="cancel-btn">Cancel</button>
+                    <button type="submit" id="save-btn">Save</button>
                 </div>
             </div>
         </div>
