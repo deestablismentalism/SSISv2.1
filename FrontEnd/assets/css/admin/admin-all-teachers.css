@@ -42,24 +42,39 @@ body {
 
 /* ===== Header Section ===== */
 .admin-all-teachers-title-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  backdrop-filter: blur(12px);
-  background: #3e9ec4;
-  border: 1px solid var(--glass-border);
-  border-radius: var(--border-radius);
-  padding: 1rem 1.5rem;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--glass-border);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .all-teachers-title {
-  font-size: 1.8rem;
+  font-family: var(--font-main);
+  color: var(--main-color);
+  font-size: 2rem;
   font-weight: 700;
-  letter-spacing: 1px;
-  color: white;
-  margin: 0;
+  margin-bottom: 2rem;
+  margin-top: 0;
+  position: relative;
+  padding-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #3e9ec4, #48cae4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.all-teachers-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+  border-radius: 2px;
 }
 
 /* Register Teacher Button */

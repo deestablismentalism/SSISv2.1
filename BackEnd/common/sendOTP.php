@@ -86,7 +86,7 @@ class OTPHandler extends Connect {
 
     private function sendOTPSMS($phone, $userData, $otp) {
         try {
-            $gatewayUrl = "http://192.168.1.168:8080/message";
+            $gatewayUrl = "http://192.168.1.229:8080/message";
             $username = "sms";
             $password = "KVs6RP-9";
 

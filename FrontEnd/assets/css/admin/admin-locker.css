@@ -246,7 +246,7 @@
 .file-icon {
     display: flex;
     justify-content: center;
-    color: #E1A23C;
+    color: var(--title-main-color);
     margin-bottom: 0.5rem;
 }
 

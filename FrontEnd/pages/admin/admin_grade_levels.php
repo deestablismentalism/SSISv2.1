@@ -9,6 +9,7 @@ $pageJs= '<script type="module" src="../../assets/js/admin/admin-grade-levels.js
 <div class="admin-grade-levels-content">
     <div class="grade-levels-title-wrapper"> 
         <h1 class="page-title">Grade Levels</h1>
+        ::after
         <button class="submit-btn" id="add-section-btn">Add Section</button>
     </div>
     

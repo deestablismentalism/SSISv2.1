@@ -41,45 +41,54 @@
         <form id="registration-form" action="../BackEnd/api/postRegistrationForm.php" method="post">
             <div class="user-details">
                 <div class="page-title">
-                    <h3>Welcome!</h3>
-                    <p class="subtitle">Sign in to your Account</p>
+                    <h3>Maligayang Pagdating!</h3>
+                    <p class="subtitle">Magregister sa iyong Account</p>
+                </div>
+
+                <!-- Informative Label -->
+                <div class="form-info-section">
+                    <p class="form-instruction-label">
+                        <strong>Impormasyon ng Magulang o Tagapag-alaga</strong>
+                        <span class="required" style="color: red;">*</span>
+                    </p>
                 </div>
 
                 <!-- Guardian First Name -->
                 <div class="input-box">
                     <input type="text" name="Guardian-First-Name" id="guardian-first-name" placeholder=" " required />
-                    <span class="details">Enrollee's Guardian First Name</span>
+                    <span class="details">Unang Pangalan</span>
                 </div>
 
                 <!-- Guardian Middle Name -->
                 <div class="input-box">
                     <input type="text" name="Guardian-Middle-Name" id="guardian-middle-name" placeholder=" " />
-                    <span class="details">Enrollee's Guardian Middle Name</span>
+                    <span class="details">Gitnang Pangalan</span>
                 </div>
 
                 <!-- Guardian Last Name -->
                 <div class="input-box">
                     <input type="text" name="Guardian-Last-Name" id="guardian-last-name" placeholder=" " required />
-                    <span class="details">Enrollee's Guardian Last Name</span>
+                    <span class="details">Apelyido</span>
                 </div>
 
                 <!-- Guardian Contact Number -->
                 <div class="input-box">
                     <input type="text" name="Contact-Number" id="contact-number" placeholder=" " maxlength="11" pattern="[0-9]{11}" required />
-                    <span class="details">Enrollee's Guardian Contact Number</span>
+                    <span class="details">Numero ng Telepono</span>
                 </div>
 
                 <!-- Terms and Conditions Section -->
                 <div class="terms-conditions-section">
                     <div class="terms-header">
-                        <p class="terms-instruction">Please read the Privacy Policy and Terms & Conditions</p>
-                        <button type="button" id="open-terms-btn" class="open-terms-btn">Read Terms & Conditions</button>
+                        <p class="terms-instruction">
+                            Basahin ang <span class="terms-link" id="open-terms-link">Privacy Policy and Terms & Conditions</span> bago magpatuloy.
+                        </p>
                     </div>
                     
                     <div class="terms-agreement">
                         <input type="checkbox" name="terms-acceptance" id="terms-acceptance" disabled required />
                         <label for="terms-acceptance" class="terms-label" id="terms-label">
-                            I have read and agree to the Terms & Conditions and Privacy Policy
+                            Ako'y sumasang-ayon sa nilalaman ng Terms & Conditions and Privacy Policy
                             <span class="required">*</span>
                         </label>
                     </div>
@@ -92,7 +101,7 @@
             </div>
             <!-- Sign In Link -->
             <p>
-              Already have an account?
+              Mayroon ng account? Mag
               <a href="Login.php" class="signin-link" style="text-decoration: none;">Sign In.</a>
             </p>
         </form>
