@@ -23,14 +23,14 @@ $pageCss= '<link rel="stylesheet" href="../../assets/css/admin/admin-edit-studen
     $successMessage = '';
     
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $studentModel = new studentsModel();
+        $studentModel = new adminStudentsModel();
         $result = $studentModel->updateStudent($_POST);
         
-        if ($result['success']) {
+        if ($result) {
             $successMessage = 'Student updated successfully!';
             $student = $studentModel->getStudentById($studentId); // Refresh data
         } else {
-            $errorMessage = 'Error updating student: ' . $result['message'];
+            $errorMessage = 'Error updating student: ' . $result;
         }
     }
     
