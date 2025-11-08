@@ -1,6 +1,11 @@
 <?php
 header('Content-Type: application/json');
+require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../core/dbconnection.php';
+
+// Load environment variables
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
+$dotenv->load();
 
 class OTPHandler extends Connect {
     private $pdo;
@@ -86,9 +91,9 @@ class OTPHandler extends Connect {
 
     private function sendOTPSMS($phone, $userData, $otp) {
         try {
-            $gatewayUrl = "http://192.168.1.168:8080/message";
-            $username = "sms";
-            $password = "KVs6RP-9";
+            $gatewayUrl = $_ENV['SMS_GATEWAY_URL'];
+            $username = $_ENV['SMS_GATEWAY_USERNAME'];
+            $password = $_ENV['SMS_GATEWAY_PASSWORD'];
 
             $cleanedPhone = $this->cleanPhoneNumber($phone);
             if (substr($cleanedPhone, 0, 2) === '09') {
@@ -113,21 +118,26 @@ class OTPHandler extends Connect {
             curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
             $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
             if (curl_errno($ch)) {
+                $error = curl_error($ch);
                 curl_close($ch);
-                return ['success' => false];
+                error_log("SMS Gateway cURL Error: " . $error);
+                return ['success' => false, 'error' => 'Connection error'];
             }
 
             curl_close($ch);
 
             $responseData = json_decode($response, true);
             if (json_last_error() !== JSON_ERROR_NONE) {
-                return ['success' => false];
+                error_log("SMS Gateway JSON Error: " . json_last_error_msg() . " | Response: " . $response);
+                return ['success' => false, 'error' => 'Invalid response'];
             }
 
             if (!isset($responseData['state']) || $responseData['state'] !== 'Pending') {
-                return ['success' => false];
+                error_log("SMS Gateway Rejection: HTTP " . $httpCode . " | Response: " . json_encode($responseData));
+                return ['success' => false, 'error' => $responseData['message'] ?? 'Message rejected', 'details' => $responseData];
             }
             
             return ['success' => true];
