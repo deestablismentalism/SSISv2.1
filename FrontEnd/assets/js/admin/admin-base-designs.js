@@ -11,6 +11,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (sidebarToggleBtn) {
         sidebarToggleBtn.addEventListener('click', function() {
             sidebar.classList.toggle('active');
+            
+            // Close all dropdowns when sidebar is closed
+            if (!sidebar.classList.contains('active')) {
+                closeAllDropdowns();
+            }
         });
     }
     

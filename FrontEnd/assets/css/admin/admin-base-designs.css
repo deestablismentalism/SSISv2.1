@@ -1349,7 +1349,6 @@ p {
     }
     
     .dashboard-ul.active,
-    .teachers-ul.show, 
     .enrolls-ul.show, 
     .subjects-ul.show {
         padding: 1.4em 2.6em .8em 2.6em;
@@ -1398,7 +1397,6 @@ p {
     }
     
     .dashboard-ul.active,
-    .teachers-ul.show, 
     .enrolls-ul.show, 
     .subjects-ul.show {
         padding: 1.2em 2.4em .6em 2.4em;
@@ -1460,7 +1458,6 @@ p {
     }
     
     .dashboard-ul.active,
-    .teachers-ul.show, 
     .enrolls-ul.show, 
     .subjects-ul.show {
         padding: 0.85em 1.5em .35em 1.5em;

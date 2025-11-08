@@ -1,20 +1,1085 @@
-.school-year-details {
-    width: 100%;
-    max-width: 800px;
-    min-height: 400px;
-    position: relative;
+/*====================================*/
+/*   ADMIN SYSTEM MANAGEMENT STYLES   */
+/*====================================*/
+
+/* ===== Root Theme Colors ===== */
+:root {
+  --bg-gradient: linear-gradient(135deg, rgba(20, 30, 48, 0.95), rgba(36, 59, 85, 0.95));
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --hover-glow: rgba(255, 255, 255, 0.3);
+  --text-color: #e8edf3;
+  --main-color: #1c4a72;
+  --accent-color: #00bcd4;
+  --secondary-color: #F1BD22;
+  --success: #44d07b;
+  --warning: #ffcc00;
+  --danger: #ff5f5f;
+  --font-main: "Poppins", "Segoe UI", sans-serif;
+  --hover-accent: #48cae4;
+  --border-radius: 1.5rem;
+  --transition: all 0.3s ease;
 }
-.view-mode-container,
-.edit-mode-container {
+
+/* ===== Overall Layout ===== */
+body {
+  background: var(--bg-gradient);
+  font-family: var(--font-main);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+.system-management-content {
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  font-family: var(--font-main);
+  min-height: 100vh;
+  background-image: url("../../imgs/paper.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/* ===== Main Title ===== */
+.system-management-content > h3 {
+  font-family: var(--font-main);
+  color: var(--main-color);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  margin-top: 0;
+  position: relative;
+  padding-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #3e9ec4, #48cae4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.system-management-content > h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+  border-radius: 2px;
+}
+
+/* ====================================
+   TWO COLUMN GRID LAYOUT
+   ==================================== */
+
+.system-management-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.left-column,
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.section-wrapper {
+  width: 100%;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  color: var(--main-color);
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 3px solid var(--accent-color);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
+}
+
+/* ====================================
+   SCHOOL YEAR DETAILS SECTION
+   ==================================== */
+
+.school-year-details {
+  background: rgb(36 186 255 / 28%);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.school-year-details::before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  padding: 20px;
+  height: 4px;
 }
-.login-activity,
+
+.school-year-details:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* View Mode */
+.view-mode-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.view-mode-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.dates {
+  flex: 1;
+  min-width: 250px;
+}
+
+.dates p {
+  margin: 1rem 0;
+  font-size: 1.05rem;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-weight: 500;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.dates p:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(5px);
+}
+
+.dates strong {
+  color: var(--main-color);
+  font-weight: 700;
+  min-width: 140px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.button-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.button-actions button {
+  padding: 0.85rem 1.8rem;
+  border: none;
+  border-radius: 12px;
+  font-family: var(--font-main);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#edit-btn {
+  background: linear-gradient(135deg, var(--accent-color), #48cae4);
+  color: white;
+}
+
+#edit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 188, 212, 0.4);
+  background: linear-gradient(135deg, #48cae4, var(--accent-color));
+}
+
+#edit-btn:active {
+  transform: scale(0.95);
+}
+
+/* Edit Mode */
+.edit-mode-container {
+  animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#school-year-details-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+#school-year-details-form input[type="date"] {
+  padding: 1rem 1.5rem;
+  border: 2px solid rgba(0, 188, 212, 0.3);
+  border-radius: 12px;
+  font-family: var(--font-main);
+  font-size: 1rem;
+  transition: var(--transition);
+  background: rgba(255, 255, 255, 0.9);
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+#school-year-details-form input[type="date"]:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.1);
+  transform: translateY(-2px);
+}
+
+#school-year-details-form input[type="date"]:hover {
+  border-color: #48cae4;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.actions button {
+  padding: 0.85rem 2rem;
+  border: none;
+  border-radius: 12px;
+  font-family: var(--font-main);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+#cancel-btn {
+  background: rgba(0, 0, 0, 0.15);
+  color: #1a1a1a;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+#cancel-btn:hover {
+  background: rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#save-btn {
+  background: linear-gradient(135deg, var(--success), #3ac965);
+  color: white;
+  box-shadow: 0 4px 12px rgba(68, 208, 123, 0.3);
+}
+
+#save-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(68, 208, 123, 0.5);
+}
+
+#cancel-btn:active,
+#save-btn:active {
+  transform: scale(0.95);
+}
+
+/* ====================================
+   ARCHIVES SECTION
+   ==================================== */
+
 .archives {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
+
+.student-archives,
+.teacher-archives {
+  background: rgb(36 186 255 / 28%);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.student-archives::before,
+.teacher-archives::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-color), #48cae4);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.student-archives:hover::before,
+.teacher-archives:hover::before {
+  transform: scaleX(1);
+}
+
+.student-archives:hover,
+.teacher-archives:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+}
+
+.archives a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--main-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 1.2rem;
+  transition: var(--transition);
+  position: relative;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.archives a::after {
+  content: '→';
+  margin-left: 1rem;
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+  color: var(--accent-color);
+}
+
+.archives a:hover {
+  color: var(--hover-accent);
+}
+
+.archives a:hover::after {
+  transform: translateX(8px);
+}
+
+/* ====================================
+   LOGIN ACTIVITY SECTION
+   ==================================== */
+
+.users-login-activity,
+.teachers-login-activity {
+  background: rgb(36 186 255 / 28%);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.users-login-activity::before,
+.teachers-login-activity::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.users-login-activity .section-title,
+.teachers-login-activity .section-title {
+  margin-bottom: 1.5rem;
+  border-bottom-color: #48cae4;
+}
+
+.ul-table-container,
+.tl-table-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  max-height: 400px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
+}
+
+/* Custom scrollbar styling */
+.ul-table-container::-webkit-scrollbar,
+.tl-table-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.ul-table-container::-webkit-scrollbar-track,
+.tl-table-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ul-table-container::-webkit-scrollbar-thumb,
+.tl-table_container::-webkit-scrollbar-thumb {
+  background-color: rgba(62, 158, 196, 0.5);
+  border-radius: 20px;
+}
+
+.ul-table-container::-webkit-scrollbar-thumb:hover,
+.tl-table-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(62, 158, 196, 0.7);
+}
+
+/* Make table header sticky */
+.ul-table-container thead,
+.tl-table-container thead {
+  transition: background-color 0.3s ease;
+}
+
+.ul-table-container table,
+.tl-table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.ul-table-container th,
+.tl-table-container th {
+  background: rgb(97 206 255);
+  color: #1a1a1a;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.ul-table-container td,
+.tl-table-container td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(63, 166, 210, 0.3);
+  color: #1a1a1a;
+  font-weight: 400;
+}
+
+.ul-table-container tbody tr,
+.tl-table-container tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.ul-table-container tbody tr:nth-child(even),
+.tl-table-container tbody tr:nth-child(even) {
+  background: rgb(71 168 255 / 8%);
+}
+
+.ul-table-container tbody tr:hover,
+.tl-table-container tbody tr:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.ul-table-container tbody tr:hover td,
+.tl-table-container tbody tr:hover td {
+  color: var(--hover-accent);
+}
+
+/* Empty State */
+.ul-table-container .no-data,
+.tl-table-container .no-data {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #666;
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+/* ====================================
+   RESPONSIVE DESIGN
+   ==================================== */
+
+/* 2500px and above - Larger screens */
+@media (min-width: 2500px) {
+  .system-management-content {
+    padding: 2.8rem;
+  }
+
+  .system-management-content > h3 {
+    font-size: 2.4rem;
+    margin-bottom: 2.4rem;
+  }
+
+  .system-management-grid {
+    gap: 2.4rem;
+  }
+
+  .left-column,
+  .right-column {
+    gap: 2.4rem;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .school-year-details,
+  .student-archives,
+  .teacher-archives,
+  .users-login-activity,
+  .teachers-login-activity {
+    padding: 2.4rem;
+    border-radius: 26px;
+  }
+
+  .users-login-activity {
+    height: 71vh;
+  }
+
+  .dates p {
+    font-size: 1.2rem;
+  }
+
+  .button-actions button,
+  .actions button {
+    padding: 1rem 2.2rem;
+    font-size: 1.15rem;
+  }
+
+  #school-year-details-form input[type="date"] {
+    padding: 1.2rem 1.8rem;
+    font-size: 1.15rem;
+  }
+
+  .archives a {
+    font-size: 1.4rem;
+    padding: 1.4rem;
+  }
+
+  .ul-table-container,
+  .tl-table-container {
+    max-height: 480px;
+    padding: 1.4rem;
+  }
+
+  .ul-table-container table,
+  .tl-table-container table {
+    font-size: 1.1rem;
+  }
+
+  .ul-table-container th,
+  .tl-table-container th,
+  .ul-table-container td,
+  .tl-table-container td {
+    padding: 1.2rem;
+  }
+}
+
+/* 1920px - Full HD */
+@media (min-width: 1920px) and (max-width: 2499px) {
+  .system-management-content {
+    padding: 2.4rem;
+  }
+
+  .system-management-content > h3 {
+    font-size: 2.2rem;
+    margin-bottom: 2.2rem;
+  }
+
+  .system-management-grid {
+    gap: 2.2rem;
+  }
+
+  .left-column,
+  .right-column {
+    gap: 2.2rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.3rem;
+  }
+
+  .school-year-details,
+  .student-archives,
+  .teacher-archives,
+  .users-login-activity,
+  .teachers-login-activity {
+    padding: 2.2rem;
+    border-radius: 23px;
+  }
+
+  .dates p {
+    font-size: 1.15rem;
+  }
+
+  .button-actions button,
+  .actions button {
+    padding: 0.95rem 2rem;
+    font-size: 1.1rem;
+  }
+
+  #school-year-details-form input[type="date"] {
+    padding: 1.1rem 1.6rem;
+    font-size: 1.1rem;
+  }
+
+  .archives a {
+    font-size: 1.3rem;
+    padding: 1.3rem;
+  }
+
+  
+  .tl-table-container {
+    max-height: 440px;
+  }
+
+  .ul-table-container {
+    max-height: 540px;
+  }
+  .ul-table-container table,
+  .tl-table-container table {
+    font-size: 1.05rem;
+  }
+
+  .ul-table-container th,
+  .tl-table-container th,
+  .ul-table-container td,
+  .tl-table-container td {
+    padding: 1.1rem;
+  }
+}
+
+/* 1440px - Default (already set above) */
+@media (min-width: 1441px) and (max-width: 1919px) {
+  /* Default styles apply */
+}
+
+/* 1024px - Smaller desktop */
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .system-management-content {
+    padding: 1.8rem;
+  }
+
+  .system-management-content > h3 {
+    font-size: 1.8rem;
+  }
+
+  .system-management-grid {
+    gap: 1.8rem;
+  }
+
+  .left-column,
+  .right-column {
+    gap: 1.8rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+  }
+
+  .school-year-details,
+  .student-archives,
+  .teacher-archives,
+  .users-login-activity,
+  .teachers-login-activity {
+    padding: 1.8rem;
+    border-radius: 18px;
+  }
+
+  .dates p {
+    font-size: 1rem;
+  }
+
+  .button-actions button,
+  .actions button {
+    padding: 0.75rem 1.6rem;
+    font-size: 0.95rem;
+  }
+
+  #school-year-details-form input[type="date"] {
+    padding: 0.9rem 1.3rem;
+    font-size: 0.95rem;
+  }
+
+  .archives a {
+    font-size: 1.1rem;
+    padding: 1.1rem;
+  }
+
+  .ul-table-container,
+  .tl-table-container {
+    max-height: 360px;
+    padding: 0.9rem;
+  }
+
+  .ul-table-container table,
+  .tl-table-container table {
+    font-size: 0.9rem;
+  }
+
+  .ul-table-container th,
+  .tl-table-container th,
+  .ul-table-container td,
+  .tl-table-container td {
+    padding: 0.85rem;
+  }
+}
+
+/* Tablet Landscape (768px - 1023px) */
+@media (max-width: 1023px) {
+  .system-management-content {
+    padding: 1.5rem;
+  }
+
+  .system-management-content > h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .system-management-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .school-year-details,
+  .student-archives,
+  .teacher-archives,
+  .users-login-activity,
+  .teachers-login-activity {
+    padding: 1.5rem;
+    border-radius: 15px;
+  }
+
+  .view-mode-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button-actions {
+    justify-content: flex-end;
+  }
+
+  .ul-table-container,
+  .tl-table-container {
+    max-height: 320px;
+  }
+}
+
+/* Tablet Portrait (768px - 991px) */
+@media (max-width: 991px) {
+  .system-management-content {
+    padding: 1.3rem;
+  }
+
+  .dates p {
+    font-size: 0.95rem;
+  }
+
+  .button-actions button,
+  .actions button {
+    padding: 0.7rem 1.3rem;
+    font-size: 0.9rem;
+  }
+
+  .archives a {
+    font-size: 1.05rem;
+  }
+
+  .ul-table-container th,
+  .tl-table-container th,
+  .ul-table-container td,
+  .tl-table-container td {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Mobile (max-width: 767px) */
+@media (max-width: 767px) {
+  .system-management-content {
+    padding: 1rem;
+  }
+
+  .system-management-content > h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .system-management-grid {
+    gap: 1.5rem;
+  }
+
+  .left-column,
+  .right-column {
+    gap: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom-width: 2px;
+  }
+
+  .school-year-details,
+  .student-archives,
+  .teacher-archives,
+  .users-login-activity,
+  .teachers-login-activity {
+    padding: 1.2rem;
+    border-radius: 12px;
+  }
+
+  .dates p {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+  }
+
+  .dates strong {
+    min-width: auto;
+  }
+
+  .button-actions {
+    width: 100%;
+  }
+
+  .button-actions button {
+    flex: 1;
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+  }
+
+  .actions button {
+    width: 100%;
+    padding: 0.75rem 1.2rem;
+  }
+
+  #school-year-details-form input[type="date"] {
+    padding: 0.8rem 1.1rem;
+    font-size: 0.9rem;
+  }
+
+  .archives a {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .ul-table-container,
+  .tl-table-container {
+    max-height: 280px;
+    padding: 0.6rem;
+  }
+
+  .ul-table-container th,
+  .tl-table-container th,
+  .ul-table-container td,
+  .tl-table-container td {
+    padding: 0.6rem 0.4rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Small Mobile (max-width: 479px) */
+@media (max-width: 479px) {
+  .system-management-content {
+    padding: 0.8rem;
+  }
+
+  .system-management-content > h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .system-management-grid {
+    gap: 1.2rem;
+  }
+
+  .left-column,
+  .right-column {
+    gap: 1.2rem;
+  }
+
+  .section-title {
+    font-size: 1.05rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .school-year-details,
+  .student-archives,
+  .teacher-archives,
+  .users-login-activity,
+  .teachers-login-activity {
+    padding: 1rem;
+    border-radius: 10px;
+  }
+
+  .dates p {
+    font-size: 0.85rem;
+  }
+
+  .button-actions button {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  #school-year-details-form input[type="date"] {
+    padding: 0.7rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .actions button {
+    padding: 0.7rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .archives a {
+    font-size: 0.95rem;
+    padding: 0.9rem;
+  }
+
+  .ul-table-container,
+  .tl-table-container {
+    max-height: 240px;
+  }
+
+  .ul-table-container th,
+  .tl-table-container th,
+  .ul-table-container td,
+  .tl-table-container td {
+    padding: 0.5rem 0.3rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Extra Small Mobile (max-width: 374px) */
+@media (max-width: 374px) {
+  .system-management-content {
+    padding: 0.6rem;
+  }
+
+  .system-management-content > h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .system-management-grid {
+    gap: 1rem;
+  }
+
+  .left-column,
+  .right-column {
+    gap: 1rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+    margin-bottom: 0.7rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .school-year-details,
+  .student-archives,
+  .teacher-archives,
+  .users-login-activity,
+  .teachers-login-activity {
+    padding: 0.8rem;
+  }
+
+  .dates p {
+    font-size: 0.8rem;
+  }
+
+  .button-actions button {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.75rem;
+  }
+
+  .actions button {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.8rem;
+  }
+
+  .archives a {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+
+  .ul-table-container th,
+  .tl-table-container th,
+  .ul-table-container td,
+  .tl-table-container td {
+    padding: 0.4rem 0.2rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .system-management-content {
+    padding: 0;
+    background: white;
+  }
+
+  .system-management-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .button-actions,
+  .actions,
+  .edit-mode-container {
+    display: none !important;
+  }
+
+  .school-year-details,
+  .student-archives,
+  .teacher-archives,
+  .users-login-activity,
+  .teachers-login-activity {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    page-break-inside: avoid;
+    background: white;
+  }
+
+  .ul-table-container,
+  .tl-table-container {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/*====================================*/
+/* END SYSTEM MANAGEMENT STYLES       */
+/*====================================*/
