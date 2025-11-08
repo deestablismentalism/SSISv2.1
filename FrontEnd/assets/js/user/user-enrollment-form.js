@@ -1,4 +1,4 @@
-import {ValidationUtils,capitalizeFirstLetter,generateOptions, getRegions, getProvinces, getCities, getBarangays } from "../utils.js";
+import {ValidationUtils,capitalizeFirstLetter,generateOptions, getRegions, getProvinces, getCities, getBarangays, preventCharactersByRegex } from "../utils.js";
 document.addEventListener('DOMContentLoaded',function(){
     // |=================|
     // |===== ORDER =====|
@@ -73,6 +73,9 @@ document.addEventListener('DOMContentLoaded',function(){
     const idRegex = /^([0-9]){6}$/;
     const charRegex = /^[A-Za-z0-9\s.,'-]{3,100}$/;
     const onlyDigits = /^[0-9]+$/;
+    const nonAlphaRegex = /[^A-Za-z\s.,'-]/g;
+    const nonNumericRegex = /[^0-9]/g;
+
     // |=============================|
     // |===== VALIDATION UTILS ======|
     // |=============================|
@@ -845,6 +848,25 @@ document.addEventListener('DOMContentLoaded',function(){
             }
         });
     });
+
+    const nameFields = [lname, fname, fatherLname, fatherFname, motherLname, motherFname, guardianLname, guardianFname];
+    nameFields.forEach(field => {
+        if (field) {
+            preventCharactersByRegex(field, charRegex, (element, rejectedChars) => {
+            });
+        }
+    });
+
+    const numericFields = [psaNumber, lrn, startYear, endYear, lastYear, lschoolId, fschoolId, 
+                          fatherCPnum, motherCPnum, guardianCPnum, houseNumber];
+    numericFields.forEach(field => {
+        if (field) {
+            preventCharactersByRegex(field, nonNumericRegex, (element, rejectedChars) => {
+                console.log(`Prevented non-numeric characters: ${rejectedChars}`);
+            });
+        }
+    });
+
     // === DISABLITY EVENTS ===
     function toggleField(radioChecked, field, savedValue,errorElement) {
         if (!radioChecked) {

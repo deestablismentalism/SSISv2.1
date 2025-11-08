@@ -81,7 +81,7 @@ export async function getProvinces(regionCode) {
     return await fetchAddress(`https://psgc.gitlab.io/api/regions/${regionCode}/provinces`);
 }
 export async function getCities(provinceCode) {
-    return await fetchAddress(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-municipalities`);
+    return await fetchAddress(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-mmunicipalities`);
 }
 export async function getBarangays(cityCode) {
     return await fetchAddress(`https://psgc.gitlab.io/api/cities-municipalities/${cityCode}/barangays`);
@@ -160,3 +160,86 @@ export const ValidationUtils = {
         return Object.values(this.validationState).every(state => state === true);
     }
 };
+export function preventInputByRegex(element, regex, errorCallback = null) {
+    element.addEventListener('beforeinput', function(e) {
+        if (e.inputType === 'deleteContentBackward' || 
+            e.inputType === 'deleteContentForward' ||
+            e.inputType === 'deleteByCut') {
+            return;
+        }
+
+        if (e.data && regex.test(e.data)) {
+            e.preventDefault();
+            
+            if (errorCallback && typeof errorCallback === 'function') {
+                errorCallback(element, e.data);
+            }
+            return;
+        }
+
+        if (e.inputType === 'insertText' || e.inputType === 'insertFromPaste') {
+            const currentValue = element.value;
+            const start = element.selectionStart;
+            const end = element.selectionEnd;
+            const newValue = currentValue.substring(0, start) + (e.data || '') + currentValue.substring(end);
+            
+            if (regex.test(newValue)) {
+                e.preventDefault();
+                
+                if (errorCallback && typeof errorCallback === 'function') {
+                    errorCallback(element, e.data);
+                }
+            }
+        }
+    });
+
+    element.addEventListener('paste', function(e) {
+        const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+        
+        if (regex.test(pastedText)) {
+            e.preventDefault();
+            
+            if (errorCallback && typeof errorCallback === 'function') {
+                errorCallback(element, pastedText);
+            }
+        }
+    });
+}
+
+export function preventCharactersByRegex(element, regex, errorCallback = null) {
+    const sanitizeValue = function(e) {
+        const currentValue = element.value;
+        const cursorPos = element.selectionStart;
+        const cursorEnd = element.selectionEnd;
+        
+        const cleanedValue = currentValue.replace(regex, '');
+        
+        if (cleanedValue !== currentValue) {
+            const removedChars = currentValue.replace(cleanedValue, '');
+            
+            element.value = cleanedValue;
+            
+            const charsRemovedBeforeCursor = currentValue.substring(0, cursorPos).length - 
+                                            currentValue.substring(0, cursorPos).replace(regex, '').length;
+            const newCursorPos = Math.max(0, cursorPos - charsRemovedBeforeCursor);
+            
+            element.setSelectionRange(newCursorPos, newCursorPos);
+            
+            if (errorCallback && typeof errorCallback === 'function') {
+                errorCallback(element, removedChars);
+            }
+        }
+    };
+
+    element.addEventListener('input', sanitizeValue);
+
+    element.addEventListener('paste', function(e) {
+        setTimeout(() => sanitizeValue(e), 0);
+    });
+
+    const initialValue = element.value;
+    if (initialValue && regex.test(initialValue)) {
+        element.value = initialValue.replace(regex, '');
+    }
+}
+
