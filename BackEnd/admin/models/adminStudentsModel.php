@@ -67,7 +67,57 @@ class adminStudentsModel {
             throw new DatabaseException('Failed to fetch the students by their ID',0,$e);
         }
     }
-    
+    public function getStudentParentInformation(int $studentId):array {
+        try {
+            $sql = "SELECT pi.Parent_Type,pi.First_Name,pi.Last_Name,pi.Middle_Name,pi.Parent_type,pi.Educational_Attainment,
+                    pi.Contact_Number, 
+                    CASE pi.If_4Ps
+                    WHEN 1 THEN 'Yes'
+                    WHEN 0 THEN 'No'
+                    END AS Is_4Ps
+                    FROM enrollee_parents AS ep
+                    INNER JOIN parent_information AS pi ON pi.Parent_Id = ep.Parent_Id 
+                    INNER JOIN enrollee AS e ON e.Enrollee_Id = ep.Enrollee_Id
+                    WHERE e.Enrollee_Id = (SELECT Enrollee_Id FROM students WHERE Student_Id = :studentId)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':studentId'=> $studentId]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch the students by their ID',0,$e);
+        }
+    }
+    public function getStudentPersonalInfo(int $studentId):array {
+        try {
+            $sql = "SELECT s.*,DATE_FORMAT(s.Birthday, '%M %D, %Y') AS Readable_Birthday, ea.*,
+                    CASE ds.Have_Special_Condition
+                    WHEN 0 THEN 'None'
+                    WHEN 1 THEN ds.Special_Condition END AS Has_Condition,
+                    CASE ds.Have_Assistive_Tech
+                    WHEN 0 THEN 'None'
+                    WHEN 1 THEN ds.Assistive_Tech END AS Has_Tech,
+                    e.Psa_Number,e.Religion,e.Native_Language,e.Student_Email,
+                    CASE e.If_Cultural 
+                    WHEN 0 THEN 'None'
+                    WHEN 1 THEN e.Cultural_Group
+                    END AS Has_Cultural
+                    FROM students AS s
+                    INNER JOIN enrollee AS e ON e.Enrollee_Id = s.Enrollee_Id
+                    LEFT JOIN enrollee_address AS ea ON ea.Enrollee_Address_Id = e.Enrollee_Address_Id
+                    LEFT JOIN disabled_student AS ds ON ds.Disabled_Student_Id = e.Disabled_Student_Id
+                    WHERE s.Student_Id = :studentId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':studentId'=>$studentId]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ?: [];
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch the students by their ID',0,$e);
+        }
+    }
     public function getAdditionalStudentInfo($enrolleeId) : ?array {
         try {
             $sql = "SELECT 
