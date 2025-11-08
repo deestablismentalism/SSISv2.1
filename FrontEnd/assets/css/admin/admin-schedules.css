@@ -47,20 +47,34 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #3e9ec4;
-  border: 1px solid var(--card-border);
-  backdrop-filter: blur(15px) saturate(180%);
-  -webkit-backdrop-filter: blur(15px) saturate(180%);
-  padding: 1rem 1.5rem; /* Base for 1440px */
-  border-radius: var(--border-radius); /* 1rem base */
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+
 }
 
 .schedule-title h1 {
-  font-size: 1.6rem; /* Base for 1440px */
-  font-weight: 600;
-  letter-spacing: 1px;
-  margin: 0;
+  font-family: var(--font-main);
+  color: var(--main-color);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  margin-top: 0;
+  position: relative;
+  padding-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #3e9ec4, #48cae4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.schedule-title h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+  border-radius: 2px;
 }
 
 .add-sched-btn {

@@ -1,77 +1,88 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const openTermsBtn = document.getElementById('open-terms-btn');
-    const closeTermsModal = document.getElementById('close-terms-modal');
-    const closeTermsBtn = document.getElementById('close-terms-btn');
+    const termsLink = document.getElementById('open-terms-link');
     const termsModal = document.getElementById('terms-modal');
+    const closeModalBtn = document.getElementById('close-terms-modal');
+    const closeTermsBtn = document.getElementById('close-terms-btn');
     const termsModalBody = document.getElementById('terms-modal-body');
     const termsCheckbox = document.getElementById('terms-acceptance');
     const termsLabel = document.getElementById('terms-label');
     const scrollIndicator = document.querySelector('.scroll-indicator');
-
+    
+    // Track if user has opened the modal
+    let hasOpenedModal = false;
     let hasScrolledToBottom = false;
-
-    // Open modal
-    openTermsBtn.addEventListener('click', function() {
-        termsModal.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    });
-
-    // Close modal functions
-    function closeModal() {
-        termsModal.style.display = 'none';
-        document.body.style.overflow = 'auto';
+    
+    // Open modal when link is clicked
+    if (termsLink) {
+        termsLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            termsModal.style.display = 'block';
+            hasOpenedModal = true; // Mark that user opened the modal
+            resetScrollState();
+        });
     }
-
-    closeTermsModal.addEventListener('click', closeModal);
-    closeTermsBtn.addEventListener('click', closeModal);
-
-    // Close modal when clicking outside
-    window.addEventListener('click', function(event) {
-        if (event.target === termsModal) {
+    
+    // Close modal handlers
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeModal);
+    }
+    
+    if (closeTermsBtn) {
+        closeTermsBtn.addEventListener('click', closeModal);
+    }
+    
+    // Close when clicking outside modal
+    window.addEventListener('click', function(e) {
+        if (e.target === termsModal) {
             closeModal();
         }
     });
-
-    // Detect scroll to bottom
-    termsModalBody.addEventListener('scroll', function() {
-        const scrollTop = termsModalBody.scrollTop;
-        const scrollHeight = termsModalBody.scrollHeight;
-        const clientHeight = termsModalBody.clientHeight;
-        
-        // Check if scrolled to bottom (with 10px threshold)
-        if (scrollTop + clientHeight >= scrollHeight - 10) {
-            if (!hasScrolledToBottom) {
+    
+    // Scroll detection to enable checkbox
+    if (termsModalBody) {
+        termsModalBody.addEventListener('scroll', function() {
+            const scrollPosition = termsModalBody.scrollTop + termsModalBody.clientHeight;
+            const scrollHeight = termsModalBody.scrollHeight;
+            
+            // User scrolled to bottom (with 10px threshold)
+            if (scrollPosition >= scrollHeight - 10) {
                 hasScrolledToBottom = true;
                 enableCheckbox();
-                hideScrollIndicator();
             }
-        }
-    });
-
-    // Enable checkbox
-    function enableCheckbox() {
-        termsCheckbox.disabled = false;
-        termsLabel.classList.add('enabled');
-        termsCheckbox.classList.add('enabled');
+        });
     }
-
-    // Hide scroll indicator
-    function hideScrollIndicator() {
-        if (scrollIndicator) {
+    
+    function closeModal() {
+        termsModal.style.display = 'none';
+    }
+    
+    function enableCheckbox() {
+        // Only enable if user has BOTH opened modal AND scrolled to bottom
+        if (hasOpenedModal && hasScrolledToBottom && termsCheckbox && termsLabel && scrollIndicator) {
+            termsCheckbox.disabled = false;
+            termsCheckbox.classList.add('enabled');
+            termsLabel.classList.add('enabled');
+            termsLabel.style.cursor = 'pointer';
             scrollIndicator.style.display = 'none';
         }
     }
-
-    // Form validation for terms acceptance
-    const registrationForm = document.getElementById('registration-form');
-    if (registrationForm) {
-        registrationForm.addEventListener('submit', function(event) {
-            if (!termsCheckbox.checked) {
-                event.preventDefault();
-                alert('You must accept the Terms & Conditions to proceed.');
-                termsCheckbox.focus();
-                return false;
+    
+    function resetScrollState() {
+        // Reset scroll position but keep hasOpenedModal = true
+        if (termsModalBody) {
+            termsModalBody.scrollTop = 0;
+        }
+        
+        // Don't reset hasScrolledToBottom if user already scrolled before
+        // This allows checkbox to remain enabled after first complete read
+        if (hasScrolledToBottom) {
+            if (scrollIndicator) {
+                scrollIndicator.style.display = 'none';
             }
-        });
+        } else {
+            if (scrollIndicator) {
+                scrollIndicator.style.display = 'block';
+            }
+        }
     }
 });

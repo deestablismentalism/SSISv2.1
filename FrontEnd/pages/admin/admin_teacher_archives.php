@@ -7,7 +7,7 @@ $view = new adminSystemManagementView();
 ?>
 <div class="teacher-archive-content">
     <div class="teacher-archive-table-container">
-        <a href="./admin_system_management.php"><img src="../../assets/imgs/arrow-left-solid.svg">Back to System Management</a> 
+        <a href="./admin_system_management.php"><img src="../../assets/imgs/arrow-left-solid.svg"></a> 
         <?php $view->displayArchivedTeachers(); ?>
     </div>
 </div>
