@@ -47,7 +47,7 @@
                         </div>
                         <!--SYSTEM MANAGEMENT -->
                         <div class="menu border-100sb">
-                            <img src="../../assets/imgs/check-list.png" class="bi">
+                            <img src="../../assets/imgs/calendar.png" class="bi">
                             <span id="sysmanagement-spn" class="menu-title"> <a href="./admin_system_management.php" class="admin-nav-links"> System Management</a></span>
                         </div>
                         <!--ANNOUNCEMENTS-->
@@ -59,14 +59,8 @@
                     <!--TEACHERS-->
                     <div class="menu border-100sb" id="teachers">
                         <img src="../../assets/imgs/teachers.svg" class="bi">
-                        <span id="teachers-spn" class="menu-title">Teachers</span>
-                        <button class="teachers-btn dropdown"><img src="../../assets/imgs/chevron-down.svg" class ="bi-chevron-down"></button>
-                    </div>
-                        <ul class="teachers-ul drop-content">
-                            <li>
-                                <a href="./admin_all_teachers.php" class="allTeachers">All Teachers</a>
-                            </li>
-                        </ul>
+                        <span id="teachers-spn" class="menu-title"> <a href="./admin_all_teachers.php" class="allTeachers">Teachers</a></span>
+                    </div> 
                     <!--ENROLLS-->
                     <div class="menu border-100sb" id="enrolls">
                         <img src="../../assets/imgs/enrolls.svg" class="bi">

@@ -74,3 +74,369 @@ Stack trace:
 #1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
 #2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
 #3 {main}
+[2025-11-07 22:30:07]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 23:09:43]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 23:18:12]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 23:22:27]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 23:28:26]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_student_archives.php(5): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 23:28:41]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 23:31:13]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 23:34:57]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_student_archives.php(5): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 23:35:19]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 23:39:19]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 23:40:15]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 23:40:50]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 23:42:13]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 23:47:58]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-07 23:49:27]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:05:54]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:09:37]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:09:47]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:10:18]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:22:41]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:27:53]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:33:39]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:43:30]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:49:10]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:49:17]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:53:05]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:57:33]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_student_archives.php(5): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:57:52]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:58:12]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:58:44]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:58:45]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 00:59:51]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:00:16]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_student_archives.php(5): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:04:36]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_student_archives.php(6): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:08:04]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_student_archives.php(6): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:13:06]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_student_archives.php(6): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:13:06]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_student_archives.php(6): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:14:34]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_student_archives.php(6): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:14:34]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_student_archives.php(6): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:14:49]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:14:57]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_student_archives.php(6): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:15:05]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:15:08]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_teacher_archives.php(5): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:19:27]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_teacher_archives.php(6): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:19:43]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:19:51]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_student_archives.php(6): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:19:57]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:26:49]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:26:52]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:26:57]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:26:58]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:28:44]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:29:41]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:31:31]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:34:10]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:34:10]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:34:10]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:35:27]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:37:38]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:44:28]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
+[2025-11-08 01:44:28]Error: Call to undefined method adminSystemManagementModel::getSchoolYearDateFormat() in /var/www/html/BackEnd/admin/controllers/adminSystemManagementController.php:206
+Stack trace:
+#0 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(19): adminSystemManagementController->viewSchoolYearDetailsDate()
+#1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
+#2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
+#3 {main}
