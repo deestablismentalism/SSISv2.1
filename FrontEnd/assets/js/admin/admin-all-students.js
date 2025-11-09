@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
     editButtons.forEach(button => {
         button.addEventListener('click', function() {
             Loader.show();
-            const studentId = this.getAttribute('data-enrollee');
+            const studentId = this.getAttribute('data-student');
             editStudentDetails(studentId);
         });
     });
