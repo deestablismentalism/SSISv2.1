@@ -1,4 +1,10 @@
 <?php
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+// Load environment variables
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
+$dotenv->load();
+
 class SMSFailureException extends Exception {} //Domain specific exception
 class SendPassword {
     /**
@@ -18,9 +24,9 @@ class SendPassword {
     }
 
     public function send_password($Last_Name, $First_Name, $Middle_Name, $Recipient_Contact_Number, $User_Password) {
-        $gatewayUrl = "http://192.168.1.229:8080/message";
-        $username = "sms";
-        $password = "KVs6RP-9";
+        $gatewayUrl = $_ENV['SMS_GATEWAY_URL'];
+        $username = $_ENV['SMS_GATEWAY_USERNAME'];
+        $password = $_ENV['SMS_GATEWAY_PASSWORD'];
 
         $Cleaned_Contact_Number = $this->cleanPhoneNumber($Recipient_Contact_Number);
         

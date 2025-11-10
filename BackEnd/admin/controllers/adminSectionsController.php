@@ -2,6 +2,7 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../models/adminSectionsModel.php';
 require_once __DIR__ . '/../../Exceptions/DatabaseException.php';
+require_once __DIR__ . '/../../Exceptions/IdNotFoundException.php';
 
 class adminSectionsController {
     protected $sectionsModel;
@@ -99,7 +100,6 @@ class adminSectionsController {
                     'data' => []
                 ];
             }
-
             return [
                 'httpcode'=>200,
                 'success'=> true,
@@ -124,7 +124,6 @@ class adminSectionsController {
             ];
         }
     }
-    
     public function apiGetSectionsByGradeLevel() : array {
         try {
             $data = $this->sectionsModel->getSectionsByGradeLevelWithCounts();
@@ -137,7 +136,6 @@ class adminSectionsController {
                     'data'=> []
                 ];
             }
-            
             // Group data by grade level
             $grouped = [];
             foreach($data as $row) {
@@ -149,7 +147,6 @@ class adminSectionsController {
                         'Sections' => []
                     ];
                 }
-                
                 // Only add section if Section_Id is not null
                 if($row['Section_Id'] !== null) {
                     $adviserName = ($row['Staff_Id'] !== null && $row['Staff_First_Name'] !== null)
@@ -166,12 +163,49 @@ class adminSectionsController {
                     ];
                 }
             }
-            
             return [
                 'httpcode'=> 200,
                 'success'=> true,
                 'message'=> 'Sections by grade level successfully fetched',
                 'data'=> array_values($grouped)
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'httpcode'=> 500,
+                'success'=> false,
+                'message'=>'Database error: ' .$e->getMessage(),
+                'data'=>[]
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'httpcode'=>400,
+                'success'=> false,
+                'message'=> 'Error: '.$e->getMessage(),
+                'data'=>[]
+            ];
+        }
+    }
+    public function apiGetSectionListByGradeLevel(?int $gradeLevel):array {
+        try {
+            if(is_null($gradeLevel)) {
+                throw new IdNotFoundException('Grade Level ID not found. Sections list cannot be provided');
+            }
+            $data = $this->sectionsModel->getSectionsListByGradeLevelId($gradeLevel);
+            if(empty($data)) {
+                return [
+                    'httpcode'=> 200,
+                    'success'=> false,
+                    'message'=> 'Sections list is empty',
+                    'data'=> []
+                ];
+            }
+            return [
+                'httpcode'=> 200,
+                'success'=> true,
+                'message'=> 'Sections list succesfully fetched',
+                'data'=> $data
             ];
         }
         catch(DatabaseException $e) {
@@ -318,7 +352,6 @@ class adminSectionsController {
             ];
         }
     }
-    
     public function viewSectionAllStudents(int $sectionId) : array {
         try {
             if(!is_numeric($sectionId)) {

@@ -317,6 +317,18 @@ class adminSectionsModel {
             throw new DatabaseException('Failed to fetch sections by grade level with counts', 0, $e);
         }
     }
+    public function getSectionsListByGradeLevelId(int $gradeLevel):array {
+        try {
+            $sql  = "SELECT * FROM sections WHERE Grade_Level_Id = :grade_level";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':grade_level'=>$gradeLevel]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to fetch sections by grade level with counts', 0, $e);
+        }
+    }
     private function updateSectionName(string $sectionName, int $sectionId) : bool {
         try {
             $sql = "UPDATE sections SET Section_Name = :sectionName WHERE Section_Id = :id";
