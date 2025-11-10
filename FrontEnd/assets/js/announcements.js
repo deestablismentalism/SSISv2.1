@@ -9,12 +9,19 @@ document.addEventListener('DOMContentLoaded', function() {
         emptyState.style.display = 'none';
 
         try {
-            const response = await fetch('../BackEnd/api/getPublicAnnouncements.php?limit=6');
+            const apiUrl = '../../../BackEnd/api/getPublicAnnouncements.php?limit=6';
+            console.log('Fetching announcements from:', apiUrl);
+            
+            const response = await fetch(apiUrl);
+            console.log('Response status:', response.status);
+            
             const result = await response.json();
+            console.log('API response:', result);
 
             if (result.success && result.data && result.data.length > 0) {
                 displayAnnouncements(result.data);
             } else {
+                console.log('No announcements or empty data');
                 emptyState.style.display = 'block';
                 announcementsContainer.style.display = 'none';
             }
@@ -41,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const imageHtml = announcement.Image_Path 
                 ? `<div class="announcement-image-wrapper">
-                     <img src="../../${announcement.Image_Path}" alt="${escapeHtml(announcement.Title)}" class="announcement-image">
+                     <img src="../../../${announcement.Image_Path}" alt="${escapeHtml(announcement.Title)}" class="announcement-image" onerror="this.parentElement.style.display='none'">
                    </div>`
                 : '';
 

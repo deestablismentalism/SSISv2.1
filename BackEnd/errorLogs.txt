@@ -425,3 +425,6 @@ Stack trace:
 #1 /var/www/html/BackEnd/admin/views/adminSystemManagementView.php(15): adminSystemManagementView->passSavedSchoolYearDetails()
 #2 /var/www/html/FrontEnd/pages/admin/admin_system_management.php(7): adminSystemManagementView->__construct()
 #3 {main}
+[2025-11-09 13:09:59]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'ss.Staff_Id' in 'SELECT'
+[2025-11-09 13:10:01]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'ss.Staff_Id' in 'SELECT'
+[2025-11-09 13:10:05]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'ss.Staff_Id' in 'SELECT'

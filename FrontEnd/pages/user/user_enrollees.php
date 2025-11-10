@@ -3,8 +3,10 @@ ob_start();
 require_once __DIR__ . '/../session_init.php';
 $pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-enrollees.css">
 <link rel="stylesheet" href="../../assets/css/user/user-enrollees-modal.css">
-<link rel="stylesheet" href="../../assets/css/user/user-enrollment-status.css">';
-$pageJs = '<script src="../../assets/js/user/user-enrollees-modal.js" type="module" defer></script>';
+<link rel="stylesheet" href="../../assets/css/user/user-enrollment-status.css">
+<link rel="stylesheet" href="../../assets/css/user/user-announcements.css">';
+$pageJs = '<script src="../../assets/js/user/user-enrollees-modal.js" type="module" defer></script>
+<script src="../../assets/js/announcements.js" defer></script>';
 $pageTitle = 'My Enrollees';
 require_once __DIR__ . '/../../../BackEnd/user/views/userEnrolleesView.php';
 $enrollee = new displayEnrollmentForms();
@@ -12,6 +14,29 @@ $enrollee = new displayEnrollmentForms();
 </head>
     <!--START OF THE MAIN CONTENT-->
     <div class="content" id="content">
+        <!-- Announcements Section -->
+        <div class="shadow-container">
+            <div class="title-header">
+                <p class="title">Latest Announcements</p>
+            </div>
+            <div class="wrapper">
+                <!-- Loading State -->
+                <div id="announcements-loading" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>Loading announcements...</p>
+                </div>
+
+                <!-- Empty State -->
+                <div id="announcements-empty" style="display: none;">
+                    <p>No announcements available at this time.</p>
+                </div>
+
+                <!-- Announcements Grid -->
+                <div id="announcements-container"></div>
+            </div>
+        </div>
+
+        <!-- Enrollment Forms Section -->
         <div class="shadow-container">
             <div class="title-header">
                 <p class = "title"> Enrollment Forms Submitted </p> <br> 
