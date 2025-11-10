@@ -14,8 +14,9 @@ class teacherDashboardModel {
     public function getSubjectsCount(int $staffId): int {
         try {
             $sql = "SELECT COUNT(DISTINCT ss.Section_Subjects_Id) AS count 
-                    FROM section_subjects AS ss 
-                    WHERE ss.Staff_Id = :staffId";
+                    FROM section_subjects AS ss
+                    INNER JOIN section_subject_teachers AS sst ON sst.Section_Subjects_Id = ss.Section_Subjects_Id 
+                    WHERE sst.Staff_Id = :staffId";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':staffId', $staffId, PDO::PARAM_INT);
             $stmt->execute();
@@ -31,8 +32,9 @@ class teacherDashboardModel {
         try {
             $sql = "SELECT COUNT(DISTINCT st.Student_Id) AS count 
                     FROM section_subjects AS ss 
+                    INNER JOIN section_subject_teachers AS sst ON sst.Section_Subjects_Id = ss.Section_Subjects_Id
                     LEFT JOIN students AS st ON st.Section_Id = ss.Section_Id 
-                    WHERE ss.Staff_Id = :staffId";
+                    WHERE sst.Staff_Id = :staffId";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':staffId', $staffId, PDO::PARAM_INT);
             $stmt->execute();
