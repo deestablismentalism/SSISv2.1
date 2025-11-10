@@ -30,7 +30,23 @@ class staffEnrollmentTransactionsModel {
             return true;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]".$e->getMessage()."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to insert enrollee transaction',431,$e);
         }
     } 
+    public function updateIsApprovedToTrue(int $enrolleeId,int $status):bool {
+        try {
+            $sql = "UPDATE enrollment_transactions SET Is_Approved = :status WHERE Enrollee_Id = :enrolleeId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':status'=>$status,':enrolleeId'=>$enrolleeId]);
+            if($stmt->rowCount()===0) {
+                return false;
+            }
+            return true;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]".$e->getMessage()."\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to update approved flag',0,$e);
+        }
+    }
 }
