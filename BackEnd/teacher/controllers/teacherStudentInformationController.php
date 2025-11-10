@@ -44,9 +44,16 @@ class teacherStudentInformationController {
     public function viewStudentGrades(int $studentId):array {
         try {
             $data = $this->studentsModel->getStudentGrades($studentId);
+            if(empty($data)) {
+                return [
+                    'success'=> true,
+                    'message'=> 'No Students found',
+                    'data'=>$data
+                ];
+            }
             return [
                 'success'=> true,
-                'message'=> 'Grades successfully fetched',
+                'message'=> 'Students successfully fetched',
                 'data'=> $data
             ];
         }
@@ -61,6 +68,30 @@ class teacherStudentInformationController {
             return [
                 'success'=> false,
                 'message'=> 'There was an unexpected problem',
+                'data'=> []
+            ];
+        }
+    }
+    public function viewAllStudents():array {
+        try {
+            $data = $this->studentsModel->getAllStudents();
+            return [
+                'success'=> true,
+                'message'=> 'Students successfully fetched',
+                'data'=> $data
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was a problem on our side: ' .$e->getMessage(),
+                'data'=> []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was an unexpected problem. Please wait while we look into it',
                 'data'=> []
             ];
         }
