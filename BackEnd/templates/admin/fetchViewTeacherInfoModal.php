@@ -19,26 +19,13 @@ try {
         exit();
     }
     
-    // Decrypt sensitive fields with proper null handling
+    // Decrypt sensitive fields
     $encryption = new Encryption();
     
-    $employeeNumber = 'N/A';
-    if (!empty($teacherData['Employee_Number']) && $teacherData['Employee_Number'] !== null) {
-        $decrypted = $encryption->passDecrypt($teacherData['Employee_Number']);
-        $employeeNumber = ($decrypted !== null && $decrypted !== '') ? $decrypted : 'N/A';
-    }
-    
-    $philhealthNumber = 'N/A';
-    if (!empty($teacherData['Philhealth_Number']) && $teacherData['Philhealth_Number'] !== null) {
-        $decrypted = $encryption->passDecrypt($teacherData['Philhealth_Number']);
-        $philhealthNumber = ($decrypted !== null && $decrypted !== '') ? $decrypted : 'N/A';
-    }
-    
-    $tin = 'N/A';
-    if (!empty($teacherData['TIN']) && $teacherData['TIN'] !== null) {
-        $decrypted = $encryption->passDecrypt($teacherData['TIN']);
-        $tin = ($decrypted !== null && $decrypted !== '') ? $decrypted : 'N/A';
-    }
+    // Attempt to decrypt, will return null if empty or decryption fails
+    $employeeNumber = $encryption->passDecrypt($teacherData['Employee_Number']) ?? 'N/A';
+    $philhealthNumber = $encryption->passDecrypt($teacherData['Philhealth_Number']) ?? 'N/A';
+    $tin = $encryption->passDecrypt($teacherData['TIN']) ?? 'N/A';
     
     // Map status
     $statusMap = [
