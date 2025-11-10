@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded',async function (){
         }
     });
 });
-const TIME_OUT = 10000;
+const TIME_OUT = 20000;
 async function fetchEnrolleeInfo(enrolleeId) {
     try {
         const controller = new AbortController();
