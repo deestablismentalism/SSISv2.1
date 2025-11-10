@@ -50,9 +50,19 @@ class Encryption {
     }
 
     public function passDecrypt($original) {
-        $decrypted = $this->decrypt($original, $this->Encryption_Key);
+        // Check if the value is null or empty before attempting decryption
+        if ($original === null || $original === '' || trim($original) === '') {
+            return null;
+        }
         
-        return $decrypted;
+        try {
+            $decrypted = $this->decrypt($original, $this->Encryption_Key);
+            return $decrypted;
+        } catch (Exception $e) {
+            // Log the error if needed, return null for invalid ciphertext
+            error_log("Decryption failed: " . $e->getMessage());
+            return null;
+        }
     }
 }
 ?>

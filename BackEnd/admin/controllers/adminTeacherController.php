@@ -113,7 +113,7 @@ class adminTeacherController {
         }
     }
     public function apiPostRegisterTeacher(string $fname, string $mname,string $lname, 
-                    string $email, string $cpnumber, int $status, int $type ) : array {
+                    string $email, string $cpnumber) : array {
         try {
             $maximumCpDigits = 11;
             if(empty($fname) || empty($lname)) {
@@ -136,9 +136,9 @@ class adminTeacherController {
                 ];
             }
             $password = $this->generatePassword->getPassword();
-            $this->sendPassword->send_password($lname, $fname, $mname, $cpnumber, $password);
             $hashPassword = password_hash($password, PASSWORD_DEFAULT);
-            $insert =$this->teacherModel->insertToStaffAndUser($fname, $mname,$lname, $email, $cpnumber, $status, $type, $hashPassword);
+            $insert =$this->teacherModel->insertToStaffAndUser($fname, $mname,$lname, $email, $cpnumber, $hashPassword);
+            $this->sendPassword->send_password($lname, $fname, $mname, $cpnumber, $password);
             if(!$insert) {
                 return [
                     'httpcode'=> 400,
