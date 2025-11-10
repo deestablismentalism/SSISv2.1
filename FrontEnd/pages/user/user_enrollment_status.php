@@ -19,8 +19,8 @@ $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-statu
 <div class="modal" id="editModal">
     <div class="modal-content" id="modal-content">
         <span class="close"> &times; </span>
-        <h2>Edit Enrollment Information</h2>
-        <h1> Note: You can only resubmit the form once</h1>
+        <h2>Edit Enrollment Form Information</h2>
+        <h1> Note: Hanggang isang beses (1) lamang pwede mag-resubmit ng form </h1>
         <form id="editEnrollmentForm">
             <input type="hidden" name="region_name" id="region-name">
             <input type="hidden" name="province_name" id="province-name">

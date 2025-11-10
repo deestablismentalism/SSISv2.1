@@ -151,9 +151,9 @@ class adminViewSectionView {
             if(!$stats['success'] || empty($stats['data'])) {
                 echo '<div class="stats-cards">';
                 echo '<div class="stat-card"><div class="stat-icon students-icon"></div><div class="stat-value">0</div><div class="stat-label">In this section</div></div>';
-                echo '<div class="stat-card"><div class="stat-icon boys-icon">👦</div><div class="stat-value">0</div><div class="stat-label">Male students</div></div>';
-                echo '<div class="stat-card"><div class="stat-icon girls-icon">👧</div><div class="stat-value">0</div><div class="stat-label">Female students</div></div>';
-                echo '<div class="stat-card"><div class="stat-icon subjects-icon">📚</div><div class="stat-value">0</div><div class="stat-label">Classes per week</div></div>';
+                echo '<div class="stat-card"><div class="stat-icon boys-icon"></div><div class="stat-value">0</div><div class="stat-label">Male students</div></div>';
+                echo '<div class="stat-card"><div class="stat-icon girls-icon"></div><div class="stat-value">0</div><div class="stat-label">Female students</div></div>';
+                echo '<div class="stat-card"><div class="stat-icon subjects-icon"></div><div class="stat-value">0</div><div class="stat-label">Classes per week</div></div>';
                 echo '</div>';
                 return;
             }
@@ -166,9 +166,9 @@ class adminViewSectionView {
             
             echo '<div class="stats-cards">';
             echo '<div class="stat-card"><div class="stat-icon students-icon"></div><div class="stat-value">' . $totalStudents . '</div><div class="stat-label">In this section</div></div>';
-            echo '<div class="stat-card"><div class="stat-icon boys-icon">👦</div><div class="stat-value">' . $boys . '</div><div class="stat-label">Male students</div></div>';
-            echo '<div class="stat-card"><div class="stat-icon girls-icon">👧</div><div class="stat-value">' . $girls . '</div><div class="stat-label">Female students</div></div>';
-            echo '<div class="stat-card"><div class="stat-icon subjects-icon">📚</div><div class="stat-value">' . $subjects . '</div><div class="stat-label">Classes per week</div></div>';
+            echo '<div class="stat-card"><div class="stat-icon boys-icon"></div><div class="stat-value">' . $boys . '</div><div class="stat-label">Male students</div></div>';
+            echo '<div class="stat-card"><div class="stat-icon girls-icon"></div><div class="stat-value">' . $girls . '</div><div class="stat-label">Female students</div></div>';
+            echo '<div class="stat-card"><div class="stat-icon subjects-icon"></div><div class="stat-value">' . $subjects . '</div><div class="stat-label">Classes per week</div></div>';
             echo '</div>';
         }
         catch(Exception $e) {

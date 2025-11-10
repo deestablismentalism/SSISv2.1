@@ -50,10 +50,11 @@ class adminAllEnrolleesView {
             if(!$data['success'] || empty($data['data'])) {
                 echo '<div class="error-message">' .htmlspecialchars($data['message']).'</div>';
             }else {
-                echo '<table>';
+                echo '<div class="table-scroll-container">';
+                echo '<table class="enrollees-table">';
                 echo $this->tableTemplate->returnHorizontalTitles([
-                'Student Name', 'Transaction Code', 'Handled By', 'Handled At','Enrollment Status Given', 
-                'Transaction Status', 'View Info'
+                'Student Name', 'Transaction Code', 'Handled By', 'Handled At','Enrollment Status', 
+                'Transaction Status', 'Actions'
                 ],'enrollees-title');
                 echo '<tbody>';
                 foreach($data['data'] as $rows) {   
@@ -72,14 +73,16 @@ class adminAllEnrolleesView {
                 ? $staffLastName . ', '.$staffFirstName . ' ' . $staffMiddleName : 'Name is empty';
                 $handledAt = $rows['Created_At'];
                 $transactionStatus = ($rows['Is_Approved'] === 0) ? 'Unprocessed' : 'Finalized';
-                $givenStatus = strtoupper($this->stringEquivalent((int)$rows['Enrollment_Status']));
-                $button = new safeHTML('<button class="view-enrollee">View</button>');
+                $statusClass = 'status-' . $this->stringEquivalent((int)$rows['Enrollment_Status']);
+                $givenStatus = new safeHTML('<span class="status-cell '.$statusClass.'">'.strtoupper($this->stringEquivalent((int)$rows['Enrollment_Status'])).'</span>');
+                $button = new safeHTML('<button class="view-enrollee">View Details</button>');
                 
                 echo $this->tableTemplate->returnHorizontalRows([
                     $studentFull, $transactionCode, $staffFullName, $handledAt, $givenStatus, $transactionStatus, $button
                 ],'enrollee-row');
             }
             echo '</tbody></table>';
+            echo '</div>';
         }
     }
     catch(Throwable $t) {
