@@ -25,7 +25,7 @@ class adminTeachersModel {
     }
     public function checkCurrentSubjectTeacherOfSectionSubject(int $sectionSubjectsId) : ?int {
         try {
-            $sql = "SELECT Staff_Id FROM section_subjects WHERE Section_Subjects_Id = :sectionSubjectsId";
+            $sql = "SELECT Staff_Id FROM section_subject_teachers WHERE Section_Subjects_Id = :sectionSubjectsId";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':sectionSubjectsId', $sectionSubjectsId);
             $stmt->execute();
@@ -38,17 +38,44 @@ class adminTeachersModel {
             throw new DatabaseException('Failed to check current Subject teacher',0,$e);
         }
     }
-    public function updateSubjectTeacherToSectionSubjects(int $staffId, int $sectionSubjectsId) : bool {
+    private function getCurrentSchoolYearId():?int {
+        try {   
+            $sql = "SELECT School_Year_Details_Id FROM school_year_details WHERE Is_Expired = 0 
+            ORDER BY Starting_Date LIMIT 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return (int)$result['School_Year_Details_Id'] ?: null;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch school year details ID',0,$e);
+        }
+    }
+    public function upsertSubjectTeacherToSectionSubjects(int $staffId, int $sectionSubjectsId) : bool {
         try {
-            $sql = "UPDATE section_subjects SET Staff_Id = :staffId WHERE Section_Subjects_Id = :sectionSubjectsId";
+            $this->conn->beginTransaction();
+            $id = $this->getCurrentSchoolYearId();
+            if(is_null($id)) {
+                $this->conn->rollBack();
+                return false;
+            }
+            $sql = "INSERT INTO section_subject_teachers(Staff_Id,Section_Subjects_Id,School_Year_Details_Id) 
+                    VALUES(:staffId,:sectionSubjectsId,:syId) ON DUPLICATE KEY UPDATE Staff_Id = VALUES(Staff_Id)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':staffId', $staffId);
             $stmt->bindParam(':sectionSubjectsId', $sectionSubjectsId);
-            $result = $stmt->execute();
-
-            return $result;
+            $stmt->bindParam(':syId',$id);
+            $stmt->execute();
+            if($stmt->rowCount()===0) {
+                $this->conn->commit();
+                return false;
+            }
+            $this->conn->commit();
+            return true;
         }
         catch(PDOException $e) {
+            $this->conn->rollBack();
             error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to insert teacher to section subject',0,$e);
         }

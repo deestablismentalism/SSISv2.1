@@ -232,8 +232,9 @@ class adminSubjectsModel {
                     st.Staff_Last_Name
                     FROM section_subjects AS ss
                     INNER JOIN sections AS se ON ss.Section_Id = se.Section_Id
+                    LEFT JOIN section_subject_teachers AS sst ON sst.Section_Subjects_Id = ss.Section_Subjects_Id
                     INNER JOIN grade_level AS g ON se.Grade_Level_Id = g.Grade_Level_Id
-                    LEFT JOIN staffs AS st ON ss.Staff_Id = st.Staff_Id
+                    LEFT JOIN staffs AS st ON st.Staff_Id = sst.Staff_Id
                     WHERE ss.Subject_Id = :subjectId
                     ORDER BY g.Grade_Level_Id, se.Section_Name";
             $stmt = $this->conn->prepare($sql);
@@ -248,15 +249,18 @@ class adminSubjectsModel {
             throw new DatabaseException('Failed to fetch sections by subject',0,$e);
         }
     }
-    public function insertSubjectTeacher(int $subjectId, int $staffId) : bool {
+    public function insertSubjectTeacher(int $sectionSubjectId, int $staffId) : bool {
         try {
-            $sql = "INSERT INTO section_subjects(Staff_ID) VALUES(:staffId) WHERE Subject_Id = :subjectId";
+            $sql = "INSERT INTO section_subject_teachers(Staff_Id,Section_Subejcts_Id) 
+            VALUES(:staffId,:sectionSubjectId)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':staffId',$staffId);
-            $stmt->bindParam(':subjectId',$subjectId);
+            $stmt->bindParam(':sectionSubjectId',$sectionSubjectId);
             $result = $stmt->execute();
-
-            return $result;
+            if($stmt->rowCount()===0) {
+                return false;
+            }
+            return true;
         }
         catch(PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
