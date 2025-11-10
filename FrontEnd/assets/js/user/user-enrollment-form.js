@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded',function(){
     const idRegex = /^([0-9]){6}$/;
     const charRegex = /^[A-Za-z0-9\s.,'-]{3,100}$/;
     const onlyDigits = /^[0-9]+$/;
-    const nonAlphaRegex = /[^A-Za-z\s.,'-]/g;
+    const nonAlphaRegex = /[^A-Za-z\s]/g;  // Only allow letters and spaces, reject ALL special characters
     const nonNumericRegex = /[^0-9]/g;
 
     // |=============================|
@@ -852,7 +852,8 @@ document.addEventListener('DOMContentLoaded',function(){
     const nameFields = [lname, fname, fatherLname, fatherFname, motherLname, motherFname, guardianLname, guardianFname];
     nameFields.forEach(field => {
         if (field) {
-            preventCharactersByRegex(field, charRegex, (element, rejectedChars) => {
+            preventCharactersByRegex(field, nonAlphaRegex, (element, rejectedChars) => {
+                console.log(`Rejected characters in ${element.id}: ${rejectedChars}`);
             });
         }
     });

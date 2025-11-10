@@ -35,7 +35,7 @@ class displayEnrollmentForms {
                     $studentMiddleInitial = !empty($rows['Student_Middle_Name']) ? substr($rows['Student_Middle_Name'], 0, 1) . "." : "";
                     //values to render
                     $fullName = $lname . ', ' . $fname . ' ' . $studentMiddleInitial;
-                    $button = new safeHTML('<a class= "Check-Status" href="../user/user_enrollment_status.php?id='. $rows['Enrollee_Id'] .'"> Check Status </a>');
+                    $button = new safeHTML('<button class="check-status-btn" data-enrollee-id="'. $rows['Enrollee_Id'] .'" data-user-id="'.$this->userId.'">Check Status</button>');
                     echo $this->tableTemplate->returnHorizontalRows([
                         $fullName, $button
                     ],'user-enrollees-data');

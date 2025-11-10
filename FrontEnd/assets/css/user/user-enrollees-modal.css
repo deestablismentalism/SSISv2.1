@@ -1,4 +1,5 @@
-.modal {
+/* Scoped to enrollment status modal only */
+#enrollmentStatusModal.modal {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -9,7 +10,7 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
+#enrollmentStatusModal .modal-content {
     background-color: #fff;
     margin: 5% auto;
     padding: 20px;
@@ -20,7 +21,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.close-modal {
+#enrollmentStatusModal .close-modal {
     position: absolute;
     right: 15px;
     top: 10px;
@@ -31,70 +32,69 @@
     transition: color 0.3s;
 }
 
-.close-modal:hover {
+#enrollmentStatusModal .close-modal:hover {
     color: #333;
 }
 
-.enrollment-status-content {
+#enrollmentStatusModal .enrollment-status-content {
     padding: 10px;
 }
 
-.status-header h3 {
+#enrollmentStatusModal .status-header h3 {
     margin: 0 0 20px 0;
     font-size: 1.5rem;
-    color: #00b718;
-    font-weight: 700;
+    color: #333;
 }
 
-.status-body {
+#enrollmentStatusModal .status-body {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.info-row {
+#enrollmentStatusModal .info-row {
     display: flex;
     justify-content: space-between;
     padding: 10px;
     border-bottom: 1px solid #eee;
 }
 
-.info-label {
+#enrollmentStatusModal .info-label {
     font-weight: 600;
     color: #555;
 }
 
-.info-value {
+#enrollmentStatusModal .info-value {
     color: #333;
 }
 
-.status-approved {
+#enrollmentStatusModal .status-approved {
     color: #28a745;
     font-weight: bold;
 }
 
-.status-rejected {
+#enrollmentStatusModal .status-rejected {
     color: #dc3545;
     font-weight: bold;
 }
 
-.status-pending {
+#enrollmentStatusModal .status-pending {
     color: #ffc107;
     font-weight: bold;
 }
 
-.status-review {
+#enrollmentStatusModal .status-review {
     color: #17a2b8;
     font-weight: bold;
 }
 
-.loading {
+#enrollmentStatusModal .loading {
     text-align: center;
     padding: 40px;
     color: #666;
 }
 
-.error-message {
+#enrollmentStatusModal .error-message {
     color: #dc3545;
     padding: 15px;
     background-color: #f8d7da;
@@ -116,7 +116,7 @@
     background-color: #0056b3;
 }
 
-.status-message {
+#enrollmentStatusModal .status-message {
     padding: 15px;
     border-radius: 4px;
     margin: 15px 0;
@@ -124,19 +124,19 @@
     font-weight: 500;
 }
 
-.success-message {
+#enrollmentStatusModal .success-message {
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
 }
 
-.info-message {
+#enrollmentStatusModal .info-message {
     background-color: #d1ecf1;
     color: #0c5460;
     border: 1px solid #bee5eb;
 }
 
-.action-buttons {
+#enrollmentStatusModal .action-buttons {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -144,7 +144,7 @@
     align-items: center;
 }
 
-.edit-enrollment-form {
+#enrollmentStatusModal .edit-enrollment-form {
     padding: 10px 20px;
     background-color: #28a745;
     color: white;
@@ -155,11 +155,11 @@
     transition: background-color 0.3s;
 }
 
-.edit-enrollment-form:hover {
+#enrollmentStatusModal .edit-enrollment-form:hover {
     background-color: #218838;
 }
 
-.resubmit-note {
+#enrollmentStatusModal .resubmit-note {
     font-size: 0.9rem;
     color: #856404;
     background-color: #fff3cd;

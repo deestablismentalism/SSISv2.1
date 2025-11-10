@@ -79,7 +79,7 @@ class adminTeacherController {
                     'data'=> []
                 ];
             }
-            $data = $this->teacherModel->updateSubjectTeacherToSectionSubjects($staffId, $sectionSubjectId);
+            $data = $this->teacherModel->upsertSubjectTeacherToSectionSubjects($staffId, $sectionSubjectId);
             if(!$data) {
                 return [
                     'httpcode'=> 500,

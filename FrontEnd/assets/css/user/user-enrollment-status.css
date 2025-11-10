@@ -15,138 +15,8 @@
   --text-color: #1F2937;
 }
 
-/* ===== Overall Layout ===== */
-body {
-  font-family: var(--main-fonts);
-  margin: 0;
-  padding: 0;
-}
-
-.main-wrapper {
-  padding: 2rem; /* Base padding for 1440px */
-  transition: margin-left 0.3s ease;
-  background-image: url('../../imgs/paper.jpg');
-  font-family: var(--main-fonts);
-}
-
-/* ===== Title Section ===== */
-.title {
-  text-align: center;
-  font-size: 2.5rem; /* Base for 1440px */
-  font-family: var(--title-fonts);
-  color: var(--title-main-color);
-  font-weight: 700;
-  letter-spacing: 1px;
-  margin-bottom: 2rem; /* Base for 1440px */
-  text-shadow: 0 2px 4px rgba(62, 158, 196, 0.3);
-}
-
-/* ===== Status Container ===== */
-.status-info {
-  background: rgb(36 186 255 / 28%);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px; /* Base for 1440px */
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
-  padding: 2rem; /* Base for 1440px */
-  margin: 0 auto;
-  max-width: 900px; /* Base for 1440px */
-  min-height: 400px; /* Base for 1440px */
-}
-
-/* Status Type Variants */
-.status-info.follow-up {
-  background: linear-gradient(135deg, rgba(240, 201, 134, 0.3), rgba(179, 152, 67, 0.2));
-  border: 2px solid #b39843;
-}
-
-.status-info.denied {
-  background: linear-gradient(135deg, rgba(252, 165, 165, 0.3), rgba(185, 28, 28, 0.2));
-  border: 2px solid #B91C1C;
-}
-
-.status-info.pending {
-  background: linear-gradient(135deg, rgba(165, 180, 252, 0.3), rgba(67, 56, 202, 0.2));
-  border: 2px solid #4338CA;
-}
-
-.status-info.enrolled {
-  background: linear-gradient(135deg, rgba(110, 231, 183, 0.3), rgba(4, 120, 87, 0.2));
-  border: 2px solid #047857;
-}
-
-/* ===== Status Display ===== */
-.status {
-  text-align: center;
-  font-size: 3rem; /* Base for 1440px */
-  font-weight: 900;
-  letter-spacing: 2px;
-  margin: 1rem 0;
-  text-transform: uppercase;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.status-info p {
-  text-align: center;
-  font-size: 1.1rem; /* Base for 1440px */
-  line-height: 1.6;
-  color: var(--text-color);
-  margin: 1rem 0;
-}
-
-/* ===== Transaction Details ===== */
-.transaction-code {
-  font-weight: 900;
-  font-size: 1.2rem; /* Base for 1440px */
-  color: var(--main-color);
-  margin: 1rem 0;
-}
-
-.transaction-description {
-  font-size: 1rem; /* Base for 1440px */
-  color: var(--text-color);
-  margin: 0.8rem 0;
-}
-
-.reasons-container {
-  padding: 1.5rem; /* Base for 1440px */
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 12px; /* Base for 1440px */
-  margin: 1.5rem 0;
-  border-left: 4px solid var(--warning);
-}
-
-/* ===== Edit Button ===== */
-.edit-enrollment-form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
-  padding: 1rem 2rem; /* Base for 1440px */
-  border-radius: 12px; /* Base for 1440px */
-  color: white;
-  font-weight: 600;
-  font-size: 1rem; /* Base for 1440px */
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(62, 158, 196, 0.4);
-  margin: 2rem auto;
-  width: fit-content;
-}
-
-.edit-enrollment-form:hover {
-  background: linear-gradient(135deg, var(--hover-accent), var(--accent-color));
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(62, 158, 196, 0.6);
-}
-
-.edit-enrollment-form:active {
-  transform: translateY(0);
-}
-
-/* ===== Modal Styles ===== */
-.modal {
+/* ===== Modal Styles - Scoped to Edit Modal Only ===== */
+#editModal.modal {
   display: none;
   position: fixed;
   top: 0;
@@ -158,56 +28,56 @@ body {
   backdrop-filter: blur(4px);
 }
 
-.modal-content {
+#editModal .modal-content {
   position: relative;
   background: white;
   margin: 2% auto;
-  padding: 2rem; /* Base for 1440px */
+  padding: 2rem;
   width: 85%;
-  max-width: 1000px; /* Base for 1440px */
+  max-width: 1000px;
   max-height: 90vh;
   overflow-y: auto;
-  border-radius: 20px; /* Base for 1440px */
+  border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.modal-content::-webkit-scrollbar {
+#editModal .modal-content::-webkit-scrollbar {
   width: 8px;
 }
 
-.modal-content::-webkit-scrollbar-track {
+#editModal .modal-content::-webkit-scrollbar-track {
   background: rgba(62, 158, 196, 0.1);
   border-radius: 10px;
 }
 
-.modal-content::-webkit-scrollbar-thumb {
+#editModal .modal-content::-webkit-scrollbar-thumb {
   background-color: rgba(62, 158, 196, 0.5);
   border-radius: 10px;
 }
 
-.modal-content h2 {
-  font-size: 1.8rem; /* Base for 1440px */
+#editModal .modal-header h2 {
+  font-size: 1.8rem;
   color: var(--title-main-color);
   font-weight: 700;
   margin-bottom: 0.5rem;
 }
 
-.modal-content h1 {
-  font-size: 1rem; /* Base for 1440px */
+#editModal .modal-header h1 {
+  font-size: 1rem;
   font-weight: 600;
   color: var(--danger);
   margin-bottom: 1.5rem;
 }
 
-.close {
+#editModal .close-edit-modal {
   position: absolute;
-  right: 2rem; /* Base for 1440px */
-  top: 1.5rem; /* Base for 1440px */
-  font-size: 2rem; /* Base for 1440px */
+  right: 2rem;
+  top: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
   color: #666;
-  width: 35px; /* Base for 1440px */
-  height: 35px; /* Base for 1440px */
+  width: 35px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -215,63 +85,64 @@ body {
   transition: all 0.3s ease;
 }
 
-.close:hover {
+#editModal .close-edit-modal:hover {
   background: rgba(255, 95, 95, 0.15);
   color: var(--danger);
   transform: rotate(90deg);
 }
 
 /* ===== Form Styles ===== */
-.form-fields {
+#editModal .form-fields {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem; /* Base for 1440px */
+  gap: 1.5rem;
   margin-top: 1.5rem;
 }
 
-.form-field {
-  margin-bottom: 1rem; /* Base for 1440px */
+#editModal .form-field {
+  margin-bottom: 1rem;
 }
 
-.form-field label {
+#editModal .form-field label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
   color: var(--main-color);
-  font-size: 0.95rem; /* Base for 1440px */
+  font-size: 0.95rem;
 }
 
-.form-field input,
-.form-field select {
+#editModal .form-field input,
+#editModal .form-field select {
   width: 100%;
-  padding: 0.75rem; /* Base for 1440px */
+  padding: 0.75rem;
   border: 1px solid #ddd;
-  border-radius: 8px; /* Base for 1440px */
-  font-size: 0.95rem; /* Base for 1440px */
+  border-radius: 8px;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
   font-family: var(--main-fonts);
+  box-sizing: border-box;
 }
 
-.form-field input:focus,
-.form-field select:focus {
+#editModal .form-field input:focus,
+#editModal .form-field select:focus {
   outline: none;
   border-color: var(--accent-color);
   box-shadow: 0 0 0 3px rgba(62, 158, 196, 0.1);
 }
 
-.radio-group {
+#editModal .radio-group {
   display: flex;
-  gap: 1.5rem; /* Base for 1440px */
+  gap: 1.5rem;
   flex-wrap: wrap;
 }
 
-.radio-group div {
+#editModal .radio-group div {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.radio-group input[type="radio"] {
+#editModal .radio-group input[type="radio"] {
   appearance: none;
   -webkit-appearance: none;
   background-color: #fff;
@@ -286,12 +157,12 @@ body {
   cursor: pointer;
 }
 
-.radio-group input[type="radio"]:checked {
+#editModal .radio-group input[type="radio"]:checked {
   border-color: var(--title-main-color);
   background-color: #fff;
 }
 
-.radio-group input[type="radio"]:checked::after {
+#editModal .radio-group input[type="radio"]:checked::after {
   content: '';
   display: block;
   width: 0.6em;
@@ -304,40 +175,28 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.form input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  background-color: #fff;
-  border: 2px solid var(--accent-color);
-  width: 1.2em;
-  height: 1.2em;
-  border-radius: 0.3em;
-  display: inline-block;
-  position: relative;
-  margin-right: 0.5em;
-  vertical-align: middle;
-  transition: all 0.3s ease;
-  cursor: pointer;
+#editModal .image-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.form input[type="checkbox"]:checked {
-  background: var(--accent-color);
-  border-color: var(--title-main-color);
+#editModal .image-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid #ddd;
 }
 
-.form input[type="checkbox"]:checked::after {
-  content: '✓';
-  position: absolute;
-  color: white;
-  font-size: 0.9em;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+#editModal .current-psa-image,
+#editModal .image-preview {
+  max-height: 300px;
+  object-fit: contain;
 }
 
 /* ===== Form Actions ===== */
-.form-actions {
-  margin-top: 2rem; /* Base for 1440px */
+#editModal .form-actions {
+  margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 2px solid rgba(62, 158, 196, 0.2);
   display: flex;
@@ -345,105 +204,57 @@ body {
   gap: 1rem;
 }
 
-.form-actions button {
-  padding: 0.8rem 2rem; /* Base for 1440px */
-  border-radius: 10px; /* Base for 1440px */
+#editModal .form-actions button {
+  padding: 0.8rem 2rem;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 1rem; /* Base for 1440px */
+  font-size: 1rem;
   font-weight: 600;
   border: none;
   transition: all 0.3s ease;
 }
 
-.save-btn {
+#editModal .form-actions button[type="submit"] {
   background: linear-gradient(135deg, var(--success), #38b368);
   color: white;
   box-shadow: 0 4px 12px rgba(68, 208, 123, 0.4);
 }
 
-.save-btn:hover {
+#editModal .form-actions button[type="submit"]:hover {
   background: linear-gradient(135deg, #38b368, var(--success));
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(68, 208, 123, 0.6);
 }
 
-.cancel-btn {
+#editModal .cancel-btn {
   background: linear-gradient(135deg, var(--danger), #e04444);
   color: white;
   box-shadow: 0 4px 12px rgba(255, 95, 95, 0.4);
 }
 
-.cancel-btn:hover {
+#editModal .cancel-btn:hover {
   background: linear-gradient(135deg, #e04444, var(--danger));
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(255, 95, 95, 0.6);
 }
 
 /*====================================*/
-/* ENROLLMENT STATUS RESPONSIVE DESIGN*/
+/* EDIT MODAL RESPONSIVE DESIGN */
 /*====================================*/
 
-/* 2500px and above - Larger screens */
+/* 2500px and above */
 @media (min-width: 2500px) {
-  .main-wrapper {
-    padding: 2.8rem;
-  }
-  
-  .title {
-    font-size: 3.2rem;
-    margin-bottom: 2.5rem;
-  }
-  
-  .status-info {
-    border-radius: 26px;
-    padding: 2.8rem;
-    max-width: 1200px;
-    min-height: 520px;
-  }
-  
-  .status {
-    font-size: 4rem;
-    letter-spacing: 3px;
-  }
-  
-  .status-info p {
-    font-size: 1.4rem;
-  }
-  
-  .transaction-code {
-    font-size: 1.5rem;
-  }
-  
-  .transaction-description {
-    font-size: 1.3rem;
-  }
-  
-  .reasons-container {
-    padding: 2rem;
-    border-radius: 16px;
-  }
-  
-  .edit-enrollment-form {
-    padding: 1.3rem 2.5rem;
-    border-radius: 16px;
-    font-size: 1.3rem;
-  }
-  
-  .modal-content {
+  #editModal .modal-content {
     padding: 2.8rem;
     max-width: 1300px;
     border-radius: 26px;
   }
   
-  .modal-content h2 {
+  #editModal .modal-header h2 {
     font-size: 2.4rem;
   }
   
-  .modal-content h1 {
-    font-size: 1.3rem;
-  }
-  
-  .close {
+  #editModal .close-edit-modal {
     right: 2.5rem;
     top: 2rem;
     font-size: 2.5rem;
@@ -451,35 +262,26 @@ body {
     height: 45px;
   }
   
-  .form-fields {
+  #editModal .form-fields {
     gap: 2rem;
   }
   
-  .form-field {
+  #editModal .form-field {
     margin-bottom: 1.4rem;
   }
   
-  .form-field label {
+  #editModal .form-field label {
     font-size: 1.2rem;
   }
   
-  .form-field input,
-  .form-field select {
+  #editModal .form-field input,
+  #editModal .form-field select {
     padding: 1rem;
     border-radius: 10px;
     font-size: 1.2rem;
   }
   
-  .radio-group {
-    gap: 2rem;
-  }
-  
-  .form-actions {
-    margin-top: 2.5rem;
-    padding-top: 2rem;
-  }
-  
-  .form-actions button {
+  #editModal .form-actions button {
     padding: 1rem 2.5rem;
     border-radius: 14px;
     font-size: 1.3rem;
@@ -488,65 +290,17 @@ body {
 
 /* 1920px - Full HD */
 @media (min-width: 1920px) and (max-width: 2499px) {
-  .main-wrapper {
-    padding: 2.4rem;
-  }
-  
-  .title {
-    font-size: 2.8rem;
-    margin-bottom: 2.2rem;
-  }
-  
-  .status-info {
-    border-radius: 23px;
-    padding: 2.4rem;
-    max-width: 1100px;
-    min-height: 460px;
-  }
-  
-  .status {
-    font-size: 3.5rem;
-    letter-spacing: 2.5px;
-  }
-  
-  .status-info p {
-    font-size: 1.25rem;
-  }
-  
-  .transaction-code {
-    font-size: 1.35rem;
-  }
-  
-  .transaction-description {
-    font-size: 1.15rem;
-  }
-  
-  .reasons-container {
-    padding: 1.8rem;
-    border-radius: 14px;
-  }
-  
-  .edit-enrollment-form {
-    padding: 1.15rem 2.2rem;
-    border-radius: 14px;
-    font-size: 1.15rem;
-  }
-  
-  .modal-content {
+  #editModal .modal-content {
     padding: 2.4rem;
     max-width: 1200px;
     border-radius: 23px;
   }
   
-  .modal-content h2 {
+  #editModal .modal-header h2 {
     font-size: 2.1rem;
   }
   
-  .modal-content h1 {
-    font-size: 1.15rem;
-  }
-  
-  .close {
+  #editModal .close-edit-modal {
     right: 2.2rem;
     top: 1.8rem;
     font-size: 2.2rem;
@@ -554,107 +308,40 @@ body {
     height: 40px;
   }
   
-  .form-fields {
+  #editModal .form-fields {
     gap: 1.8rem;
   }
   
-  .form-field {
-    margin-bottom: 1.2rem;
-  }
-  
-  .form-field label {
+  #editModal .form-field label {
     font-size: 1.1rem;
   }
   
-  .form-field input,
-  .form-field select {
+  #editModal .form-field input,
+  #editModal .form-field select {
     padding: 0.9rem;
-    border-radius: 10px;
     font-size: 1.1rem;
   }
   
-  .radio-group {
-    gap: 1.8rem;
-  }
-  
-  .form-actions {
-    margin-top: 2.2rem;
-    padding-top: 1.8rem;
-  }
-  
-  .form-actions button {
+  #editModal .form-actions button {
     padding: 0.9rem 2.2rem;
     border-radius: 12px;
     font-size: 1.15rem;
   }
 }
 
-/* 1440px - Default (already set above) */
-@media (min-width: 1441px) and (max-width: 1919px) {
-  /* Default styles apply - no changes needed */
-}
-
 /* 1024px - Smaller desktop */
 @media (min-width: 1024px) and (max-width: 1440px) {
-  .main-wrapper {
-    padding: 1.5rem;
-  }
-  
-  .title {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .status-info {
-    border-radius: 15px;
-    padding: 1.5rem;
-    max-width: 750px;
-    min-height: 340px;
-  }
-  
-  .status {
-    font-size: 2.3rem;
-    letter-spacing: 1.5px;
-  }
-  
-  .status-info p {
-    font-size: 0.95rem;
-  }
-  
-  .transaction-code {
-    font-size: 1rem;
-  }
-  
-  .transaction-description {
-    font-size: 0.9rem;
-  }
-  
-  .reasons-container {
-    padding: 1.2rem;
-    border-radius: 10px;
-  }
-  
-  .edit-enrollment-form {
-    padding: 0.8rem 1.5rem;
-    border-radius: 10px;
-    font-size: 0.9rem;
-  }
-  
-  .modal-content {
+  #editModal .modal-content {
     padding: 1.5rem;
     max-width: 850px;
     border-radius: 15px;
   }
   
-  .modal-content h2 {
+  #editModal .modal-header h2 {
     font-size: 1.5rem;
   }
   
-  .modal-content h1 {
-    font-size: 0.85rem;
-  }
-  
-  .close {
+  #editModal .close-edit-modal {
     right: 1.5rem;
     top: 1.2rem;
     font-size: 1.8rem;
@@ -662,104 +349,41 @@ body {
     height: 30px;
   }
   
-  .form-fields {
+  #editModal .form-fields {
     gap: 1.2rem;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
   
-  .form-field {
-    margin-bottom: 0.8rem;
-  }
-  
-  .form-field label {
+  #editModal .form-field label {
     font-size: 0.85rem;
   }
   
-  .form-field input,
-  .form-field select {
+  #editModal .form-field input,
+  #editModal .form-field select {
     padding: 0.6rem;
-    border-radius: 6px;
     font-size: 0.85rem;
   }
   
-  .radio-group {
-    gap: 1.2rem;
-  }
-  
-  .form-actions {
-    margin-top: 1.5rem;
-    padding-top: 1.2rem;
-  }
-  
-  .form-actions button {
+  #editModal .form-actions button {
     padding: 0.7rem 1.5rem;
-    border-radius: 8px;
     font-size: 0.9rem;
   }
 }
 
 /* Tablets */
 @media (min-width: 768px) and (max-width: 1023px) {
-  .main-wrapper {
-    padding: 1.2rem;
-  }
-  
-  .title {
-    font-size: 1.8rem;
-    margin-bottom: 1.2rem;
-  }
-  
-  .status-info {
-    border-radius: 12px;
-    padding: 1.2rem;
-    max-width: 100%;
-    min-height: 300px;
-  }
-  
-  .status {
-    font-size: 2rem;
-    letter-spacing: 1.2px;
-  }
-  
-  .status-info p {
-    font-size: 0.9rem;
-  }
-  
-  .transaction-code {
-    font-size: 0.95rem;
-  }
-  
-  .transaction-description {
-    font-size: 0.85rem;
-  }
-  
-  .reasons-container {
-    padding: 1rem;
-    border-radius: 8px;
-  }
-  
-  .edit-enrollment-form {
-    padding: 0.7rem 1.3rem;
-    border-radius: 8px;
-    font-size: 0.85rem;
-  }
-  
-  .modal-content {
+  #editModal .modal-content {
     padding: 1.2rem;
     width: 90%;
     max-width: 700px;
     border-radius: 12px;
   }
   
-  .modal-content h2 {
+  #editModal .modal-header h2 {
     font-size: 1.3rem;
   }
   
-  .modal-content h1 {
-    font-size: 0.8rem;
-  }
-  
-  .close {
+  #editModal .close-edit-modal {
     right: 1.2rem;
     top: 1rem;
     font-size: 1.6rem;
@@ -767,36 +391,26 @@ body {
     height: 28px;
   }
   
-  .form-fields {
+  #editModal .form-fields {
     gap: 1rem;
     grid-template-columns: 1fr;
   }
   
-  .form-field {
-    margin-bottom: 0.7rem;
-  }
-  
-  .form-field label {
+  #editModal .form-field label {
     font-size: 0.8rem;
   }
   
-  .form-field input,
-  .form-field select {
+  #editModal .form-field input,
+  #editModal .form-field select {
     padding: 0.55rem;
     font-size: 0.8rem;
   }
   
-  .radio-group {
-    gap: 1rem;
-  }
-  
-  .form-actions {
-    margin-top: 1.2rem;
-    padding-top: 1rem;
+  #editModal .form-actions {
     flex-direction: column;
   }
   
-  .form-actions button {
+  #editModal .form-actions button {
     padding: 0.65rem 1.3rem;
     width: 100%;
     font-size: 0.85rem;
@@ -805,65 +419,17 @@ body {
 
 /* Mobile */
 @media (max-width: 767px) {
-  .main-wrapper {
-    padding: 1rem;
-  }
-  
-  .title {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .status-info {
-    border-radius: 10px;
-    padding: 1rem;
-    min-height: 280px;
-  }
-  
-  .status {
-    font-size: 1.8rem;
-    letter-spacing: 1px;
-  }
-  
-  .status-info p {
-    font-size: 0.85rem;
-  }
-  
-  .transaction-code {
-    font-size: 0.9rem;
-  }
-  
-  .transaction-description {
-    font-size: 0.8rem;
-  }
-  
-  .reasons-container {
-    padding: 0.8rem;
-    border-radius: 8px;
-  }
-  
-  .edit-enrollment-form {
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    width: 100%;
-  }
-  
-  .modal-content {
+  #editModal .modal-content {
     padding: 1rem;
     width: 95%;
     border-radius: 10px;
   }
   
-  .modal-content h2 {
+  #editModal .modal-header h2 {
     font-size: 1.2rem;
   }
   
-  .modal-content h1 {
-    font-size: 0.75rem;
-  }
-  
-  .close {
+  #editModal .close-edit-modal {
     right: 1rem;
     top: 0.8rem;
     font-size: 1.5rem;
@@ -871,142 +437,28 @@ body {
     height: 26px;
   }
   
-  .form-fields {
+  #editModal .form-fields {
     gap: 0.8rem;
     grid-template-columns: 1fr;
   }
   
-  .form-field {
-    margin-bottom: 0.6rem;
-  }
-  
-  .form-field label {
+  #editModal .form-field label {
     font-size: 0.75rem;
   }
   
-  .form-field input,
-  .form-field select {
+  #editModal .form-field input,
+  #editModal .form-field select {
     padding: 0.5rem;
     font-size: 0.75rem;
   }
   
-  .radio-group {
-    gap: 0.8rem;
+  #editModal .form-actions {
     flex-direction: column;
   }
   
-  .form-actions {
-    margin-top: 1rem;
-    padding-top: 0.8rem;
-    flex-direction: column;
-  }
-  
-  .form-actions button {
+  #editModal .form-actions button {
     padding: 0.6rem 1rem;
     width: 100%;
     font-size: 0.8rem;
   }
 }
-
-/* Small Mobile */
-@media (max-width: 480px) {
-  .main-wrapper {
-    padding: 0.8rem;
-  }
-  
-  .title {
-    font-size: 1.3rem;
-  }
-  
-  .status-info {
-    padding: 0.8rem;
-    min-height: 250px;
-  }
-  
-  .status {
-    font-size: 1.5rem;
-  }
-  
-  .status-info p {
-    font-size: 0.75rem;
-  }
-  
-  .transaction-code {
-    font-size: 0.8rem;
-  }
-  
-  .reasons-container {
-    padding: 0.6rem;
-  }
-  
-  .edit-enrollment-form {
-    padding: 0.5rem 0.8rem;
-    font-size: 0.75rem;
-  }
-  
-  .modal-content {
-    padding: 0.8rem;
-  }
-  
-  .close {
-    right: 0.8rem;
-    top: 0.6rem;
-    font-size: 1.3rem;
-    width: 24px;
-    height: 24px;
-  }
-  
-  .form-field input,
-  .form-field select {
-    padding: 0.45rem;
-    font-size: 0.7rem;
-  }
-}
-
-/* Extra Small Mobile */
-@media (max-width: 374px) {
-  .main-wrapper {
-    padding: 0.6rem;
-  }
-  
-  .title {
-    font-size: 1.1rem;
-  }
-  
-  .status-info {
-    padding: 0.6rem;
-    border-radius: 8px;
-    min-height: 220px;
-  }
-  
-  .status {
-    font-size: 1.3rem;
-  }
-  
-  .status-info p {
-    font-size: 0.7rem;
-  }
-  
-  .transaction-code {
-    font-size: 0.75rem;
-  }
-  
-  .edit-enrollment-form {
-    padding: 0.45rem 0.7rem;
-    font-size: 0.7rem;
-  }
-  
-  .modal-content {
-    padding: 0.6rem;
-  }
-  
-  .form-field input,
-  .form-field select {
-    padding: 0.4rem;
-    font-size: 0.65rem;
-  }
-}
-
-/*====================================*/
-/*END ENROLLMENT STATUS RESPONSIVE   */
-/*====================================*/

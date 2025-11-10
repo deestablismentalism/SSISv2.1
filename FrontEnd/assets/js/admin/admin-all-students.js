@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
             default: return 'Unknown';
         }
     }
-
     function populateFilters() {
         if (!gradeFilter || !statusFilter || !sectionFilter) return;
         const grades = new Set();
@@ -74,10 +73,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // View Student button with loader
     const viewButtons = document.querySelectorAll('.view-student');
     viewButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', async function() {
             Loader.show();
-            const studentId = this.getAttribute('data-enrollee');
-            viewStudentDetails(studentId);
+            const studentId = this.getAttribute('data-student');
+            const result = await viewStudentDetails(studentId);
+            if(!result.success) {
+                Loader.hide();
+                createModal((result.message));
+            }
+            else {
+                Loader.hide();
+                createModal(result.data,studentId);
+            }
         });
     });
 
@@ -86,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
     editButtons.forEach(button => {
         button.addEventListener('click', function() {
             Loader.show();
-            const studentId = this.getAttribute('data-enrollee');
+            const studentId = this.getAttribute('data-student');
             editStudentDetails(studentId);
         });
     });
@@ -102,27 +109,65 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Function to view student details
-function viewStudentDetails(studentId) {
-    fetch(`../../../BackEnd/api/admin/fetchStudentDetails.php?id=${encodeURIComponent(studentId)}`) 
-        .then(response => response.json())
-        .then(data => {
-            Loader.hide();
-            if (data.success) {
-                createStudentDetailsModal(data.student);
-            } else {
-                alert('Error fetching student details: ' + data.message);
-            }
-        })
-        .catch(error => {
-            Loader.hide();
-            Notification.show({
-                type: data.success ? "error" : "error",
-                title: data.success ? "Error" : "Error",
-                message: data.message
-            });
-        });
+async function viewStudentDetails(studentId) {
+    try {
+        const response = await fetch(`../../../BackEnd/templates/admin/fetchStudentDetails.php?id=${encodeURIComponent(studentId)}`);
+        let data;
+        try {
+            data = await response.text();
+        }
+        catch{
+            throw new Error('Invalid Response');
+        }
+        if(!response.ok) {
+            return {
+                success: false,
+                message: data.message || `HTTP ERROR. Request returned with response code: ${response.status}`,
+                data: null
+            };
+        }
+        return {
+            success: true,
+            message: `Success`,
+            data: data
+        };
+    } 
+    catch(error) {
+         return {
+            success: false,
+            message: error.message || `Something went wrong`,
+            data: null
+        };
+    }
 }
-
+function createModal(data, studentId) {
+    const modalContainer = document.createElement('div');
+    modalContainer.className = 'modal-container';
+    
+    // Create modal content
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    
+    const closeBtn = document.createElement('span');
+    closeBtn.className = 'close';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.onclick = function() {
+        document.body.removeChild(modalContainer);
+    };
+    //CREATE HYPERLINK TO PDF GENERATED
+    const pdfButton  =  document.createElement('a');
+    pdfButton.href = `./student_pdf_info.php?student-id=${encodeURIComponent(studentId)}`;
+    pdfButton.target = '_blank';
+    pdfButton.rel = 'noopener noreferrer';
+    pdfButton.textContent = 'Generate PDF';
+    //APPEND TO MODAL CONTENTS
+    modalContent.appendChild(closeBtn);
+    modalContent.insertAdjacentHTML('beforeend', data);
+    modalContent.appendChild(pdfButton);
+    //APPEND TO MODAL AND APPEND TO BODY
+    modalContainer.appendChild(modalContent);
+    document.body.appendChild(modalContainer);
+}
 // Function to create and display the student details modal
 function createStudentDetailsModal(student) {
     const modalContainer = document.createElement('div');

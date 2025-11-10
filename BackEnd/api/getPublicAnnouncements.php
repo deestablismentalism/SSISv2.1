@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 try {
-    require_once __DIR__ . '/../admin/controller/adminAnnouncementsController.php';
+    require_once __DIR__ . '/../admin/controllers/adminAnnouncementsController.php';
     
     $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
     if ($limit > 50) $limit = 50; // Max limit
