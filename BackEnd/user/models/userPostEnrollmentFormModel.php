@@ -15,7 +15,7 @@ class userPostEnrollmentFormModel {
     //GETTERS
     // HELPERS
     private function educational_information(int $School_Year_Start, int $School_Year_End, int $If_LRNN_Returning, 
-    int $Enrolling_Grade_Level, ?string $Last_Grade_Level, ?string $Last_Year_Attended) :int { //F 3.2.8
+    int $Enrolling_Grade_Level, ?int $Last_Grade_Level, ?int $Last_Year_Attended) :int { //F 3.2.8
         try {
             $sql = "INSERT INTO educational_information (School_Year_Start, School_Year_End, If_LRN_Returning, Enrolling_Grade_Level, Last_Grade_Level, Last_Year_Attended) 
             VALUES (:School_Year_Start, :School_Year_End, :If_LRN_Returning, :Enrolling_Grade_Level,:Last_Grade_Level, :Last_Year_Attended)";
@@ -26,8 +26,8 @@ class userPostEnrollmentFormModel {
             $stmt->bindValue(':Enrolling_Grade_Level', $Enrolling_Grade_Level, PDO::PARAM_STR);
             $stmt->bindValue(':Last_Grade_Level', $Last_Grade_Level ?: null, PDO::PARAM_STR);
             $stmt->bindValue(':Last_Year_Attended', $Last_Year_Attended, $Last_Year_Attended === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
-            if (!$insert_educational_information->execute()) {
-                $errorInfo = $insert_educational_information->errorInfo();
+            if (!$stmt->execute()) {
+                $errorInfo = $stmt->errorInfo();
                 error_log('SQL Error: ' . json_encode($errorInfo));
                 throw new PDOException('Failed to execute educational information insert: ' . $errorInfo[2]);
             }
@@ -262,7 +262,7 @@ class userPostEnrollmentFormModel {
             $guardianInformationId = $this->guardian_information($guardianFirstName, $guardianLastName, $guardianMiddleName, $guardianParentType, 
             $guardianEducationalAttainment, $guardianCpNumber, $GIf_4Ps);
             //REF: 3.2.15
-            $psaDirectoryId = $this->images($filename, $directory);
+            $psaDirectoryId = $this->psa_directory($filename, $directory);
             // Insert enrollee
             $sql = "INSERT INTO enrollee (User_Id,Student_First_Name, Student_Middle_Name, Student_Last_Name, Student_Extension, Learner_Reference_Number, Psa_Number, Birth_Date, Age, Sex, Religion, 
                             Native_Language, If_Cultural, Cultural_Group, Student_Email, Enrollment_Status, Enrollee_Address_Id,
@@ -273,7 +273,7 @@ class userPostEnrollmentFormModel {
 
             // just binding parameters
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':User_Id', $User_Id);
+            $stmt->bindParam(':User_Id', $userId);
             $stmt->bindParam(':Student_First_Name', $studentFirstName);
             $stmt->bindParam(':Student_Middle_Name', $studentMiddleName);
             $stmt->bindParam(':Student_Last_Name', $studentLastName);
@@ -329,7 +329,7 @@ class userPostEnrollmentFormModel {
         }
     }
     //check matching numeric values in the database
-    public function checkLRN(int $lrn, ?int $enrolleeId) : bool { //F 3.3.5
+    public function checkLRN(int $lrn, ?int $enrolleeId = null) : bool { //F 3.3.5
         try {
             $sql = 'SELECT 1 FROM enrollee WHERE Learner_Reference_Number = :lrn';
             if($enrolleeId !== null) {
@@ -349,7 +349,7 @@ class userPostEnrollmentFormModel {
             throw new DatabaseException('Failed to check LRN',335,$e);
         }
     }
-    public function checkPSA(int $psa, ?int $enrolleeId) : bool { //F 3.3.6
+    public function checkPSA(int $psa, ?int $enrolleeId = null) : bool { //F 3.3.6
         try {
             $sql = 'SELECT 1 FROM enrollee WHERE Psa_Number = :psa';
             if($enrolleeId !== null) {
