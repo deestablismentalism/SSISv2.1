@@ -82,8 +82,9 @@ class studentClassModel {
                     CONCAT(COALESCE(su.Subject_Name, 'No Subject'), ' (', COALESCE(st.Staff_First_Name, 'No Teacher Yet'), ')') ELSE NULL END) as Sunday
                 FROM section_schedules AS ss
                 LEFT JOIN section_subjects AS ssu ON ssu.Section_Subjects_Id = ss.Section_Subjects_Id
+                LEFT JOIN section_subject_teachers AS sst ON sst.Section_Subjects_Id = ss.Section_Subjects_Id
                 LEFT JOIN subjects AS su ON su.Subject_Id = ssu.Subject_Id
-                LEFT JOIN staffs AS st ON st.Staff_Id = ssu.Staff_Id
+                LEFT JOIN staffs AS st ON st.Staff_Id = sst.Staff_Id
                 LEFT JOIN sections AS se ON se.Section_Id = ssu.Section_Id
                 WHERE se.Section_Id = (SELECT Section_Id FROM students WHERE Student_ID = :studentId)
                 GROUP BY 
