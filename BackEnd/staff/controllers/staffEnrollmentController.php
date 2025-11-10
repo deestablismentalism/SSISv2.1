@@ -141,7 +141,7 @@ class staffEnrollmentController {
     private function executeAdminUpdate(int $enrolleeId, string $transactionCode, int $status, int $staffId, ?string $remarks) : array {
         try {
             if($status === 1) {
-                if(!$this->enrolleesModel->udpateEnrollee($enrolleeId,$enrollmentStatus) || !$this->adminEnrolleeModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE)
+                if(!$this->adminEnrolleeModel->updateEnrollee($enrolleeId,$status) || !$this->adminEnrolleeModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE)
                     || !$this->transactionsModel->updateIsApprovedToTrue($enrolleeId,self::BOOL_TRUE)) {
                     return ['success'=> false,'message'=> "Failed to update Enrollee's statuses",'data'=>[]];
                 }
@@ -154,7 +154,7 @@ class staffEnrollmentController {
                 return ['success'=> true,'message'=> 'Admin successfully enrolled and inserted Enrollee to student','data'=>[]];
             }
             else if($status === 2){
-                if(!$this->enrolleesModel->udpateEnrollee($enrolleeId,$enrollmentStatus) || !$this->adminEnrolleeModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE)
+                if(!$this->enrolleesModel->updateEnrollee($enrolleeId,$enrollmentStatus) || !$this->adminEnrolleeModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE)
                     || !$this->transactionsModel->updateIsApprovedToTrue($enrolleeId,self::BOOL_TRUE)) {
                     return ['success'=> false,'message'=> "Failed to update Enrollee's statuses",'data'=>[]];
                 }

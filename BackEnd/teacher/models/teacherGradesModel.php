@@ -20,10 +20,11 @@ class teacherGradesModel {
     public function getSubjectsToGrade(int $staffId) : array { // F 2.1.1
         try {
             $sql = "SELECT ss.Section_Subjects_Id, s.Subject_Name, se.Section_Name, COUNT(st.Student_Id) AS Student_Count FROM section_subjects AS ss 
+                INNER JOIN section_subject_teachers AS sst ON sst.Section_Subjects_Id = ss.Section_Subjects_Id
                 LEFT JOIN subjects AS s ON s.Subject_Id = ss.Subject_Id
                 LEFT JOIN sections AS se ON se.Section_Id = ss.Section_Id
                 LEFT JOIN students AS st ON st.Section_Id = ss.Section_Id
-                WHERE ss.Staff_Id = :id 
+                WHERE sst.Staff_Id = :id 
                 GROUP BY ss.Section_Subjects_Id";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([':id'=>$staffId]);
@@ -35,13 +36,14 @@ class teacherGradesModel {
             throw new DatabaseException('Failed to fetch subjects to grade',211,$e);
         }
     }
-    public function getStudentsOfSectionSubject(int $sectionSubjectId, int $staffId, int $quarter) : array { //F 2.1.2
+    public function getStudentsOfSectionSubject(int $sectionSubjectId, int $staffId) : array { //F 2.1.2
         try {
             $sql = "SELECT s.Student_Id, s.First_Name, s.Last_Name, s.Middle_Name 
                     FROM section_subjects AS ss 
+                    LEFT JOIN section_subject_teachers AS sst ON sst.Section_Subjects_Id = ss.Section_Subjects_Id
                     INNER JOIN students AS s ON s.Section_Id = ss.Section_Id 
                     WHERE ss.Section_Subjects_Id = :section_subject_id 
-                    AND ss.Staff_Id = :staffId";
+                    AND sst.Staff_Id = :staffId";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(':staffId', $staffId, PDO::PARAM_INT);
             $stmt->bindValue(':section_subject_id', $sectionSubjectId, PDO::PARAM_INT);
