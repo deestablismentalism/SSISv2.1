@@ -1,6 +1,6 @@
 <?php
 ob_start(); 
-    $pageTitle = "Admin Students";
+    $pageTitle = "All Students";
     $pageCss = '<link rel="stylesheet" href="../../assets/css/teacher/teacher-all-students.css">';
     $pageJs = '<script src="../../assets/js/teacher/teacher-all-students.js" defer></script>';
 ?>
