@@ -81,7 +81,7 @@ export async function getProvinces(regionCode) {
     return await fetchAddress(`https://psgc.gitlab.io/api/regions/${regionCode}/provinces`);
 }
 export async function getCities(provinceCode) {
-    return await fetchAddress(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-mmunicipalities`);
+    return await fetchAddress(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-municipalities`);
 }
 export async function getBarangays(cityCode) {
     return await fetchAddress(`https://psgc.gitlab.io/api/cities-municipalities/${cityCode}/barangays`);
@@ -106,32 +106,135 @@ export const ValidationUtils = {
         return !element.value.trim();
     },
     clearError(errorElement, childElement) {
-        let container = childElement.parentElement.querySelector('.error-msg');
-        if (!container) {
-            container = childElement.closest('div').querySelector('.error-msg');
+        if (!childElement) {
+            return;
         }
+        let container = null;
+        
+        // Try multiple strategies to find the error container
+        // Strategy 1: Check parent element
+        if (childElement.parentElement) {
+            container = childElement.parentElement.querySelector('.error-msg');
+        }
+        
+        // Strategy 2: Use closest to find parent with error-msg
         if (!container) {
+            const parentDiv = childElement.closest('div');
+            if (parentDiv) {
+                container = parentDiv.querySelector('.error-msg');
+            }
+        }
+        
+        // Strategy 3: Check parent's parent
+        if (!container && childElement.parentElement?.parentElement) {
             container = childElement.parentElement.parentElement.querySelector('.error-msg');
         }
+        
+        // Strategy 4: Check parent's parent's parent
+        if (!container && childElement.parentElement?.parentElement?.parentElement) {
+            container = childElement.parentElement.parentElement.parentElement.querySelector('.error-msg');
+        }
+        
+        // Strategy 5: Check parent's parent's parent's parent (for deeply nested elements)
+        if (!container && childElement.parentElement?.parentElement?.parentElement?.parentElement) {
+            container = childElement.parentElement.parentElement.parentElement.parentElement.querySelector('.error-msg');
+        }
+        
+        // Strategy 6: Search up the DOM tree using closest
+        if (!container) {
+            let current = childElement.parentElement;
+            let depth = 0;
+            while (current && depth < 10) {
+                container = current.querySelector('.error-msg');
+                if (container) break;
+                current = current.parentElement;
+                depth++;
+            }
+        }
+        
+        if (!container) {
+            // If no error container found, just reset the border and return
+            if (childElement && childElement.style) {
+                childElement.style.border = "1px solid #616161";
+            }
+            return;
+        }
+        
         const errorSpan = container.querySelector('.' + errorElement);
 
-        container.classList.remove('show');
-        childElement.style.border = "1px solid #616161";
+        if (container.classList) {
+            container.classList.remove('show');
+        }
+        if (childElement && childElement.style) {
+            childElement.style.border = "1px solid #616161";
+        }
         if (errorSpan) {
             errorSpan.innerHTML = '';
         }
     },
     errorMessages(errorElement, message, childElement) {
-        let container = childElement.parentElement.querySelector('.error-msg');
-        if (!container) {
-            container = childElement.closest('div').querySelector('.error-msg');
+        if (!childElement) {
+            return false;
         }
+        let container = null;
+        
+        // Try multiple strategies to find the error container
+        // Strategy 1: Check parent element
+        if (childElement.parentElement) {
+            container = childElement.parentElement.querySelector('.error-msg');
+        }
+        
+        // Strategy 2: Use closest to find parent with error-msg
         if (!container) {
+            const parentDiv = childElement.closest('div');
+            if (parentDiv) {
+                container = parentDiv.querySelector('.error-msg');
+            }
+        }
+        
+        // Strategy 3: Check parent's parent
+        if (!container && childElement.parentElement?.parentElement) {
             container = childElement.parentElement.parentElement.querySelector('.error-msg');
         }
+        
+        // Strategy 4: Check parent's parent's parent
+        if (!container && childElement.parentElement?.parentElement?.parentElement) {
+            container = childElement.parentElement.parentElement.parentElement.querySelector('.error-msg');
+        }
+        
+        // Strategy 5: Check parent's parent's parent's parent
+        if (!container && childElement.parentElement?.parentElement?.parentElement?.parentElement) {
+            container = childElement.parentElement.parentElement.parentElement.parentElement.querySelector('.error-msg');
+        }
+        
+        // Strategy 6: Search up the DOM tree using closest
+        if (!container) {
+            let current = childElement.parentElement;
+            let depth = 0;
+            while (current && depth < 10) {
+                container = current.querySelector('.error-msg');
+                if (container) break;
+                current = current.parentElement;
+                depth++;
+            }
+        }
+        
+        if (!container) {
+            // If no error container found, just set the border and return
+            if (childElement && childElement.style) {
+                childElement.style.border = "1px solid red";
+            }
+            return false;
+        }
+        
         const errorSpan = container.querySelector('.' + errorElement);
-        container.classList.add('show');
-        childElement.style.border = "1px solid red";
+        
+        if (container.classList) {
+            container.classList.add('show');
+        }
+        if (childElement && childElement.style) {
+            childElement.style.border = "1px solid red";
+        }
         if (errorSpan) {
             errorSpan.innerHTML = message;
         }
