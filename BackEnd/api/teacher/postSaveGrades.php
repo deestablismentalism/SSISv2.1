@@ -28,7 +28,7 @@ register_shutdown_function(function() {
     }
 });
 
-require_once __DIR__ . '/../../teacher/controller/teacherGradesController.php';
+require_once __DIR__ . '/../../teacher/controllers/teacherGradesController.php';
 require_once __DIR__ . '/../../Exceptions/IdNotFoundException.php';
 
 if(session_status() === PHP_SESSION_NONE) {

@@ -80,32 +80,39 @@ class adminTeachersModel {
             throw new DatabaseException('Failed to insert teacher to section subject',0,$e);
         }
     }
-    private function insertToStaff(string $fName, string $mName, string $lName, string $email, string $cpNumber,int $status, int $type) : ?int {
+    private function insertToStaff(string $fName, string $mName, string $lName, string $email, string $cpNumber) : ?int {
         try {
             $sql = "INSERT INTO 
-            staffs(Staff_First_Name, Staff_Middle_Name, Staff_Last_Name, Staff_Email, Staff_Contact_Number, Staff_Status, Staff_Type)
-            VALUES(:fname, :mname, :lname, :email, :cpnumber,:status: type)";
+            staffs(Staff_First_Name, Staff_Middle_Name, Staff_Last_Name, Staff_Email, Staff_Contact_Number)
+            VALUES(:fname, :mname, :lname, :email, :cpnumber)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':fname', $fName);
             $stmt->bindParam(':mname', $mName);
             $stmt->bindParam(':lname', $lName);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':cpnumber', $cpNumber);
-            $stmt->bindParam(':status'. $status);
-            $stmt->bindParam(':type', $type);
             $result = $stmt->execute();
 
             return (int)$this->conn->lastInsertId();
         }
         catch(PDOException $e) {
+            if ($e->errorInfo[1] === 1062) {
+                throw new DatabaseException('Duplicate entry: The number you entered is already registered.',0,$e);
+            }
+            else {
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to insert teacher',0,$e);
+            }
         }
+
     }
     public function insertToStaffAndUser(string $fname, string $mname, string $lname, string $email, 
-    string $cpNumber, int $status, int $type, string $password) : bool{
+    string $cpNumber, string $password) : bool{
         $insert = true;
         try {
-            $staffId = $this->insertToStaff($fname, $mname, $lname, $email, $cpNumber, $status, $type);
+            $this->conn->beginTransaction();
+            $staffId = $this->insertToStaff($fname, $mname, $lname, $email, $cpNumber);
+            $type = 2;
 
             $sql = "INSERT INTO users(Password, User_Type, Staff_Id) VALUES(:password, :userType, :staffId)";
             $stmt = $this->conn->prepare($sql);
@@ -116,9 +123,12 @@ class adminTeachersModel {
             if(!$result) {
                 $insert = false;
             }
+            $this->conn->commit();
             return $insert;
         }
         catch(PDOException $e) {
+            $this->conn->rollBack();
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to insert to users',0,$e);
         }
     }

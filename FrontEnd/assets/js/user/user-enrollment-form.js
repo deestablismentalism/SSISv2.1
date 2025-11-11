@@ -545,6 +545,15 @@ document.addEventListener('DOMContentLoaded',function(){
         ValidationUtils.validationState.addressInfo = isValid;
         return isValid;
     }
+    function validateAddress(errorElement,addressElement) {
+        const selected = addressElement.selectedIndex;
+        if(selected === 0) {
+            ValidationUtils.errorMessages(errorElement, 'Please select an address',addressElement);
+        }
+        else {
+            ValidationUtils.clearError(errorElement, addressElement);
+        }
+    }
     // === PARENT INFO VALIDATION ===
     function validatePhoneNumber(element, errorElement) {
         if(ValidationUtils.isEmpty(element)) {
@@ -828,11 +837,11 @@ document.addEventListener('DOMContentLoaded',function(){
     }
     if (psaNumber) {
         checkIfNumericInput(psaNumber);
-        psaNumber.addEventListener('blur', validatePSA);
+        psaNumber.addEventListener('input', validatePSA);
     }
     if (lrn) {
         checkIfNumericInput(lrn);
-        lrn.addEventListener('blur', validateLRN);
+        lrn.addEventListener('input', validateLRN);
     }
     radios.forEach(radio => {
         radio.addEventListener('change', function() {
@@ -915,6 +924,7 @@ document.addEventListener('DOMContentLoaded',function(){
             if (regionCode == "") {
                 initialSelectValue(provinces, "Region");
             }
+            validateAddress("em-region",this);
         });
         provinces.addEventListener("change", async function(){
             await getCityOptions();
@@ -922,6 +932,7 @@ document.addEventListener('DOMContentLoaded',function(){
             if (provinceCode == "") {
                 initialSelectValue(cityOrMunicipality, "Province");
             }
+            validateAddress("em-province",this);
         });
         cityOrMunicipality.addEventListener("change", async function() {
             await getBarangayOptions();
@@ -929,9 +940,11 @@ document.addEventListener('DOMContentLoaded',function(){
             if (cityCode == "") {
                 initialSelectValue(barangay, "City/Municipality");
             }
+            validateAddress('em-city',this);
         });
         barangay.addEventListener("change", function() {
             document.getElementById("barangay-name").value = barangay.options[barangay.selectedIndex].text;
+            validateAddress("em-barangay",this);
         });
     }
     // === PARENT INFO EVENTS ===
@@ -966,10 +979,10 @@ document.addEventListener('DOMContentLoaded',function(){
         capitalizeFirstLetter(input);
     });
     if (!localStorage.getItem('lrn')) {
-        localStorage.setItem('lrn', 900000000000);
+        localStorage.setItem('lrn', 900000000145);
     }
     if (!localStorage.getItem('psa')) {
-        localStorage.setItem('psa', 1000000000000);
+        localStorage.setItem('psa', 1000000000375);
     }
     lrn.value = localStorage.getItem('lrn');
     psaNumber.value = localStorage.getItem('psa');
@@ -1070,7 +1083,6 @@ document.addEventListener('DOMContentLoaded',function(){
             setTimeout(() => {
                 errorMessage.style.display = 'none';
             }, 5000);
-            form.reset();
             isSubmitting = false;
             submitButton.disabled = false;
             submitButton.style.backgroundColor = "#0FFCF6";
@@ -1096,7 +1108,7 @@ async function postEnrollmentForm(formData) {
     const controller = new AbortController();
     const timeoutId = setTimeout(()=> controller.abort(),TIME_OUT);
     try {
-        const response = await fetch(`../../../BackEnd/api/users/postEnrollmentFormData.php`,{
+        const response = await fetch(`../../../BackEnd/api/user/postEnrollmentFormData.php`,{
             signal: controller.signal,
             method: 'POST',
             body: formData

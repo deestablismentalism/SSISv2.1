@@ -17,9 +17,10 @@ class teacherSubjectsModel {
                 DATE_FORMAT(ssc.Time_Start, '%H:%i') AS Time_Start, 
                 DATE_FORMAT(ssc.Time_End, '%H:%i') AS Time_End 
                 FROM section_subjects AS ss
+                LEFT JOIN section_subject_teachers AS sst ON sst.Section_Subjects_Id = ss.Section_Subjects_Id
                 LEFT JOIN section_schedules AS ssc ON ssc.Section_Subjects_Id = ss.Section_Subjects_Id
                 LEFT JOIN sections AS s ON ss.Section_Id = s.Section_Id
-                LEFT JOIN subjects AS su ON ss.Subject_Id = su.Subject_Id WHERE ss.Staff_Id = :id";
+                LEFT JOIN subjects AS su ON ss.Subject_Id = su.Subject_Id WHERE sst.Staff_Id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id', $staffId);
             $stmt->execute();
@@ -31,7 +32,6 @@ class teacherSubjectsModel {
             throw new DatabaseException('Failed to fetch subjects handled',0,$e);
         }
     }
-
     public function getSectionSubjects(int $sectionId) : array {
         try {
             $sql = "SELECT su.Subject_Name, s.Section_Name, ss.*, ssc.* FROM section_subjects AS ss

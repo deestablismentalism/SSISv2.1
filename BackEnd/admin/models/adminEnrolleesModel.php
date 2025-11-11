@@ -258,6 +258,7 @@ class adminEnrolleesModel {
             return true;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]".$e->getMessage()."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to update enrollee status', 0,$e);
         }
     }
@@ -272,6 +273,7 @@ class adminEnrolleesModel {
             return true;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]".$e->getMessage()."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to set is handled status',132,$e);
         } 
     }

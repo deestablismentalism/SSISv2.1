@@ -1,15 +1,29 @@
 <?php 
-
 ob_start();
-
 $pageTitle = 'Admin view section';
 $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-view-section.css">';
 $pageJs = '<script type="module" src="../../assets/js/admin/admin-view-section.js" defer></script>';
 require_once __DIR__ . '/../../../BackEnd/admin/views/adminViewSectionView.php';
+require_once __DIR__ . '/../../../BackEnd/common/isAcademicYearSet.php';
+$view  = new isAcademicYearSet();
 $adminViewSectionView = new adminViewSectionView();
 ?>
-
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const isSet = <?= json_encode($view->isSet()); ?>;
+    if (!isSet) {
+        const btn = document.getElementById('edit-section-btn');
+        if (btn) {
+            btn.disabled = true;
+            btn.style.opacity = '0.5';
+            btn.title = 'Disabled until school year is set';
+        }
+    }
+});
+</script>
 <div class="admin-view-section-content">
+    <?php $view->displayError();?>
+    <?php $view->displaySchoolYearDetails(); ?>
     <div class="section-header">
         <div class="header-left">
             <h1 class="section-title"><?php $adminViewSectionView->displaySectionName(); ?></h1>

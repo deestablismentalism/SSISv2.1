@@ -3,6 +3,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../models/userPostEnrollmentFormModel.php';
 require_once __DIR__ . '/../models/userEnrolleesModel.php';
 require_once __DIR__ . '/../../Exceptions/DatabaseException.php';
+require_once __DIR__ . '/../../Exceptions/IdNotFoundException.php';
 require_once __DIR__ . '/../../core/normalizeName.php';
 
 class userEnrollmentFormController {
@@ -14,7 +15,7 @@ class userEnrollmentFormController {
         $this->enrolleesModel = new userEnrolleesModel();
     }
     //API
-    public function apiPostAddEnrollee(int $uId,int $schoolYStart,int $schoolYEnd,int $hasLRN, int $enrollGLevel,?int $lastGLevel,?int $lastYAttended, 
+    public function apiPostAddEnrollee(?int $uId,int $schoolYStart,int $schoolYEnd,int $hasLRN, int $enrollGLevel,?int $lastGLevel,?int $lastYAttended, 
     string $lastSAttended,int $sId,string $sAddress,string $sType, string $initalSChoice, int $initialSId,string $initialSAddrress
     ,int $hasSpecialCondition,int $hasAssistiveTech,?string $specialCondition,?string $assistiveTech,
     int $hNumber,string $subdName,string $bName,int $bCode,string $mName,int $mCode,string $pName,int $pCode, string $rName, int $rCode,
@@ -25,6 +26,9 @@ class userEnrollmentFormController {
     int $age,string $sex,string $religion,string $natLang,int $isCultural,?string $culturalG, string $studentEmail, int $enrollStat,
     ?array $psaImageFile) : array { //F 3.5.1
         try {
+            if(is_null($uId)) {
+                throw new IdNotFoundException("Current User's ID not found");
+            }
             if($hasLRN === 1 && empty($lrn)) {
                 return [
                     'httpcode'=>400,
@@ -39,7 +43,7 @@ class userEnrollmentFormController {
                 return [
                     'httpcode'=> 400,
                     'success'=> false,
-                    'message'=> 'LRN provided already exists',
+                    'message'=> 'LRN provided already exists. Cannot input an existing Learner Reference Number',
                     'data'=> []
                 ];
             }
@@ -47,12 +51,12 @@ class userEnrollmentFormController {
                 return [
                     'httpcode'=> 400,
                     'success'=> false,
-                    'message'=> 'PSA number provided already exists',
+                    'message'=> 'PSA number provided already exists. Cannot input an existing PSA number',
                     'data'=> []
                 ];
             }
-            $currentYear = date('Y');
-            if (($SchoolYStart < $currentYear || $SchoolYStart > ($currentYear + 1)) || ($SchoolYEnd <= $SchoolYStart || $SchoolYEnd > ($currentYear + 2)) ) {
+            $currentYear = (int)date('Y');
+            if (($schoolYStart < $currentYear || $schoolYStart > ($currentYear + 1)) || ($schoolYEnd <= $schoolYStart || $schoolYEnd > ($currentYear + 2)) ) {
                 return [
                     'httpcode'=>400,
                     'success'=> false,
@@ -60,7 +64,7 @@ class userEnrollmentFormController {
                     'data'=> []
                 ];
             }
-            if ($LastYAttended > $currentYear) {
+            if ($lastYAttended > $currentYear) {
                 return [
                     'httpcode'=>400,
                     'success'=> false,
@@ -111,7 +115,7 @@ class userEnrollmentFormController {
                 ];
             }
             //===NORMALIZE NAMES===
-            $normalize = fn($n)=>(new Normalize($n))->validatedNormalize();
+            $normalize = fn($n)=>(new normalizeName($n))->validatedNormalize();
             $fFname = $normalize($fFName); 
             $fLName = $normalize($fLName);
             $mFName = $normalize($mFName);
@@ -154,6 +158,16 @@ class userEnrollmentFormController {
                     'data'=> []
                 ];
             }
+        }
+        catch(InvalidArgumentException $e) {
+            return [
+                'httpcode'=>500,
+                'success'=> false,
+                'message'=> $e->getMessage(),
+                'error_code'=> $e->getCode(),
+                'error_message'=> $e->getPrevious()->getMessage(),
+                'data'=> []
+            ];
         }
         catch(DatabaseException $e) {
             return [
@@ -250,6 +264,16 @@ class userEnrollmentFormController {
                 'success'=> true,
                 'message'=> 'Successfully updated enrollee information',
                 'data'=> $insertData
+            ];
+        }
+        catch(InvalidArgumentException $e) {
+            return [
+                'httpcode'=>400,
+                'success'=> false,
+                'message'=> $e->getMessage(),
+                'error_code'=> $e->getCode(),
+                'error_message'=> $e->getPrevious()->getMessage(),
+                'data'=> []
             ];
         }
         catch(DatabaseException $e) {

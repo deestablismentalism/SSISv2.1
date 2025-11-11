@@ -50,9 +50,10 @@ class teacherGradesController {
     public function apiSaveGrades(int $sectionSubjectId, int $staffId, array $grades): array {
         try {
             // Verify the teacher has access to this section subject
-            $verifySql = "SELECT 1 FROM section_subjects 
-                         WHERE Section_Subjects_Id = :sectionSubjectId 
-                         AND Staff_Id = :staffId";
+            $verifySql = "SELECT 1 FROM section_subjects AS ss
+                        INNER JOIN section_subject_teachers AS sst ON sst.Section_Subjects_Id = ss.Section_Subjects_Id
+                         WHERE ss.Section_Subjects_Id = :sectionSubjectId 
+                         AND sst.Staff_Id = :staffId";
             $conn = $this->gradesModel->getConnection();
             $verifyStmt = $conn->prepare($verifySql);
             $verifyStmt->bindParam(':sectionSubjectId', $sectionSubjectId, PDO::PARAM_INT);

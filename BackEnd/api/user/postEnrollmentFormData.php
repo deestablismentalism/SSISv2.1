@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 session_start();
-require_once __DIR__ .  '/../../user/controllers/userPostEnrollmentFormController.php';
+require_once __DIR__ .  '/../../user/controllers/userEnrollmentFormController.php';
 require_once __DIR__ . '/../../Exceptions/IdNotFoundException.php';
 
 header('Content-Type: application/json');
@@ -15,15 +15,15 @@ try {
         throw new IdNotFoundException('Unrecognized user');
     }
 
-    $userId = (int)$_SESSION['User']['User-Id'];
+    $userId = isset($_SESSION['User']['User-Id']) ? (int) $_SESSION['User']['User-Id'] : null;
     $controller = new userEnrollmentFormController();
     // EDUCATIONAL INFORMATION
-    $School_Year_Start = $_POST['start-year'] ?? null;
-    $School_Year_End = $_POST['end-year'] ?? null;
+    $School_Year_Start = isset($_POST['start-year']) ? (int)$_POST['start-year']: null;
+    $School_Year_End = isset($_POST['end-year']) ? (int)$_POST['end-year'] : null;
     $hasLRN = isset($_POST['bool-LRN']) ? (int)$_POST['bool-LRN'] : null;
-    $Enrolling_Grade_Level = $_POST['grades-tbe'] ?? null;
-    $Last_Grade_Level = $_POST['last-grade'] ?? null;
-    $Last_Year_Attended = $_POST['last-year'] ?? null;
+    $Enrolling_Grade_Level = isset($_POST['grades-tbe']) ? (int)$_POST['grades-tbe'] : null;
+    $Last_Grade_Level = isset($_POST['last-grade']) ? (int)$_POST['last-grade'] : null;
+    $Last_Year_Attended = isset($_POST['last-year']) ? (int)$_POST['last-year'] : null;
     // EDUCATIONAL BACKGROUND
     $Last_School_Attended = $_POST['lschool'] ?? null;
     $School_Id = isset($_POST['lschoolID']) ? (int)$_POST['lschoolID'] : null;
