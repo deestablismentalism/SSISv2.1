@@ -119,8 +119,9 @@ class adminSectionsModel {
                     JOIN sections AS se ON se.Grade_Level_Id = gls.Grade_Level_Id
                     JOIN subjects AS s ON s.Subject_Id = gls.Subject_Id
                     LEFT JOIN section_subjects AS ssu ON ssu.Subject_Id = gls.Subject_Id AND ssu.Section_Id = se.Section_Id
+                    LEFT JOIN section_subject_teachers AS sst ON sst.Section_Subjects_Id = ssu.Section_Subjects_Id
                     LEFT JOIN section_schedules AS ss ON ss.Section_Subjects_Id = ssu.Section_Subjects_Id
-                    LEFT JOIN staffs AS staff ON ssu.Staff_Id = staff.Staff_Id
+                    LEFT JOIN staffs AS staff ON staff.Staff_Id = sst.Staff_Id
                     WHERE se.Section_Id = :id GROUP BY s.Subject_Name, staff.Staff_Id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id', $sectionId);
@@ -288,7 +289,7 @@ class adminSectionsModel {
                 COUNT(DISTINCT CASE WHEN st.Sex = 'Female' THEN st.Student_Id END) AS Girls,
                 COUNT(DISTINCT st.Student_Id) AS Total,
                 (
-                    SELECT COUNT(*) FROM students st2 WHERE st2.Section_Id = gl.Grade_Level_Id
+                    SELECT COUNT(*) FROM students st2 WHERE st2.Grade_Level_Id = gl.Grade_Level_Id
                     AND st2.Section_Id IS NULL
                 ) AS Unassigned
             FROM grade_level gl
@@ -372,47 +373,42 @@ class adminSectionsModel {
             throw new DatabaseException('Failed to fetch active school year', 0, $e);
         }
     }
-    
-    public function updateAdviser(int $sectionId, int $staffId) : bool{
+    public function upsertAdviser(int $sectionId, int $staffId) : bool{
         try {
             $this->conn->beginTransaction();
-            
             // Get active school year details
             $schoolYear = $this->getActiveSchoolYear();
-            $schoolYearId = $schoolYear ? (int)$schoolYear['School_Year_Details_Id'] : 0;
-            $academicYear = $schoolYear ? $schoolYear['start_year'] . '-' . $schoolYear['end_year'] : '0000';
-            
-            // Check if adviser record exists for this section
-            $checkSql = "SELECT Section_Advisers_Id, Academic_Year, School_Year_Details_Id FROM section_advisers WHERE Section_Id = :id";
-            $checkStmt = $this->conn->prepare($checkSql);
-            $checkStmt->bindParam(':id', $sectionId);
-            $checkStmt->execute();
-            $existing = $checkStmt->fetch(PDO::FETCH_ASSOC);
-            
-            if ($existing) {
-                // Update existing record, preserving Academic_Year and School_Year_Details_Id
-                $updateSql = "UPDATE section_advisers SET Staff_Id = :staffId WHERE Section_Id = :id";
-                $updateStmt = $this->conn->prepare($updateSql);
-                $updateStmt->bindParam(':id', $sectionId);
-                $updateStmt->bindParam(':staffId', $staffId);
-                $result = $updateStmt->execute();
-            } else {
-                // Insert new record with active school year values
-                $insertSql = "INSERT INTO section_advisers(Section_Id, Staff_Id, Academic_Year, School_Year_Details_Id) VALUES(:id, :staffId, :academicYear, :schoolYearId)";
-                $insertStmt = $this->conn->prepare($insertSql);
-                $insertStmt->bindParam(':id', $sectionId);
-                $insertStmt->bindParam(':staffId', $staffId);
-                $insertStmt->bindParam(':academicYear', $academicYear);
-                $insertStmt->bindParam(':schoolYearId', $schoolYearId);
-                $result = $insertStmt->execute();
+            $schoolYearId = $schoolYear ? (int)$schoolYear['School_Year_Details_Id'] : null;
+            if(is_null($schoolYearId)) {
+                throw new PDOException("This school year's ID is not found");
             }
-            
+            if($this->checkIfSectionAdviserExists($staffId)) {
+                throw new PDOException("Staff assigned is already an adviser");
+            }
+            $sql = "INSERT INTO section_advisers(Section_Id,Staff_Id,School_Year_Details_Id)
+                    VALUES(:sectionId,:staffId,:syId) ON DUPLICATE KEY UPDATE Staff_Id = VALUES(Staff_Id)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':sectionId'=>$sectionId,':staffId'=>$staffId,':syId'=>$schoolYearId]);
+            if($stmt->rowCount()===0) {
+                return false;
+            }
             $this->conn->commit();
             return $result;
         }
         catch(PDOException $e) {
             $this->conn->rollBack();
             throw new DatabaseException('Failed to update section adviser: ' . $e->getMessage(), 0, $e);
+        }
+    }
+    private function checkIfSectionAdviserExists(int $staffId):bool {
+        try {
+            $sql = "SELECT 1 FROM section_advisers WHERE Staff_Id = :staffId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':staffId'=>$staffId]);
+            return (bool)$stmt->fetchColumn();
+        }   
+        catch(PDOException $e) {
+            throw new DatabaseException('Section adviser check failed',0,$e);
         }
     }
     public function checkIfSubjectTeacherExists($staffId) : ?array {

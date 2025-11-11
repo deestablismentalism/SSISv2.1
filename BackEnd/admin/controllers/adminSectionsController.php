@@ -159,7 +159,8 @@ class adminSectionsController {
                         'Adviser' => $adviserName,
                         'Boys' => (int)$row['Boys'],
                         'Girls' => (int)$row['Girls'],
-                        'Total' => (int)$row['Total']
+                        'Total' => (int)$row['Total'],
+                        'Unassigned'=> (int)$row['Unassigned']
                     ];
                 }
             }
