@@ -292,10 +292,18 @@ body {
   transition: var(--transition);
 }
 
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .status-enrolled {
-  background: rgba(68, 208, 123, 0.2);
-  color: var(--success);
-  border: 2px solid var(--success);
+  background-color: #d4edda;
+  color: #155724;
 }
 
 .status-enrolled:hover {
@@ -303,10 +311,19 @@ body {
   transform: scale(1.05);
 }
 
+.status-rejected {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.status-rejected:hover {
+  background: rgba(255, 95, 95, 0.3);
+  transform: scale(1.05);
+}
+
 .status-pending {
-  background: rgba(165, 180, 252, 0.2);
-  color: #4338CA;
-  border: 2px solid #4338CA;
+  background-color: #fff3cd;
+  color: #856404;
 }
 
 .status-pending:hover {
@@ -314,24 +331,12 @@ body {
   transform: scale(1.05);
 }
 
-.status-denied {
-  background: rgba(255, 95, 95, 0.2);
-  color: var(--danger);
-  border: 2px solid var(--danger);
+.status-archived {
+  background-color: #e2e3e5;
+  color: #383d41;
 }
 
-.status-denied:hover {
-  background: rgba(255, 95, 95, 0.3);
-  transform: scale(1.05);
-}
-
-.status-to-follow {
-  background: rgba(255, 204, 0, 0.2);
-  color: var(--warning);
-  border: 2px solid var(--warning);
-}
-
-.status-to-follow:hover {
+.status-archived:hover {
   background: rgba(255, 204, 0, 0.3);
   transform: scale(1.05);
 }
