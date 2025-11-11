@@ -54,7 +54,7 @@ class adminStudentInfo {
                     . $data['Province_Name'] . ' ' . $data['Region'];
             echo '<table class="student-modal-table"><tbody>';
             echo $this->tableTemplate->returnVerticalTables([
-               'Learner Reference Number', 'PSA Number', 'Last Name','First Name','Middle Name','Suffix','Birthday','Age',
+               'LRN', 'PSA Number', 'Last Name','First Name','Middle Name','Suffix','Birthday','Age',
                  'Sex','Email','Religion','Native Language','Cultural Group',
                 'Special Condition','Assistive Technology','Address'
             ],

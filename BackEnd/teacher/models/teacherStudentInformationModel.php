@@ -75,7 +75,6 @@ class teacherStudentInformationModel {
             return false;
         }
     }
-    
     public function getStudentParents($studentId) {
         $sql = "SELECT pi.* FROM students AS s 
                 INNER JOIN enrollee AS e ON s.Enrollee_Id = e.Enrollee_Id
@@ -91,6 +90,30 @@ class teacherStudentInformationModel {
             return $result;
         } else {
             return false;
+        }
+    }
+    public function getAllStudents():array {
+        try {
+            $sql = "SELECT  s.*,
+                            CASE s.Student_Status
+                            WHEN 1 THEN 'Active'
+                            WHEN 2 THEN 'Inactive'
+                            WHEN 3 THEN 'Dropped'
+                            ELSE 'Unknown'
+                            END AS Status,
+                            g.Grade_Level,
+                            se.Section_Name
+                    FROM students AS s
+                    LEFT JOIN grade_level AS g ON s.Grade_Level_Id = g.Grade_Level_Id
+                    LEFT JOIN sections AS se ON s.Section_Id = se.Section_Id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch Students',0,$e);
         }
     }
 }
