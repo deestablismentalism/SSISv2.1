@@ -26,35 +26,23 @@ class adminSectionsModel {
             throw new DatabaseException('Inserting sections failed', 0, $e);
         }
     }
-    //checker for all sections in the same grade level
-    private function getAllRelatedSubjectsByGradeLevel(int $gradeLevelId) : array {
+    //RECONCILIATION QUERY: ALWAYS CREATE MISSED RELATIONS OF SUBJECTS
+    private function reconcileSectionSubjectsByGradeLevel(int $gradeLevelId) : void {
         try {
-            $sql = "SELECT Subject_Id FROM grade_level_subjects Where Grade_Level_Id = :gradeLevelId";
+            $sql = "INSERT INTO section_subjects (Subject_Id, Section_Id)
+                SELECT s.Subject_Id, sec.Section_Id
+                FROM grade_level_subjects s
+                JOIN sections sec ON sec.Grade_Level_Id = s.Grade_Level_Id
+                LEFT JOIN section_subjects ss 
+                    ON ss.Subject_Id = s.Subject_Id AND ss.Section_Id = sec.Section_Id
+                WHERE s.Grade_Level_Id = :gradeLevelId AND ss.Subject_Id IS NULL
+                ";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':gradeLevelId', $gradeLevelId);
+            $stmt->bindParam(':gradeLevelId', $gradeLevelId, PDO::PARAM_INT);
             $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            return $result;
-        }
-        catch(PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
-            throw new DatabaseException('Failed to fetch related subjects',0,$e);
-        }
-    }
-    //helper 2
-    private function insertToSectionSubjects(int $subjectId, int $sectionId) :bool { //insert to section_subjects for each grade level section if successful insert section
-        try {
-            $sql = "INSERT INTO section_subjects(Subject_Id, Section_Id) VALUES(:subjectId, :sectionId)";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':subjectId', $subjectId);
-            $stmt->bindParam(':sectionId', $sectionId);
-            $result = $stmt->execute();
-            return $result;
-        }
-        catch(PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
-            throw new DatabaseException('Failed to assocciate subject to section',0,$e);
+        } catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] ".$e->getMessage()."\n", 3, __DIR__.'/../../errorLogs.txt');
+            throw new DatabaseException('Failed to reconcile section_subjects', 0, $e);
         }
     }
     private function checkIfSectionNameExists($sectionName, ?int $id = null) : bool {
@@ -74,6 +62,7 @@ class adminSectionsModel {
             return (bool) $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] ".$e->getMessage()."\n", 3, __DIR__.'/../../errorLogs.txt');
             throw new DatabaseException('Failed to check if section name exists', 0, $e);
         }    
     }
@@ -84,29 +73,27 @@ class adminSectionsModel {
             'existing'=> false
         ];
         try {
+            $this->conn->beginTransaction();
             $hasExistingName = $this->checkIfSectionNameExists($sectionName);
-
             //return early if existing
             if($hasExistingName) {
                 $results['existing'] = true;
                 return $results;
             }
             $sectionId = $this->insertSection($sectionName, $gradeLevelId);
-            $subjects = $this->getAllRelatedSubjectsByGradeLevel($gradeLevelId);
-            foreach($subjects as $subjectId) {
-                $subjectIds = (int)$subjectId['Subject_Id'];
-                $insert = $this->insertToSectionSubjects($subjectIds, $sectionId);
-                if(!$insert) {
-                    $results['failed'][] = $subjectIds;
-                }
-                else {
-                    $results['success'][] = $subjectIds;
-                }
+            try {
+                $this->reconcileSectionSubjectsByGradeLevel($gradeLevelId);
+                $results['success'][] = $sectionId;
             }
-            
+            catch(DatabaseException $e) {
+                $results['failed'][] = $sectionId;
+            }
+            $this->conn->commit();
             return $results;
         }
         catch(PDOException $e) {
+            $this->conn->rollBack();
+            error_log("[".date('Y-m-d H:i:s')."] ".$e->getMessage()."\n", 3, __DIR__.'/../../errorLogs.txt');
             throw new DatabaseException('Failed to insert section', 0 ,$e);
         }
     }
