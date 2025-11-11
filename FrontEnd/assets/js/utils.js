@@ -243,3 +243,57 @@ export function preventCharactersByRegex(element, regex, errorCallback = null) {
     }
 }
 
+export function limitCharacters(element, maxLength) {
+    element.addEventListener('beforeinput', function(e) {
+        if (e.inputType === 'deleteContentBackward' || 
+            e.inputType === 'deleteContentForward' ||
+            e.inputType === 'deleteByCut') {
+            return;
+        }
+
+        const currentValue = element.value;
+        const start = element.selectionStart;
+        const end = element.selectionEnd;
+        const selectedLength = end - start;
+        const availableSpace = maxLength - (currentValue.length - selectedLength);
+
+        if (e.data && availableSpace <= 0) {
+            e.preventDefault();
+            return;
+        }
+
+        if (e.inputType === 'insertText' || e.inputType === 'insertFromPaste') {
+            const newValue = currentValue.substring(0, start) + (e.data || '') + currentValue.substring(end);
+            
+            if (newValue.length > maxLength) {
+                e.preventDefault();
+            }
+        }
+    });
+
+    element.addEventListener('paste', function(e) {
+        e.preventDefault();
+        
+        const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+        const currentValue = element.value;
+        const start = element.selectionStart;
+        const end = element.selectionEnd;
+        const selectedLength = end - start;
+        const availableSpace = maxLength - (currentValue.length - selectedLength);
+        
+        if (availableSpace > 0) {
+            const textToInsert = pastedText.substring(0, availableSpace);
+            const newValue = currentValue.substring(0, start) + textToInsert + currentValue.substring(end);
+            element.value = newValue;
+            
+            const newCursorPos = start + textToInsert.length;
+            element.setSelectionRange(newCursorPos, newCursorPos);
+        }
+    });
+
+    const initialValue = element.value;
+    if (initialValue.length > maxLength) {
+        element.value = initialValue.substring(0, maxLength);
+    }
+}
+

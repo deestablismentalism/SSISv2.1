@@ -1,4 +1,4 @@
-import {ValidationUtils,capitalizeFirstLetter,generateOptions, getRegions, getProvinces, getCities, getBarangays, preventCharactersByRegex } from "../utils.js";
+import {ValidationUtils,capitalizeFirstLetter,generateOptions, getRegions, getProvinces, getCities, getBarangays, preventCharactersByRegex, limitCharacters} from "../utils.js";
 document.addEventListener('DOMContentLoaded',function(){
     // |=================|
     // |===== ORDER =====|
@@ -75,6 +75,11 @@ document.addEventListener('DOMContentLoaded',function(){
     const onlyDigits = /^[0-9]+$/;
     const nonAlphaRegex = /[^A-Za-z\s]/g;  // Only allow letters and spaces, reject ALL special characters
     const nonNumericRegex = /[^0-9]/g;
+
+    const numLimitLRN = 12;
+    const numLimitPSA = 13;
+    const numLimitSchoolID = 6;
+    const numLimitPhone = 11;
 
     // |=============================|
     // |===== VALIDATION UTILS ======|
@@ -874,6 +879,23 @@ document.addEventListener('DOMContentLoaded',function(){
             preventCharactersByRegex(field, nonNumericRegex, (element, rejectedChars) => {
                 console.log(`Prevented non-numeric characters: ${rejectedChars}`);
             });
+        }
+    });
+
+    limitCharacters(lrn, numLimitLRN);
+    limitCharacters(psaNumber, numLimitPSA);
+
+    const schoolIdFields = [lschoolId, fschoolId];
+    schoolIdFields.forEach(field => {
+        if (field) {
+            limitCharacters(field, numLimitSchoolID);
+        }
+    });
+
+    const phoneNumbers = [fatherCPnum, motherCPnum, guardianCPnum];
+    phoneNumbers.forEach(field => {
+        if (field) {
+            limitCharacters(field, numLimitPhone);
         }
     });
 

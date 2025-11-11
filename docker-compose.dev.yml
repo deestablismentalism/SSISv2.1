@@ -2,9 +2,6 @@ version: "3.8"
 
 services:
   app:
-    build:
-      context: .
-      target: development  # if you have multi-stage Dockerfile
     environment:
       - APP_ENV=development
       - PHP_XDEBUG_ENABLED=1
@@ -21,7 +18,3 @@ services:
       - "3307:3306"  # Different port to avoid conflict
     environment:
       - MYSQL_GENERAL_LOG=1
-
-  pma:
-    ports:
-      - "8081:80"  # Different port to avoid conflict
