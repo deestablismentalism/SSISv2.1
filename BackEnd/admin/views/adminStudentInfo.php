@@ -48,6 +48,7 @@ class adminStudentInfo {
             $data = $this->studInfo;
             $lrn = !is_null($data['LRN']) ? $data['LRN']:"No LRN"  ; 
             $middleName = !is_null($data['Middle_Name'])  ? $data['Middle_Name'] : '';
+            $suffix =  !empty($data['Suffix']) ? $data['Suffix'] : '';
             $sex = !empty($data['Sex']) ? $data['Sex'] : 'No Biological sex provided';
             $completeAddress = $data['House_Number'] .' ' .$data['Subd_Name']
                     . '. ' .$data['Brgy_Name']. ', ' .$data['Municipality_Name'] . ', '
@@ -58,7 +59,7 @@ class adminStudentInfo {
                  'Sex','Email','Religion','Native Language','Cultural Group',
                 'Special Condition','Assistive Technology','Address'
             ],
-            [$lrn,$data['Psa_Number'],$data['Last_Name'],$data['First_Name'],$data['Middle_Name'], $data['Suffix']
+            [$lrn,$data['Psa_Number'],$data['Last_Name'],$data['First_Name'],$middleName, $suffix
             ,$data['Birthday'],$data['Age'],$data['Sex'],$data['Student_Email'],$data['Religion'],$data['Native_Language'],
             $data['Has_Cultural'],$data['Has_Condition'],$data['Has_Tech'],$completeAddress], 'student-info');
             echo '</tbody></table>';

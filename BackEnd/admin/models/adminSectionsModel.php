@@ -286,7 +286,11 @@ class adminSectionsModel {
                 staff.Staff_Middle_Name,
                 COUNT(DISTINCT CASE WHEN st.Sex = 'Male' THEN st.Student_Id END) AS Boys,
                 COUNT(DISTINCT CASE WHEN st.Sex = 'Female' THEN st.Student_Id END) AS Girls,
-                COUNT(DISTINCT st.Student_Id) AS Total
+                COUNT(DISTINCT st.Student_Id) AS Total,
+                (
+                    SELECT COUNT(*) FROM students st2 WHERE st2.Section_Id = gl.Grade_Level_Id
+                    AND st2.Section_Id IS NULL
+                ) AS Unassigned
             FROM grade_level gl
             LEFT JOIN sections s ON gl.Grade_Level_Id = s.Grade_Level_Id
             LEFT JOIN students st ON s.Section_Id = st.Section_Id
