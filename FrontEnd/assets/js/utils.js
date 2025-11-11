@@ -81,7 +81,7 @@ export async function getProvinces(regionCode) {
     return await fetchAddress(`https://psgc.gitlab.io/api/regions/${regionCode}/provinces`);
 }
 export async function getCities(provinceCode) {
-    return await fetchAddress(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-mmunicipalities`);
+    return await fetchAddress(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-municipalities`);
 }
 export async function getBarangays(cityCode) {
     return await fetchAddress(`https://psgc.gitlab.io/api/cities-municipalities/${cityCode}/barangays`);
