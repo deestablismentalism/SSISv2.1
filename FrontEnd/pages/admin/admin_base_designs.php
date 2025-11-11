@@ -20,6 +20,7 @@ require_once __DIR__ . '/../../../BackEnd/common/userTypeView.php';
     <link rel="icon" href="../../../favicon.ico">
     <?php if (isset($pageCss)) echo $pageCss; ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js" defer></script>
     <img src="../../assets/imgs/graduation-cap.png" alt="graduation-cap" fetchpriority="high" aria-hidden="true" hidden>
     <script src="../../assets/js/loader.js"></script>
     <script src="../../assets/js/notifications.js"></script>
