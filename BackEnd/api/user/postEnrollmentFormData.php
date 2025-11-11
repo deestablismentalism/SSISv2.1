@@ -55,10 +55,14 @@ try {
     //  EROLLEE ADDRESS
     $House_Number = isset($_POST['house-number']) ? (int)$_POST['house-number'] : null;
     $Subd_Name = $_POST['subdivision'] ?? null;
-    $Brgy_Code = isset($_POST['barangay']) ? (int)$_POST['barangay'] : null;
-    $Brgy_Name = $_POST['barangay-name'] ?? null;
-    $Municipality_Code = isset($_POST['city-municipality']) ? (int)$_POST['city-municipality'] : null;
-    $Municipality_Name = $_POST['city-municipality-name'] ?? null;
+    // Handle barangay - could be code (int) from dropdown or text from manual input
+    $barangayValue = $_POST['barangay'] ?? null;
+    $Brgy_Code = (isset($barangayValue) && is_numeric($barangayValue) && $barangayValue !== '') ? (int)$barangayValue : null;
+    $Brgy_Name = $_POST['barangay-name'] ?? ($barangayValue && !is_numeric($barangayValue) ? $barangayValue : null);
+    // Handle city/municipality - could be code (int) from dropdown or text from manual input
+    $cityValue = $_POST['city-municipality'] ?? null;
+    $Municipality_Code = (isset($cityValue) && is_numeric($cityValue) && $cityValue !== '') ? (int)$cityValue : null;
+    $Municipality_Name = $_POST['city-municipality-name'] ?? ($cityValue && !is_numeric($cityValue) ? $cityValue : null);
     $Province_Code = isset($_POST['province']) ? (int)$_POST['province'] : null;
     $Province_Name = $_POST['province-name'] ?? null;
     $Region_Code = isset($_POST['region']) ? (int)$_POST['region'] : null;
@@ -70,21 +74,21 @@ try {
     $Father_Middle_Name = $_POST['Father-Middle-Name'] ?? null;
     $Father_Educational_Attainment = $_POST['F-highest-education'] ?? null;
     $Father_Contact_Number = $_POST['F-Number'] ?? null;
-    $FIf_4Ps = isset($_POST['fourPS']) ? (int)$_POST['fourPS'] : null;
+    $FIf_4Ps = isset($_POST['fourPS']) ? ($_POST['fourPS'] === 'yes' ? 1 : 0) : null;
     //MOTHER
     $Mother_First_Name = $_POST['Mother-First-Name'] ?? null;
     $Mother_Last_Name = $_POST['Mother-Last-Name'] ?? null;
     $Mother_Middle_Name = $_POST['Mother-Middle-Name'] ?? null;
     $Mother_Educational_Attainment = $_POST['M-highest-education'] ?? null;
     $Mother_Contact_Number = $_POST['M-Number'] ?? null;
-    $MIf_4Ps = isset($_POST['fourPS']) ? (int)$_POST['fourPS'] : null;
+    $MIf_4Ps = isset($_POST['fourPS']) ? ($_POST['fourPS'] === 'yes' ? 1 : 0) : null;
     //GUARDIAN
     $Guardian_First_Name = $_POST['Guardian-First-Name'] ?? null;
     $Guardian_Last_Name = $_POST['Guardian-Last-Name'] ?? null;
     $Guardian_Middle_Name = $_POST['Guardian-Middle-Name'] ?? null;
     $Guardian_Educational_Attainment = $_POST['G-highest-education'] ?? null;
     $Guardian_Contact_Number = $_POST['G-Number'] ?? null;
-    $GIf_4Ps =isset($_POST['fourPS']) ? (int)$_POST['fourPS'] : null;
+    $GIf_4Ps = isset($_POST['fourPS']) ? ($_POST['fourPS'] === 'yes' ? 1 : 0) : null;
     // ENROLLEE STATUS(PENDING)
     $Enrollment_Status = 3;
     //IMAGE
