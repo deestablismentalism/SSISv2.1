@@ -81,7 +81,7 @@ export async function getProvinces(regionCode) {
     return await fetchAddress(`https://psgc.gitlab.io/api/regions/${regionCode}/provinces`);
 }
 export async function getCities(provinceCode) {
-    return await fetchAddress(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-mmunicipalities`);
+    return await fetchAddress(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-municipalities`);
 }
 export async function getBarangays(cityCode) {
     return await fetchAddress(`https://psgc.gitlab.io/api/cities-municipalities/${cityCode}/barangays`);
@@ -106,12 +106,20 @@ export const ValidationUtils = {
         return !element.value.trim();
     },
     clearError(errorElement, childElement) {
-        let container = childElement.parentElement.querySelector('.error-msg');
+        let container = childElement.parentElement?.querySelector('.error-msg');
         if (!container) {
-            container = childElement.closest('div').querySelector('.error-msg');
+            container = childElement.closest('div')?.querySelector('.error-msg');
         }
         if (!container) {
-            container = childElement.parentElement.parentElement.querySelector('.error-msg');
+            container = childElement.parentElement?.parentElement?.querySelector('.error-msg');
+        }
+        if (!container) {
+            container = childElement.parentElement?.parentElement?.parentElement?.querySelector('.error-msg');
+        }
+        if (!container) {
+            // If no error container found, just reset the border and return
+            childElement.style.border = "1px solid #616161";
+            return;
         }
         const errorSpan = container.querySelector('.' + errorElement);
 
@@ -122,12 +130,20 @@ export const ValidationUtils = {
         }
     },
     errorMessages(errorElement, message, childElement) {
-        let container = childElement.parentElement.querySelector('.error-msg');
+        let container = childElement.parentElement?.querySelector('.error-msg');
         if (!container) {
-            container = childElement.closest('div').querySelector('.error-msg');
+            container = childElement.closest('div')?.querySelector('.error-msg');
         }
         if (!container) {
-            container = childElement.parentElement.parentElement.querySelector('.error-msg');
+            container = childElement.parentElement?.parentElement?.querySelector('.error-msg');
+        }
+        if (!container) {
+            container = childElement.parentElement?.parentElement?.parentElement?.querySelector('.error-msg');
+        }
+        if (!container) {
+            // If no error container found, just set the border and return
+            childElement.style.border = "1px solid red";
+            return false;
         }
         const errorSpan = container.querySelector('.' + errorElement);
         container.classList.add('show');

@@ -37,23 +37,29 @@ class userEnrollmentFormController {
                     'data'=> []
                 ];
             }
-            $isMatchingLrn = $this->postFormModel->checkLRN($lrn);
-            $isMatchingPsa = $this->postFormModel->checkPSA($psaNum);
-            if($isMatchingLrn) {
-                return [
-                    'httpcode'=> 400,
-                    'success'=> false,
-                    'message'=> 'LRN provided already exists. Cannot input an existing Learner Reference Number',
-                    'data'=> []
-                ];
+            // Only check LRN if it's provided (not null)
+            if($lrn !== null) {
+                $isMatchingLrn = $this->postFormModel->checkLRN($lrn);
+                if($isMatchingLrn) {
+                    return [
+                        'httpcode'=> 400,
+                        'success'=> false,
+                        'message'=> 'LRN provided already exists. Cannot input an existing Learner Reference Number',
+                        'data'=> []
+                    ];
+                }
             }
-            if($isMatchingPsa) {
-                return [
-                    'httpcode'=> 400,
-                    'success'=> false,
-                    'message'=> 'PSA number provided already exists. Cannot input an existing PSA number',
-                    'data'=> []
-                ];
+            // Only check PSA if it's provided (not null)
+            if($psaNum !== null) {
+                $isMatchingPsa = $this->postFormModel->checkPSA($psaNum);
+                if($isMatchingPsa) {
+                    return [
+                        'httpcode'=> 400,
+                        'success'=> false,
+                        'message'=> 'PSA number provided already exists. Cannot input an existing PSA number',
+                        'data'=> []
+                    ];
+                }
             }
             $currentYear = (int)date('Y');
             if (($schoolYStart < $currentYear || $schoolYStart > ($currentYear + 1)) || ($schoolYEnd <= $schoolYStart || $schoolYEnd > ($currentYear + 2)) ) {
