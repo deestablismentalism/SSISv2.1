@@ -1,0 +1,24 @@
+.section-subjects-table img {
+    width: 30px;
+    height: 30px;
+}
+.section-subjects-table button {
+    background-color: aqua;
+    padding: 0.8rem;
+    border-radius: 5px;
+}
+.admin-handle-section-schedule-content {
+    padding: 1rem;
+}
+.section-subjects-table {
+    table-layout: fixed;
+    width: 100%;
+}
+.section-time-table,
+.section-subjects {
+    width: 100%;
+}
+.schedules-table {
+    table-layout: fixed;
+    width: 100%;
+}

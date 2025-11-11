@@ -10,58 +10,272 @@ class adminSchedulesModel {
         $db = new Connect();
         $this->conn = $db->getConnection();
     }
-    public function insertSectionSchedule(int $sectionSubjectId, $day,$timeStart, $timeEnd) : bool {
+    //GETTERS
+    public function getSelectedSection(int $sectionId):?string {
         try {
-            $sql = "INSERT INTO section_schedules(Section_Subjects_Id, Schedule_Day, Time_Start, Time_End) 
-                    VALUES(:sectionSubjectId, :scheduleDay, :timeStart, :timeEnd)";
+            $sql = "SELECT Section_Name FROM sections WHERE Section_Id = :id";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':sectionSubjectId', $sectionSubjectId);
-            $stmt->bindParam(':scheduleDay', $day);
-            $stmt->bindParam(':timeStart',$timeStart);
-            $stmt->bindParam(':timeEnd', $timeEnd);
-            $result = $stmt->execute();
+            $stmt->execute([':id'=>$sectionId]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            return (string)$result['Section_Name'] ?: null;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new Exception('Failed to current section',0,$e);
+        }
+    }
+    public function getSectionSubjectsTimetable(int $sectionId) : array {
+        try {
+            $sql = "SELECT 
+                        CONCAT(DATE_FORMAT(ss.Time_Start, '%H:%i'), ' - ', DATE_FORMAT(ss.Time_End, '%H:%i')) AS Time_Range,
+                        MAX(CASE WHEN ss.Schedule_Day = 1 
+                            THEN CONCAT(su.Subject_Name, ' (', COALESCE(st.Staff_First_Name, 'No teacher'), ')') END) AS Monday,
+                        MAX(CASE WHEN ss.Schedule_Day = 2 
+                            THEN CONCAT(su.Subject_Name, ' (', COALESCE(st.Staff_First_Name, 'No teacher'), ')') END) AS Tuesday,
+                        MAX(CASE WHEN ss.Schedule_Day = 3 
+                            THEN CONCAT(su.Subject_Name, ' (', COALESCE(st.Staff_First_Name, 'No teacher'), ')') END) AS Wednesday,
+                        MAX(CASE WHEN ss.Schedule_Day = 4 
+                            THEN CONCAT(su.Subject_Name, ' (', COALESCE(st.Staff_First_Name, 'No teacher'), ')') END) AS Thursday,
+                        MAX(CASE WHEN ss.Schedule_Day = 5 
+                            THEN CONCAT(su.Subject_Name, ' (', COALESCE(st.Staff_First_Name, 'No teacher'), ')') END) AS Friday,
+                        MAX(CASE WHEN ss.Schedule_Day = 6 
+                            THEN CONCAT(su.Subject_Name, ' (', COALESCE(st.Staff_First_Name, 'No teacher'), ')') END) AS Saturday,
+                        MAX(CASE WHEN ss.Schedule_Day = 7 
+                            THEN CONCAT(su.Subject_Name, ' (', COALESCE(st.Staff_First_Name, 'No teacher'), ')') END) AS Sunday
+                    FROM section_schedules AS ss
+                    JOIN section_subjects AS ssu 
+                        ON ssu.Section_Subjects_Id = ss.Section_Subjects_Id
+                    JOIN subjects AS su 
+                        ON su.Subject_Id = ssu.Subject_Id
+                    LEFT JOIN section_subject_teachers AS sst 
+                        ON sst.Section_Subjects_Id = ssu.Section_Subjects_Id
+                    LEFT JOIN staffs AS st 
+                        ON st.Staff_Id = sst.Staff_Id
+                    WHERE ssu.Section_Id = :id
+                    GROUP BY ss.Time_Start, ss.Time_End
+                    ORDER BY ss.Time_Start;";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':id'=>$sectionId]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }
         catch(PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert section schedule',0,$e);
+            throw new DatabaseException('Failed to fetch section time table',0,$e);
         }
     }
-    public function getAllSchedules() : array {
+    public function getSchedulesGroupedByDay(int $sectionSubjectId):array {
         try {
-            $sql = "SELECT ss.Section_Subjects_Id, ss.Schedule_Day, 
-                    DATE_FORMAT(Time_Start, '%H:%i') AS Time_Start,
-                    DATE_FORMAT(Time_End, '%H:%i') AS Time_End,    
-                    s.Section_Name, su.Subject_Name FROM section_schedules AS ss 
-                    JOIN section_subjects AS ssu ON ss.Section_Subjects_Id = ssu.Section_Subjects_Id
-                    JOIN sections AS s ON ssu.Section_Id = s.Section_Id
-                    JOIN subjects AS su ON ssu.Subject_Id = su.Subject_Id";
+            $sql = "SELECT
+                    ss.Section_Subjects_Id,
+                    CASE ssc.Schedule_Day
+                        WHEN 1 THEN 'Monday'
+                        WHEN 2 THEN 'Tuesday'
+                        WHEN 3 THEN 'Wednesday'
+                        WHEN 4 THEN 'Thursday'
+                        WHEN 5 THEN 'Friday'
+                        WHEN 6 THEN 'Saturday'
+                        WHEN 7 THEN 'Sunday'
+                    END AS Day,
+                    ssc.Time_Start,
+                    ssc.Time_End
+                FROM section_subjects AS ss
+                LEFT JOIN section_schedules AS ssc 
+                    ON ssc.Section_Subjects_Id = ss.Section_Subjects_Id
+                WHERE ss.Section_Subjects_Id = :sectionSubjectsId
+                ORDER BY ssc.Schedule_Day;";
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute();
+            $stmt->execute([':sectionSubjectsId'=>$sectionSubjectId]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
             return $result;
         }
         catch(PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
-            throw new Exception('Failed to fetch schedules',0,$e);
+            throw new DatabaseException("Failed to fetch this section subject's weekly scheduling",0,$e);
         }
     }
-    public function getAllSectionSubjects() : array {
+    public function getSectionSubjectsAndSchedulesById(int $sectionId) : array {
         try {
-            $sql = "SELECT ss.Section_Subjects_Id, s.Section_Name, su.Subject_Name FROM section_subjects AS ss 
-                    JOIN sections AS s ON ss.Section_Id = s.Section_Id 
-                    JOIN subjects AS su ON ss.Subject_Id = su.Subject_Id";
+            $sql = "SELECT 
+                        ssu.Section_Subjects_Id,
+                        s.Section_Name,
+                        su.Subject_Name,
+                        COUNT(
+                            DISTINCT ss.Schedule_Day
+                        ) AS Scheduled_Days
+                    FROM section_subjects AS ssu
+                    JOIN sections AS s 
+                        ON ssu.Section_Id = s.Section_Id
+                    JOIN subjects AS su 
+                        ON ssu.Subject_Id = su.Subject_Id
+                    LEFT JOIN section_schedules AS ss 
+                        ON ss.Section_Subjects_Id = ssu.Section_Subjects_Id
+                    WHERE s.Section_Id = :id
+                    GROUP BY ssu.Section_Subjects_Id, s.Section_Name, su.Subject_Name
+                    ORDER BY su.Subject_Name;";
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute();
+            $stmt->execute([':id'=>$sectionId]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
             return $result;
         }
         catch(PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch section subjects',0,$e);
+        }
+    }
+    public function getSectionsGroupedBySchedulesCount():array {
+        try {
+            $sql = "SELECT 
+                    gl.Grade_Level_Id,
+                    gl.Grade_Level,
+                    s.Section_Id,
+                    s.Section_Name,
+                    COUNT(DISTINCT ss.Section_Subjects_Id) AS Total_Subjects,
+                    COUNT(DISTINCT sch.Section_Schedules_Id) AS Scheduled_Subjects
+                FROM grade_level AS gl
+                LEFT JOIN sections AS s ON gl.Grade_Level_Id = s.Grade_Level_Id
+                LEFT JOIN section_subjects AS ss ON s.Section_Id = ss.Section_Id
+                LEFT JOIN section_schedules AS sch ON ss.Section_Subjects_Id = sch.Section_Subjects_Id
+                GROUP BY gl.Grade_Level_Id, s.Section_Id
+                ORDER BY gl.Grade_Level_Id, s.Section_Name;";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch section subjects',0,$e);
+        }
+    }
+    //HELPERS
+    private function getSchoolYearId():?int {
+        try {
+            $sql = "SELECT School_Year_Details_Id FROM school_year_details WHERE Is_Expired = 0 ORDER BY Starting_Date LIMIT 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return !empty($result) ? (int)$result['School_Year_Details_Id'] : null;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch section time table',0,$e);
+        }
+    }
+    private function mapDayToNumber(string|int $day): int {
+        if (is_numeric($day)) return (int)$day;
+        $map = [
+            'Monday' => 1,
+            'Tuesday' => 2,
+            'Wednesday' => 3,
+            'Thursday' => 4,
+            'Friday' => 5,
+            'Saturday' => 6,
+            'Sunday' => 7
+        ];
+        return $map[$day] ?? 0; // Return 0 if invalid day
+    }
+    private function returnUpsertSectionSchedule(int $sectionSubjectId, int $day, string $timeStart, string $timeEnd, int $schoolYearDetailsId): bool {
+        try {
+            $sql = "INSERT INTO section_schedules
+                    (Section_Subjects_Id, Schedule_Day, Time_Start, Time_End, School_Year_Details_Id) 
+                    VALUES(:sectionSubjectId, :scheduleDay, :timeStart, :timeEnd, :sydId)
+                    ON DUPLICATE KEY UPDATE 
+                    Time_Start = VALUES(Time_Start),
+                    Time_End = VALUES(Time_End)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(':sectionSubjectId', $sectionSubjectId, PDO::PARAM_INT);
+            $stmt->bindValue(':scheduleDay', $day, PDO::PARAM_INT);
+            $stmt->bindValue(':timeStart', $timeStart, PDO::PARAM_STR);
+            $stmt->bindValue(':timeEnd', $timeEnd, PDO::PARAM_STR);
+            $stmt->bindValue(':sydId', $schoolYearDetailsId, PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        }
+        catch(PDOException $e) {
+            error_log("[" . date('Y-m-d H:i:s') . "] " . $e->getMessage() . "\n", 3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to insert section schedule', 0, $e);
+        }
+    }
+    //OPERATIONS
+    public function upsertSectionSchedule(int $sectionSubjectId, array $schedules): array {
+        $inserted = [];
+        $skipped = [];
+        $failed = [];
+        if (empty($schedules)) {
+            return [
+                'success' => false,
+                'message' => 'No schedules provided.',
+                'inserted' => [],
+                'skipped' => [],
+                'failed' => []
+            ];
+        }
+        try {
+            $this->conn->beginTransaction();
+            $schoolYearDetailsId = $this->getSchoolYearId();
+            if (is_null($schoolYearDetailsId)) {
+                $this->conn->rollBack();
+                return [
+                    'success' => false,
+                    'message' => 'No active school year found.',
+                    'inserted' => [],
+                    'skipped' => [],
+                    'failed' => []
+                ];
+            }
+            $hasChanges = false;
+            foreach ($schedules as $schedule) {
+                $dayName = $schedule['day'] ?? '';
+                $day = $this->mapDayToNumber($dayName);
+                $timeStart = trim($schedule['timeStart'] ?? '');
+                $timeEnd = trim($schedule['timeEnd'] ?? '');
+                if ($day === 0 || empty($timeStart) || empty($timeEnd)) {
+                    $skipped[] = $dayName ?: 'Invalid';
+                    continue;
+                }
+                $success = $this->returnUpsertSectionSchedule($sectionSubjectId, $day, $timeStart, $timeEnd, $schoolYearDetailsId);
+                if ($success) {
+                    $hasChanges = true;
+                    $inserted[] = $dayName;
+                } else {
+                    $failed[] = $dayName;
+                }
+            }
+            if (!$hasChanges) {
+                $this->conn->rollBack();
+                return [
+                    'success' => false,
+                    'message' => 'No valid schedule changes detected.',
+                    'inserted' => $inserted,
+                    'skipped' => $skipped,
+                    'failed' => $failed
+                ];
+            }
+            $this->conn->commit();
+            $messageParts = [];
+            if ($inserted) $messageParts[] = 'Saved: ' . implode(', ', $inserted);
+            if ($skipped) $messageParts[] = 'Skipped: ' . implode(', ', $skipped);
+            if ($failed) $messageParts[] = 'Failed: ' . implode(', ', $failed);
+            return [
+                'success' => true,
+                'message' => implode(' | ', $messageParts),
+                'inserted' => $inserted,
+                'skipped' => $skipped,
+                'failed' => $failed
+            ];
+
+        } catch (PDOException $e) {
+            $this->conn->rollBack();
+            error_log("[" . date('Y-m-d H:i:s') . "] " . $e->getMessage() . "\n", 3, __DIR__ . '/../../errorLogs.txt');
+            return [
+                'success' => false,
+                'message' => 'Database error occurred.',
+                'inserted' => $inserted,
+                'skipped' => $skipped,
+                'failed' => $failed
+            ];
         }
     }
 }
