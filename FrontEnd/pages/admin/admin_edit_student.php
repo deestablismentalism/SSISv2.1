@@ -73,7 +73,7 @@ $pageCss= '<link rel="stylesheet" href="../../assets/css/admin/admin-edit-studen
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="first_name">First Name</label>
-                                <input type="text" id="first_name" name="first_name" value="<?php echo htmlspecialchars($student['First_Name']); ?>" required>
+                                <input type="text" id="first_name" name="first_name" value="<?php echo htmlspecialchars($student['First_Name'] ?? ''); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="middle_name">Middle Name</label>
@@ -81,7 +81,7 @@ $pageCss= '<link rel="stylesheet" href="../../assets/css/admin/admin-edit-studen
                             </div>
                             <div class="form-group">
                                 <label for="last_name">Last Name</label>
-                                <input type="text" id="last_name" name="last_name" value="<?php echo htmlspecialchars($student['Last_Name']); ?>" required>
+                                <input type="text" id="last_name" name="last_name" value="<?php echo htmlspecialchars($student['Last_Name'] ?? ''); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="name_extension">Name Extension</label>
@@ -91,11 +91,11 @@ $pageCss= '<link rel="stylesheet" href="../../assets/css/admin/admin-edit-studen
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="lrn">Learner Reference Number (LRN)</label>
-                                <input type="text" id="lrn" name="lrn" value="<?php echo htmlspecialchars($student['LRN']); ?>" required>
+                                <input type="text" id="lrn" name="lrn" value="<?php echo htmlspecialchars($student['LRN'] ?? ''); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($additionalInfo['Student_Email']); ?>">
+                                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($additionalInfo['Student_Email'] ?? ''); ?>">
                             </div>
                         </div>
                         <div class="form-row">
