@@ -39,7 +39,7 @@ $enrollee = new displayEnrollmentForms();
         <!-- Enrollment Forms Section -->
         <div class="shadow-container">
             <div class="title-header">
-                <p class = "title"> Enrollment Forms Submitted </p> <br> 
+                <p class = "title"> Enrollment Forms Submitted </p> 
             </div>
             <div class="wrapper">
                 <div class="table-container">

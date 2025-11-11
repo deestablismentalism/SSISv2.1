@@ -55,21 +55,22 @@ body {
 }
 
 .submit-btn {
-  background: var(--accent-color);
-  color: #fff;
-  font-weight: 500;
-  border: none;
-  border-radius: 0.6rem;
-  padding: 0.7rem 1.4rem;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 0.95rem;
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
 }
 
 .submit-btn:hover {
-  background: var(--hover-accent);
-  transform: translateY(-3px);
-  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+  background: linear-gradient(135deg, var(--hover-accent), var(--accent-color));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
 }
 
 .submit-btn:disabled {
@@ -121,19 +122,17 @@ body {
 }
 
 .subject-item {
-  background: rgb(21 182 255 / 27%);
   border: 1px solid var(--card-border);
   border-radius: var(--border-radius);
-  backdrop-filter: blur(15px) saturate(180%);
-  -webkit-backdrop-filter: blur(15px) saturate(180%);
-  box-shadow: 0 8px 30px rgb(0 0 0 / 14%);
   overflow: hidden;
   transition: var(--transition);
+  margin-bottom: .5rem;
 }
 
 .subject-item:hover {
   border-color: var(--accent-color);
   box-shadow: 0 7px 15px rgba(0, 180, 216, 0.3);
+  transform: scale(1.01);
 }
 
 /* ========== SUBJECT HEADER ========== */
@@ -145,6 +144,14 @@ body {
   cursor: pointer;
   transition: var(--transition);
   background: rgba(62, 158, 196, 0.2);
+  font-size: 1.4rem;
+  color: var(--main-color);
+  font-weight: 600;
+  padding-bottom: 0.8rem;
+  border-bottom: 3px solid var(--accent-color);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
+  column-gap: 21px;
 }
 
 .subject-header:hover {
@@ -180,7 +187,7 @@ body {
   align-items: center;
   justify-content: center;
   transition: var(--transition);
-  color: var(--text-color);
+  color: var(--accent-color);
 }
 
 .toggle-btn:hover {
@@ -198,8 +205,7 @@ body {
 
 /* ========== SUBJECT CONTENT ========== */
 .subject-content {
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(209 229 236 / 0%);
   display: none;
 }
 
@@ -258,8 +264,7 @@ body {
 .sections-table {
   width: 100%;
   border-collapse: collapse;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 0.5rem;
+  background: rgb(0 165 216 / 44%);
   overflow: hidden;
 }
 
@@ -271,7 +276,7 @@ body {
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  color: var(--hover-accent);
+  color: white;
   font-size: 0.95rem;
   border-bottom: 2px solid rgba(0, 180, 216, 0.3);
 }
@@ -279,7 +284,7 @@ body {
 .sections-table td {
   padding: 0.9rem 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
+  color: var(--main-color);
   font-size: 0.9rem;
 }
 
@@ -306,7 +311,8 @@ body {
   font-style: italic;
 }
 
-.edit-btn {
+.edit-btn,
+.view-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -316,16 +322,20 @@ body {
   border-radius: 0.4rem;
   transition: var(--transition);
   cursor: pointer;
+  text-decoration: none;
 }
 
-.edit-btn:hover {
+.edit-btn:hover,
+.view-btn:hover {
   background: rgba(0, 180, 216, 0.4);
   transform: scale(1.1);
 }
 
-.edit-btn img {
+.edit-btn img,
+.view-btn img {
   width: 18px;
   height: 18px;
+  filter: brightness(0) invert(1);
 }
 
 /* Checkbox styling */

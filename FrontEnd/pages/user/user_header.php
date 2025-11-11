@@ -1,13 +1,18 @@
 <div class="mobile-header-wrapper">
             <button class="bar-btn-mob" onclick="sideBarMobileOpen()"></button>
-            <div class="title-search-mob">
-                <input type="text" name="search" placeholder="Search here...">
-            </div>
             <div class="user-btn-mob"></div>
         </div>
         <!--HEADER-->
         <div class="header-wrapper" id="header-wrapper">
-            <div class="nav-container-1">
+            <!-- Hamburger Menu Button (Mobile Only) -->
+            <button class="hamburger-menu" id="hamburger-menu" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <!-- Navigation Container -->
+            <div class="nav-container-1" id="nav-container">
                 <nav>
                     <ul class="nav-1">
                         <li class="nav-item">
@@ -28,6 +33,9 @@
                     </ul>
                 </nav>
             </div>
+            
+            <!-- Mobile Overlay -->
+            <div class="nav-overlay" id="nav-overlay"></div>
 <div class="account">
         <div class="account-settings-wrapper">
             <?php
