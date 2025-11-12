@@ -222,7 +222,7 @@ class userPostEnrollmentFormModel {
         }
     }
     // OPERATIONS
-    public function insert_enrollee(int $userId,int $schoolYearStart,int $schoolYearEnd,int $hasLrn,int $enrollingGradeLevel,?int $lastGradeLevel,?int $lastYearAttended,
+    public function insert_enrollee(?int $userId,int $schoolYearStart,int $schoolYearEnd,int $hasLrn,int $enrollingGradeLevel,?int $lastGradeLevel,?int $lastYearAttended,
     string $lastSchoolAttended,int $schoolId,string $schoolAddress,string $schoolType,string $initialSchoolChoice,int $initialSchoolId,string $initialSchoolAddress,
     int $hasSpecialCondition,int $hasAssistiveTech, ?string $specialCondition, ?string $assistiveTech,
     int $houseNumber,string $subdName, string $brgyName,int $brgyCode,string $municipalityName,int $municipalityCode,string $provinceName,int $provinceCode, 
@@ -263,7 +263,7 @@ class userPostEnrollmentFormModel {
             $guardianEducationalAttainment, $guardianCpNumber, $GIf_4Ps);
             //REF: 3.2.15
             $psaDirectoryId = $this->psa_directory($filename, $directory);
-            // Insert enrollee
+            // Insert enrollee - userId can be null for admin enrollment
             $sql = "INSERT INTO enrollee (User_Id,Student_First_Name, Student_Middle_Name, Student_Last_Name, Student_Extension, Learner_Reference_Number, Psa_Number, Birth_Date, Age, Sex, Religion, 
                             Native_Language, If_Cultural, Cultural_Group, Student_Email, Enrollment_Status, Enrollee_Address_Id,
                             Educational_Information_Id, Educational_Background_Id, Disabled_Student_Id, Psa_Image_Id)
@@ -271,9 +271,8 @@ class userPostEnrollmentFormModel {
                             :If_Cultural, :Cultural_Group, :Student_Email, :Enrollment_Status, :Enrollee_Address_Id, :Educational_Information_Id, 
                             :Educational_Background_Id, :Disabled_Student_Id, :Psa_Image_Id);";
 
-            // just binding parameters
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':User_Id', $userId);
+            $stmt->bindParam(':User_Id', $userId, $userId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
             $stmt->bindParam(':Student_First_Name', $studentFirstName);
             $stmt->bindParam(':Student_Middle_Name', $studentMiddleName);
             $stmt->bindParam(':Student_Last_Name', $studentLastName);
