@@ -114,14 +114,14 @@ class adminViewSectionController {
         catch(DatabaseException $e) {
             return [
                 'success'=> false,
-                'message'=> 'There was a problem on our side ' . $e->getMessage(),
+                'message'=> 'There was a problem on our side: ' . $e->getMessage(),
                 'data'=> []
             ];
         }
         catch(Exception $e) {
             return [
                 'success'=> false,
-                'message'=> 'There was an unexpected problem ' . $e->getMessage(),
+                'message'=> 'There was an unexpected problem: ' . $e->getMessage(),
                 'data'=> []
             ];
         }
@@ -134,7 +134,7 @@ class adminViewSectionController {
                     'message'=> 'No adviser ID selected'
                 ];
             }
-            $adviser = $this->sectionsModel->updateAdviser($sectionId, $adviserId);
+            $adviser = $this->sectionsModel->upsertAdviser($sectionId, $adviserId);
             if(!$adviser) {
                 return [
                     'success'=> false,
@@ -151,7 +151,7 @@ class adminViewSectionController {
         catch(DatabaseException $e) {
             return [
                 'success'=> false,
-                'message'=> 'There was a problem on our side ' . $e->getMessage(),
+                'message'=>  $e->getMessage(),
                 'data'=> []
             ];
         }

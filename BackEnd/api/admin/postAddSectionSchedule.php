@@ -8,16 +8,16 @@ try {
         echo json_encode(['success'=> false, 'message'=> 'Invalid request method']);
         exit();
     }
-    $sectionSubjectId = isset($_POST['section-subject-id']) ? (int)$_POST['section-subject-id'] : 0;
-    $day = (int)$_POST['schedule-day'];
-    $timeStart = $_POST['time-start'];
-    $timeEnd = $_POST['time-end'];
-
+    $sectionSubjectId = isset($_POST['section-subject-id']) ? (int)$_POST['section-subject-id'] : null;
+    $schedules = isset($_POST['schedules']) ? json_decode($_POST['schedules'],true) : [];
     $controller = new adminSchedulesController();
-    $response = $controller->apiPostSectionSchedule($sectionSubjectId, $day, $timeStart, $timeEnd);
-    
+    $response = $controller->apiPostSectionSchedule($sectionSubjectId,$schedules);
     http_response_code($response['httpcode']);
     echo json_encode($response);
+    exit();
+}
+catch(IdNotFoundException $e) {
+    echo json_encode(['success'=> false, 'message'=> $e->getMessage()]);
     exit();
 }
 catch(Exception $e) {

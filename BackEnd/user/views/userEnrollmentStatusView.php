@@ -75,6 +75,9 @@ class userEnrollmentStatusView {
                     else if($response['data']['Transaction_Status'] === 2) {//request meeting
                         echo "<p> Your enrollment form is in need of further discussion. Please wait for the school to contact you. </p>";
                     }
+                    else if($response['data']['Transaction_Status'] === 3) {
+                        echo '<p>Resubmission has been sent, please wait for it to be reprocessed</p>';
+                    }
                     //Transaction status === 3 {Disable edit enrollment form. Means already resubmitted}
                 } 
             }

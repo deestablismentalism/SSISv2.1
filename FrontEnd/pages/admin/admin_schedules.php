@@ -1,33 +1,31 @@
-<?php
+<?php 
 ob_start();
-$pageJs = '<script type="module" src="../../assets/js/admin/admin-schedules.js"></script>';
-$pageTitle = 'Admin Schedules';
-$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-schedules.css">';
-require_once __DIR__ . '/../../../BackEnd/admin/views/adminSchedulesView.php';
-require_once __DIR__ . '/../../../BackEnd/common/isAcademicYearSet.php';
-$ayView  = new isAcademicYearSet();
-$view = new adminSchedulesView();
+$pageTitle = "Admin Scheduling";
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-grade-levels.css">'; 
+$pageJs= '<script type="module" src="../../assets/js/admin/admin-schedules.js" defer></script>';  
 ?>
-<div class="admin-schedules-content">
-    <?php $ayView->displayError();?>
-    <?php $ayView->displaySchoolYearDetails();?>
-    <div class="admin-schedules-header-container">
-        <div class="admin-schedules-header">
-            <div class="schedule-title"> <h1> Schedules List </h1></div>
-            <button class="add-sched-btn" id="get-add-sched-form"> Add Schedule </button>
+<div class="admin-grade-levels-content">
+    <div class="grade-levels-title-wrapper"> 
+        <h1 class="page-title">Grade Level's Section Schedule summary</h1>
+    </div>
+    <div class="grade-levels-container">
+        <div id="loading-state" class="loading-container">
+            <div class="spinner"></div>
+            <p>Loading grade levels...</p>
         </div>
-        <div class="schedules-list-container">
-            <?php 
-                $view->displaySchedules();
-            ?>
+        <div id="grade-levels-list" class="grade-levels-list">
+            <!-- Grade levels will be dynamically inserted here -->
+        </div>
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <p>No grade levels found.</p>
         </div>
     </div>
-</div>
-<div class="modal" id="schedule-modal">
-    <div class="modal-content" id="schedule-modal-content">
-        
+    
+    <div id="add-section-modal" class="modal">
+        <div class="modal-content"></div>
     </div>
 </div>
+
 <?php
 $pageContent = ob_get_clean();
 require_once __DIR__ . '/./admin_base_designs.php';

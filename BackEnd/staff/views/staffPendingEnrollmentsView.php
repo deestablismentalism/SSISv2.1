@@ -15,7 +15,7 @@ class staffPendingEnrollmentsView {
         try {
             $data = $this->controller->viewPendingEnrollees();
             if(!$data['success']) {
-                echo '<div class="error-message">'.htmlspecialchats($data['message']).'</div>';
+                echo '<div class="error-message">'.htmlspecialchars($data['message']).'</div>';
             }
             else {
                 echo '<table class="enrollments">';

@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalContent = document.getElementById('enrollee-modal-content');
     // Handle view resubmission and view reason buttons
     document.addEventListener('click', async function(e) {
-        if(!e.target.classList.contains('view-resubmission') && !e.target.classList.contains('view-reason')) {return};
+        if(!e.target.classList.contains('view-resubmission') && !e.target.classList.contains('view-reason') && !e.target.classList.contains('start-consultation')) {return};
         if (e.target.classList.contains('view-resubmission')) {
             const enrolleeId = e.target.getAttribute('data-enrollee');
             if(enrolleeId === null) return;
@@ -38,6 +38,22 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         //MODAL FOR REMARKS
+        else if(e.target.classList.contains('start-consultation')) {
+            modal.style.display = 'block';
+            modalContent.innerHTML = loadingText;
+            const enrolleeId = e.target.getAttribute('data-enrollee');
+            if(enrolleeId === null) return;
+            const actionButtons = `<div class="action-buttons">
+                        <button data-action="enroll" class="resubmission accept-btn" data-enrollee="${enrolleeId}">Accept</button>
+                        <button data-action="deny" class="resubmission deny-btn" data-enrollee="${enrolleeId}">Deny</button>
+                </div>`;
+            modalContent.innerHTML = modalHeader();
+            modalContent.innerHTML += `<div>
+                    <h1> This Enrollee is scheduled for consultation. Please choose an action if it is resolved</h1>
+                    ${actionButtons}
+            </div>`;
+            close(modal);
+        }
         else if (e.target.classList.contains('view-reason')) {
             const enrolleeId = e.target.getAttribute('data-enrollee');
             if(enrolleeId === null) return; 
@@ -62,11 +78,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 else if (enrollmentStatus == 4) {
                     const transactionStatus = parseInt(result.data.Transaction_Status);
-                    const isConsultationDisabled = transactionStatus === 2 ? 'disabled' : '';
-                    const isResubmissionDisabled = (transactionStatus === 1 || transactionStatus === 3)? 'disabled' : '';
-                    statusText = `<div><button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="enroll" class="remarks accept-btn ${isResubmissionDisabled}" ${isResubmissionDisabled}>Enroll</button>
-                                        <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="resubmit" class="remarks resubmission-btn ${isResubmissionDisabled}" ${isResubmissionDisabled}>Allow Resubmission</button>
-                                        <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="consult" class="remarks consultation-btn ${isConsultationDisabled}"${isConsultationDisabled}> Needs Consultation </button>
+                    const isDisabled = transactionStatus === 2 || transactionStatus === 1 ? 'disabled' : '';
+                    statusText = `<div><button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="enroll" class="remarks accept-btn ${isDisabled}" ${isDisabled}>Enroll</button>
+                                        <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="resubmit" class="remarks resubmission-btn ${isDisabled}" ${isDisabled}>Allow Resubmission</button>
+                                        <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="consult" class="remarks consultation-btn ${isDisabled}"${isDisabled}> Needs Consultation </button>
                                         </div>`;    
                 }
                 else if (enrollmentStatus == 2) {
@@ -86,7 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 close(modal);
             }
         }
-
     });
     let isSubmitting = false;
     modal.addEventListener('click', async function(e) {
@@ -156,8 +170,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-//TIME BEFORE ABORT 10S
-const TIME_OUT = 100000;
+//TIME BEFORE ABORT 30S
+const TIME_OUT = 30000;
 async function postUpdateEnrollmentTransaction(transactionNumber,transactionId,enrolleeId,status,) { 
     try {
         const controller = new AbortController();
@@ -197,7 +211,7 @@ async function postUpdateEnrollmentTransaction(transactionNumber,transactionId,e
            return {
                 success: false,
                 message: `Request timeout: Server took too long to respond`,
-                data: nul
+                data: null
            }
         }
         return {

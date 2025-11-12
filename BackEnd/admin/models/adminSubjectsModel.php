@@ -53,12 +53,12 @@ class adminSubjectsModel {
     //insertSubjectAndLevel helper function 2
     private function insertGradeLevelSubjects(int $subjectId, $gradeLevelId) : bool  {
         try {
-            $sql = "INSERT INTO grade_level_subjects(Subject_Id, Grade_Level_Id) VALUES (:subjectId, :gradeLevelId)";
+            $sql = "INSERT INTO grade_level_subjects(Subject_Id, Grade_Level_Id) VALUES (:subjectId, :gradeLevelId)
+                    ON DUPLICATE KEY UPDATE Subject_Id  = Subject_Id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':subjectId', $subjectId);
             $stmt->bindParam(':gradeLevelId', $gradeLevelId, PDO::PARAM_INT);
             $result = $stmt->execute();
-
             return $result;
         }
         catch(PDOException $e) {
@@ -66,34 +66,21 @@ class adminSubjectsModel {
             throw new DatabaseException('Failed to insert the subject for grade level',0,$e);
         }
     }
-    private function getAllRelatedSectionIdByGradeLevel(int $gradeLevelId) : array {
+    private function reconcileSectionSubjectsByGradeLevel(int $gradeLevelId) : void {
         try {
-            $sql = "SELECT Section_Id FROM sections WHERE Grade_Level_Id = :gradeLevelId";
+            $sql = "INSERT INTO section_subjects (Subject_Id, Section_Id)
+                SELECT s.Subject_Id, sec.Section_Id
+                FROM grade_level_subjects s
+                JOIN sections sec ON sec.Grade_Level_Id = s.Grade_Level_Id
+                LEFT JOIN section_subjects ss 
+                    ON ss.Subject_Id = s.Subject_Id AND ss.Section_Id = sec.Section_Id
+                WHERE s.Grade_Level_Id = :gradeLevelId AND ss.Subject_Id IS NULL";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':gradeLevelId', $gradeLevelId);
+            $stmt->bindParam(':gradeLevelId', $gradeLevelId, PDO::PARAM_INT);
             $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            return $result;
-        }
-        catch(PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
-            throw new DatabaseException('Failed to get related sections to subject',0,$e);
-        }
-    }
-    //insertSubejctAndLevel helper function 3
-    private function insertToSectionSubjects(int $subjectId, int $sectionId) :bool { //insert to section_subjects for each grade level section if successful insert subject and level
-        try {
-            $sql = "INSERT INTO section_subjects(Subject_Id, Section_Id) VALUES(:subjectId, :sectionId)";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':subjectId', $subjectId);
-            $stmt->bindParam(':sectionId', $sectionId);
-            $result = $stmt->execute();
-            return $result;
-        }
-        catch(PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
-            throw new DatabaseException('Failed to assocciate subject to section',0,$e);
+        } catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] ".$e->getMessage()."\n", 3, __DIR__.'/../../errorLogs.txt');
+            throw new DatabaseException('Failed to reconcile section_subjects', 0, $e);
         }
     }
     public function insertSubjectAndLevel(string $subjectName, array $gradeLevelIds): array {
@@ -138,25 +125,15 @@ class adminSubjectsModel {
                         $results['failed'][] = $convertedId;
                         continue;
                     }
+                    //CREATE A RECORD OF EACH SUBJECT AND SECTION BASED ON RELATED GRADE LEVEL
+                    $this->reconcileSectionSubjectsByGradeLevel($convertedId);
                     // Link subject to all sections in this grade level
                     $sectionIds = $this->getAllRelatedSectionIdByGradeLevel($convertedId);
-                    $allSectionsLinked = true;
-                    foreach ($sectionIds as $sectionId) {
-                        $convertedSectionId = (int)$sectionId['Section_Id'];
-                        if (!$this->insertToSectionSubjects($subjectId, $convertedSectionId)) {
-                            $allSectionsLinked = false;
-                            break;
-                        }
-                    }
-                    if ($allSectionsLinked) {
-                        $results['success'][] = $convertedId;
-                    } else {
-                        $results['failed'][] = $convertedId;
-                    }
+                    $results['success'][] = $convertedId;
                     
                 } catch (PDOException $e) {
                     $results['failed'][] = $convertedId;
-                    // Log the error if needed
+                    error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
                 }
             }
             // Commit if we have any successes, otherwise rollback
@@ -166,7 +143,6 @@ class adminSubjectsModel {
                 $this->conn->rollBack();
             }
             return $results;
-            
         } catch (PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
             $this->conn->rollBack();
