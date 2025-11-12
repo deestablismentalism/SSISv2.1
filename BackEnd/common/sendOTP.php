@@ -94,6 +94,7 @@ class OTPHandler extends Connect {
             $gatewayUrl = $_ENV['SMS_GATEWAY_URL'];
             $username = $_ENV['SMS_GATEWAY_USERNAME'];
             $password = $_ENV['SMS_GATEWAY_PASSWORD'];
+            $senderId = $_ENV['SMS_SENDER_ID'] ?? 'LucenaSouthII';
 
             $cleanedPhone = $this->cleanPhoneNumber($phone);
             if (substr($cleanedPhone, 0, 2) === '09') {
@@ -106,7 +107,8 @@ class OTPHandler extends Connect {
             $data = [
                 "message" => $message,
                 "phoneNumbers" => ["+$cleanedPhone"],
-                "simNumber" => 1
+                "simNumber" => 1,
+                "senderId" => $senderId
             ];
 
             $ch = curl_init($gatewayUrl);

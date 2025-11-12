@@ -21,6 +21,7 @@ class SendEnrollmentStatus {
         $gatewayUrl = $_ENV['SMS_GATEWAY_URL'];
         $username = $_ENV['SMS_GATEWAY_USERNAME'];
         $password = $_ENV['SMS_GATEWAY_PASSWORD'];
+        $senderId = $_ENV['SMS_SENDER_ID'] ?? 'LucenaSouthII';
 
         $Cleaned_Contact_Number = $this->cleanPhoneNumber($data['Recipient_Contact_Number']);
         $Last_Name = $data['Last_Name'];
@@ -32,9 +33,10 @@ class SendEnrollmentStatus {
         switch ($Enrollment_Status) {
             case 'Enrolled':
                 $data = [
-                    "message" => "Hello $Last_Name, $First_Name $Middle_Name! Your child, $Enrollee_Name, is successfully enrolled! For further announcements, .",
+                    "message" => "Hello $Last_Name, $First_Name $Middle_Name! Your child, $Enrollee_Name, is successfully enrolled! For further announcements, please log on to your account or contact the school.",
                     "phoneNumbers" => ["+$Cleaned_Contact_Number"],
-                    "simNumber" => 1
+                    "simNumber" => 1,
+                    "senderId" => $senderId
                 ];
                 break;
             case 'Follow-Up':
@@ -42,22 +44,24 @@ class SendEnrollmentStatus {
                     "message" => "Hello $Last_Name, $First_Name $Middle_Name! Your child, $Enrollee_Name's, enrollment status requires follow-up. 
                     Please log on to your account or contact the school for further details.",
                     "phoneNumbers" => ["+$Cleaned_Contact_Number"],
-                    "simNumber" => 1
+                    "simNumber" => 1,
+                    "senderId" => $senderId
                 ];
                 break;
             case 'Denied':
                 $data = [
-                    "message" => "Hello $Last_Name, $First_Name $Middle_Name! We regret to inform you that your child, $Enrollee_Name's, enrollment has been denied. 
-                    Please log on to your account or contact the school for further details.",
+                    "message" => "Hello $Last_Name, $First_Name $Middle_Name! We regret to inform you that your child, $Enrollee_Name's, enrollment has been denied. Please log on to your account or contact the school for further details.",
                     "phoneNumbers" => ["+$Cleaned_Contact_Number"],
-                    "simNumber" => 1
+                    "simNumber" => 1,
+                    "senderId" => $senderId
                 ];
                 break;
             default:
                 $data =[
                     "message" => "Hello $Last_Name, $First_Name $Middle_Name! There has been an update regarding your child, $Enrollee_Name's, enrollment status. Please log on to your account or contact the school for further details.",
                     "phoneNumbers" => ["+$Cleaned_Contact_Number"],
-                    "simNumber" => 1
+                    "simNumber" => 1,
+                    "senderId" => $senderId
                 ];
                 break;
         } 

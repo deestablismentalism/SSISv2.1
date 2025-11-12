@@ -21,13 +21,15 @@ class SendPassword {
         $gatewayUrl = $_ENV['SMS_GATEWAY_URL'];
         $username = $_ENV['SMS_GATEWAY_USERNAME'];
         $password = $_ENV['SMS_GATEWAY_PASSWORD'];
+        $senderId = $_ENV['SMS_SENDER_ID'] ?? 'LucenaSouthII';
 
         $Cleaned_Contact_Number = $this->cleanPhoneNumber($Recipient_Contact_Number);
         
         $data = [
             "message" => "Hello $Last_Name, $First_Name $Middle_Name! Your password is $User_Password. Please keep this password safe and don't share it with anyone",
             "phoneNumbers" => ["+$Cleaned_Contact_Number"],
-            "simNumber" => 1
+            "simNumber" => 1,
+            "senderId" => $senderId
         ];
 
         $ch = curl_init($gatewayUrl);
