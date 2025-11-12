@@ -13,7 +13,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url("../../imgs/white.jpg");
+  background-image: url("../imgs/modal-bg.png");
 }
 
 /* ===== Main Login Box ===== */

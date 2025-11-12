@@ -166,28 +166,6 @@ body {
     margin-bottom: 1rem;
 }
 
-.students-icon {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  position: relative;
-}
-
-.students-icon::before {
-  content: '';
-  font-size: 2rem;
-}
-
-.boys-icon {
-  background: #fef3c7;
-}
-
-.girls-icon {
-  background: #fed7aa;
-}
-
-.subjects-icon {
-  background: #d1fae5;
-}
-
 .stat-value {
   font-size: 2.5rem;
   font-weight: 700;
@@ -210,14 +188,12 @@ body {
 
 .students-panel,
 .subjects-panel {
-  background: rgb(21 182 255 / 27%);
-  border: 1px solid var(--card-border);
-  border-radius: var(--border-radius);
-  backdrop-filter: blur(15px) saturate(180%);
-  -webkit-backdrop-filter: blur(15px) saturate(180%);
-  box-shadow: 0 8px 30px rgb(0 0 0 / 14%);
-  overflow: hidden;
-  transition: var(--transition);
+    background: rgb(183 234 255);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 8px 30px rgb(0 0 0 / 14%);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    transition: var(--transition);
 }
 
 .students-panel:hover,
@@ -229,7 +205,7 @@ body {
 .panel-header {
   padding: 1.5rem;
   border-bottom: 1px solid var(--accent-color);
-  background: rgba(62, 158, 196, 0.2);
+  background: rgb(207 241 255);
 }
 
 .panel-title {
@@ -244,10 +220,6 @@ body {
 
 .panel-title svg {
   color: var(--accent-color);
-}
-
-.panel-content {
-  padding: 1.5rem;
 }
 
 /* ========== STUDENTS TABLE ========== */
@@ -349,16 +321,16 @@ body {
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  color: var(--hover-accent);
+  color: white;
   font-size: 0.95rem;
   border-bottom: 2px solid rgba(0, 180, 216, 0.3);
 }
 
 .subject-details-table td {
-  padding: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
-  font-size: 0.9rem;
+    padding: 1rem;
+    border-bottom: 1px solid rgb(82 195 220 / 52%);
+    color: var(--main-color);
+    font-size: 0.9rem;
 }
 
 .subject-details-table tbody tr {
@@ -374,10 +346,12 @@ body {
 }
 
 .subjects-summary {
-  margin-top: 1rem;
-  color: rgba(245, 245, 245, 0.8);
-  font-size: 0.9rem;
-  font-weight: 500;
+    margin-top: 1rem;
+    color: var(--title-main-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-top: 1px solid var(--hover-accent);
+    padding: 12px;
 }
 
 /* ========== UTILITY CLASSES ========== */
