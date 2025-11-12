@@ -11,6 +11,38 @@
   --border-color: rgba(255, 255, 255, 0.15);
   --shadow-color: rgba(0, 0, 0, 0.2);
   --font-family: "Poppins", "Segoe UI", sans-serif;
+  --main-fonts:  "Poppins", "Segoe UI", sans-serif;
+  --title-fonts: "Barlow", sans-serif;
+  --button-fonts: 'Baloo-Thambi-2';
+  --link-fonts: 'Roboto', sans-serif;
+  --sidebar-width: 60px;
+  --sidebar-expanded-width: 280px; /* Changed from 20dvw to fixed pixels */
+  --title-font-size: 3em;
+  --sidebar-expanded-width: 20dvw;
+  --title-font-size: 3em;
+  --main-color: #1c4a72;
+  --secondary-color: #F1BD22;
+  --wrapper-bg-color: #fffdfdf5;
+  --title-main-color: #3e9ec4;
+  --hover: #48cae4;
+  --container-color: rgba(36, 186, 255, 0.28);
+  --button-color: ;
+  --button-hover-color: ;
+  --button-click: scale(.9);
+  --border-radius: 1rem;
+  --title-h1-font-size: 1.6rem;
+  --title-font-weight: 600;
+  --title-letter-spacing: 1px;
+  --card-border: rgba(255, 255, 255, 0.2);
+  --warning: #ffcc00;
+  --danger: #ff5f5f;
+  --success: #44d07b;
+  --status-active: #44d07b;
+  --status-inactive: #ffc107;
+  --status-dropped: #ff6b6b;
+  --warning: #ffcc00;
+  --danger: #ff5f5f;
+  --success: #44d07b;
 }
 
 /* === GENERAL LAYOUT === */
@@ -50,6 +82,8 @@ body {
     width: 8px;
     height: 8px;
 }
+
+
 
 .menu-content::-webkit-scrollbar-track {
     background: transparent;
@@ -182,17 +216,17 @@ body {
 }
 
 .header-title p {
-    letter-spacing: 1px;
-    width: 106%;
+letter-spacing: 1px; 
     background: #ffb811;
     text-align: left;
     margin: -33px -11px -11px -33px;
+    font-family: 'Barlow', Arial, sans-serif;
+    position: relative;
     padding: .2em;
-    padding: .2em;
+    font-family: var(--title-fonts);
     padding-left: 1em;
     font-size: 1.8rem;
-    font-weight: 900;
-    font-family: 'Barlow', Arial, sans-serif;
+    color: white;
     position: relative;
 }
 
@@ -234,11 +268,11 @@ body {
     transition: 0.2s ease;
 }
 
-.header-right input :hover {
-  border-color: #00bcd4;
-  transition: ease-in-out 0.3s;
-  color: white;
-
+.header-right input:hover {
+    border-color: #00bcd4;
+    transition: ease-in-out 0.3s;
+    color: var(--hover);
+    background: #dbf6ff66;
 }
 
 .header-right input::placeholder {
@@ -280,6 +314,7 @@ table.enrollments th {
 
 table.enrollments td{
     color:black;
+    align-content: center;
 }
 
 table.enrollments tr:nth-child(even) td {
@@ -339,6 +374,42 @@ table.enrollments tr:hover td{
   scrollbar-width: thin;
   margin-bottom: 31px;
   scrollbar-color: #3e9ec4 #f0f0f0;
+  position: relative;
+}
+
+/* Back Button inside Modal */
+.modal-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    background: linear-gradient(135deg, #3e9ec4, #48cae4);
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
+    margin-bottom: 1.5rem;
+}
+
+.modal-back-btn:hover {
+    background: linear-gradient(135deg, #48cae4, #3e9ec4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
+}
+
+.modal-back-btn:active {
+    transform: translateY(0);
+}
+
+.modal-back-btn::before {
+    content: '←';
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 .description-box {
@@ -558,13 +629,14 @@ table.enrollments tr:hover td{
 .close {
     position: absolute;
     right: 20px;
-    top: 15px;
+    top: 20px;
     color: #999;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
     transition: color 0.2s ease;
     line-height: 1;
+    z-index: 10;
 }
 
 .close:hover,
@@ -611,7 +683,6 @@ table.enrollments tr:hover td{
     }
     
     .enrollment-start {
-        padding: 20px;
         width: 99%;
     }
     

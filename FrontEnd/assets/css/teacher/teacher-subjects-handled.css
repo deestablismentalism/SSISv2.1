@@ -1,49 +1,100 @@
+    :root {
+  --bg-gradient: linear-gradient(135deg, rgba(20, 30, 48, 0.95), rgba(36, 59, 85, 0.95));
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --hover-glow: rgba(255, 255, 255, 0.3);
+  --text-color: #e8edf3;
+  --main-color: #1c4a72;
+  --accent-color: #00bcd4;
+  --secondary-color: #F1BD22;
+  --success: #44d07b;
+  --warning: #ffcc00;
+  --danger: #ff5f5f;
+  --font-main: "Poppins", "Segoe UI", sans-serif;
+  --hover-accent: #48cae4;
+  --border-radius: 1.5rem;
+  --transition: all 0.3s ease;
+}
+
+/* ===== Overall Layout ===== */
+body {
+  background: var(--bg-gradient);
+  font-family: var(--font-main);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
 .teacher-subjects-handled-content {
-    margin: 1.5rem;
-    font-family: var(--main-fonts);
+    font-family: var(--font-main);
+    background-image: url("../../imgs/paper.jpg");
+    background-size: cover;
+    background-attachment: fixed;
 }
 
+ #subject-search {
+    padding: 1rem;
+}
 .subjects-handled-wrapper {
-    padding: 2rem;
-    background: rgb(36 186 255 / 28%);
-    backdrop-filter: blur(10px);
-    border-radius: 1.5rem;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--glass-border);
+    transition: var(--transition);
 }
 
+/* ===== Header Section ===== */
 .subjects-handled-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: linear-gradient(135deg, #3e9ec4 0%, #2d7a9a 100%);
-    min-height: 90px;
-    padding: 1.5rem 2rem;
+    backdrop-filter: blur(12px);
+    background: #3e9ec4;
     border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    margin-bottom: 1.5rem;
+    border-radius: 20px; /* Base for 1440px */
+    padding: 1rem 1.5rem; /* Base for 1440px */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1.5rem; /* Base for 1440px */
+    position: relative;
+    overflow: hidden;
+}
+
+.subjects-handled-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.subjects-handled-header:hover::before {
+    transform: scaleX(1);
 }
 
 .subjects-handled-header h1 {
-    font-size: 2rem;
+    font-size: 1.8rem; /* Base for 1440px */
     font-weight: 700;
     letter-spacing: 1px;
     color: white;
-    font-family: var(--main-fonts);
+    font-family: var(--font-main);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     margin: 0;
 }
 
+/* ===== Table Container ===== */
 .subjects-list-wrapper {
-    background: rgba(255, 255, 255, 0.95);
+    padding: 1rem;
+    background: rgb(36 186 255 / 28%);
     backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
-    padding: 1.5rem;
-    max-height: 70vh;
-    min-height: 400px;
-    overflow-y: auto;
+    border-radius: 20px; /* Base for 1440px */
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    height: 70vh; /* Base for 1440px */
+    min-height: 400px; /* Base for 1440px */
+    overflow: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
 }
@@ -63,121 +114,345 @@
     border-radius: 20px;
 }
 
-.subjects-list {
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: separate;
-    border-spacing: 0;
+.subjects-list-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(62, 158, 196, 0.7);
 }
 
+/* Make table header stick while scrolling */
 .subjects-list thead {
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 1;
+}
+
+.subjects-list {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--text-color);
+    font-size: 0.95rem; /* Base for 1440px */
+}
+
+.subjects-list thead {
+    background: rgba(255, 255, 255, 0.12);
+    text-align: left;
 }
 
 .subject-titles th {
-    padding: 1.2rem 1rem;
+    padding: 1rem; /* Base for 1440px */
     font-weight: 600;
-    letter-spacing: 0.5px;
-    background: linear-gradient(135deg, #3e9ec4 0%, #2d7a9a 100%);
+    letter-spacing: 0.4px;
+    background: rgb(97 206 255);
     text-transform: uppercase;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 1.5px #0967a266;
     color: white;
-    font-size: 0.95rem;
-    border: none;
-}
-
-.subjects-list tbody tr {
-    transition: all 0.2s ease;
 }
 
 .subjects-list td {
-    padding: 1.2rem 1rem;
-    border-top: 1px solid rgba(62, 158, 196, 0.2);
+    padding: 1rem; /* Base for 1440px */
+    border-top: 1px solid rgba(63, 166, 210, 0.897);
     vertical-align: middle;
-    color: #333;
-    letter-spacing: 0.3px;
+    color: black;
+    letter-spacing: 0.5px;
     font-weight: 400;
-    font-size: 0.95rem;
 }
 
-.subjects-list tbody tr:hover {
-    background: rgba(62, 158, 196, 0.1) !important;
-    transform: translateX(5px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.subjects-list tbody tr:hover td {
-    color: #2d7a9a;
-}
-
+/* Zebra stripes for readability */
 .subjects-list tbody tr:nth-child(even) td {
-    background: rgba(178, 224, 248, 0.3);
+    background: rgb(71 168 255 / 8%);
 }
 
 .subjects-list tbody tr:nth-child(odd) td {
-    background: rgba(187, 229, 248, 0.2);
+    background: rgba(255, 255, 255, 0.05);
 }
 
-/* Column alignment */
-.subjects-list th:first-child,
-.subjects-list td:first-child {
-    text-align: left;
+.subjects-list tbody tr:hover td {
+    color: var(--hover-accent);
+    transition: all 0.25s ease-in-out;
 }
 
-.subjects-list th:nth-child(2),
-.subjects-list td:nth-child(2) {
-    text-align: left;
-    text-transform: capitalize;
+.subjects-list tbody tr:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transition: 0.3s ease;
 }
 
-.subjects-list th:nth-child(3),
-.subjects-list td:nth-child(3) {
-    text-align: center;
-}
-
-.subjects-list th:nth-child(4),
-.subjects-list td:nth-child(4) {
-    text-align: left;
-}
-
-.subjects-list th:last-child,
-.subjects-list td:last-child {
-    text-align: right;
-}
-
-/* Action button styling */
+/* ===== Action Buttons ===== */
 .action-button-wrapper {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
 }
 
 .grade-students-btn {
-    padding: 0.6rem 1.2rem;
-    background: linear-gradient(135deg, #3e9ec4 0%, #2d7a9a 100%);
+    padding: 0.4rem 0.8rem; /* Base for 1440px */
+    background: var(--accent-color);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px; /* Base for 1440px */
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Base for 1440px */
     font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
+    transition: var(--transition);
+    box-shadow: 0 0 12px rgba(0, 188, 212, 0.4);
     letter-spacing: 0.3px;
     text-decoration: none;
     display: inline-block;
+    text-transform: uppercase;
 }
 
 .grade-students-btn:hover {
-    background: linear-gradient(135deg, #2d7a9a 0%, #1f5a73 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
+    transform: scale(1.05);
+    box-shadow: 0 0 18px var(--hover-glow);
+    background: var(--hover-accent);
     color: white;
 }
 
 .grade-students-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 6px rgba(62, 158, 196, 0.3);
+    transform: scale(0.95);
 }
+
+/*====================================*/
+/*  SUBJECTS HANDLED RESPONSIVE       */
+/*====================================*/
+
+/* 2500px and above - Larger screens */
+@media (min-width: 2500px) {
+  .teacher-subjects-handled-content {
+    padding: 2.8rem;
+  }
+  
+  .subjects-handled-wrapper {
+    padding: 2.4rem;
+    border-radius: 26px;
+  }
+  
+  .subjects-handled-header {
+    border-radius: 26px;
+    padding: 1.4rem 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .subjects-handled-header h1 {
+    font-size: 2.4rem;
+    letter-spacing: 1.3px;
+  }
+  
+  .subjects-list-wrapper {
+    border-radius: 26px;
+    height: 72vh;
+    min-height: 520px;
+  }
+  
+  .subjects-list {
+    font-size: 1.2rem;
+  }
+  
+  .subject-titles th {
+    padding: 1.4rem;
+    letter-spacing: 0.6px;
+    font-size: 1.15rem;
+  }
+  
+  .subjects-list td {
+    padding: 1.4rem;
+    letter-spacing: 0.7px;
+  }
+  
+  .grade-students-btn {
+    padding: 0.55rem 1.1rem;
+    border-radius: 16px;
+    font-size: 1.1rem;
+  }
+}
+
+/* 1920px - Full HD */
+@media (min-width: 1920px) and (max-width: 2499px) {
+  .teacher-subjects-handled-content {
+    padding: 2.4rem;
+  }
+  
+  .subjects-handled-wrapper {
+    padding: 2.2rem;
+    border-radius: 23px;
+  }
+  
+  .subjects-handled-header {
+    border-radius: 23px;
+    padding: 1.2rem 1.8rem;
+    margin-bottom: 1.8rem;
+  }
+  
+  .subjects-handled-header h1 {
+    font-size: 2.1rem;
+    letter-spacing: 1.2px;
+  }
+  
+  .subjects-list-wrapper {
+    border-radius: 23px;
+    height: 71vh;
+    min-height: 460px;
+  }
+  
+  .subjects-list {
+    font-size: 1.1rem;
+  }
+  
+  .subject-titles th {
+    padding: 1.2rem;
+    letter-spacing: 0.5px;
+    font-size: 1.05rem;
+  }
+  
+  .subjects-list td {
+    padding: 1.2rem;
+    letter-spacing: 0.6px;
+  }
+  
+  .grade-students-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 14px;
+    font-size: 1rem;
+  }
+}
+
+/* 1440px - Default (already set above) */
+@media (min-width: 1441px) and (max-width: 1919px) {
+  /* Default styles apply - no changes needed */
+}
+
+/* 1024px - Smaller desktop */
+@media (min-width: 1024px) and (max-width: 1440px) {
+  
+  .subjects-handled-wrapper {
+    padding: 1.8rem;
+    border-radius: 18px;
+  }
+  
+  .subjects-handled-header {
+    border-radius: 15px;
+    padding: 0.75rem 1.15rem;
+    margin-bottom: 1.15rem;
+  }
+  
+  .subjects-handled-header h1 {
+    font-size: 1.45rem;
+    letter-spacing: 0.75px;
+  }
+  
+  .subjects-list-wrapper {
+    border-radius: 15px;
+    height: 67vh;
+    min-height: 340px;
+  }
+  
+  .subjects-list {
+    font-size: 0.83rem;
+  }
+  
+  .subject-titles th {
+    padding: 0.75rem;
+    letter-spacing: 0.28px;
+    font-size: 0.88rem;
+  }
+  
+  .subjects-list td {
+    padding: 0.75rem;
+    letter-spacing: 0.38px;
+  }
+  
+  .grade-students-btn {
+    padding: 0.36rem 0.72rem;
+    border-radius: 9px;
+    font-size: 0.78rem;
+  }
+}
+
+/* Tablet and Mobile - 768px and below */
+@media (max-width: 768px) {
+  .teacher-subjects-handled-content {
+    padding: 1rem;
+  }
+  
+  .subjects-handled-wrapper {
+    padding: 1.5rem;
+    border-radius: 15px;
+  }
+  
+  .subjects-handled-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+  
+  .subjects-handled-header h1 {
+    font-size: 1.2rem;
+  }
+  
+  .subjects-list-wrapper {
+    border-radius: 12px;
+    height: 65vh;
+    min-height: 300px;
+  }
+  
+  .subjects-list {
+    font-size: 0.75rem;
+  }
+  
+  .subject-titles th,
+  .subjects-list td {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
+  
+  .grade-students-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Small Mobile - 540px and below */
+@media (max-width: 540px) {
+  .teacher-subjects-handled-content {
+    padding: 0.8rem;
+  }
+  
+  .subjects-handled-wrapper {
+    padding: 1.2rem;
+    border-radius: 12px;
+  }
+  
+  .subjects-handled-header {
+    padding: 0.8rem;
+    border-radius: 10px;
+  }
+  
+  .subjects-handled-header h1 {
+    font-size: 1rem;
+  }
+  
+  .subjects-list-wrapper {
+    border-radius: 10px;
+    height: 60vh;
+    min-height: 280px;
+  }
+  
+  .subjects-list {
+    font-size: 0.7rem;
+  }
+  
+  .subject-titles th,
+  .subjects-list td {
+    padding: 0.5rem 0.3rem;
+    font-size: 0.75rem;
+  }
+  
+  .grade-students-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.7rem;
+  }
+}
+
+/*====================================*/
+/* END SUBJECTS HANDLED RESPONSIVE    */
+/*====================================*/

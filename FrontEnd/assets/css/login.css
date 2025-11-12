@@ -34,14 +34,39 @@ body {
   flex: 1;
   /* background: linear-gradient(135deg, #cde2ff, #eaf2ff); */
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 40px;
   border-radius: 27px;
+  position: relative;
+}
+
+/* ===== School Header/Title ===== */
+.img-header {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1rem, 3vw, 2rem);
+  border-radius: 12px;
+  text-align: center;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 600;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+  width: 100%;
+  max-width: 400px;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
+  transition: all 0.3s ease;
+}
+
+.img-header:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
 }
 
 .login-illustration img {
-  width: 105%;
+  width: 100%;
   max-width: 400px;
   height: auto;
 }
@@ -318,6 +343,12 @@ input[type="text"], input[type="password"] {
     padding: 20px;
   }
 
+  .img-header {
+    font-size: clamp(0.9rem, 4vw, 1.1rem);
+    padding: clamp(0.6rem, 2vw, 0.9rem) clamp(0.8rem, 3vw, 1.2rem);
+    margin-bottom: 15px;
+  }
+
   .login-illustration img {
     max-width: 250px;
   }
@@ -325,5 +356,28 @@ input[type="text"], input[type="password"] {
   .login-form {
     padding: 30px;
     text-align: center;
+  }
+}
+
+/* ===== Additional Responsive Breakpoints ===== */
+@media (max-width: 600px) {
+  .img-header {
+    font-size: clamp(0.8rem, 4.5vw, 1rem);
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .img-header {
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    padding: 1.3rem 2.5rem;
+  }
+}
+
+@media (min-width: 1600px) {
+  .img-header {
+    font-size: clamp(1.4rem, 1.8vw, 1.8rem);
+    padding: 1.5rem 3rem;
   }
 }

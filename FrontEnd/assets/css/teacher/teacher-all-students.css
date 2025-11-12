@@ -14,12 +14,13 @@
   --hover-accent: #48cae4;   
   border-radius: 1.5rem;   
 }
-.admin-all-students-content {
+
+.teacher-all-students-content {
   padding: 2rem; /* Base padding for 1440px */
   transition: margin-left 0.3s ease;
   background-image: url("../../imgs/paper.jpg");
 }
-.sidebar.active ~ .admin-all-students-content {
+.sidebar.active ~ .teacher-all-students-content {
   margin-left: 80px; 
 }
 /* ===== Header Section ===== */
@@ -39,6 +40,7 @@
   font-size: 1.8rem; /* Base for 1440px */
   font-weight: 700;
   letter-spacing: 1px;
+  color: white;
 }
 .add-student-btn {
   background: var(--accent-color);

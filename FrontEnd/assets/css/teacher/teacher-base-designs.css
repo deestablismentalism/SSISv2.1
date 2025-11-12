@@ -1,9 +1,12 @@
 /*----START OF BASE DESIGNS----*/
 :root {
     --main-fonts:  "Poppins", "Segoe UI", sans-serif;
+    --title-fonts: "Barlow", sans-serif;
     --button-fonts: 'Baloo-Thambi-2';
     --link-fonts: 'Roboto', sans-serif;
     --sidebar-width: 60px;
+    --sidebar-expanded-width: 280px; /* Changed from 20dvw to fixed pixels */
+    --title-font-size: 3em;
     --sidebar-expanded-width: 20dvw;
     --title-font-size: 3em;
     --main-color: #1c4a72;
@@ -26,6 +29,9 @@
     --status-active: #44d07b;
     --status-inactive: #ffc107;
     --status-dropped: #ff6b6b;
+    --warning: #ffcc00;
+    --danger: #ff5f5f;
+    --success: #44d07b;
 }
 
 .content {
@@ -49,11 +55,11 @@ body {
     left: 0;
     bottom: 0;
     width: 3.5vw;
-    background-color: #003366;
+    background-color: #1c4a72;
     height: 100vh;
     transition: width 0.2s ease-in, opacity 0.15s ease-out;
     overflow: hidden;
-    font-family: 'Barlow', Arial;
+    font-family: "Poppins", "Segoe UI", sans-serif;
 }
 .content {
     display: flex;
@@ -83,7 +89,10 @@ body {
     display: grid;
     height: 3em;
     grid-template-columns: 50% 50%;
+    font-family: var(--font-main);
+    align-content: center;
 }
+
 
 .sidebar-title button {
     opacity: 1;
