@@ -221,6 +221,20 @@ class userPostEnrollmentFormModel {
             throw new DatabaseException('Failed to insert enrollee parernts',3216,$e);
         }
     }
+    //CHECK IF THE SCHOOL YEAR IS ALREADY SET
+    private function getSchoolYearId():?int {
+        try {
+            $sql = "SELECT School_Year_Details_Id FROM school_year_details WHERE Is_Expired = 0 ORDER BY Starting_Date LIMIT 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return !empty($result) ? (int)$result['School_Year_Details_Id'] : null;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch section time table',0,$e);
+        }
+    }
     // OPERATIONS
     public function insert_enrollee(int $userId,int $schoolYearStart,int $schoolYearEnd,int $hasLrn,int $enrollingGradeLevel,?int $lastGradeLevel,?int $lastYearAttended,
     string $lastSchoolAttended,int $schoolId,string $schoolAddress,string $schoolType,string $initialSchoolChoice,int $initialSchoolId,string $initialSchoolAddress,
@@ -242,6 +256,10 @@ class userPostEnrollmentFormModel {
         $guardianParentType = 'Guardian';
         try{
             $this->conn->beginTransaction();
+            $schoolYearId =  $this->getSchoolYearId();
+            if(is_null($schoolYearId)) {
+                throw new PDOException('Cannot enroll without linking to academic year information');
+            }
             //REF: 3.2.8
             $educationalInformationId = $this->educational_information($schoolYearStart, $schoolYearEnd, $hasLrn, $enrollingGradeLevel, $lastGradeLevel, $lastYearAttended);
             //REF: 3.2.9
@@ -266,10 +284,10 @@ class userPostEnrollmentFormModel {
             // Insert enrollee
             $sql = "INSERT INTO enrollee (User_Id,Student_First_Name, Student_Middle_Name, Student_Last_Name, Student_Extension, Learner_Reference_Number, Psa_Number, Birth_Date, Age, Sex, Religion, 
                             Native_Language, If_Cultural, Cultural_Group, Student_Email, Enrollment_Status, Enrollee_Address_Id,
-                            Educational_Information_Id, Educational_Background_Id, Disabled_Student_Id, Psa_Image_Id)
+                            Educational_Information_Id, Educational_Background_Id, Disabled_Student_Id, Psa_Image_Id,  School_Year_Details_Id)
                             VALUES (:User_Id,:Student_First_Name, :Student_Middle_Name, :Student_Last_Name, :Student_Extension, :Learner_Reference_Number, :Psa_Number, :Birth_Date, :Age, :Sex, :Religion, :Native_Language, 
                             :If_Cultural, :Cultural_Group, :Student_Email, :Enrollment_Status, :Enrollee_Address_Id, :Educational_Information_Id, 
-                            :Educational_Background_Id, :Disabled_Student_Id, :Psa_Image_Id);";
+                            :Educational_Background_Id, :Disabled_Student_Id, :Psa_Image_Id, :syId);";
 
             // just binding parameters
             $stmt = $this->conn->prepare($sql);
@@ -294,6 +312,7 @@ class userPostEnrollmentFormModel {
             $stmt->bindParam(':Educational_Background_Id', $educationalBackgroundId);
             $stmt->bindParam(':Disabled_Student_Id', $disabledStudentId);
             $stmt->bindParam(':Psa_Image_Id', $psaDirectoryId);
+            $stmt->bindParam(':syId',$schoolYearId);
             if (!$stmt->execute()) {
                 $this->conn->rollBack();
                 throw new PDOException('Failed to execute enrollee isnert');
