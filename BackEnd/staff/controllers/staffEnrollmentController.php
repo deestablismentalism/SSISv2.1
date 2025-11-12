@@ -114,7 +114,7 @@ class staffEnrollmentController {
         try {
             if(!$this->adminEnrolleeModel->setIsHandledStatus($enrolleeId,self::BOOL_TRUE)
                 || !$this->transactionsModel->insertEnrolleeTransaction($enrolleeId, $transactionCode, $status, $staffId, $remarks, self::BOOL_FALSE)) {
-                return ['success'=> false,'message'=> 'Inserting enrollee transaction failed'];
+                return ['success'=> false,'message'=> 'Inserting enrollee transaction failed. Please try to reload if changes have been made'];
             }
             return ['success'=> true,'message'=> 'Teacher successfully updated changes'];
         }
