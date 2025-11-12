@@ -524,3 +524,4 @@ Stack trace:
 #1 /var/www/html/BackEnd/admin/views/adminStudentInfo.php(56): TableCreator->returnVerticalTables(Array, Array, 'student-info')
 #2 /var/www/html/BackEnd/templates/admin/fetchStudentDetails.php(9): adminStudentInfo->displayStudentInfo()
 #3 {main}
+[2025-11-12 16:01:31] SMS sent to 09682298263 for Enrollee ID: 101 - Status: Follow-Up

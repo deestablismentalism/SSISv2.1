@@ -1,17 +1,11 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-// Load environment variables
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
 
-class SMSFailureException extends Exception {} //Domain specific exception
+class SMSFailureException extends Exception {}
 class SendPassword {
-    /**
-     * Cleans and formats a Philippine mobile number
-     * @param string $phoneNumber The phone number to clean (e.g., 09123456789)
-     * @return string The cleaned phone number in international format (e.g., 639123456789)
-     */
     private function cleanPhoneNumber($phoneNumber) {
         $cleaned = preg_replace('/[^0-9]/', '', $phoneNumber);
         if (substr($cleaned, 0, 2) === '09') {

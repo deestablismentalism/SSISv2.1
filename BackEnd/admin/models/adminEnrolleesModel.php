@@ -95,6 +95,36 @@ class adminEnrolleesModel {
             throw new DatabaseException('Failed to fetch Enrollee personal information',0,$e);
         }
     }
+    public function getEnrolleeDetailsForSMS(int $enrolleeId):array {
+        try {
+            $sql = "SELECT 
+                        r.Last_Name,
+                        r.First_Name,
+                        r.Middle_Name,
+                        r.Contact_Number AS Recipient_Contact_Number,
+                        TRIM(CONCAT(
+                            e.Student_First_Name, 
+                            ' ',
+                            CASE WHEN e.Student_Middle_Name IS NOT NULL 
+                                THEN CONCAT(SUBSTRING(e.Student_Middle_Name, 1, 1), '. ')
+                                ELSE '' 
+                            END,
+                            e.Student_Last_Name
+                        )) AS Enrollee_Name
+                    FROM enrollee AS e
+                    INNER JOIN users AS u ON e.User_Id = u.User_Id
+                    INNER JOIN registrations AS r ON u.Registration_Id = r.Registration_Id
+                    WHERE e.Enrollee_Id = :id
+                    LIMIT 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':id'=>$enrolleeId]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ?: [];
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to fetch enrollee details for SMS',0,$e);
+        }
+    }
     public function getEnrollmentInformation($id) : array {
         try {
             $sql = "SELECT enrollee_parents.*,
