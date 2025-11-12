@@ -176,8 +176,39 @@ class adminSchedulesModel {
         ];
         return $map[$day] ?? 0; // Return 0 if invalid day
     }
-    private function returnUpsertSectionSchedule(int $sectionSubjectId, int $day, string $timeStart, string $timeEnd, int $schoolYearDetailsId): bool {
+        /**
+     * Returns:
+     *  'inserted' => successfully inserted/updated
+     *  'overlap'  => skipped due to overlapping schedule
+     *  'failed'   => failed to insert/update
+     */
+    private function returnUpsertSectionSchedule(int $sectionSubjectId, int $day, string $timeStart, string $timeEnd, int $schoolYearDetailsId): string {
         try {
+            // 1️⃣ Check for overlapping schedule
+            $sqlCheck = "SELECT 1 FROM section_schedules
+                        WHERE Section_Subjects_Id = :sectionSubjectId
+                        AND Schedule_Day = :day
+                        AND School_Year_Details_Id = :sydId
+                        AND (
+                            (:timeStart BETWEEN Time_Start AND Time_End)
+                            OR (:timeEnd BETWEEN Time_Start AND Time_End)
+                            OR (Time_Start BETWEEN :timeStart AND :timeEnd)
+                        )
+                        LIMIT 1";
+            $stmtCheck = $this->conn->prepare($sqlCheck);
+            $stmtCheck->execute([
+                ':sectionSubjectId' => $sectionSubjectId,
+                ':day' => $day,
+                ':timeStart' => $timeStart,
+                ':timeEnd' => $timeEnd,
+                ':sydId' => $schoolYearDetailsId
+            ]);
+
+            if ($stmtCheck->fetchColumn()) {
+                return 'overlap'; // Schedule overlaps, skip insertion
+            }
+
+            // 2️⃣ Insert or update schedule
             $sql = "INSERT INTO section_schedules
                     (Section_Subjects_Id, Schedule_Day, Time_Start, Time_End, School_Year_Details_Id) 
                     VALUES(:sectionSubjectId, :scheduleDay, :timeStart, :timeEnd, :sydId)
@@ -191,18 +222,22 @@ class adminSchedulesModel {
             $stmt->bindValue(':timeEnd', $timeEnd, PDO::PARAM_STR);
             $stmt->bindValue(':sydId', $schoolYearDetailsId, PDO::PARAM_INT);
             $stmt->execute();
-            return true;
+
+            return 'inserted';
         }
         catch(PDOException $e) {
             error_log("[" . date('Y-m-d H:i:s') . "] " . $e->getMessage() . "\n", 3, __DIR__ . '/../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert section schedule', 0, $e);
+            return 'failed';
         }
     }
-    //OPERATIONS
+    /**
+     * Upsert schedules with overlap checks
+     */
     public function upsertSectionSchedule(int $sectionSubjectId, array $schedules): array {
         $inserted = [];
         $skipped = [];
         $failed = [];
+
         if (empty($schedules)) {
             return [
                 'success' => false,
@@ -212,6 +247,7 @@ class adminSchedulesModel {
                 'failed' => []
             ];
         }
+
         try {
             $this->conn->beginTransaction();
             $schoolYearDetailsId = $this->getSchoolYearId();
@@ -231,19 +267,26 @@ class adminSchedulesModel {
                 $day = $this->mapDayToNumber($dayName);
                 $timeStart = trim($schedule['timeStart'] ?? '');
                 $timeEnd = trim($schedule['timeEnd'] ?? '');
+
                 if ($day === 0 || empty($timeStart) || empty($timeEnd)) {
                     $skipped[] = $dayName ?: 'Invalid';
                     continue;
                 }
-                $success = $this->returnUpsertSectionSchedule($sectionSubjectId, $day, $timeStart, $timeEnd, $schoolYearDetailsId);
-                if ($success) {
-                    $hasChanges = true;
-                    $inserted[] = $dayName;
-                } else {
-                    $failed[] = $dayName;
+                $result = $this->returnUpsertSectionSchedule($sectionSubjectId, $day, $timeStart, $timeEnd, $schoolYearDetailsId);
+                switch($result) {
+                    case 'inserted':
+                        $inserted[] = $dayName;
+                        $hasChanges = true;
+                        break;
+                    case 'overlap':
+                        $skipped[] = $dayName . ' (overlap)';
+                        break;
+                    case 'failed':
+                        $failed[] = $dayName;
+                        break;
                 }
             }
-            if (!$hasChanges) {
+            if (!$hasChanges && empty($inserted) && empty($skipped)) {
                 $this->conn->rollBack();
                 return [
                     'success' => false,
