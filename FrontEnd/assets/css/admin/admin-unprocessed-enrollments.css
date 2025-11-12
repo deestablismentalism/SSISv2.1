@@ -13,7 +13,36 @@
   font-family: "Poppins", "Segoe UI", sans-serif;
   background-image: url("../../imgs/paper.jpg");
 }
-
+.accept-btn {
+  padding: 0.3rem;
+  border-radius: 0.2rem;
+  background-color: #4CAF50;
+}
+.to-follow-btn {
+  padding: 0.3rem;
+  border-radius: 0.2rem;
+  background-color: #AF9A4C;
+}
+.resubmission-btn {
+  padding: 0.3rem;
+  border-radius: 0.2rem;
+  background-color: #AF714C;
+}
+.consultation-btn {
+  padding: 0.3rem;
+  border-radius: 0.2rem;
+  background-color: #4C69AF;
+}
+.deny-btn {
+  padding: 0.3rem;
+  border-radius: 0.2rem;
+  background-color: #F44336;
+}
+.accept-btn.disabled,
+.consultation-btn.disabled,
+.resubmission-btn.disabled {
+  opacity: 0.4;
+}
 /* Section Headers */
 .header-left {
   display: flex;
