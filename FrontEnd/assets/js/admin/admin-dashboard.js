@@ -135,7 +135,9 @@ document.addEventListener('DOMContentLoaded', function(){
 function StudentsPieChart(data, title) {
     const ctx = title.getContext('2d');
     const labels = data.map(item=> item.label);
-    const values = data.map(item=> item.value);
+    const values = data.map(item=> parseInt(item.value));
+    const total = values.reduce((sum, val) => sum + val, 0);
+    
     new Chart(ctx, {
         type: 'pie',
         data: {
@@ -151,19 +153,77 @@ function StudentsPieChart(data, title) {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 0,
+                    left: 50,
+                    right: 50,
+                    bottom: 50
+                }
+            },
             plugins: {
-                legend: {
-                    position: 'top'
-                },
                 title: {
                     display: true,
                     text: 'Student Status Distribution',
+                    position: 'top',
+                    padding: {
+                        top: 10,
+                        bottom: 5
+                    },
                     font: {
-                        size: 16
+                        size: 16,
+                        weight: 'bold'
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    align: 'center',
+                    labels: {
+                        padding: 12,
+                        font: {
+                            size: 11
+                        },
+                        boxWidth: 12,
+                        boxHeight: 12
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed;
+                            const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                            return `${label}: ${value} (${percentage}%)`;
+                        }
+                    }
+                },
+                datalabels: {
+                    color: '#ffffff',
+                    backgroundColor: function(context) {
+                        return context.dataset.backgroundColor[context.dataIndex];
+                    },
+                    borderColor: '#ffffff',
+                    borderWidth: 1.5,
+                    borderRadius: 3,
+                    padding: 4,
+                    font: {
+                        weight: 'bold',
+                        size: 10
+                    },
+                    anchor: 'end',
+                    align: 'end',
+                    offset: 6,
+                    formatter: (value, context) => {
+                        if (total === 0) return '0 (0%)';
+                        const percentage = ((value / total) * 100).toFixed(1);
+                        const label = context.chart.data.labels[context.dataIndex];
+                        return `${label}\n${value} (${percentage}%)`;
                     }
                 }
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 }
 async function enrolleeByDay(day) {
@@ -200,7 +260,9 @@ function EnrollmentsPieChart(data, title) {
     gradient.addColorStop(0, 'rgba(255, 99, 132, 0.5)');
     gradient.addColorStop(1, 'rgba(54, 162, 235, 0.5)');
     const labels = data.map(item=> item.label);
-    const values = data.map(item=> item.value);
+    const values = data.map(item=> parseInt(item.value));
+    const total = values.reduce((sum, val) => sum + val, 0);
+    
     new Chart(ctx, {
         type: 'pie',
         data: {
@@ -217,36 +279,109 @@ function EnrollmentsPieChart(data, title) {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 0,
+                    left: 50,
+                    right: 50,
+                    bottom: 50
+                }
+            },
             plugins: {
-                legend: {
-                    position: 'top'
-                },
                 title: {
                     display: true,
                     text: 'Enrollment Status Distribution',
+                    position: 'top',
+                    padding: {
+                        top: 10,
+                        bottom: 5
+                    },
                     font: {
-                        size: 16
+                        size: 16,
+                        weight: 'bold'
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    align: 'center',
+                    labels: {
+                        padding: 12,
+                        font: {
+                            size: 11
+                        },
+                        boxWidth: 12,
+                        boxHeight: 12
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed;
+                            const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                            return `${label}: ${value} (${percentage}%)`;
+                        }
+                    }
+                },
+                datalabels: {
+                    color: '#ffffff',
+                    backgroundColor: function(context) {
+                        return context.dataset.backgroundColor[context.dataIndex];
+                    },
+                    borderColor: '#ffffff',
+                    borderWidth: 1.5,
+                    borderRadius: 3,
+                    padding: 4,
+                    font: {
+                        weight: 'bold',
+                        size: 10
+                    },
+                    anchor: 'end',
+                    align: 'end',
+                    offset: 6,
+                    formatter: (value, context) => {
+                        if (total === 0) return '0 (0%)';
+                        const percentage = ((value / total) * 100).toFixed(1);
+                        const label = context.chart.data.labels[context.dataIndex];
+                        return `${label}\n${value} (${percentage}%)`;
                     }
                 }
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 }
 function barGraph(data, title) {
     const ctx = title.getContext('2d');
-    const labels = data.map(item=> item.label);
-    const values = data.map(item=> item.value);
+    
+    // Define all grade levels in your school
+    const allGradeLevels = ['Kinder I', 'Kinder II', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6'];
+    
+    // Create a map from existing data
+    const dataMap = {};
+    data.forEach(item => {
+        dataMap[item.label] = item.value;
+    });
+    
+    // Fill in all grade levels with 0 if not present
+    const labels = allGradeLevels;
+    const values = allGradeLevels.map(level => dataMap[level] || 0);
+    
     new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Grade Level Count',
+                label: 'Enrollee Count',
                 data: values,
                 backgroundColor: '#36A2EB'
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
             plugins: {
                 legend: {
                     position: 'top'
@@ -258,6 +393,19 @@ function barGraph(data, title) {
                         size: 16
                     }
                 }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                },
+                y: {
+                    grid: {
+                        display: false
+                    }
+                }
             }
         }
     });
@@ -265,7 +413,9 @@ function barGraph(data, title) {
 function BiologicalSexPieGraph(data, title) {
     const ctx = title.getContext('2d');
     const labels = data.map(item=> item.label);
-    const values = data.map(item=> item.value);
+    const values = data.map(item=> parseInt(item.value));
+    const total = values.reduce((sum, val) => sum + val, 0);
+    
     new Chart(ctx, {
         type: 'pie',
         data: {
@@ -280,37 +430,109 @@ function BiologicalSexPieGraph(data, title) {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 0,
+                    left: 50,
+                    right: 50,
+                    bottom: 50
+                }
+            },
             plugins: {
-                legend: {
-                    position: 'top'
-                },
                 title: {
                     display: true,
                     text: 'Enrollee Biological Sex Distribution',
+                    position: 'top',
+                    padding: {
+                        top: 10,
+                        bottom: 5
+                    },
                     font: {
-                        size: 16
+                        size: 16,
+                        weight: 'bold'
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    align: 'center',
+                    labels: {
+                        padding: 12,
+                        font: {
+                            size: 11
+                        },
+                        boxWidth: 12,
+                        boxHeight: 12
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed;
+                            const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                            return `${label}: ${value} (${percentage}%)`;
+                        }
+                    }
+                },
+                datalabels: {
+                    color: '#ffffff',
+                    backgroundColor: function(context) {
+                        return context.dataset.backgroundColor[context.dataIndex];
+                    },
+                    borderColor: '#ffffff',
+                    borderWidth: 1.5,
+                    borderRadius: 3,
+                    padding: 4,
+                    font: {
+                        weight: 'bold',
+                        size: 10
+                    },
+                    anchor: 'end',
+                    align: 'end',
+                    offset: 6,
+                    formatter: (value, context) => {
+                        if (total === 0) return '0 (0%)';
+                        const percentage = ((value / total) * 100).toFixed(1);
+                        const label = context.chart.data.labels[context.dataIndex];
+                        return `${label}\n${value} (${percentage}%)`;
                     }
                 }
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 }
 function StudentGradeLevelDistribution(data, title) {
     const ctx = title.getContext('2d');
-    const labels = data.map(item=> item.label);
-    const values = data.map(item=> item.value);
+    
+    // Define all grade levels in your school
+    const allGradeLevels = ['Kinder I', 'Kinder II', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6'];
+    
+    // Create a map from existing data
+    const dataMap = {};
+    data.forEach(item => {
+        dataMap[item.label] = item.value;
+    });
+    
+    // Fill in all grade levels with 0 if not present
+    const labels = allGradeLevels;
+    const values = allGradeLevels.map(level => dataMap[level] || 0);
+    
     new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Student Grade Level Count',
+                label: 'Student Count',
                 data: values,
                 backgroundColor: '#FF6384'
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
             plugins: {
                 legend: {
                     position: 'top'
@@ -322,14 +544,29 @@ function StudentGradeLevelDistribution(data, title) {
                         size: 16
                     }
                 }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                },
+                y: {
+                    grid: {
+                        display: false
+                    }
+                }
             }
         }
     });
 }
- function StudentBiologicalSexPieGraph(data, title) {
+function StudentBiologicalSexPieGraph(data, title) {
     const ctx = title.getContext('2d');
     const labels = data.map(item=> item.label);
-    const values = data.map(item=> item.value);
+    const values = data.map(item=> parseInt(item.value));
+    const total = values.reduce((sum, val) => sum + val, 0);
+    
     new Chart(ctx, {
         type: 'pie',
         data: {
@@ -344,19 +581,77 @@ function StudentGradeLevelDistribution(data, title) {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 0,
+                    left: 50,
+                    right: 50,
+                    bottom: 50
+                }
+            },
             plugins: {
-                legend: {
-                    position: 'top'
-                },
                 title: {
                     display: true,
                     text: 'Student Biological Sex Distribution',
+                    position: 'top',
+                    padding: {
+                        top: 10,
+                        bottom: 5
+                    },
                     font: {
-                        size: 16
+                        size: 16,
+                        weight: 'bold'
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    align: 'center',
+                    labels: {
+                        padding: 12,
+                        font: {
+                            size: 11
+                        },
+                        boxWidth: 12,
+                        boxHeight: 12
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed;
+                            const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                            return `${label}: ${value} (${percentage}%)`;
+                        }
+                    }
+                },
+                datalabels: {
+                    color: '#ffffff',
+                    backgroundColor: function(context) {
+                        return context.dataset.backgroundColor[context.dataIndex];
+                    },
+                    borderColor: '#ffffff',
+                    borderWidth: 1.5,
+                    borderRadius: 3,
+                    padding: 4,
+                    font: {
+                        weight: 'bold',
+                        size: 10
+                    },
+                    anchor: 'end',
+                    align: 'end',
+                    offset: 6,
+                    formatter: (value, context) => {
+                        if (total === 0) return '0 (0%)';
+                        const percentage = ((value / total) * 100).toFixed(1);
+                        const label = context.chart.data.labels[context.dataIndex];
+                        return `${label}\n${value} (${percentage}%)`;
                     }
                 }
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 }
 let Enrollmentchart = null
