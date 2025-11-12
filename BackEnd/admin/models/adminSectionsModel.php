@@ -26,35 +26,23 @@ class adminSectionsModel {
             throw new DatabaseException('Inserting sections failed', 0, $e);
         }
     }
-    //checker for all sections in the same grade level
-    private function getAllRelatedSubjectsByGradeLevel(int $gradeLevelId) : array {
+    //RECONCILIATION QUERY: ALWAYS CREATE MISSED RELATIONS OF SUBJECTS
+    private function reconcileSectionSubjectsByGradeLevel(int $gradeLevelId) : void {
         try {
-            $sql = "SELECT Subject_Id FROM grade_level_subjects Where Grade_Level_Id = :gradeLevelId";
+            $sql = "INSERT INTO section_subjects (Subject_Id, Section_Id)
+                SELECT s.Subject_Id, sec.Section_Id
+                FROM grade_level_subjects s
+                JOIN sections sec ON sec.Grade_Level_Id = s.Grade_Level_Id
+                LEFT JOIN section_subjects ss 
+                    ON ss.Subject_Id = s.Subject_Id AND ss.Section_Id = sec.Section_Id
+                WHERE s.Grade_Level_Id = :gradeLevelId AND ss.Subject_Id IS NULL
+                ";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':gradeLevelId', $gradeLevelId);
+            $stmt->bindParam(':gradeLevelId', $gradeLevelId, PDO::PARAM_INT);
             $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            return $result;
-        }
-        catch(PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
-            throw new DatabaseException('Failed to fetch related subjects',0,$e);
-        }
-    }
-    //helper 2
-    private function insertToSectionSubjects(int $subjectId, int $sectionId) :bool { //insert to section_subjects for each grade level section if successful insert section
-        try {
-            $sql = "INSERT INTO section_subjects(Subject_Id, Section_Id) VALUES(:subjectId, :sectionId)";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':subjectId', $subjectId);
-            $stmt->bindParam(':sectionId', $sectionId);
-            $result = $stmt->execute();
-            return $result;
-        }
-        catch(PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
-            throw new DatabaseException('Failed to assocciate subject to section',0,$e);
+        } catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] ".$e->getMessage()."\n", 3, __DIR__.'/../../errorLogs.txt');
+            throw new DatabaseException('Failed to reconcile section_subjects', 0, $e);
         }
     }
     private function checkIfSectionNameExists($sectionName, ?int $id = null) : bool {
@@ -74,6 +62,7 @@ class adminSectionsModel {
             return (bool) $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] ".$e->getMessage()."\n", 3, __DIR__.'/../../errorLogs.txt');
             throw new DatabaseException('Failed to check if section name exists', 0, $e);
         }    
     }
@@ -84,29 +73,27 @@ class adminSectionsModel {
             'existing'=> false
         ];
         try {
+            $this->conn->beginTransaction();
             $hasExistingName = $this->checkIfSectionNameExists($sectionName);
-
             //return early if existing
             if($hasExistingName) {
                 $results['existing'] = true;
                 return $results;
             }
             $sectionId = $this->insertSection($sectionName, $gradeLevelId);
-            $subjects = $this->getAllRelatedSubjectsByGradeLevel($gradeLevelId);
-            foreach($subjects as $subjectId) {
-                $subjectIds = (int)$subjectId['Subject_Id'];
-                $insert = $this->insertToSectionSubjects($subjectIds, $sectionId);
-                if(!$insert) {
-                    $results['failed'][] = $subjectIds;
-                }
-                else {
-                    $results['success'][] = $subjectIds;
-                }
+            try {
+                $this->reconcileSectionSubjectsByGradeLevel($gradeLevelId);
+                $results['success'][] = $sectionId;
             }
-            
+            catch(DatabaseException $e) {
+                $results['failed'][] = $sectionId;
+            }
+            $this->conn->commit();
             return $results;
         }
         catch(PDOException $e) {
+            $this->conn->rollBack();
+            error_log("[".date('Y-m-d H:i:s')."] ".$e->getMessage()."\n", 3, __DIR__.'/../../errorLogs.txt');
             throw new DatabaseException('Failed to insert section', 0 ,$e);
         }
     }
@@ -132,8 +119,9 @@ class adminSectionsModel {
                     JOIN sections AS se ON se.Grade_Level_Id = gls.Grade_Level_Id
                     JOIN subjects AS s ON s.Subject_Id = gls.Subject_Id
                     LEFT JOIN section_subjects AS ssu ON ssu.Subject_Id = gls.Subject_Id AND ssu.Section_Id = se.Section_Id
+                    LEFT JOIN section_subject_teachers AS sst ON sst.Section_Subjects_Id = ssu.Section_Subjects_Id
                     LEFT JOIN section_schedules AS ss ON ss.Section_Subjects_Id = ssu.Section_Subjects_Id
-                    LEFT JOIN staffs AS staff ON ssu.Staff_Id = staff.Staff_Id
+                    LEFT JOIN staffs AS staff ON staff.Staff_Id = sst.Staff_Id
                     WHERE se.Section_Id = :id GROUP BY s.Subject_Name, staff.Staff_Id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id', $sectionId);
@@ -299,7 +287,11 @@ class adminSectionsModel {
                 staff.Staff_Middle_Name,
                 COUNT(DISTINCT CASE WHEN st.Sex = 'Male' THEN st.Student_Id END) AS Boys,
                 COUNT(DISTINCT CASE WHEN st.Sex = 'Female' THEN st.Student_Id END) AS Girls,
-                COUNT(DISTINCT st.Student_Id) AS Total
+                COUNT(DISTINCT st.Student_Id) AS Total,
+                (
+                    SELECT COUNT(*) FROM students st2 WHERE st2.Grade_Level_Id = gl.Grade_Level_Id
+                    AND st2.Section_Id IS NULL
+                ) AS Unassigned
             FROM grade_level gl
             LEFT JOIN sections s ON gl.Grade_Level_Id = s.Grade_Level_Id
             LEFT JOIN students st ON s.Section_Id = st.Section_Id
@@ -381,47 +373,42 @@ class adminSectionsModel {
             throw new DatabaseException('Failed to fetch active school year', 0, $e);
         }
     }
-    
-    public function updateAdviser(int $sectionId, int $staffId) : bool{
+    public function upsertAdviser(int $sectionId, int $staffId) : bool{
         try {
             $this->conn->beginTransaction();
-            
             // Get active school year details
             $schoolYear = $this->getActiveSchoolYear();
-            $schoolYearId = $schoolYear ? (int)$schoolYear['School_Year_Details_Id'] : 0;
-            $academicYear = $schoolYear ? $schoolYear['start_year'] . '-' . $schoolYear['end_year'] : '0000';
-            
-            // Check if adviser record exists for this section
-            $checkSql = "SELECT Section_Advisers_Id, Academic_Year, School_Year_Details_Id FROM section_advisers WHERE Section_Id = :id";
-            $checkStmt = $this->conn->prepare($checkSql);
-            $checkStmt->bindParam(':id', $sectionId);
-            $checkStmt->execute();
-            $existing = $checkStmt->fetch(PDO::FETCH_ASSOC);
-            
-            if ($existing) {
-                // Update existing record, preserving Academic_Year and School_Year_Details_Id
-                $updateSql = "UPDATE section_advisers SET Staff_Id = :staffId WHERE Section_Id = :id";
-                $updateStmt = $this->conn->prepare($updateSql);
-                $updateStmt->bindParam(':id', $sectionId);
-                $updateStmt->bindParam(':staffId', $staffId);
-                $result = $updateStmt->execute();
-            } else {
-                // Insert new record with active school year values
-                $insertSql = "INSERT INTO section_advisers(Section_Id, Staff_Id, Academic_Year, School_Year_Details_Id) VALUES(:id, :staffId, :academicYear, :schoolYearId)";
-                $insertStmt = $this->conn->prepare($insertSql);
-                $insertStmt->bindParam(':id', $sectionId);
-                $insertStmt->bindParam(':staffId', $staffId);
-                $insertStmt->bindParam(':academicYear', $academicYear);
-                $insertStmt->bindParam(':schoolYearId', $schoolYearId);
-                $result = $insertStmt->execute();
+            $schoolYearId = $schoolYear ? (int)$schoolYear['School_Year_Details_Id'] : null;
+            if(is_null($schoolYearId)) {
+                throw new PDOException("This school year's ID is not found");
             }
-            
+            if($this->checkIfSectionAdviserExists($staffId)) {
+                throw new PDOException("Staff assigned is already an adviser");
+            }
+            $sql = "INSERT INTO section_advisers(Section_Id,Staff_Id,School_Year_Details_Id)
+                    VALUES(:sectionId,:staffId,:syId) ON DUPLICATE KEY UPDATE Staff_Id = VALUES(Staff_Id)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':sectionId'=>$sectionId,':staffId'=>$staffId,':syId'=>$schoolYearId]);
+            if($stmt->rowCount()===0) {
+                return false;
+            }
             $this->conn->commit();
             return $result;
         }
         catch(PDOException $e) {
             $this->conn->rollBack();
             throw new DatabaseException('Failed to update section adviser: ' . $e->getMessage(), 0, $e);
+        }
+    }
+    private function checkIfSectionAdviserExists(int $staffId):bool {
+        try {
+            $sql = "SELECT 1 FROM section_advisers WHERE Staff_Id = :staffId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':staffId'=>$staffId]);
+            return (bool)$stmt->fetchColumn();
+        }   
+        catch(PDOException $e) {
+            throw new DatabaseException('Section adviser check failed',0,$e);
         }
     }
     public function checkIfSubjectTeacherExists($staffId) : ?array {

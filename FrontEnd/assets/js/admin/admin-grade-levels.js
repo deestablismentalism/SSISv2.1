@@ -128,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <th>Boys</th>
                                     <th>Girls</th>
                                     <th>Total</th>
+                                    <th> Unassigned Students </th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -139,6 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <td>${section.Boys}</td>
                                         <td>${section.Girls}</td>
                                         <td>${section.Total}</td>
+                                        <td>${section.Unassigned}</td>
                                         <td>
                                             <a href="./admin_view_section.php?section_id=${section.Section_Id}" class="view-btn">
                                                 <img src="../../assets/imgs/eye-regular.svg" alt="View">

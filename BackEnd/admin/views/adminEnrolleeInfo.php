@@ -69,6 +69,8 @@ class adminEnrolleeInfo {
             $rows = $data['data'];
             $address = $addr['data'];
             $culutralGroup = ($rows['If_Cultural'] == 1) ? $rows['Cultural_Group'] : 'Walang katutubong grupo';
+            $middleName = !empty($rows['Student_Middle_Name']) ? $rows['Student_Middle_Name'] : '';
+            $suffix = !empty($rows['Student_Extension']) ? $rows['Student_Extension'] : '';
             $lrn = !is_null($rows['Learner_Reference_Number']) ? $rows['Learner_Reference_Number']:"No LRN"  ; 
             $sex = !empty($rows['Sex']) ? $rows['Sex'] : 'No Biological sex provided';
             $completeAddress = $address['House_Number'] .' ' .$address['Subd_Name']
@@ -76,15 +78,16 @@ class adminEnrolleeInfo {
                     . $address['Province_Name'] . ' ' . $address['Region'];
             echo '<table class="modal-table"></tbody>';
             echo $this->tableTemplate->returnVerticalTables(
-                ['Numero ng Sertipiko ng Kapanganakan','Learner Reference Number','Apelyido','Pangalan','Panggitna','Petsa ng Kapanganakan',
+                ['Numero ng Sertipiko ng Kapanganakan','Learner Reference Number','Apelyido','Pangalan','Panggitna','Suffix','Petsa ng Kapanganakan',
                 'Edad','Kasarian', 'Kabilang sa katutubong grupo','Kinagisnang wika','Relihiyon','Email Address', 'Buong Address'],
-                [$rows['Psa_Number'], $lrn,$rows['Student_Last_Name'],$rows['Student_First_Name'],$rows['Student_Middle_Name'],$rows['Birth_Date'],
+                [$rows['Psa_Number'], $lrn,$rows['Student_Last_Name'],$rows['Student_First_Name'],$middleName, $suffix,$rows['Birth_Date'],
                 $rows['Age'], $sex, $culutralGroup,$rows['Native_Language'],$rows['Religion'],$rows['Student_Email'],$completeAddress],
                 'personal-info'
             ); 
             echo '</tbody></table>';   
         }      
         catch(Throwable $t) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $t . "\n",3, __DIR__ . '/../../errorLogs.txt');
             echo '<div class="error-message"> There was a syntax problem. Please wait for this to be fixed </div>';
         }
     }  
@@ -114,6 +117,7 @@ class adminEnrolleeInfo {
             echo '</tbody></table>';     
         }
         catch(Throwable $t) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $t . "\n",3, __DIR__ . '/../../errorLogs.txt');
             echo '<div class="error-message"> There was a syntax problem. Please wait for this to be fixed </div>';
         }
     } 
@@ -143,6 +147,7 @@ class adminEnrolleeInfo {
             echo '</tbody></table>';
         }
         catch(Throwable $t) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $t . "\n",3, __DIR__ . '/../../errorLogs.txt');
             echo '<div class="error-message"> There was a syntax problem. Please wait for this to be fixed </div>';
         }
     }
@@ -172,6 +177,7 @@ class adminEnrolleeInfo {
             echo '</tbody></table>';
         }
         catch(Throwable $t) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $t . "\n",3, __DIR__ . '/../../errorLogs.txt');
             echo '<div class="error-message"> There was a syntax problem. Please wait for this to be fixed </div>';
         }
     }
@@ -192,15 +198,17 @@ class adminEnrolleeInfo {
             echo '<table class="modal-table"></tbody>';
             foreach($data['data'] as $rows) {
                 $if4ps = ($rows['If_4Ps'] == 1) ? 'Oo' : 'Hindi';
+                $middleName = !empty($rows['Middle_Name']) ? $rows['Middle_Name'] : '';
                 echo $this->tableTemplate->returnVerticalTables(
                     ['Relasyon', 'Apleyido','Pangalan','Panggitna','Educational attainment','Numero ng telepono', 'Kabilang sa 4ps'],
-                    [$rows['Parent_Type'],$rows['Last_Name'] ,$rows['First_Name'] ,$rows['Middle_Name'],$rows['Educational_Attainment'],$rows['Contact_Number'],$if4ps],
+                    [$rows['Parent_Type'],$rows['Last_Name'] ,$rows['First_Name'] ,$middleName,$rows['Educational_Attainment'],$rows['Contact_Number'],$if4ps],
                     'parent-info'
                 );
             }
             echo '</tbody></table>';
         }
         catch(Throwable $t) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $t . "\n",3, __DIR__ . '/../../errorLogs.txt');
             echo '<div class="error-message"> There was a syntax problem. Please wait for this to be fixed </div>';
         }
     }
@@ -223,6 +231,7 @@ class adminEnrolleeInfo {
             echo '<div class="img-container">'.$imgDIR.'</div>';
         }
         catch(Throwable $t) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $t . "\n",3, __DIR__ . '/../../errorLogs.txt');
             echo '<div class="error-message"> There was a syntax problem. Please wait for this to be fixed </div>';
         }
     }

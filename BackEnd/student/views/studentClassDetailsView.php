@@ -88,7 +88,7 @@ class studentClassDetailsView {
                         $content = $rows[$day] ?? '-'; // Use dash if no class
                         echo '<td>' . htmlspecialchars($content) . '</td>';
                     }
-                    echo '<tr>';
+                    echo '</tr>';
                 }
                 echo '</tbody></table>';
             }
