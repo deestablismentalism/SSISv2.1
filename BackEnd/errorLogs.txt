@@ -540,3 +540,4 @@ Stack trace:
 [2025-11-12 16:15:40] SMS sent to 09682298263 for Enrollee ID: 94 - Status: Enrolled
 [2025-11-12 16:25:04] SMS sent to 09946956168 for Enrollee ID: 96 - Status: Denied
 [2025-11-12 16:25:40] SMS sent to 09946956168 for Enrollee ID: 95 - Status: Follow-Up
+[2025-11-12 17:54:24] SMS sent to 09682298263 for Enrollee ID: 102 - Status: Follow-Up
