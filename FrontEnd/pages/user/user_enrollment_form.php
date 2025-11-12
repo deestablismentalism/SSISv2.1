@@ -7,6 +7,8 @@ $pageCss2 = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-
 $pageCss3 = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form-mq.css" media="all">';
 $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.js" defer></script>';
 require_once __DIR__ .'/../../../BackEnd/common/getGradeLevels.php';
+require_once __DIR__ . '/../../../BackEnd/common/isAcademicYearSet.php';
+$set = new isAcademicYearSet();
 $view = new getGradeLevels();
 ?>
 <div class="enrollment-form-content">
@@ -558,7 +560,11 @@ $view = new getGradeLevels();
                     <p class="dfont">Ipasa ang malinaw na larawan ng mga Dokumento gaya ng <b>PSA BIRTH CERTIFICATE at REPORT CARD <span class="required">*</span></b></p>
                     <input type="file" name="psa-image" value="Insert Image (Di pa nagana)"> 
                 </div>
-                <button type="submit" class="submit-button" >Submit</button>
+                <?php if($set->isSet()): ?>
+                    <button type="submit" class="submit-button" >Submit</button>
+                <?php else: ?>
+                    <button class="submit-button" style="opacity:0.5; background-color: gray; pointer-events:none;" disabled>Submit</button>
+                <?php endif; ?>
             </div>
         </form>
     </div>

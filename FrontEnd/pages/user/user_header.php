@@ -6,6 +6,11 @@
             <div class="user-btn-mob"></div>
         </div>
         <!--HEADER-->
+        <?php 
+            require_once __DIR__ . '/../../../BackEnd/common/isAcademicYearSet.php';
+            $set = new isAcademicYearSet();
+            $isSet = $set->isSet();
+        ?>
         <div class="header-wrapper" id="header-wrapper">
             <div class="nav-container-1">
                 <nav>
@@ -16,9 +21,17 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <?php if($isSet): ?>
                             <a href="./user_enrollment_form.php" class="nav-link">
                                 Enrollment Form
                             </a>
+                            <?php else: ?>
+                            <a href="#" class="nav-link disabled" 
+                                style="pointer-events: none; color: gray; opacity: 0.6; cursor: not-allowed;"
+                                title="Enrollment is not available until an academic year is set.">
+                                Enrollment Form
+                            </a>
+                            <?php endif; ?>
                         </li>
                         <li class="nav-item">                                
                             <a href="./user_all_students.php" class="nav-link">
