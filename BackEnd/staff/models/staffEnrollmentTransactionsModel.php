@@ -31,8 +31,15 @@ class staffEnrollmentTransactionsModel {
     public function insertEnrolleeTransaction(int $enrolleeId,string $transactionCode , 
     int $enrollmentStatus,int $staffId,string $remarks,int $isApproved):bool{ // F 4.3.1
         try {
-            $sql ="INSERT INTO enrollment_transactions(Enrollee_Id,Transaction_Code, Enrollment_Status, Staff_Id, Remarks, Is_Approved)
-                    VALUES (:enrollee_id, :transaction_code, :enrollment_status, :staff_Id,:remarks, :isApproved)";
+            $this->conn->beginTransaction();
+            // Get active school year details
+            $schoolYear = $this->getActiveSchoolYear();
+            $schoolYearId = $schoolYear ? (int)$schoolYear['School_Year_Details_Id'] : null;
+            if(is_null($schoolYearId)) {
+                throw new PDOException("Cannot insert.");
+            }
+            $sql ="INSERT INTO enrollment_transactions(Enrollee_Id,Transaction_Code, Enrollment_Status, Staff_Id, Remarks, Is_Approved,School_Year_Details_Id)
+                    VALUES (:enrollee_id, :transaction_code, :enrollment_status, :staff_Id,:remarks, :isApproved,:syId)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':enrollee_id', $enrolleeId, PDO::PARAM_INT);
             $stmt->bindParam(':transaction_code', $transactionCode);
