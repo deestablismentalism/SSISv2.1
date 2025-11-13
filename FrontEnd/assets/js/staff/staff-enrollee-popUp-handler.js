@@ -80,14 +80,22 @@ document.addEventListener('DOMContentLoaded',async function (){
         const formData = new FormData(form);
         const result = await postUpdateEnrolleeStatus(formData);
         if(!result.success) {
-            alert(result.message);
+            Notification.show({
+                type: result.success ? "error" : "error",
+                title: result.success ? "error" : "Error",
+                message: result.message
+            });
             form.reset();
             isSubmitting = false;
             submitButton.disabled = false;
             submitButton.style.backgroundColor = '#003366D5';
         }
         else {
-            alert(result.message);
+            Notification.show({
+                type: result.success ? "success" : "error",
+                title: result.success ? "Success" : "Error",
+                message: result.message
+            });
             setTimeout(()=>{window.location.reload()}, 1000);
         }
     }

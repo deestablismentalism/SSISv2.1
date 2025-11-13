@@ -148,7 +148,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }[action];
             const result = await postUpdateEnrollee(status,enrolleeId);
             if(!result.success) {
-                alert(result.message);
+                Notification.show({
+                    type: result.success ? "error" : "error",
+                    title: result.success ? "Error" : "Error",
+                    message: result.message
+                });
                 bgColor = {
                     1 : '#4CAF50',
                     2 : '#F44336',
@@ -159,7 +163,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.style.backgroundColor = bgColor;
             }
             else {
-                alert(result.message);
+                Notification.show({
+                    type: result.success ? "success" : "error",
+                    title: result.success ? "Success" : "Error",
+                    message: result.message
+                });
                 window.location.reload();
             }
         }
@@ -172,7 +180,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }[action];
             const result = await postUpdateEnrollmentTransaction(transactionStatus,transactionId,enrolleeId,status);
             if(!result.success) {
-                alert(result.message);
+                Notification.show({
+                    type: result.success ? "success" : "error",
+                    title: result.success ? "Success" : "Error",
+                    message: result.message
+                });
                 bgColor = {
                     1 : '#AF714C',
                     2: '#4C69AF'
@@ -182,7 +194,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.style.backgroundColor = bgColor;
             }
             else {
-                alert(result.message);
+                Notification.show({
+                    type: result.success ? "success" : "error",
+                    title: result.success ? "Success" : "Error",
+                    message: result.message
+                });
                 window.location.reload();
             }
         }

@@ -25,12 +25,20 @@ document.addEventListener("DOMContentLoaded", function() {
                 form.reset();
                 window.location.href = " ../pages/adminPages/Admin_Dashboard.php";
             } else if (!data.success){
-                alert(data.message);
+                Notification.show({
+                    type: result.success ? "success" : "error",
+                    title: result.success ? "Success" : "Error",
+                    message: result.message
+                });
             }
         })
         .catch(error => {
             console.error("Fetch Error:", error);
-            alert("An error occured. Please try again.");
+            Notification.show({
+                type: result.success ? "success" : "error",
+                title: result.success ? "Success" : "Error",
+                message: result.message
+            });
         });
     });
 });

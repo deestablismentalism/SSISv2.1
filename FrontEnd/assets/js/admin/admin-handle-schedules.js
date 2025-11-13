@@ -69,11 +69,19 @@ document.addEventListener('DOMContentLoaded',function(){
             isSubmitting = true;
             const result = await submitSchedules(secSubId, schedules);
             if (!result.success) {
-                alert(result.message);
+                Notification.show({
+                    type: "error",
+                    title: "Error",
+                    message: result.message
+                });
                 isSubmitting = false;
                 saveBtn.disabled = false;
             } else {
-                alert(result.message);
+                Notification.show({
+                    type: result.success ? "success" : "error",
+                    title: result.success ? "Success" : "Error",
+                    message: result.message
+                });
                 setTimeout(() => window.location.reload(), 1000);
             }
         });

@@ -258,11 +258,19 @@ async function deleteAndArchiveStudent(studentId) {
         Loader.show();
         const result = await deleteAndArchive(studentId);
         if(!result.success) {
-            alert(result.message);
+            Notification.show({
+                type: "error",
+                title: "Error",
+                message: result.message
+            });
             Loader.hide();
         }
         else {
-            alert(result.message);
+            Notification.show({
+                type: "success",
+                title: "Success",
+                message: result.message
+            });
             setTimeout(()=>window.location.reload(), 1000);
         }
     }
