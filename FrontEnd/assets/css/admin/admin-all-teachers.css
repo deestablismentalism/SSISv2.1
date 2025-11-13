@@ -237,46 +237,217 @@ img {
   max-width: 100%;
 }
 
-/* Teacher Info Modal Styles */
-.teacher-info-modal-content {
-    padding: 20px;
+/* ===== Enhanced Modal Styles (From admin-modal-shared.css) ===== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    overflow-y: auto;
+    padding: 2rem 1rem;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+    font-family: var(--font-main);
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-overlay {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    overflow-y: auto;
+    padding: 2rem 1rem;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+    font-family: var(--font-main);
+}
+
+.modal-container {
+    margin: 0 auto;
+    border-radius: var(--border-radius);
+    max-width: 900px;
+    width: 90%;
+}
+
+.modal-content {
+    background: linear-gradient(to bottom, #ffffff 0%, #f0f9fc 100%);
+    border: 1px solid var(--card-border);
+    border-radius: 1.4rem;
+    padding: 0;
+    max-width: 900px;
+    width: 100%;
+    color: var(--font-color);
+    backdrop-filter: blur(25px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    max-height: 85vh;
+    overflow: hidden;
+    margin: auto;
+    animation: slideUp 0.3s ease;
+    font-family: var(--font-main);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Modal Header */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 3px solid var(--accent-color);
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--hover-accent) 100%);
+    border-radius: 1.4rem 1.4rem 0 0;
+    box-shadow: 0 4px 12px rgba(0, 188, 212, 0.2);
+    flex-shrink: 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: white;
+    font-size: 1.75rem;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    letter-spacing: 0.5px;
+}
+
+.close,
+.close-modal {
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    line-height: 1;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 0.25rem 0.6rem;
+    border-radius: 10px;
+    font-weight: 300;
+}
+
+.close:hover,
+.close-modal:hover {
+    background: rgba(255, 255, 255, 0.35);
+    border-color: var(--danger);
+    transform: rotate(90deg) scale(1.1);
+    color: var(--danger);
+    box-shadow: 0 4px 12px rgba(255, 95, 95, 0.3);
+}
+
+/* Modal Body */
+.modal-body,
+.teacher-info-modal-content {
+    padding: 2rem;
+    overflow-y: auto;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) transparent;
+}
+
+.modal-body::-webkit-scrollbar,
+.teacher-info-modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track,
+.teacher-info-modal-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-body::-webkit-scrollbar-thumb,
+.teacher-info-modal-content::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
+    border-radius: 10px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover,
+.teacher-info-modal-content::-webkit-scrollbar-thumb:hover {
+    background-color: var(--hover-accent);
+}
+
+/* Teacher Info Header */
 .teacher-info-header {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
 }
 
 .teacher-status-badge {
-    padding: 8px 16px;
+    padding: 0.6rem 1.2rem;
     border-radius: 20px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid;
 }
 
 .teacher-status-badge.active {
-    background-color: #d4edda;
-    color: #155724;
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    color: #1b5e20;
+    border-color: var(--success);
 }
 
 .teacher-status-badge.retired {
-    background-color: #f8d7da;
-    color: #721c24;
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    color: #b71c1c;
+    border-color: var(--danger);
 }
 
 .teacher-status-badge.transferred-out {
-    background-color: #fff3cd;
-    color: #856404;
+    background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%);
+    color: #f57f17;
+    border-color: var(--warning);
 }
 
+/* Teacher Profile Section */
 .teacher-profile-section {
     display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 30px;
-    margin-bottom: 30px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid #e0e0e0;
+    grid-template-columns: 220px 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.03) 0%, rgba(72, 202, 228, 0.06) 100%);
+    border-radius: 1rem;
+    border: 2px solid #e8f4f8;
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.08);
 }
 
 .profile-picture-container {
@@ -290,115 +461,255 @@ img {
     height: 180px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid #f0f0f0;
+    border: 4px solid var(--accent-color);
+    box-shadow: 0 4px 16px rgba(0, 188, 212, 0.3);
+    transition: all 0.3s ease;
+}
+
+.profile-picture:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
 }
 
 .profile-details {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 1rem;
 }
 
 .detail-group {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 0.3rem;
 }
 
 .detail-label {
-    font-size: 12px;
+    font-size: 0.8rem;
     color: #666;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
 }
 
 .detail-value {
-    font-size: 16px;
+    font-size: 1.05rem;
     color: #333;
     margin: 0;
-}
-
-.section-title {
-    font-size: 18px;
     font-weight: 600;
-    color: #333;
-    margin-bottom: 15px;
 }
 
+/* Section Titles */
+.section-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--hover-accent) 0%, transparent 100%);
+}
+
+/* Teacher Position Section */
 .teacher-position-section {
-    margin-bottom: 30px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.03) 0%, rgba(72, 202, 228, 0.06) 100%);
+    border-radius: 1rem;
+    border: 2px solid #e8f4f8;
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.08);
 }
 
 .position-value {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--primary-color, #007bff);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    padding: 0.5rem 0;
 }
 
+/* Teacher Government IDs */
 .teacher-government-ids {
-    margin-bottom: 20px;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.03) 0%, rgba(72, 202, 228, 0.06) 100%);
+    border-radius: 1rem;
+    border: 2px solid #e8f4f8;
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.08);
 }
 
 .ids-table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 1rem;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .ids-table th,
 .ids-table td {
-    padding: 12px;
+    padding: 1rem 1.2rem;
     text-align: left;
-    border: 1px solid #e0e0e0;
+}
+
+.ids-table thead {
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--hover-accent) 100%);
 }
 
 .ids-table th {
-    background-color: #f8f9fa;
-    font-weight: 600;
-    font-size: 14px;
-    color: #333;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.ids-table tbody tr {
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.ids-table tbody tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.ids-table tbody tr:hover {
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.08) 0%, rgba(72, 202, 228, 0.12) 100%);
+    transform: translateX(3px);
 }
 
 .ids-table td {
-    font-size: 14px;
-    color: #666;
+    font-size: 0.95rem;
+    color: #333;
+    font-weight: 500;
+    border-bottom: 1px solid #e8f4f8;
 }
 
-.modal-actions {
+/* Modal Actions */
+.modal-actions,
+.modal-footer {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #e0e0e0;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    margin: 0;
+    border-top: 3px solid #e8f4f8;
+    background: linear-gradient(to top, #f0f9fc 0%, #ffffff 100%);
+    border-radius: 0 0 1.4rem 1.4rem;
+    flex-shrink: 0;
 }
 
-.btn-close-modal {
-    padding: 10px 24px;
-    background-color: #6c757d;
-    color: white;
+/* Buttons */
+.btn-close-modal,
+.btn-cancel {
+    padding: 0.85rem 2.2rem;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: background-color 0.2s;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-family: var(--font-main);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    color: white;
+    border: 2px solid transparent;
 }
 
-.btn-close-modal:hover {
-    background-color: #5a6268;
+.btn-close-modal:hover,
+.btn-cancel:hover {
+    background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.35);
 }
 
+.btn-submit {
+    padding: 0.85rem 2.2rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-family: var(--font-main);
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--hover-accent) 100%);
+    color: white;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 12px rgba(0, 188, 212, 0.35);
+}
+
+.btn-submit:hover {
+    background: linear-gradient(135deg, #00a8c0 0%, #3ab8d4 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 188, 212, 0.45);
+}
+
+.btn-submit:active,
+.btn-cancel:active,
+.btn-close-modal:active {
+    transform: translateY(-1px);
+}
+
+.btn-submit:disabled {
+    background: linear-gradient(135deg, #b0bec5 0%, #90a4ae 100%);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.6;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
+    .modal-content,
+    .modal-container {
+        max-width: 95%;
+        width: 95%;
+    }
+
+    .modal-header h2 {
+        font-size: 1.25rem;
+    }
+
     .teacher-profile-section {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 1.5rem;
     }
     
     .profile-picture-container {
         justify-content: center;
+    }
+
+    .modal-actions,
+    .modal-footer {
+        flex-direction: column;
+    }
+
+    .btn-close-modal,
+    .btn-cancel,
+    .btn-submit {
+        width: 100%;
+    }
+
+    .ids-table th,
+    .ids-table td {
+        padding: 0.75rem;
+        font-size: 0.85rem;
     }
 }
