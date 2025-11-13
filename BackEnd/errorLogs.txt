@@ -1,0 +1,4 @@
+[2025-11-13 21:31:25] SMS sent to 09946956168 for Enrollee ID: 95 - Status: Follow-Up
+[2025-11-13 21:32:01] SMS sent to 09946956168 for Enrollee ID: 76 - Status: Enrolled
+[2025-11-13 21:33:28] SMS sent to 09682298263 for Enrollee ID: 79 - Status: Follow-Up
+[2025-11-13 21:36:19] SMS sent to 09150558725 for Enrollee ID: 61 - Status: Enrolled

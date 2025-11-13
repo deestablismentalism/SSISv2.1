@@ -96,7 +96,8 @@ class adminUnprocessedEnrollmentsController {
             if(!$this->enrolleesModel->updateEnrollee($enrolleeId,$enrollmentStatus)) {
                 return ['httpcode'=> 400,'success'=> false,'message'=>"Enrollee's enrollment status was not updated",'data'=>[]];
             }
-            return ['httpcode'=> 200,'success'=> true,'message'=>"Enrollment transaction and enrollee's enrollment status was successfully updated",'data'=>[]];
+            return ['httpcode'=> 200,'success'=> true,'message'=>"Enrollment transaction and 
+            enrollee's enrollment status was successfully updated. ".$this->sendEnrollmentStatusSMS($enrolleeId,"Follow-Up"),'data'=>[]];
         }
         catch(DatabaseException $e) {
             return [

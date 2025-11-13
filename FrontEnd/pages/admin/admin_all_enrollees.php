@@ -12,7 +12,7 @@ $view = new adminAllEnrolleesView();
         <div class="admin-all-enrollees-header">
             <div class="header-left">
                 <div class="count-display">
-                    Total Enrollees: <span class="count-number">
+                    Total Transactions: <span class="count-number">
                     <?php
                         $view->displayCount();
                         ?>

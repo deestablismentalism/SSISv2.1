@@ -109,7 +109,7 @@ class teacherStudentInformationModel {
                     FROM students AS s
                     LEFT JOIN grade_level AS g ON s.Grade_Level_Id = g.Grade_Level_Id
                     LEFT JOIN sections AS se ON s.Section_Id = se.Section_Id
-                    WHERE s.Is_Archived = 0 AND s.Student_Status = 1";
+                    WHERE s.Is_Archived = 0";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
