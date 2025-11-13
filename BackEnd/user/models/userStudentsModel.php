@@ -13,7 +13,7 @@ class userStudentsModel {
     //function to display all the user enrollees that are inserted in the students table
     public function getUserStudents(int $userId) : array { //used in user_all_enrolled
         try {
-            $sql = "SELECT s.Student_Id, s.Enrollee_Id, e.Student_First_Name, e.Student_Last_Name, e.Student_Middle_Name, e.User_Id 
+            $sql = "SELECT s.Student_Id, s.Enrollee_Id, s.First_Name, s.Last_Name, s.Middle_Name, s.Student_Status, e.User_Id 
             FROM students AS s INNER JOIN enrollee AS e ON s.Enrollee_Id = e.Enrollee_Id WHERE e.User_Id = :userId ";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':userId', $userId);
@@ -23,7 +23,23 @@ class userStudentsModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]".$e->getMessage() ."\n",3,__DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch user students',0,$e);
+        }
+    }
+    public function reEnrollStudent(int $studentId, int $status):bool {
+        try {
+            $sql = "UPDATE students SET Student_Status = :status  WHERE Student_Id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':status'=>$status,':id'=>$studentId]);
+            if($stmt->rowCount()===0) {
+                return false;
+            }
+            return true;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]".$e->getMessage() ."\n",3,__DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to re-enroll students',0,$e);
         }
     }
 }
