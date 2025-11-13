@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded',function(){
         button.addEventListener('click',async function(e){
             e.preventDefault();
             const studentId = button.getAttribute('data-student');
-            transferAndRestore(studentId);
+            Restore(studentId);
         });
     })
     const deleteButton = document.querySelectorAll('.delete-student');

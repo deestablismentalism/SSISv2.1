@@ -9,9 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function getStatusTextFromNumber(n) {
         const numericValue = parseInt(n);
         switch(numericValue) {
-            case 1: return '1';
-            case 2: return '2';
-            case 3: return '3';
+            case 0: return 'Waiting';
+            case 1: return 'Active';
+            case 2: return 'Inactive';
+            case 3: return 'Dropped';
+            case 4: return 'Transferred';
+            case 5: return 'Graduated';
             default: return String(n);
         }
     }

@@ -23,7 +23,7 @@ require_once __DIR__ . '/../../../BackEnd/common/userTypeView.php';
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js" defer></script>
     <img src="../../assets/imgs/graduation-cap.png" alt="graduation-cap" fetchpriority="high" aria-hidden="true" hidden>
     <script src="../../assets/js/loader.js"></script>
-    <script src="../../assets/js/notifications.js"></script>
+    <script src="../../assets/js/notifications.js" defer></script>
 </head>
 <body>
         <?php
@@ -40,7 +40,9 @@ require_once __DIR__ . '/../../../BackEnd/common/userTypeView.php';
                 ?>
             </div>
         </div>
-        
+        <?php
+            include_once __DIR__ . '/../notifications.php';
+        ?>
         <script src="../../assets/js/admin/admin-base-designs.js" defer></script>
         <?php if(isset($pageJs)) echo $pageJs ?>
 </body>
