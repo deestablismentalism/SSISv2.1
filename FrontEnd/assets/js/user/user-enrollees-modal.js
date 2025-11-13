@@ -841,16 +841,28 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const result = await postUpdateUserForm(formData);
             if (result.success) {
-                alert(result.message || `Enrollment form updated successfully`);
+                Notification.show({
+                    type: result.success ? "success" : "error",
+                    title: result.success ? "Success" : "Error",
+                    message: result.message
+                });
                 window.location.reload();
                 return;
             } else {
-                alert(result.message || `Update failed`);
+                Notification.show({
+                    type: "error",
+                    title: "Error",
+                    message: result.message || `Update failed`
+                });
                 if (submitButton) submitButton.disabled = false;
                 isSubmitting = false;
             }
         } catch (error) {
-            alert(`Error: ${error.message}`);
+            Notification.show({
+                type: "error",
+                title: "Error",
+                message: error.message
+            });
             if (submitButton) submitButton.disabled = false;
             isSubmitting = false;
             console.error(error);

@@ -125,27 +125,43 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(data=> {
                     if (data.success  && data.partialSuccess) {
                         let failMessage = data.message.join('\n- ');
-                        alert(`Some updates failed \n ${failMessage}`);
+                        Notification.show({
+                            type: "error",
+                            title: "Error",
+                            message: `Some updates failed \n ${failMessage}`
+                        });
                         setTimeout(()=>{
                             window.location.reload();
                         }, 1000);
                     }
                     else if(!data.success) {
-                        alert(data.message);
+                        Notification.show({
+                            type: data.success ? "success" : "error",
+                            title: data.success ? "Success" : "Error",
+                            message: data.message
+                        });
                         // Remove loading state
                         formButton.classList.remove('loading');
                         formButton.disabled = false;
                         if (cancelButton) cancelButton.disabled = false;
                     }
                     else {
-                        alert(data.message);
+                        Notification.show({
+                            type: data.success ? "success" : "error",
+                            title: data.success ? "Success" : "Error",
+                            message: data.message
+                        });
                         setTimeout(()=>{
                             window.location.reload();
                         }, 1000);
                     }
                 })
                 .catch(error=>{
-                    alert(error);
+                    Notification.show({
+                        type: "error",
+                        title: "Error",
+                        message: error
+                    });
                     console.log(error);
                     // Remove loading state on error
                     formButton.classList.remove('loading');

@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded',function(){
     const psaNumber = document.getElementById("PSA-number");
     const lrn = document.getElementById("LRN");
     const lname = document.getElementById("lname");
+    const mname = document.getElementById("mname");
     const fname = document.getElementById("fname");
     const birthDate = document.getElementById("bday");
     const age = document.getElementById("age");
@@ -46,10 +47,13 @@ document.addEventListener('DOMContentLoaded',function(){
     //===STUDENT PARENTS INFORMATION (FORM 5TH PART) ===
     const fatherLname = document.getElementById("Father-Last-Name");
     const fatherFname = document.getElementById("Father-First-Name");
+    const fatherMname = document.getElementById("Father-Middle-Name");
     const motherLname = document.getElementById("Mother-Last-Name");
     const motherFname = document.getElementById("Mother-First-Name");
+    const motherMname = document.getElementById("Mother-Middle-Name");
     const guardianLname = document.getElementById("Guardian-Last-Name");
     const guardianFname = document.getElementById("Guardian-First-Name");
+    const guardianMname = document.getElementById("Guardian-Middle-Name");
     const fatherCPnum = document.getElementById("F-number");
     const motherCPnum = document.getElementById("M-number");
     const guardianCPnum = document.getElementById("G-number");
@@ -73,8 +77,10 @@ document.addEventListener('DOMContentLoaded',function(){
     const idRegex = /^([0-9]){6}$/;
     const charRegex = /^[A-Za-z0-9\s.,'-]{3,100}$/;
     const onlyDigits = /^[0-9]+$/;
-    const nonAlphaRegex = /[^A-Za-z\s]/g;  // Only allow letters and spaces, reject ALL special characters
+    const nonAlphaRegex = /[^A-Za-z\s]/g; 
     const nonNumericRegex = /[^0-9]/g;
+    const nameRegex = /^[\p{L}\s'\-\.]+$/u;
+    const nonNameRegex = /[^\p{L}\s'\-\.]/gu; 
 
     const numLimitLRN = 12;
     const numLimitPSA = 13;
@@ -930,10 +936,10 @@ document.addEventListener('DOMContentLoaded',function(){
         });
     });
 
-    const nameFields = [lname, fname, fatherLname, fatherFname, motherLname, motherFname, guardianLname, guardianFname];
+    const nameFields = [lname, fname, mname, fatherLname, fatherFname, fatherMname, motherLname, motherFname, motherMname, guardianLname, guardianFname, guardianMname];
     nameFields.forEach(field => {
         if (field) {
-            preventCharactersByRegex(field, nonAlphaRegex, (element, rejectedChars) => {
+            preventCharactersByRegex(field, nonNameRegex, (element, rejectedChars) => {
                 console.log(`Rejected characters in ${element.id}: ${rejectedChars}`);
             });
         }

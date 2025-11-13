@@ -47,25 +47,26 @@ try {
         echo "[" . date("Y-m-d H:i:s") . "] Graduated transferred to archive: $transferred\n";
     }
     // 5️⃣ Archive school-year-specific tables
-    $archivedSchedules = $pdo->exec("INSERT INTO archive_section_schedules
+    $archivedSchedules = $pdo->exec("INSERT INTO IGNORE archive_section_schedules
         SELECT * FROM section_schedules
         WHERE School_Year_Details_Id IN (SELECT School_Year_Details_Id FROM school_year_details WHERE Is_Expired = 1)
     ");
-    $archivedAdvisers = $pdo->exec("INSERT INTO archive_section_advisers
+    $archivedAdvisers = $pdo->exec("INSERT INTO IGNORE archive_section_advisers
         SELECT * FROM section_advisers
         WHERE School_Year_Details_Id IN (SELECT School_Year_Details_Id FROM school_year_details WHERE Is_Expired = 1)
     ");
-    $archivedSubjects = $pdo->exec("INSERT INTO archive_section_subject_teachers
+    $archivedSubjects = $pdo->exec("INSERT INTO IGNORE archive_section_subject_teachers
         SELECT * FROM section_subject_teachers
         WHERE School_Year_Details_Id IN (SELECT School_Year_Details_Id FROM school_year_details WHERE Is_Expired = 1)
     ");
+    $archivedTransactions = $pdo->exec("INSERT INTO IGNORE archive_enrollment_transactions
+        SELECT * FROM enrollment_transactions WHERE School_Year_Details_Id IN  (SELECT School_Year_Details_Id FROM school_year_details WHERE Is_Expired = 1)
+    ");
     // Delete archived section schedules for expired years
-    $deletedSchedules = $pdo->exec("
-        DELETE FROM section_schedules
+    $deletedSchedules = $pdo->exec("DELETE FROM section_schedules
         WHERE School_Year_Details_Id IN (
             SELECT School_Year_Details_Id FROM school_year_details WHERE Is_Expired = 1
-        )
-    ");
+        )");
     // Delete  section advisers for expired years
     $deletedAdvisers = $pdo->exec("
         DELETE FROM section_advisers
@@ -80,6 +81,11 @@ try {
             SELECT School_Year_Details_Id FROM school_year_details WHERE Is_Expired = 1
         )
     ");
+    //DELETE TRANSACTIONS
+    $deletedTransactions = $pdo->exec("DELETE FROM enrollment_transactions
+        WHERE School_Year_Details_Id IN (
+            SELECT School_Year_Details_Id FROM school_year_details WHERE Is_Expired = 1
+        )");
     //CHECK AFFECTED ROWS
     echo "[" . date("Y-m-d H:i:s") . "] Deleted section schedules: $deletedSchedules and Section schedules archived: $archivedSchedules\n";
     echo "[" . date("Y-m-d H:i:s") . "] Deleted section advisers: $deletedAdvisers advisers archived: $archivedAdvisers\n";

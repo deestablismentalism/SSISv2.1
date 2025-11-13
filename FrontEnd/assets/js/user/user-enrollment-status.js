@@ -364,10 +364,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     close(modal);
                     
                 } else {
-                    alert(result.message || 'Failed to load enrollment data');
+                    Notifications.show({
+                        type: "error",
+                        title: "Error",
+                        message: result.message
+                    });
                 }
             } catch (error) {
-                alert('Error fetching enrollment form: ' + error);
+                Notifications.show({
+                    type: "error",
+                    title: "Error",
+                    message: 'Error fetching enrollment form: ' + error
+                });
             }
         }
     });
@@ -425,16 +433,28 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const result = await postUpdateUserForm(formData);
             if(result.success) {
-                alert(result.message || `Enrollment form updated successfully`);
+                Notifications.show({
+                    type: "success",
+                    title: "Success",
+                    message: result.message || `Enrollment form updated successfully`
+                });
                 window.location.reload();
             }
             else {
-                alert(result.message || `Update failed`);
+                Notifications.show({
+                    type: "error",
+                    title: "Error",
+                    message: result.message || `Update failed`
+                });
                 submitButton.disabled = false;
             }
         }
         catch(error) {
-            alert(`Error: ${error.message}`);
+            Notifications.show({
+                type: "error",
+                title: "Error",
+                message: error.message
+            });
             submitButton.disabled = false;
             console.error(error);
         }

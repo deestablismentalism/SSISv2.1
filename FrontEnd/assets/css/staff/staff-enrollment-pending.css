@@ -66,7 +66,7 @@ body {
     
     /* Add fixed dimensions */
     width: 100%;
-    height: 70vh; /* 70% of viewport height */
+    height: 50vh;
     min-height: 400px; /* Minimum height when empty */
     
     /* Add scrolling behavior */
@@ -284,6 +284,80 @@ letter-spacing: 1px;
   box-shadow: 0 0 10px rgba(79, 145, 255, 0.5);
 }
 
+/* === FILTER CONTAINER === */
+.filter-container {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: rgba(62, 158, 196, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-group label {
+    font-weight: 500;
+    color: #1c4a72;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.filter-select {
+    padding: 0.5rem 0.8rem;
+    border: 1px solid rgba(28, 74, 114, 0.3);
+    border-radius: 8px;
+    background: white;
+    color: #1c4a72;
+    font-size: 0.9rem;
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 150px;
+    outline: none;
+}
+
+.filter-select:hover {
+    border-color: #3e9ec4;
+    box-shadow: 0 2px 8px rgba(62, 158, 196, 0.2);
+}
+
+.filter-select:focus {
+    border-color: #3e9ec4;
+    box-shadow: 0 0 0 3px rgba(62, 158, 196, 0.15);
+}
+
+.clear-filters-btn {
+    padding: 0.5rem 1.2rem;
+    background: linear-gradient(135deg, #ff6b6b, #ff5252);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: auto;
+}
+
+.clear-filters-btn:hover {
+    background: linear-gradient(135deg, #ff5252, #ff3838);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 82, 82, 0.3);
+}
+
+.clear-filters-btn:active {
+    transform: translateY(0);
+}
+
 /* === TABLE === */
 
 table.enrollments {
@@ -310,6 +384,53 @@ table.enrollments th {
     background: rgb(21 182 255 / 27%);
     text-transform: uppercase;
     text-shadow: 0 1.5px #0967a266;
+    position: relative;
+}
+
+/* Sortable column styles */
+th.sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+}
+
+th.sortable:hover {
+    background: rgb(21 182 255 / 40%);
+}
+
+th.sortable .th-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.sort-arrows {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0;
+    line-height: 0.6;
+    font-size: 0.7rem;
+}
+
+.sort-arrows .arrow-up,
+.sort-arrows .arrow-down {
+    color: rgba(255, 255, 255, 0.3);
+    transition: color 0.2s ease;
+}
+
+/* Active sort states */
+th.sortable[data-order="asc"] .arrow-up {
+    color: #ffb811;
+}
+
+th.sortable[data-order="desc"] .arrow-down {
+    color: #ffb811;
+}
+
+th.sortable:hover .arrow-up,
+th.sortable:hover .arrow-down {
+    color: rgba(255, 255, 255, 0.6);
 }
 
 table.enrollments td{
@@ -413,6 +534,7 @@ table.enrollments tr:hover td{
 }
 
 .description-box {
+    color:black;
     width: 100%;
     padding: 0.7rem;
     border: 1px solid #d0d0d0;

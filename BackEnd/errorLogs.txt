@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [2025-11-11 17:52:41]TypeError: htmlspecialchars(): Argument #1 ($string) must be of type string, null given in C:\xampp\htdocs\SSISv2.1\BackEnd\core\tableDataTemplate.php:11
 Stack trace:
 #0 C:\xampp\htdocs\SSISv2.1\BackEnd\core\tableDataTemplate.php(11): htmlspecialchars(NULL)
@@ -540,3 +541,8 @@ Stack trace:
 [2025-11-12 16:15:40] SMS sent to 09682298263 for Enrollee ID: 94 - Status: Enrolled
 [2025-11-12 16:25:04] SMS sent to 09946956168 for Enrollee ID: 96 - Status: Denied
 [2025-11-12 16:25:40] SMS sent to 09946956168 for Enrollee ID: 95 - Status: Follow-Up
+[2025-11-12 17:54:24] SMS sent to 09682298263 for Enrollee ID: 102 - Status: Follow-Up
+=======
+>>>>>>> 5c5ac4ac5e9f33aa7d1f96a196800604f1e523b1
+[2025-11-13 15:04:51]SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+[2025-11-13 15:06:16]SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens

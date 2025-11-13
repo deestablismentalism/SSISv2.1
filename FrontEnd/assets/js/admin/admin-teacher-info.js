@@ -43,7 +43,11 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(data => {
             if (data.success) {
-                alert(data.message);
+                Notification.show({
+                    type: data.success ? "success" : "error",
+                    title: data.success ? "Success" : "Error",
+                    message: data.message
+                });
                 
                 const statusValue = document.getElementById("statusSelect").value;
                 const positionValue = document.getElementById("positionSelect").value;
@@ -61,12 +65,20 @@ document.addEventListener("DOMContentLoaded", function() {
                 const saveButton = document.getElementById("saveButton");
                 if (saveButton) saveButton.style.display = "none";
             } else {
-                alert(data.message);
+                Notification.show({
+                    type: data.success ? "success" : "error",
+                    title: data.success ? "Success" : "Error",
+                    message: data.message
+                });
             }
         })
         .catch(error => {
             console.error("Fetch Error:", error);
-            alert("An error occurred while processing your request.");
+            Notification.show({
+                type: "error",
+                title: "Error",
+                message: "An error occurred while processing your request."
+            });
         });
     });
 });

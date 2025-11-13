@@ -259,16 +259,24 @@ async function deleteAndArchiveStudent(studentId) {
         Loader.show();
         const result = await deleteAndArchive(studentId);
         if(!result.success) {
-            alert(result.message);
+            Notification.show({
+                type: "error",
+                title: "Error",
+                message: result.message
+            });
             Loader.hide();
         }
         else {
-            alert(result.message);
+            Notification.show({
+                type: "success",
+                title: "Success",
+                message: result.message
+            });
             setTimeout(()=>window.location.reload(), 1000);
         }
     }
 }
-const TIME_OUT = 20000;
+const TIME_OUT = 30000;
 async function deleteAndArchive(studentId) {
     const controller = new AbortController();
     const timeoutId = setTimeout(()=> controller.abort(),TIME_OUT);

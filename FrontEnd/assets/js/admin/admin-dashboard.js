@@ -44,7 +44,11 @@ document.addEventListener('DOMContentLoaded', function(){
     .then(data=> {
         loaders.forEach(load=>{load.innerHTML = loadingText});
         if(!data.success) {
-            alert(data.message);
+                Notification.show({
+                    type: data.success ? "success" : "error",
+                    title: data.success ? "Success" : "error",
+                    message: data.message
+                });
         }
         if (data.failed && data.failed > 0) {
             data.failed.forEach(message =>{
@@ -243,7 +247,11 @@ async function enrolleeByDay(day) {
             return null;
         }
         if(!data.success) {
-            alert(data.message || 'Something went wrong');
+            Notification.show({
+                type: data.success ? "success" : "error",
+                title: data.success ? "Success" : "error",
+                message: data.message
+            });
             return null;
         }
         

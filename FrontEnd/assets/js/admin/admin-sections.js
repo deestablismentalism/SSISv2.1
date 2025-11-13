@@ -29,14 +29,24 @@ document.addEventListener('DOMContentLoaded', function() {
                  .then(response=> response.json())
                  .then(data =>{
                     if(data.success == false) {
-                        alert(data.message);
+                        Notification.show({
+                            type: data.success ? "error" : "error",
+                            title: data.success ? "Success" : "Error",
+                            message: data.message
+                        });
                         form.reset();
                         button.disabled = false;
                         Loader.hide();  
                     }
                     else {
-                        alert('Section added successfully.');
-                        console.log(data);
+                        Notification.show({
+                            type: data.success ? "success" : "error",
+                            title: data.success ? "Success" : "Error",
+                            message: data.message
+                        });
+                        form.reset();
+                        button.disabled = false;
+                        Loader.hide();
                         setTimeout(()=> {
                             Loader.hide();
                             window.location.reload();

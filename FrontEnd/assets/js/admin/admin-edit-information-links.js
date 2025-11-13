@@ -391,7 +391,11 @@ document.addEventListener('DOMContentLoaded', function(){
             
         }
         catch(error) {
-            alert(error.message);
+            Notification.show({
+                type: "error",
+                title: "Error",
+                message: error.message
+            });
             console.error(error);
             modalContent.innerHTML += `Failed to load`;
         }    
@@ -409,8 +413,12 @@ document.addEventListener('DOMContentLoaded', function(){
             
         }
         catch(error) {
-            alert(error.message);
-            console.error(error);
+            Notification.show({
+                type: "error",
+                title: "error",
+                message: error.message
+            });
+        console.error(error);
             modalContent.innerHTML += `Failed to load`;
         }    
     })
@@ -426,7 +434,11 @@ document.addEventListener('DOMContentLoaded', function(){
             
         }
         catch(error) {
-            alert(error.message);
+            Notification.show({
+                type: "error",
+                title: "error",
+                message: error.message
+            });
             console.error(error);
             modalContent.innerHTML += `Failed to load`;
         }    
@@ -443,7 +455,11 @@ document.addEventListener('DOMContentLoaded', function(){
             
         }
         catch(error) {
-            alert(error.message);
+            Notification.show({
+                type: "error",
+                title: "error",
+                message: error.message
+            });
             console.error(error);
             modalContent.innerHTML += `Failed to load`;
         }    
