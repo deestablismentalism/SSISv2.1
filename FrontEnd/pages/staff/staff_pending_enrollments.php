@@ -17,9 +17,13 @@ require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
     <link rel="stylesheet" href="../../assets/css/staff/staff-enrollment-pending.css">
     <link rel="stylesheet" href="../../assets/css/reset.css">
     <link rel="stylesheet" href="../../assets/css/fonts.css">
+    <link rel="stylesheet" href="../../assets/css/notifications.css">
 </head>
 
     <div class="main-content">
+        <?php
+            include_once __DIR__ . '/../notifications.php';
+        ?>
         <div class="sidebar">
             <div class="sidebar-title-container">
                 <div class="sidebar-title">
@@ -76,5 +80,6 @@ require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
     </div>   
     <script type="module" src="../../assets/js/staff/staff-enrollee-popUp-handler.js" defer></script>
     <script src="../../assets/js/admin/admin-searchPendingEnrollees.js" defer></script>
+    <script src="../../assets/js/notifications.js" defer></script>
 </body>    
 </html>
