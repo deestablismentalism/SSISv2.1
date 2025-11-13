@@ -550,3 +550,4 @@ Stack trace:
 [2025-11-13 18:46:59] SMS sent to 09946956168 for Enrollee ID: 104 - Status: Denied
 [2025-11-13 18:47:35] SMS sent to 09946956168 for Enrollee ID: 107 - Status: Denied
 [2025-11-13 18:49:28] SMS sent to 09682298263 for Enrollee ID: 91 - Status: Enrolled
+[2025-11-14 04:04:25]SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ssis-test_database.archive_students' doesn't exist

@@ -3,10 +3,25 @@ declare(strict_types=1);
 require_once __DIR__ . '/../../admin/views/adminStudentInfo.php';
 $view = new adminStudentInfo();
 ?>
-<div class="student-info-modal">
+<div class="view-student-content">
     <?php $view->displayGlobalError(); ?>
-    <h1>Student Personal Information</h1>
-    <?php $view->displayStudentInfo();?>
-    <h1>Student's Parents Information</h1>
-    <?php $view->displayParentInfo();?><br>
+    
+    <div class="view-header">
+        <div class="view-status-container">
+            <p class="view-status-label">Current Status</p>
+            <p class="view-status-value status-active">Active</p>
+        </div>
+    </div>
+    
+    <div class="view-body">
+        <div class="view-section">
+            <p class="view-section-title">Student Personal Information</p>
+            <?php $view->displayStudentInfo();?>
+        </div>
+        
+        <div class="view-section">
+            <p class="view-section-title">Parent/Guardian Information</p>
+            <?php $view->displayParentInfo();?>
+        </div>
+    </div>
 </div>
