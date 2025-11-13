@@ -19,6 +19,11 @@ class Encryption {
     }
 
     public function decrypt($ciphertext_base64, $key) {
+        // Handle null or empty values
+        if ($ciphertext_base64 === null || $ciphertext_base64 === '') {
+            return null;
+        }
+        
         $ivlen = $this->getCipherIvLength();
         $ciphertext_combined = base64_decode($ciphertext_base64);
 

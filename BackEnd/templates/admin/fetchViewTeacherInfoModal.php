@@ -22,10 +22,36 @@ try {
     // Decrypt sensitive fields
     $encryption = new Encryption();
     
-    // Attempt to decrypt, will return null if empty or decryption fails
-    $employeeNumber = $encryption->passDecrypt($teacherData['Employee_Number']) ?? 'N/A';
-    $philhealthNumber = $encryption->passDecrypt($teacherData['Philhealth_Number']) ?? 'N/A';
-    $tin = $encryption->passDecrypt($teacherData['TIN']) ?? 'N/A';
+    // Decrypt only if the value is not null or empty
+    $employeeNumber = 'No Employee Number';
+    if (!empty($teacherData['Employee_Number'])) {
+        try {
+            $decrypted = $encryption->passDecrypt($teacherData['Employee_Number']);
+            $employeeNumber = $decrypted ?? 'No Employee Number';
+        } catch (Exception $e) {
+            $employeeNumber = 'No Employee Number';
+        }
+    }
+    
+    $philhealthNumber = 'No Philhealth';
+    if (!empty($teacherData['Philhealth_Number'])) {
+        try {
+            $decrypted = $encryption->passDecrypt($teacherData['Philhealth_Number']);
+            $philhealthNumber = $decrypted ?? 'No Philhealth';
+        } catch (Exception $e) {
+            $philhealthNumber = 'No Philhealth';
+        }
+    }
+    
+    $tin = 'No TIN';
+    if (!empty($teacherData['TIN'])) {
+        try {
+            $decrypted = $encryption->passDecrypt($teacherData['TIN']);
+            $tin = $decrypted ?? 'No TIN';
+        } catch (Exception $e) {
+            $tin = 'No TIN';
+        }
+    }
     
     // Map status
     $statusMap = [
@@ -64,10 +90,6 @@ try {
     
     <div class="view-body">
         <div class="view-profile-section">
-            <div class="view-profile-pic">
-                <img src="../../assets/imgs/sample-teacher.png" alt="Teacher">
-            </div>
-            
             <div class="view-profile-info">
                 <div class="view-info-item">
                     <p class="view-info-label">Teacher Name</p>
@@ -81,7 +103,7 @@ try {
                 
                 <div class="view-info-item">
                     <p class="view-info-label">Contact Number</p>
-                    <p class="view-info-value"><?php echo htmlspecialchars($teacherData['Staff_Contact'] ?? 'N/A'); ?></p>
+                    <p class="view-info-value"><?php echo htmlspecialchars($teacherData['Staff_Contact_Number'] ?? 'N/A'); ?></p>
                 </div>
                 
                 <div class="view-info-item">
