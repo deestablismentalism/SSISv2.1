@@ -81,7 +81,7 @@ try {
 <div class="view-teacher-content">
     <div class="view-header">
         <div class="view-status-container">
-            <p class="view-status-label">Status</p>
+            <p class="view-status-label">Current Status</p>
             <p class="view-status-value status-<?php echo strtolower(str_replace(' ', '-', $statusText)); ?>">
                 <?php echo htmlspecialchars($statusText); ?>
             </p>
@@ -89,6 +89,7 @@ try {
     </div>
     
     <div class="view-body">
+        <!-- Profile Information Section -->
         <div class="view-profile-section">
             <div class="view-profile-info">
                 <div class="view-info-item">
@@ -97,7 +98,7 @@ try {
                 </div>
                 
                 <div class="view-info-item">
-                    <p class="view-info-label">Email</p>
+                    <p class="view-info-label">Email Address</p>
                     <p class="view-info-value"><?php echo htmlspecialchars($teacherData['Staff_Email'] ?? 'N/A'); ?></p>
                 </div>
                 
@@ -107,20 +108,23 @@ try {
                 </div>
                 
                 <div class="view-info-item">
-                    <p class="view-info-label">Address</p>
+                    <p class="view-info-label">Home Address</p>
                     <p class="view-info-value"><?php echo htmlspecialchars($address ?: 'N/A'); ?></p>
                 </div>
             </div>
         </div>
         
+        <!-- Details Section -->
         <div class="view-details-section">
+            <!-- Position Section -->
             <div class="view-section">
                 <p class="view-section-title">Current Position</p>
                 <p class="view-section-content"><?php echo htmlspecialchars($teacherData['Position'] ?? 'N/A'); ?></p>
             </div>
             
+            <!-- Government IDs Section with Table -->
             <div class="view-section">
-                <p class="view-section-title">Government ID(s)</p>
+                <p class="view-section-title">Government Identification Numbers</p>
                 <table class="view-info-table">
                     <thead>
                         <tr>
@@ -140,6 +144,10 @@ try {
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn-close-modal">Close</button>
 </div>
 
 <?php

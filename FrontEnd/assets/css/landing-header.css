@@ -282,10 +282,6 @@ body {
         right: 60px;
         transform: none;
     }
-
-    .nav-menu .nav-links {
-        margin-right: 82px;
-    }
 }
 
 @media (max-width: 768px) {

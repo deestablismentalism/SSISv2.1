@@ -84,13 +84,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="info-container-links">
-                        <a href="#privacy-policy" class="info-link privacy-policy">Privacy Policy</a>
-                          <span class="separator"></span>
-                        <a href="#data-protection" class="info-link data-protection">Data Protection</a>
-                          <span class="separator"></span>
-                        <a href="#terms-of-use" class="info-link terms-of-use">Terms of Use</a>
-                    </div>
                 </div>
             </div>
         </div>
