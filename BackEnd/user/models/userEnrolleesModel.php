@@ -11,6 +11,24 @@ class userEnrolleesModel {
         $this->conn = $db->getConnection();
     }
     //GETTERS
+    public function getUserEnrollmentStatusInformation(int $enrolleeId):array {
+        try {
+            $sql = "SELECT e.Student_First_Name,e.Student_Last_Name,e.Student_Middle_Name,e.Student_Extension,
+                e.Learner_Reference_Number,gl.Grade_Level AS E_Grade_Level
+                FROM enrollee e 
+                JOIN educational_information ei ON ei.Educational_Information_Id = e.Educational_Information_Id
+                JOIN grade_level gl ON gl.Grade_Level_Id = ei.Enrolling_Grade_Level
+                WHERE e.Enrollee_Id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':id'=>$enrolleeId]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ?: [];
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
+            throw new DatabaseException("Failed to fetch this Enrollee's Status information",0,$e);
+        }
+    }
     public function getPendingEnrollees() : array { //F 3.1.1
         try {
             $sql = "SELECT * FROM enrollee WHERE Enrollment_Status = 3";
@@ -20,6 +38,7 @@ class userEnrolleesModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch pending enrollees',311,$e);
         }
     }
@@ -37,6 +56,7 @@ class userEnrolleesModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch parent information',312,$e);
         }
     }
@@ -78,6 +98,7 @@ class userEnrolleesModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch enrollee information',313,$e);
         }
     }
@@ -101,6 +122,7 @@ class userEnrolleesModel {
             return isset($result['directory']) ? (string)$result['directory'] : null;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch PSA image file path',315,$e);
         }
     }
@@ -115,6 +137,7 @@ class userEnrolleesModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch user enrollees',316,$e);
         }
     }
@@ -166,6 +189,7 @@ class userEnrolleesModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch all enrolled',319,$e);
         }
     }
@@ -195,6 +219,7 @@ class userEnrolleesModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to search for enrollees',3111,$e);
         }
     }
@@ -225,6 +250,7 @@ class userEnrolleesModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch all enrollees',3112,$e);
         }
     }
@@ -237,6 +263,7 @@ class userEnrolleesModel {
             return (int)$result['total'];
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to count all enrollees',0,$e);
         }
     }
@@ -251,6 +278,7 @@ class userEnrolleesModel {
             return $result ?: [];
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch enrollee transaction',3114,$e);  
         }
     }
@@ -268,6 +296,7 @@ class userEnrolleesModel {
             return $result ?: null;
         } 
         catch (PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to get image data',3115,$e);
         }
     }
@@ -284,6 +313,7 @@ class userEnrolleesModel {
             return $result;
             }
         catch (PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to update resubmission status',321,$e);
         }
     }
@@ -309,6 +339,7 @@ class userEnrolleesModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to update educational information',322,$e);
         }
     }
@@ -336,6 +367,7 @@ class userEnrolleesModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to update educational background',323,$e);
         }
     }
@@ -364,7 +396,8 @@ class userEnrolleesModel {
             return $result;
         }
         catch(PDOException $e) {
-            throw new DatabaseExceptio('Failed to update disability info',324,$e);
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
+            throw new DatabaseException('Failed to update disability info',324,$e);
         }
     }
     private function updateEnrolleeAddress(int $enrolleeId, array $data) : bool { //F 3.2.5
@@ -404,6 +437,7 @@ class userEnrolleesModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to update enrollee address',325,$e);
         }
     }
@@ -438,6 +472,7 @@ class userEnrolleesModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to update parent information',326,$e);
         }
     }
@@ -461,6 +496,7 @@ class userEnrolleesModel {
             return $result;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to update psa directory',327,$e);
         }
     }
@@ -478,6 +514,7 @@ class userEnrolleesModel {
             return $isSuccess;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to update enrollee',331,$e);
         }
     }
@@ -498,6 +535,7 @@ class userEnrolleesModel {
             return $isSuccess;
         }   
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to insert enrollee transaction',332,$e);
         }
     } 
@@ -564,6 +602,7 @@ class userEnrolleesModel {
             return true;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to update enrollee information',333,$e);
         }
     }

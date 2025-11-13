@@ -15,7 +15,7 @@ $model = new userEnrolleesModel();
 try {
     $enrollmentStatus = $model->getUserStatus($userId, $enrolleeId);
     $transactionData = $model->getUserTransactionStatus($enrolleeId);
-    $enrollmentInfo = $model->getEnrolleeInformation($enrolleeId);
+    $enrollmentInfo = $model->getUserEnrollmentStatusInformation($enrolleeId);
     $statusLabels = [
         1 => 'Enrolled',
         2 => 'Denied',
