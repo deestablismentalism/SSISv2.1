@@ -32,8 +32,8 @@ export const loadingText = `
     </style>
 `; //global loading pop up modal
 export function modalHeader(backButton = false) {
-    let hasBackButton = backButton === true ? '<button class="back-button"> <img src="../../assets/imgs/arrow-left-solid.svg"> </button>' : '';
-    const headerContent = `<div class="modal-header">${hasBackButton}<span class="close">&times;</span> </div><br>`;   
+    let hasBackButton = backButton === true ? '<a href="staff_pending_enrollments.php" class="modal-back-btn">Back to Pending Enrollments</a>' : '';
+    const headerContent = `${hasBackButton}<span class="close">&times;</span><br>`;   
     return headerContent;
 }
 export function generateOptions(data,selectContainer) {

@@ -11,8 +11,10 @@
   --transition: all 0.3s ease;
   --font-main: "Poppins", "Segoe UI", sans-serif;
 }
-
-/* ========== PAGE BASE ========== */
+/* 
+table bg   background: rgb(155 231 255)
+header bg   background: rgb(207 241 255)
+========== PAGE BASE ========== */
 body {
   font-family: var(--font-main);
   background: var(--bg-gradient);
@@ -154,7 +156,7 @@ body {
     padding: 1.2rem 1.5rem;
     cursor: pointer;
     transition: var(--transition);
-    background: rgba(62, 158, 196, 0.2);
+    background: rgb(184 224 240);
     font-size: 1.4rem;
     color: var(--main-color);
     font-weight: 600;
@@ -222,7 +224,7 @@ body {
 .sections-table {
   width: 100%;
   border-collapse: collapse;
-  background: rgb(0 165 216 / 44%);
+  background: rgb(155 231 255);
   overflow: hidden;
 }
 
@@ -244,6 +246,7 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--main-color);
   font-size: 0.9rem;
+  border-bottom: 1px solid var(--hover-accent);
 }
 
 .sections-table tbody tr {

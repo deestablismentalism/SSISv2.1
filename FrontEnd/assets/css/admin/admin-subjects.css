@@ -143,7 +143,7 @@ body {
   padding: 1.2rem 1.5rem;
   cursor: pointer;
   transition: var(--transition);
-  background: rgba(62, 158, 196, 0.2);
+  background: rgb(207 241 255);
   font-size: 1.4rem;
   color: var(--main-color);
   font-weight: 600;
@@ -214,11 +214,11 @@ body {
 }
 
 .subject-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  gap: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    margin: .5rem;
+    gap: 1rem;
 }
 
 .batch-assign-btn {
@@ -264,7 +264,7 @@ body {
 .sections-table {
   width: 100%;
   border-collapse: collapse;
-  background: rgb(0 165 216 / 44%);
+  background: rgb(155 231 255);
   overflow: hidden;
 }
 
@@ -283,7 +283,7 @@ body {
 
 .sections-table td {
   padding: 0.9rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--hover-accent);
   color: var(--main-color);
   font-size: 0.9rem;
 }

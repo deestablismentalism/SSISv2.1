@@ -55,9 +55,9 @@ document.addEventListener('DOMContentLoaded',async function (){
     });
     //HANDLE BACK BUTTON
     modalContent.addEventListener('click', async function(e){
-        if(e.target.classList.contains('back-button')) {
+        if(e.target.classList.contains('modal-back-btn')) {
             modalContent.innerHTML = initialModalContent;
-                close(modal);
+            close(modal);
         }
     })
     //HANDLE FORM SUBMISSION  

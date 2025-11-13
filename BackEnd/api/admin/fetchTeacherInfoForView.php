@@ -30,25 +30,40 @@ try {
     // Decrypt sensitive fields with proper null handling
     $encryption = new Encryption();
     
-    if (!empty($teacherData['Employee_Number']) && $teacherData['Employee_Number'] !== null) {
-        $decrypted = $encryption->passDecrypt($teacherData['Employee_Number']);
-        $teacherData['Employee_Number'] = ($decrypted !== null) ? $decrypted : null;
+    // Employee Number
+    if (!empty($teacherData['Employee_Number'])) {
+        try {
+            $decrypted = $encryption->passDecrypt($teacherData['Employee_Number']);
+            $teacherData['Employee_Number'] = $decrypted ?? 'No Employee Number';
+        } catch (Exception $e) {
+            $teacherData['Employee_Number'] = 'No Employee Number';
+        }
     } else {
-        $teacherData['Employee_Number'] = null;
+        $teacherData['Employee_Number'] = 'No Employee Number';
     }
     
-    if (!empty($teacherData['Philhealth_Number']) && $teacherData['Philhealth_Number'] !== null) {
-        $decrypted = $encryption->passDecrypt($teacherData['Philhealth_Number']);
-        $teacherData['Philhealth_Number'] = ($decrypted !== null) ? $decrypted : null;
+    // Philhealth Number
+    if (!empty($teacherData['Philhealth_Number'])) {
+        try {
+            $decrypted = $encryption->passDecrypt($teacherData['Philhealth_Number']);
+            $teacherData['Philhealth_Number'] = $decrypted ?? 'No Philhealth';
+        } catch (Exception $e) {
+            $teacherData['Philhealth_Number'] = 'No Philhealth';
+        }
     } else {
-        $teacherData['Philhealth_Number'] = null;
+        $teacherData['Philhealth_Number'] = 'No Philhealth';
     }
     
-    if (!empty($teacherData['TIN']) && $teacherData['TIN'] !== null) {
-        $decrypted = $encryption->passDecrypt($teacherData['TIN']);
-        $teacherData['TIN'] = ($decrypted !== null) ? $decrypted : null;
+    // TIN
+    if (!empty($teacherData['TIN'])) {
+        try {
+            $decrypted = $encryption->passDecrypt($teacherData['TIN']);
+            $teacherData['TIN'] = $decrypted ?? 'No TIN';
+        } catch (Exception $e) {
+            $teacherData['TIN'] = 'No TIN';
+        }
     } else {
-        $teacherData['TIN'] = null;
+        $teacherData['TIN'] = 'No TIN';
     }
     
     // Map status
