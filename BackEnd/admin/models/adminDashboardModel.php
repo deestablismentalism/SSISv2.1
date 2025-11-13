@@ -73,10 +73,11 @@ class adminDashboardModel {
     }
     public function EnrolleeStatuses() : ?array {
         try {
-            $sql = "SELECT SUM(CASE WHEN Enrollment_Status = 1 THEN 1 ELSE 0 END)AS enrolled_count, 
-                                        SUM(CASE WHEN Enrollment_Status = 2 THEN 2 ELSE 0 END) AS denied_count,
-                                        SUM(CASE WHEN Enrollment_Status = 3 THEN 3 ELSE 0 END) AS pending_count,
-                                        SUM(CASE WHEN Enrollment_Status = 4 THEN 4 ELSE 0 END) AS follow_up_count
+            $sql = "SELECT 
+                    SUM(CASE WHEN Enrollment_Status = 1 THEN 1 ELSE 0 END)AS enrolled_count, 
+                    SUM(CASE WHEN Enrollment_Status = 2 THEN 1 ELSE 0 END) AS denied_count,
+                    SUM(CASE WHEN Enrollment_Status = 3 THEN 1 ELSE 0 END) AS pending_count,
+                    SUM(CASE WHEN Enrollment_Status = 4 THEN 1 ELSE 0 END) AS follow_up_count
                                   FROM enrollee e JOIN school_year_details AS s ON s.School_Year_Details_Id = e.School_Year_Details_Id 
                                   WHERE Is_Expired = 0;";
             $stmt = $this->conn->prepare($sql);
