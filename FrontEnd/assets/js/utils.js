@@ -1,13 +1,15 @@
 export function close(modal) { // global close util
-    // Support both .close and .close-modal classes
-    const closeButton = modal.querySelector('.close, .close-modal');
-    if(closeButton && !closeButton.hasAttribute('data-listener-added')) {
-        closeButton.setAttribute('data-listener-added', 'true');
-        closeButton.addEventListener('click', function(){
-            modal.style.display = 'none';
-            modal.classList.remove('show');
-        });
-    }
+    // Support both .close, .close-modal, and .btn-close-modal classes
+    const closeButtons = modal.querySelectorAll('.close, .close-modal, .btn-close-modal');
+    closeButtons.forEach(closeButton => {
+        if(closeButton && !closeButton.hasAttribute('data-listener-added')) {
+            closeButton.setAttribute('data-listener-added', 'true');
+            closeButton.addEventListener('click', function(){
+                modal.style.display = 'none';
+                modal.classList.remove('show');
+            });
+        }
+    });
     
     // Also close on outside click
     if (!modal.hasAttribute('data-outside-listener-added')) {
