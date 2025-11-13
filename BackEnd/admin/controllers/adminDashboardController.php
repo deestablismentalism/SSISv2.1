@@ -386,9 +386,12 @@ class adminDashboardController {
                 'success' => true,
                 'message' => 'Student statuses successfully returned',
                 'data' => [
+                    ['label' => 'Waiting', 'value'=> $data['Waiting']],
                     ['label' => 'Active', 'value' => $data['ActiveStudents'] ],
                     ['label' => 'Inactive', 'value' => $data['InactiveStudents']] ,
                     ['label' => 'Dropped', 'value' => $data['DroppedStudents']],
+                    ['label'=> 'Transferred', 'value'=> $data['Transferred']],
+                    ['label'=> 'Graduated','value'=>$data['Graduated']]
 
                 ]
             ];

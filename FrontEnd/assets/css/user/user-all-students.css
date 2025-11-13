@@ -529,6 +529,25 @@ body {
   transition: all var(--transition);
   box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
 }
+.students td .button.reenroll-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 500;
+  background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.reenroll-btn img {
+  width: 16px;
+  height: 16px;
+}
 
 /* Hover state only on devices that support hover */
 @media (hover: hover) and (pointer: fine) {

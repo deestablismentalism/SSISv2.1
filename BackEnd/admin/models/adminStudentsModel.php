@@ -23,9 +23,12 @@ class adminStudentsModel {
         try {
             $sql = "SELECT  s.*,
                             CASE s.Student_Status
+                            WHEN 0 THEN 'Waiting'
                             WHEN 1 THEN 'Active'
                             WHEN 2 THEN 'Inactive'
                             WHEN 3 THEN 'Dropped'
+                            WHEN 4 THEN 'Transferred'
+                            WHEN 5 THEN 'Graduated'
                             ELSE 'Unknown'
                             END AS Status,
                             g.Grade_Level,
