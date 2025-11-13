@@ -27,11 +27,32 @@ class userStudentsModel {
             throw new DatabaseException('Failed to fetch user students',0,$e);
         }
     }
+    private function getThisStudentGradeLevel(int $studentId):?int{
+        try {
+            $sql = "SELECT Grade_Level_Id FROM students WHERE Student_Id = :studentId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':studentId'=>$studentId]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return (int)$result['Grade_Level_Id'] ?: null;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]".$e->getMessage() ."\n",3,__DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch user students',0,$e);
+        }
+    }
     public function reEnrollStudent(int $studentId, int $status):bool {
         try {
-            $sql = "UPDATE students SET Student_Status = :status  WHERE Student_Id = :id";
+            $gLevel = $this->getThisStudentGradeLevel($studentId);
+            if(is_null($gLevel)) {
+                throw new DatabaseException("Cannot update. Grade level not found");
+            }
+            $gLevel++;
+            if($gLevel > 8) {
+                throw new DatabaseException("Cannot re-enroll. Grade level is not for elementary");
+            } 
+            $sql = "UPDATE students SET Student_Status = :status,Grade_Level_Id = :gLevel WHERE Student_Id = :id";
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute([':status'=>$status,':id'=>$studentId]);
+            $stmt->execute([':status'=>$status,':id'=>$studentId,':gLevel'=>$gLevel]);
             if($stmt->rowCount()===0) {
                 return false;
             }

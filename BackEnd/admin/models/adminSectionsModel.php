@@ -380,10 +380,10 @@ class adminSectionsModel {
             $schoolYear = $this->getActiveSchoolYear();
             $schoolYearId = $schoolYear ? (int)$schoolYear['School_Year_Details_Id'] : null;
             if(is_null($schoolYearId)) {
-                throw new PDOException("Cannot insert. No valid academic year found");
+                throw new DatabaseException("Cannot insert. No valid academic year found");
             }
             if($this->checkIfSectionAdviserExists($staffId,$schoolYearId)) {
-                throw new PDOException("Staff assigned is already an adviser");
+                throw new DatabaseException("Staff assigned is already an adviser");
             }
             $sql = "INSERT INTO section_advisers(Section_Id,Staff_Id,School_Year_Details_Id)
                     VALUES(:sectionId,:staffId,:syId) ON DUPLICATE KEY UPDATE Staff_Id = VALUES(Staff_Id)";

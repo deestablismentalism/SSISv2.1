@@ -258,7 +258,7 @@ class userPostEnrollmentFormModel {
             $this->conn->beginTransaction();
             $schoolYearId =  $this->getSchoolYearId();
             if(is_null($schoolYearId)) {
-                throw new PDOException('Cannot enroll without linking to academic year information');
+                throw new DatabaseException('Cannot enroll without linking to academic year information!');
             }
             //REF: 3.2.8
             $educationalInformationId = $this->educational_information($schoolYearStart, $schoolYearEnd, $hasLrn, $enrollingGradeLevel, $lastGradeLevel, $lastYearAttended);

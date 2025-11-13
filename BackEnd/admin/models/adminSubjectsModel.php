@@ -249,7 +249,7 @@ class adminSubjectsModel {
             $schoolYear = $this->getActiveSchoolYear();
             $schoolYearId = $schoolYear ? (int)$schoolYear['School_Year_Details_Id'] : null;
             if(is_null($schoolYearId)) {
-                throw new PDOException("Cannot insert. No valid academic year found");
+                throw new DatabaseException("Cannot insert. No valid academic year found");
             }
             $sql = "INSERT INTO section_subject_teachers(Staff_Id,Section_Subjects_Id,School_Year_Details_Id) 
             VALUES(:staffId,:sectionSubjectId,:syId)";
