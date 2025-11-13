@@ -59,47 +59,65 @@ document.addEventListener('DOMContentLoaded', function() {
             if(enrolleeId === null) return; 
             modal.style.display = 'block';
             modalContent.innerHTML = loadingText;
-            const result = await fetchEnrolleeRemarks(enrolleeId);
-            if(!result.success) {
+            
+            // Fetch both enrollee info and remarks
+            const [infoResult, remarksResult] = await Promise.all([
+                fetchEnrolleeInfo(enrolleeId),
+                fetchEnrolleeRemarks(enrolleeId)
+            ]);
+            
+            if(!infoResult.success) {
                 modalContent.innerHTML = modalHeader();
-                modalContent.innerHTML += result.message;
+                modalContent.innerHTML += infoResult.message;
                 close(modal);
+                return;
             }
-            else {
-                const enrollmentStatus = parseInt(result.data.Enrollment_Status);
-                const transactionId = parseInt(result.data.Enrollment_Transaction_Id);
-                let statusText = ``;
-                //CUSTOMIZE BUTTON BASED ON STATUS GIVEN
-                if (enrollmentStatus == 1) {
+            
+            if(!remarksResult.success) {
+                modalContent.innerHTML = modalHeader();
+                modalContent.innerHTML += remarksResult.message;
+                close(modal);
+                return;
+            }
+            
+            const enrollmentStatus = parseInt(remarksResult.data.Enrollment_Status);
+            const transactionId = parseInt(remarksResult.data.Enrollment_Transaction_Id);
+            let statusText = ``;
+            
+            //CUSTOMIZE BUTTON BASED ON STATUS GIVEN
+            if (enrollmentStatus == 1) {
                 statusText = `<div class="unhandled-buttons">
                                     <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="enroll" class="remarks accept-btn">Finalize Enrollment</button>
                                     <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="deny" class="remarks deny-btn">Deny</button>
                                     <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="toFollow" class="remarks to-follow-btn">To Follow</button></div>`;    
-                }
-                else if (enrollmentStatus == 4) {
-                    const transactionStatus = parseInt(result.data.Transaction_Status);
-                    const isDisabled = transactionStatus === 2 || transactionStatus === 1 ? 'disabled' : '';
-                    statusText = `<div><button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="enroll" class="remarks accept-btn ${isDisabled}" ${isDisabled}>Enroll</button>
-                                        <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="resubmit" class="remarks resubmission-btn ${isDisabled}" ${isDisabled}>Allow Resubmission</button>
-                                        <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="consult" class="remarks consultation-btn ${isDisabled}"${isDisabled}> Needs Consultation </button>
-                                        </div>`;    
-                }
-                else if (enrollmentStatus == 2) {
-                    statusText = `<div><button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="deny" class="remarks deny-btn">Finalize Denial</button>
-                                        <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="toFollow" class="remarks to-follow-btn">To Follow</button></div>`;    
-                }
-                modalContent.innerHTML = modalHeader();
-                modalContent.innerHTML +=`
-                    <div id="modal-body">
-                        <h3>Enrollee Reasons</h3>
-                        ${result.data.Remarks}
-                        <div class="action-buttons">
-                            ${statusText}
-                        </div>
-                    </div>
-                `;
-                close(modal);
             }
+            else if (enrollmentStatus == 4) {
+                const transactionStatus = parseInt(remarksResult.data.Transaction_Status);
+                const isDisabled = transactionStatus === 2 || transactionStatus === 1 ? 'disabled' : '';
+                statusText = `<div><button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="enroll" class="remarks accept-btn ${isDisabled}" ${isDisabled}>Enroll</button>
+                                    <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="resubmit" class="remarks resubmission-btn ${isDisabled}" ${isDisabled}>Allow Resubmission</button>
+                                    <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="consult" class="remarks consultation-btn ${isDisabled}"${isDisabled}> Needs Consultation </button>
+                                    </div>`;    
+            }
+            else if (enrollmentStatus == 2) {
+                statusText = `<div><button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="deny" class="remarks deny-btn">Finalize Denial</button>
+                                    <button data-id="${transactionId}" data-enrollee="${enrolleeId}" data-action="toFollow" class="remarks to-follow-btn">To Follow</button></div>`;    
+            }
+            
+            modalContent.innerHTML = modalHeader();
+            modalContent.innerHTML += infoResult.data;
+            modalContent.innerHTML +=`
+                <div id="modal-body">
+                    <h3>Enrollee Remarks</h3>
+                    <div class="remarks-section">
+                        ${remarksResult.data.Remarks}
+                    </div>
+                    <div class="action-buttons">
+                        ${statusText}
+                    </div>
+                </div>
+            `;
+            close(modal);
         }
     });
     let isSubmitting = false;
@@ -130,7 +148,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }[action];
             const result = await postUpdateEnrollee(status,enrolleeId);
             if(!result.success) {
-                alert(result.message);
+                Notification.show({
+                    type: result.success ? "error" : "error",
+                    title: result.success ? "Error" : "Error",
+                    message: result.message
+                });
                 bgColor = {
                     1 : '#4CAF50',
                     2 : '#F44336',
@@ -141,7 +163,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.style.backgroundColor = bgColor;
             }
             else {
-                alert(result.message);
+                Notification.show({
+                    type: result.success ? "success" : "error",
+                    title: result.success ? "Success" : "Error",
+                    message: result.message
+                });
                 window.location.reload();
             }
         }
@@ -154,7 +180,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }[action];
             const result = await postUpdateEnrollmentTransaction(transactionStatus,transactionId,enrolleeId,status);
             if(!result.success) {
-                alert(result.message);
+                Notification.show({
+                    type: result.success ? "success" : "error",
+                    title: result.success ? "Success" : "Error",
+                    message: result.message
+                });
                 bgColor = {
                     1 : '#AF714C',
                     2: '#4C69AF'
@@ -164,7 +194,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.style.backgroundColor = bgColor;
             }
             else {
-                alert(result.message);
+                Notification.show({
+                    type: result.success ? "success" : "error",
+                    title: result.success ? "Success" : "Error",
+                    message: result.message
+                });
                 window.location.reload();
             }
         }

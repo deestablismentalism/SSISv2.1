@@ -26,10 +26,18 @@ document.addEventListener('DOMContentLoaded',function() {
                 const result = await postRegisterTeacher(formData);
 
                 if(!result.success) {
-                    alert(result.message);
+                    Notification.show({
+                        type: result.success ? "success" : "error",
+                        title: result.success ? "Success" : "Error",
+                        message: result.message
+                    });
                 }
                 else {
-                    alert(result.message);
+                    Notification.show({
+                        type: result.success ? "success" : "error",
+                        title: result.success ? "Success" : "Error",
+                        message: result.message
+                    });
                     setTimeout(()=>{
                         window.location.reload();
                     },1000);
@@ -37,7 +45,11 @@ document.addEventListener('DOMContentLoaded',function() {
             })
         }
         catch(err) {
-            alert(`Error: ${err.message}`);
+            Notification.show({
+                type: "error",
+                title: "Error",
+                message: `Error: ${err.message}`
+            });
         }
         
     });
@@ -59,7 +71,11 @@ document.addEventListener('DOMContentLoaded',function() {
                 modalContent.innerHTML = data;
                 close(modal);
             } catch(err) {
-                alert(`Error: ${err.message}`);
+                Notification.show({
+                    type: data.success ? "success" : "error",
+                    title: data.success ? "Success" : "error",
+                    message: `Error: ${err.message}`
+                });
                 modal.style.display = 'none';
             }
         }
@@ -91,18 +107,30 @@ document.addEventListener('DOMContentLoaded',function() {
                     const result = await postEditTeacherInfo(formData);
                     
                     if (!result.success) {
-                        alert(result.message);
+                            Notification.show({
+                                type: result.success ? "success" : "error",
+                                title: result.success ? "Success" : "error",
+                                message: result.message
+                            });
                         submitButton.disabled = false;
                         submitButton.style.backgroundColor = '';
                     } else {
-                        alert(result.message);
+                        Notification.show({
+                            type: result.success ? "success" : "error",
+                            title: result.success ? "Success" : "Error",
+                            message: result.message
+                        });
                         setTimeout(() => {
                             window.location.reload();
                         }, 1000);
                     }
                 });
             } catch(err) {
-                alert(`Error: ${err.message}`);
+                Notification.show({
+                    type: "error",
+                    title: "Error",
+                    message: `Error: ${err.message}`
+                });
                 modal.style.display = 'none';
             }
         }

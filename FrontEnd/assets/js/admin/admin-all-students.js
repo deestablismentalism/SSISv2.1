@@ -7,11 +7,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function getRows() { return document.querySelectorAll('.student-rows'); }
 
     function getStatusTextFromNumber(n) {
-        switch(parseInt(n)) {
-            case 1: return 'Active';
-            case 2: return 'Inactive';
-            case 3: return 'Dropped';
-            default: return 'Unknown';
+        const numericValue = parseInt(n);
+        switch(numericValue) {
+            case 1: return '1';
+            case 2: return '2';
+            case 3: return '3';
+            default: return String(n);
         }
     }
     function populateFilters() {
@@ -258,11 +259,19 @@ async function deleteAndArchiveStudent(studentId) {
         Loader.show();
         const result = await deleteAndArchive(studentId);
         if(!result.success) {
-            alert(result.message);
+            Notification.show({
+                type: "error",
+                title: "Error",
+                message: result.message
+            });
             Loader.hide();
         }
         else {
-            alert(result.message);
+            Notification.show({
+                type: "success",
+                title: "Success",
+                message: result.message
+            });
             setTimeout(()=>window.location.reload(), 1000);
         }
     }
@@ -310,18 +319,5 @@ async function deleteAndArchive(studentId) {
             message: error.message || `Something went wrong`,
             data: null
         };
-    }
-}
-// Helper function to convert status number to text
-function getStatusText(status) {
-    switch(parseInt(status)) {
-        case 1:
-            return 'Active';
-        case 2:
-            return 'Inactive';
-        case 3:
-            return 'Dropped';
-        default:
-            return 'Unknown';
     }
 }

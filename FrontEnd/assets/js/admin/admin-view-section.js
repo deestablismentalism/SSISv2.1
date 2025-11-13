@@ -5,17 +5,50 @@ document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('admin-view-section-edit-modal');
     const modalContent = document.getElementById('admin-view-section-edit-content');
 
+    if (!editBtn || !modal || !modalContent) {
+        console.error('Required elements not found:', {editBtn, modal, modalContent});
+        return;
+    }
+
     const sectionId = new URLSearchParams(window.location.search).get('section_id');
-    console.log(sectionId);
+    console.log('Section ID:', sectionId);
+    
     editBtn.addEventListener('click', function() {
-        modal.style.display = 'block';
+        console.log('Edit button clicked');
+        modal.style.display = 'flex';
         modalContent.innerHTML = loadingText;
         fetch(`../../../BackEnd/templates/admin/fetchEditSectionForm.php?section_id=${sectionId}`)
         .then(response => response.text())
         .then(data=> {
             modalContent.innerHTML = modalHeader();
             modalContent.innerHTML += data;
-            close(modal);
+            
+            // Manual close button handler since close button is nested
+            const closeButton = modalContent.querySelector('.close, .close-modal');
+            if (closeButton && !closeButton.hasAttribute('data-listener-added')) {
+                closeButton.setAttribute('data-listener-added', 'true');
+                closeButton.addEventListener('click', function(){
+                    modal.style.display = 'none';
+                });
+            }
+            
+            // Add cancel button event listener
+            const cancelBtn = modalContent.querySelector('.btn-cancel');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                });
+            }
+            
+            // Close on outside click
+            if (!modal.hasAttribute('data-outside-listener-added')) {
+                modal.setAttribute('data-outside-listener-added', 'true');
+                modal.addEventListener('click', function(event) {
+                    if (event.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            }
 
             // Initialize student selection after form is loaded
             setTimeout(() => {
@@ -92,27 +125,43 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(data=> {
                     if (data.success  && data.partialSuccess) {
                         let failMessage = data.message.join('\n- ');
-                        alert(`Some updates failed \n ${failMessage}`);
+                        Notification.show({
+                            type: "error",
+                            title: "Error",
+                            message: `Some updates failed \n ${failMessage}`
+                        });
                         setTimeout(()=>{
                             window.location.reload();
                         }, 1000);
                     }
                     else if(!data.success) {
-                        alert(data.message);
+                        Notification.show({
+                            type: data.success ? "success" : "error",
+                            title: data.success ? "Success" : "Error",
+                            message: data.message
+                        });
                         // Remove loading state
                         formButton.classList.remove('loading');
                         formButton.disabled = false;
                         if (cancelButton) cancelButton.disabled = false;
                     }
                     else {
-                        alert(data.message);
+                        Notification.show({
+                            type: data.success ? "success" : "error",
+                            title: data.success ? "Success" : "Error",
+                            message: data.message
+                        });
                         setTimeout(()=>{
                             window.location.reload();
                         }, 1000);
                     }
                 })
                 .catch(error=>{
-                    alert(error);
+                    Notification.show({
+                        type: "error",
+                        title: "Error",
+                        message: error
+                    });
                     console.log(error);
                     // Remove loading state on error
                     formButton.classList.remove('loading');

@@ -88,26 +88,36 @@ session_start();
             <form id="reset-form">
                 <div class="form-group">
                     <label for="new-password">New Password</label>
-                    <input 
-                        type="password" 
-                        id="new-password" 
-                        name="new_password" 
-                        required
-                        minlength="8"
-                        placeholder="Enter new password"
-                    >
+                    <div class="password-group">
+                        <input 
+                            type="password" 
+                            id="new-password" 
+                            name="new_password" 
+                            required
+                            minlength="8"
+                            placeholder="Enter new password"
+                        >
+                        <button type="button" class="password-toggle" id="toggle-new-password">
+                            <img src="./assets/imgs/eye-regular.svg" alt="Toggle Password" class="eye-icon" />
+                        </button>
+                    </div>
                     <small class="form-hint">Minimum 8 characters</small>
                 </div>
 
                 <div class="form-group">
                     <label for="confirm-password">Confirm Password</label>
-                    <input 
-                        type="password" 
-                        id="confirm-password" 
-                        name="confirm_password" 
-                        required
-                        placeholder="Confirm new password"
-                    >
+                    <div class="password-group">
+                        <input 
+                            type="password" 
+                            id="confirm-password" 
+                            name="confirm_password" 
+                            required
+                            placeholder="Confirm new password"
+                        >
+                        <button type="button" class="password-toggle" id="toggle-confirm-password">
+                            <img src="./assets/imgs/eye-regular.svg" alt="Toggle Password" class="eye-icon" />
+                        </button>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary" id="reset-password-btn">

@@ -1,5 +1,6 @@
 export function close(modal) { // global close util
-    const closeButton = modal.querySelector('.close');
+    // Support both .close and .close-modal classes
+    const closeButton = modal.querySelector('.close, .close-modal');
     if(closeButton && !closeButton.hasAttribute('data-listener-added')) {
         closeButton.setAttribute('data-listener-added', 'true');
         closeButton.addEventListener('click', function(){

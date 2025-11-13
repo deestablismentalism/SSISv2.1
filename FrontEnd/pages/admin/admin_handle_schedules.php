@@ -3,7 +3,8 @@ ob_start();
 require_once __DIR__ . '/../../../BackEnd/admin/views/adminSchedulesView.php';
 require_once __DIR__ . '/../../../BackEnd/common/isAcademicYearSet.php';
 $pageJs = '<script type="module" src="../../assets/js/admin/admin-handle-schedules.js" defer></script>';
-$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-handle-schedules.css">';
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-modal-shared.css">
+            <link rel="stylesheet" href="../../assets/css/admin/admin-handle-schedules.css">';
 $view = new adminSchedulesView();
 $isSet = new isAcademicYearSet();
 ?>

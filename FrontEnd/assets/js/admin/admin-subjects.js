@@ -50,6 +50,14 @@ document.addEventListener('DOMContentLoaded', function() {
             
             close(modal);
             
+            // Add cancel button event listener
+            const cancelBtn = modalContent.querySelector('.btn-cancel');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    window.location.href = 'admin_subjects.php';
+                });
+            }
+            
             const form = document.getElementById('add-subject-form');
             let isSubmitting = false;
             
@@ -316,6 +324,14 @@ document.addEventListener('DOMContentLoaded', function() {
             
             close(modal);
             
+            // Add cancel button event listener
+            const cancelBtn = modalContent.querySelector('.btn-cancel');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    window.location.href = 'admin_subjects.php';
+                });
+            }
+            
             const form = document.getElementById('assign-teacher-form');
             const submitButton = form.querySelector('.submit-button');
             
@@ -398,6 +414,14 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             
             close(modal);
+            
+            // Add cancel button event listener
+            const cancelBtn = modalContent.querySelector('.btn-cancel');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    window.location.href = 'admin_subjects.php';
+                });
+            }
             
             const form = document.getElementById('batch-assign-teacher-form');
             const submitButton = form.querySelector('.submit-button');

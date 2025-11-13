@@ -290,51 +290,6 @@ body {
   font-style: italic;
 }
 
-/* ========== MODAL ========== */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.65);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal.active {
-  display: flex;
-}
-
-.modal-content {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 1rem;
-  padding: 2rem;
-  width: 90%;
-  max-width: 600px;
-  color: var(--text-color);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-}
-
-.modal-content button[type="submit"] {
-  color: #baeeff;
-  padding: .5rem;
-  background: #0087ffc2;
-  border-radius: 1.5rem;
-  text-align: left;
-  border: 1px solid #ffffff4f;
-  cursor: pointer;
-}
-
-.modal-content input[type="text"] {
-  border: 1px solid white;
-  border-radius: 12px;
-  padding: .5rem;
-  margin: 1rem;
-  background: #a8a8a861;
-}
-
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
   .admin-grade-levels-content {

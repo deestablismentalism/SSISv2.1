@@ -19,9 +19,32 @@ class staffPendingEnrollmentsView {
             }
             else {
                 echo '<table class="enrollments">';
-                echo $this->tableTemplate->returnHorizontalTitles([
-                    'LRN','Student Name','Age', 'Birth Date', 'Biological Sex', 'Display Enrollment Information'
-                ],'pending-enrollees');
+                echo '<thead>';
+                echo '<tr class="pending-enrollees">';
+                echo '<th>LRN</th>';
+                echo '<th class="sortable" data-column="1" data-order="none">
+                        <div class="th-content">
+                            <span>Student Name</span>
+                            <span class="sort-arrows">
+                                <span class="arrow-up">▲</span>
+                                <span class="arrow-down">▼</span>
+                            </span>
+                        </div>
+                      </th>';
+                echo '<th>Age</th>';
+                echo '<th class="sortable" data-column="3" data-order="none">
+                        <div class="th-content">
+                            <span>Grade Level</span>
+                            <span class="sort-arrows">
+                                <span class="arrow-up">▲</span>
+                                <span class="arrow-down">▼</span>
+                            </span>
+                        </div>
+                      </th>';
+                echo '<th>Biological Sex</th>';
+                echo '<th>Display Enrollment Information</th>';
+                echo '</tr>';
+                echo '</thead>';
                 echo '<tbody id="query-table">';
                 foreach($data['data'] as $rows) {
                     $middleName = !is_null($rows['Student_Middle_Name']) ? $rows['Student_Middle_Name'] : '';
@@ -29,9 +52,10 @@ class staffPendingEnrollmentsView {
                     $age = !is_null($rows['Age']) ? $rows['Age'] : 'No Age available';
                     $sex = !empty($rows['Sex']) ? $rows['Sex'] : 'No Biological Sex provided';
                     $lrn = !is_null($rows['Learner_Reference_Number']) ? $rows['Learner_Reference_Number'] : 'No LRN';
+                    $gradeLevel = !empty($rows['Grade_Level']) ? $rows['Grade_Level'] : 'N/A';
                     $button = new safeHTML('<button class="view-button" data-id="' . $rows['Enrollee_Id'] . '"> <img src="../../assets/imgs/edit-white.png" loading="lazy" alt="edit"></button>');
                     echo $this->tableTemplate->returnHorizontalRows([
-                        $lrn, $fullName,$age,$rows['Birth_Date'],$sex,$button
+                        $lrn, $fullName, $age, $gradeLevel, $sex, $button
                     ]);
                 }
                 echo '</tbody></table>';

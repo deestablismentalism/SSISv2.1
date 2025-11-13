@@ -9,9 +9,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const resendBtn = document.getElementById('resend-otp-btn');
     const phoneInput = document.getElementById('phone-number');
     
+    const toggleNewPassword = document.getElementById('toggle-new-password');
+    const toggleConfirmPassword = document.getElementById('toggle-confirm-password');
+    const newPasswordInput = document.getElementById('new-password');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    
     let countdownInterval;
     let phoneNumber = '';
     let otpToken = '';
+
+    toggleNewPassword.addEventListener('click', function() {
+        const type = newPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        newPasswordInput.setAttribute('type', type);
+    });
+
+    toggleConfirmPassword.addEventListener('click', function() {
+        const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        confirmPasswordInput.setAttribute('type', type);
+    });
 
     phoneInput.addEventListener('input', function(e) {
         this.value = this.value.replace(/\D/g, '').substring(0, 11);

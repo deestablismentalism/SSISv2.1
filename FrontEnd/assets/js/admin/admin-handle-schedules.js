@@ -19,41 +19,106 @@ document.addEventListener('DOMContentLoaded',function(){
         modalContent.innerHTML = modalHeader();
         const allDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
         const schedInputs = {};
+        
+        // Create schedule table container
+        const scheduleTableContainer = document.createElement('div');
+        scheduleTableContainer.classList.add('schedule-table-container');
+        
+        // Create the main table
+        const table = document.createElement('table');
+        table.classList.add('schedule-input-table');
+        
+        // Create table header
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        
+        const dayHeader = document.createElement('th');
+        dayHeader.textContent = 'Day';
+        dayHeader.classList.add('day-header');
+        headerRow.appendChild(dayHeader);
+        
+        const startHeader = document.createElement('th');
+        startHeader.textContent = 'Time Start';
+        startHeader.classList.add('time-start-header');
+        headerRow.appendChild(startHeader);
+        
+        const endHeader = document.createElement('th');
+        endHeader.textContent = 'Time End';
+        endHeader.classList.add('time-end-header');
+        headerRow.appendChild(endHeader);
+        
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+        
+        // Create table body
+        const tbody = document.createElement('tbody');
+        
         allDays.forEach(day => {
             const times = result.data[day] || {Time_Start: '', Time_End: ''};
-            // Create row wrapper
-            const row = document.createElement('div');
-            row.classList.add('day-time-row');
-            // Label
-            const label = document.createElement('label');
-            label.textContent = day;
-            row.appendChild(label);
-            // Time start input
+            
+            // Create row
+            const row = document.createElement('tr');
+            row.classList.add('schedule-row');
+            
+            // Day label cell
+            const dayCell = document.createElement('td');
+            dayCell.classList.add('day-cell');
+            const dayLabel = document.createElement('label');
+            dayLabel.textContent = day;
+            dayLabel.classList.add('day-label');
+            dayCell.appendChild(dayLabel);
+            row.appendChild(dayCell);
+            
+            // Time start cell
+            const startCell = document.createElement('td');
+            startCell.classList.add('time-start-cell');
             const startInput = document.createElement('input');
             startInput.type = 'time';
-            startInput.name = `time_start[${day}]`
+            startInput.name = `time_start[${day}]`;
+            startInput.classList.add('time-input', 'time-start-input');
             startInput.min = '07:00';
             startInput.max = '17:00';
             startInput.value = times.Time_Start;
-            row.appendChild(startInput);
-            // Time end input
+            startCell.appendChild(startInput);
+            row.appendChild(startCell);
+            
+            // Time end cell
+            const endCell = document.createElement('td');
+            endCell.classList.add('time-end-cell');
             const endInput = document.createElement('input');
             endInput.type = 'time';
             endInput.name = `time_end[${day}]`;
+            endInput.classList.add('time-input', 'time-end-input');
             endInput.min = '07:00';
             endInput.max = '17:00';
             endInput.value = times.Time_End;
-            row.appendChild(endInput);
-            //APPEND ALL TO ARRAY
+            endCell.appendChild(endInput);
+            row.appendChild(endCell);
+            
+            // Store inputs
             schedInputs[day] = {startInput, endInput};
-            modalContent.appendChild(row);
+            
+            tbody.appendChild(row);
         });
+        
+        table.appendChild(tbody);
+        scheduleTableContainer.appendChild(table);
+        modalContent.appendChild(scheduleTableContainer);
         //SAVE BTN
         const buttons = document.createElement('div');
-        buttons.classList.add('action-buttons');
+        buttons.classList.add('modal-footer');
+        
+        //CANCEL BTN
+        const cancelBtn = document.createElement('button');
+        cancelBtn.textContent = 'Cancel';
+        cancelBtn.type = 'button';
+        cancelBtn.classList.add('btn-cancel');
+        cancelBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+        
         const saveBtn = document.createElement('button');
         saveBtn.textContent = 'Save Schedule';
         saveBtn.type = 'button';
+        saveBtn.classList.add('btn-submit');
         let isSubmitting = false;
         saveBtn.addEventListener('click', async () => {
             const schedules = [];
@@ -69,22 +134,25 @@ document.addEventListener('DOMContentLoaded',function(){
             isSubmitting = true;
             const result = await submitSchedules(secSubId, schedules);
             if (!result.success) {
-                alert(result.message);
+                Notification.show({
+                    type: "error",
+                    title: "Error",
+                    message: result.message
+                });
                 isSubmitting = false;
                 saveBtn.disabled = false;
             } else {
-                alert(result.message);
+                Notification.show({
+                    type: result.success ? "success" : "error",
+                    title: result.success ? "Success" : "Error",
+                    message: result.message
+                });
                 setTimeout(() => window.location.reload(), 1000);
             }
         });
-        //CANCEL BTN
-        const cancelBtn = document.createElement('button');
-        cancelBtn.textContent = 'Cancel';
-        cancelBtn.type = 'button';
-        cancelBtn.addEventListener('click', () => { modal.style.display = 'none'; });
 
-        buttons.appendChild(saveBtn);
         buttons.appendChild(cancelBtn);
+        buttons.appendChild(saveBtn);
         modalContent.appendChild(buttons);
         // Finally, show modal
         modal.style.display = 'block';

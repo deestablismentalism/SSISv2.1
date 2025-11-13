@@ -27,13 +27,21 @@ document.addEventListener('DOMContentLoaded',function(){
         const formData = new FormData(form);
         const result = await postSchoolYearDetails(formData);
         if(!result.success) {
-            alert(result.message);
+            Notification.show({
+                type: result.success ? "error" : "error",
+                title: result.success ? "Error" : "Error",
+                message: result.message
+            });
             isSubmitting = false;
             button.disabled = false;
             button.style.backgroundColor = 'green';
         }
         else {
-            alert(result.message);
+            Notification.show({
+                type: result.success ? "success" : "error",
+                title: result.success ? "Success" : "Error",
+                message: result.message
+            });
             setTimeout(()=> window.location.reload(),1000);
         }
     })

@@ -9,7 +9,9 @@ if (!isset($_SESSION['Staff']['User-Id']) || !isset($_SESSION['Staff']['Staff-Id
 
 $pageTitle = "Announcements";
 $currentPage = "announcements";
-$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-announcements.css">';
+
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-modal-shared.css">
+            <link rel="stylesheet" href="../../assets/css/admin/admin-announcements.css">';
 $pageJs = '<script type="module" src="../../assets/js/admin/admin-announcements.js" defer></script>';
 
 ob_start();

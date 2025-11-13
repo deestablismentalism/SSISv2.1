@@ -23,8 +23,9 @@ class adminStudentsView {
                 $middleInitial = $rows['Middle_Name'] === null ? '' : substr($rows['Middle_Name'], 0, 1) . ".";
                 $lrn = $rows['LRN'] === null ? 'LRN is not set' : $rows['LRN'];
                 $statusText = (string)$rows['Status'];
+                $statusNumeric = (int)$rows['Student_Status'];
                 $rowData = ' data-grade="' . htmlspecialchars($rows['Grade_Level']) . '"' .
-                        ' data-status="' . htmlspecialchars((string)$rows['Status']) . '"' .
+                        ' data-status="' . $statusNumeric . '"' .
                         ' data-section="' . htmlspecialchars($rows['Section_Name'] ?? 'Section is not set') . '"';
                 echo '<tr class="student-rows"' . $rowData . '> 
                     <td>' . htmlspecialchars($rows['Last_Name']).','. 

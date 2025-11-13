@@ -46,14 +46,18 @@ class staffEnrollmentTransactionsModel {
             $stmt->bindParam(':enrollment_status', $enrollmentStatus);
             $stmt->bindParam(':remarks', $remarks);
             $stmt->bindParam(':isApproved', $isApproved);
+            $stmt->bindParam(':syId', $schoolYearId, PDO::PARAM_INT);
             $stmt->execute();
             
             if($stmt->rowCount() === 0) {
+                $this->conn->rollBack();
                 return false;
             }
+            $this->conn->commit();
             return true;
         }
         catch(PDOException $e) {
+            $this->conn->rollBack();
             error_log("[".date('Y-m-d H:i:s')."]".$e->getMessage()."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to insert enrollee transaction',431,$e);
         }
