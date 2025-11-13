@@ -282,9 +282,6 @@ class adminEnrolleesModel {
             $sql = "UPDATE enrollee SET Enrollment_Status = :status WHERE Enrollee_Id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([':id'=>$enrolleeId,':status'=>$status]);
-            if($stmt->rowCount() === 0) {
-                return false;
-            }
             return true;
         }
         catch(PDOException $e) {

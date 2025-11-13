@@ -5,8 +5,10 @@ require_once __DIR__ . '/../../assets/components.php';
 $component = new components();
 
 $pageTitle = "All Teachers";
+
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-modal-shared.css">
+            <link rel="stylesheet" href="../../assets/css/admin/admin-all-teachers.css">';
 $pageJs = '<script type="module" src="../../assets/js/admin/admin-all-teachers.js" defer></script>';
-$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-all-teachers.css">';
 
 ob_start();
 ?>

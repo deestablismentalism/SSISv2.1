@@ -35,7 +35,7 @@ class adminStudentsModel {
                             se.Section_Name
                     FROM students AS s
                     LEFT JOIN grade_level AS g ON s.Grade_Level_Id = g.Grade_Level_Id
-                    LEFT JOIN sections AS se ON s.Section_Id = se.Section_Id";
+                    LEFT JOIN sections AS se ON s.Section_Id = se.Section_Id WHERE Is_Archived = 0";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -519,7 +519,7 @@ class adminStudentsModel {
             throw new DatabaseException('Failed to search for students',0, $e);
         }
     }
-    private function deleteStudent(int $studentId):bool {
+    public function deleteStudent(int $studentId):bool {
         try {
             $sql = "DELETE FROM students WHERE Student_Id = :id";
             $stmt = $this->conn->prepare($sql);
@@ -530,12 +530,15 @@ class adminStudentsModel {
             return true;
         }
         catch(PDOException $e) {
+            if($e->errorInfo[1] == 1451) {
+                throw new DatabaseException("Cannot delete this student. Still has related records",0,$e);
+            }
             throw new DatabaseException("Failed to delete student",0,$e);
         }
     }
-    private function archiveStudent(int $studentId):bool {
+    public function archiveStudent(int $studentId):bool {
         try {
-            $sql = "INSERT INTO archive_students SELECT * FROM students WHERE Student_Id =:id";
+            $sql = "UPDATE students SET Is_Archived = 1 WHERE Student_Id =:id";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([':id'=>$studentId]);
             if($stmt->rowCount() === 0) {
@@ -548,45 +551,17 @@ class adminStudentsModel {
             throw new DatabaseException('Failed to archive the Student',0,$e);
         }
     }
-    public function deleteAndArchiveStudent(int $studentId) :array {
-        $result = [
-            'success'=> true,
-            'message'=> ''
-        ];
+    public function restoreStudent(int $studentId):bool {
         try {
-            $this->conn->beginTransaction();
-            $archived = $this->archiveStudent($studentId);
-            $deleted = $this->deleteStudent($studentId);
-            if(!$archived && !$deleted) {
-                $this->conn->rollBack();
-                $result = [
-                    'success'=> false,
-                    'message'=> 'Student deletion and archiving failed'
-                ];
+            $sql = "UPDATE students SET Is_Archived = 0 WHERE Student_Id =:id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':id'=>$studentId]);
+            if($stmt->rowCount() === 0) {
+                return false;
             }
-            if(!$archived) {
-                $this->conn->rollBack();
-                $result = [
-                    'success'=> false,
-                    'message'=> 'Student deletion failed. Archive operation failed'
-                ];
-            }
-            if(!$deleted) {
-                $this->conn->rollBack();
-                $result = [
-                    'success'=> true,
-                    'message'=> 'Student deletion operation failed'
-                ];
-            }
-            $this->conn->commit();
-            $result = [
-                'success'=> true,
-                'message'=> 'Student successfully deleted. Please check the Students archive to restore'
-            ];
-            return $result;
+            return true;
         }
         catch(PDOException $e) {
-            $this->conn->rollBack();
             error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to archive the Student',0,$e);
         }

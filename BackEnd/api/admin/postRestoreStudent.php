@@ -10,7 +10,7 @@ if($_SERVER['REQUEST_METHOD'] !== 'POST') {
 try {
     $studentId = isset($_POST['id']) ? (int)$_POST['id'] : null;
     $controller = new adminStudentsController();
-    $response = $controller->apiTransferAndRestoreStudent($studentId);
+    $response = $controller->apiRestoreStudent($studentId);
     http_response_code($response['httpcode']);
     echo json_encode($response);
     exit();

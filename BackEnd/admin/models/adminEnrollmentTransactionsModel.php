@@ -137,12 +137,10 @@ class adminEnrollmentTransactionsModel {
             $sql = "UPDATE enrollment_transactions SET Transaction_Status = :transaction WHERE Enrollment_Transaction_Id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([':transaction'=>$transactionStatus,':id'=>$transactionId]);
-            if($stmt->rowCount() === 0) {
-                return false;
-            }
             return true;
         }
         catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to update the transaction status',0,$e);
         }
     }
