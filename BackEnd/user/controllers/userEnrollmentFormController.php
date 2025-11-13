@@ -172,8 +172,6 @@ class userEnrollmentFormController {
                 'httpcode'=>500,
                 'success'=> false,
                 'message'=> $e->getMessage(),
-                'error_code'=> $e->getCode(),
-                'error_message'=> $e->getPrevious()->getMessage(),
                 'data'=> []
             ];
         }
@@ -183,7 +181,7 @@ class userEnrollmentFormController {
                 'success'=> false,
                 'message'=> 'There was a problem on our side: ' .$e->getMessage(),
                 'error_code'=> $e->getCode(),
-                'error_message'=> $e->getPrevious()->getMessage(),
+                'error_message'=> $e->getPrevious()?->getMessage(),
                 'data'=> []
             ];
         }
@@ -279,8 +277,6 @@ class userEnrollmentFormController {
                 'httpcode'=>400,
                 'success'=> false,
                 'message'=> $e->getMessage(),
-                'error_code'=> $e->getCode(),
-                'error_message'=> $e->getPrevious()->getMessage(),
                 'data'=> []
             ];
         }
@@ -290,7 +286,7 @@ class userEnrollmentFormController {
                 'success'=> false,
                 'message'=> 'There was a problem on our side: ' .$e->getMessage(),
                 'error_code'=> $e->getCode(),
-                'error_message'=> $e->getPrevious()->getMessage(),
+                'error_message'=> $e->getPrevious()?->getMessage(),
                 'data'=> []
             ];
         }

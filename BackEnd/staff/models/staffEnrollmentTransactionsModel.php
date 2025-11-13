@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-
 require_once __DIR__ . '/../../core/dbconnection.php';
 require_once __DIR__ . '/../../Exceptions/DatabaseException.php';
 class staffEnrollmentTransactionsModel {
@@ -36,7 +35,7 @@ class staffEnrollmentTransactionsModel {
             $schoolYear = $this->getActiveSchoolYear();
             $schoolYearId = $schoolYear ? (int)$schoolYear['School_Year_Details_Id'] : null;
             if(is_null($schoolYearId)) {
-                throw new PDOException("Cannot insert.");
+                throw new DatabaseException("Cannot insert. Active year level not found");
             }
             $sql ="INSERT INTO enrollment_transactions(Enrollee_Id,Transaction_Code, Enrollment_Status, Staff_Id, Remarks, Is_Approved,School_Year_Details_Id)
                     VALUES (:enrollee_id, :transaction_code, :enrollment_status, :staff_Id,:remarks, :isApproved,:syId)";
