@@ -141,7 +141,7 @@ class userEnrollmentFormController {
             $filename = $saveImage['filename'];
             $filePath = $saveImage['filepath'];
             //attempt enrollee insert - userId can be null for admin enrollment
-            $insertEnrollee = $this->postFormModel->insert_enrollee($uId, $schoolYStart,$schoolYEnd,$hasLRN,$enrollGLevel,$lastGLevel,$lastYAttended,
+            $enrolleeId = $this->postFormModel->insert_enrollee($uId, $schoolYStart,$schoolYEnd,$hasLRN,$enrollGLevel,$lastGLevel,$lastYAttended,
             $lastSAttended,$sId,$sAddress,$sType,$initalSChoice,$initialSId,$initialSAddrress,
             $hasSpecialCondition,$hasAssistiveTech,$specialCondition,$assistiveTech,
             $hNumber,$subdName,$bName,$bCode,$mName,$mCode,$pName,$pCode,$rName,$rCode,
@@ -150,12 +150,12 @@ class userEnrollmentFormController {
             $gFName,$gLName,$gMName,$gEduAttainment,$gCpNum,$gIs4Ps,
             $stuFName,$stuLName,$stuMName,$stuSuffix,$lrn,$psaNum,$birthDate,$age,$sex,$religion,
             $natLang,$isCultural,$culturalG,$studentEmail,$enrollStat,$filename,$filePath);
-            if($insertEnrollee) {
+            if($enrolleeId > 0) {
                 return [
                     'httpcode'=> 201,
                     'success'=> true,
                     'message'=> 'Enrollment form submitted successfully',
-                    'data'=> []
+                    'data'=> ['enrollee_id' => $enrolleeId]
                 ];
             }
             else {

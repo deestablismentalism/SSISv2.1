@@ -35,7 +35,7 @@ class SendEnrollmentStatus {
                 $data = [
                     "message" => "Hello $Last_Name, $First_Name $Middle_Name! Your child, $Enrollee_Name, is successfully enrolled! For further announcements, please log on to your account or contact the school.",
                     "phoneNumbers" => ["+$Cleaned_Contact_Number"],
-                    "simNumber" => 1,
+                    "simNumber" => 2,
                     "senderId" => $senderId
                 ];
                 break;

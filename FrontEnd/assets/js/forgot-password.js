@@ -314,13 +314,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    window.addEventListener('click', function(e) {
-        if (e.target.classList.contains('modal')) {
-            hideModal(e.target);
-            clearInterval(countdownInterval);
-        }
-    });
-
     function showOTPModal() {
         const maskedPhone = maskPhoneNumber(phoneNumber);
         document.getElementById('masked-phone').textContent = maskedPhone;
