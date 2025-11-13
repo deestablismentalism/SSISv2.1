@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Modal handler for adding section
     addSectionBtn.addEventListener('click', function() {
-        modal.style.display = 'block';
+        modal.style.display = 'flex';
         modalContent.innerHTML = loadingText;
         fetch(`../../../BackEnd/templates/admin/fetchAddSectionForm.php`)
         .then(response => response.text())
@@ -18,6 +18,14 @@ document.addEventListener('DOMContentLoaded', function() {
             modalContent.innerHTML = data;
             const form = document.getElementById('add-section-form');
             const button = document.querySelector('button[type="submit"]');
+            
+            // Add cancel button event listener
+            const cancelBtn = modalContent.querySelector('.btn-cancel');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    window.location.href = 'admin_grade_levels.php';
+                });
+            }
             
             form.addEventListener('submit', function(e){
                 e.preventDefault();

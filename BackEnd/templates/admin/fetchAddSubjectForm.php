@@ -4,11 +4,15 @@
         <input type="text" placeholder="enter subject name..." name="subject-name">
         <div class="radio-container">
             <p> Is this subject being taught in many grade levels?</p>
-            <div> 
-                <input type="radio" id="multiLevelYes" name="subject" value="Yes">
-                <label for="multiLevelYes">  Yes </label>
-                <input type="radio" id="multiLevelNo" name="subject" value="No">
-                <label for="multiLevelNo"> No </label>
+            <div class="radio-options"> 
+                <label for="multiLevelYes" class="radio-label">
+                    <input type="radio" id="multiLevelYes" name="subject" value="Yes">
+                    <span class="radio-text">Yes</span>
+                </label>
+                <label for="multiLevelNo" class="radio-label">
+                    <input type="radio" id="multiLevelNo" name="subject" value="No">
+                    <span class="radio-text">No</span>
+                </label>
             </div>
         </div>
         <div class="select-container" id="select-container">

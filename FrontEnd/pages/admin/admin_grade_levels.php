@@ -1,7 +1,8 @@
 <?php 
 ob_start();
 $pageTitle = "Admin Grade Levels";
-$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-grade-levels.css">'; 
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-modal-shared.css">
+            <link rel="stylesheet" href="../../assets/css/admin/admin-grade-levels.css">'; 
 $pageJs= '<script type="module" src="../../assets/js/admin/admin-grade-levels.js" defer></script>';
     
 ?>
@@ -28,8 +29,10 @@ $pageJs= '<script type="module" src="../../assets/js/admin/admin-grade-levels.js
         </div>
     </div>
     
-    <div id="add-section-modal" class="modal">
-        <div class="modal-content"></div>
+    <div id="add-section-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-content"></div>
+        </div>
     </div>
 </div>
 
