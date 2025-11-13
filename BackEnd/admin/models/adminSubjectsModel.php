@@ -127,8 +127,6 @@ class adminSubjectsModel {
                     }
                     //CREATE A RECORD OF EACH SUBJECT AND SECTION BASED ON RELATED GRADE LEVEL
                     $this->reconcileSectionSubjectsByGradeLevel($convertedId);
-                    // Link subject to all sections in this grade level
-                    $sectionIds = $this->getAllRelatedSectionIdByGradeLevel($convertedId);
                     $results['success'][] = $convertedId;
                     
                 } catch (PDOException $e) {
