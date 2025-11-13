@@ -33,17 +33,18 @@ class userAllStudentsView {
                         </thead>
                         <tbody>';
                 foreach($studentData['data'] as $rows) {
-                    $firstName = htmlspecialchars($rows['Student_First_Name']);
-                    $middleInitial = !empty($rows['Student_Middle_Name']) ? substr($rows['Student_Middle_Name'], 0, 1) . "." : "";
-                    $lastName = htmlspecialchars($rows['Student_Last_Name']);
+                    $firstName = htmlspecialchars($rows['First_Name']);
+                    $middleInitial = !empty($rows['Middle_Name']) ? substr($rows['Middle_Name'], 0, 1) . "." : "";
+                    $lastName = htmlspecialchars($rows['Last_Name']);
                     $fullName = $lastName . ', ' . $firstName . ' ' . $middleInitial;
+                    $button = (int)$rows['Student_Status'] === 0 ? 
+                    '<button data-student="'.$rows['Student_Id'].'" class="reenroll-btn">
+                     <img src="../../assets/imgs/arrow-rotate-right-solid-full.svg">Re-enroll</button>'
+                    : 
+                    '<a href="./user_students_page.php?student-id='.$rows['Student_Id'].'" class="visit-btn"> Visit Student Page </a>';
                     echo '<tr>
                             <td class="user-student-data">' . $fullName. '</td> 
-                            <td class="view-button">
-                                <a href="./user_students_page.php?student-id='.$rows['Student_Id'].'" class="visit-btn">
-                                    Visit Student Page
-                                </a>
-                            </td>
+                                <td class="view-button">'.$button.'</td>
                           </tr>';
                 }
                 echo '</tbody></table>';   

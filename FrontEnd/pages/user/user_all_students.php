@@ -3,6 +3,7 @@ ob_start();
 require_once __DIR__ . '/../session_init.php';
 require_once __DIR__ . '/../../../BackEnd/user/views/userAllStudentsView.php';
 $pageTitle = 'Submitted Forms';
+$pageJs = '<script type="module" src="../../assets/js/user/user-all-students.js" defer></script>';
 $pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-all-students.css">';
 ?>
 <div class="user-all-enrolled-content">
