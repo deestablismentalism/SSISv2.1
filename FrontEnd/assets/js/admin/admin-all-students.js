@@ -267,7 +267,7 @@ async function deleteAndArchiveStudent(studentId) {
         }
     }
 }
-const TIME_OUT = 20000;
+const TIME_OUT = 30000;
 async function deleteAndArchive(studentId) {
     const controller = new AbortController();
     const timeoutId = setTimeout(()=> controller.abort(),TIME_OUT);
