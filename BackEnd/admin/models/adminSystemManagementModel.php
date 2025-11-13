@@ -24,7 +24,7 @@ class adminSystemManagementModel {
         try {
             $sql = "SELECT School_Year_Details_Id, 
                     Starting_Date, Ending_Date
-                FROM school_year_details";
+                FROM school_year_details WHERE Is_Expired = 0";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -40,7 +40,7 @@ class adminSystemManagementModel {
             $sql = "SELECT School_Year_Details_Id, 
                  DATE_FORMAT(Starting_Date, '%W, %M %e, %Y') AS start_date,
                  DATE_FORMAT(Ending_Date, '%W, %M %e, %Y') AS end_date
-                FROM school_year_details";
+                FROM school_year_details WHERE Is_Expired = 0";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
