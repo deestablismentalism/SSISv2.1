@@ -67,6 +67,21 @@ require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
                             <input type=text id="search" placeholder="Search Name...">
                         </div>
                     </div>
+                    <div class="filter-container">
+                        <div class="filter-group">
+                            <label for="filter-grade">Grade Level:</label>
+                            <select id="filter-grade" class="filter-select">
+                                <option value="all">All Grades</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-sex">Biological Sex:</label>
+                            <select id="filter-sex" class="filter-select">
+                                <option value="all">All</option>
+                            </select>
+                        </div>
+                        <button id="clear-filters" class="clear-filters-btn">Clear Filters</button>
+                    </div>
                     <div class="menu-content">
                        <?php $pending->displayPendingEnrollees(); ?>
                     </div>
@@ -79,7 +94,8 @@ require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
         </div>
     </div>   
     <script type="module" src="../../assets/js/staff/staff-enrollee-popUp-handler.js" defer></script>
-    <script src="../../assets/js/admin/admin-searchPendingEnrollees.js" defer></script>
+    <script src="../../assets/js/staff/staff-filter-enrollees.js" defer></script>
+    <script src="../../assets/js/staff/staff-sort-enrollees.js" defer></script>
     <script src="../../assets/js/notifications.js" defer></script>
 </body>    
 </html>
