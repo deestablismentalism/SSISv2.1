@@ -39,7 +39,7 @@ class adminStudentsView {
                     <td> 
                         <button class="view-student" data-enrollee="'.$rows['Enrollee_Id'].'" data-student="'.$rows['Student_Id'].'"> <img src="../../assets/imgs/eye-white.svg" alt="View Student Information"></button> 
                         <button class="edit-student" data-enrollee="'.$rows['Enrollee_Id'].'" data-student="'.$rows['Student_Id'].'"> <img src="../../assets/imgs/edit-yellow-green.svg" alt="Edit Student Information"></button>
-                        <button class="delete-student" data-enrollee="'.$rows['Enrollee_Id'].'" data-student="'.$rows['Student_Id'].'"> <img src="../../assets/imgs/trash-solid.svg" alt="Delete Student Information"></button>
+                        <button class="delete-student" data-enrollee="'.$rows['Enrollee_Id'].'" data-student="'.$rows['Student_Id'].'"> <img src="../../assets/imgs/box-archive-solid-full.svg" alt="Archive Student Information"></button>
                     </td>
                 </tr>';
             }

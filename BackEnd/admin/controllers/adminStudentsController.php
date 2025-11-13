@@ -11,25 +11,101 @@ class adminStudentsController {
         $this->studentsModel = new adminStudentsModel();
     }
     //API
-    public function apiDeleteAndArchiveStudent(?int $studentId):array {
+        public function apiDeleteStudent(?int $studentId):array {
         try {
             if(is_null($studentId)) {
                 throw new IdNotFoundException('Student ID not found');
             }
-            $data = $this->studentsModel->deleteAndArchiveStudent($studentId);
-            if(!$data['success']) {
+            $data = $this->studentsModel->deleteStudent($studentId);
+            if(!$data) {
                 return [
                     'httpcode'=> 400,
-                    'success'=> $data['success'],
-                    'message'=>$data['message'],
+                    'success'=> false,
+                    'message'=> 'Failed to delete student',
                     'data'=> []
                 ];
             }
             return [
                 'httpcode'=> 200,
-                'success'=> $data['success'],
-                'message'=> $data['message'],
-                'data'=>[]
+                'success'=> true,
+                'message'=> 'Student successfully deleted',
+                'data'=> $data
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'httpcode'=> 500,
+                'success' => false,
+                'message' => 'Database error: ' . $e->getMessage(),
+                'data' => []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'httpcode'=> 500,
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+                'data' => []
+            ];
+        }
+    }
+    public function apiRestoreStudent(?int $studentId):array {
+        try {
+            if(is_null($studentId)) {
+                throw new IdNotFoundException('Student ID not found');
+            }
+            $data = $this->studentsModel->restoreStudent($studentId);
+            if(!$data) {
+                return [
+                    'httpcode'=> 400,
+                    'success'=> false,
+                    'message'=> 'Restoration failed',
+                    'data'=> []
+                ];
+            }
+            return [
+                'httpcode'=> 200,
+                'success'=> true,
+                'message'=> 'Student successfully restored',
+                'data'=> $data
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'httpcode'=> 500,
+                'success' => false,
+                'message' => 'Database error: ' . $e->getMessage(),
+                'data' => []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'httpcode'=> 500,
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+                'data' => []
+            ];
+        }
+    }
+    public function apiArchiveStudent(?int $studentId):array {
+        try {
+            if(is_null($studentId)) {
+                throw new IdNotFoundException('Student ID not found');
+            }
+            $data = $this->studentsModel->archiveStudent($studentId);
+            if(!$data) {
+                return [
+                    'httpcode'=> 400,
+                    'success'=> false,
+                    'message'=> 'Failed to archive student',
+                    'data'=> []
+                ];
+            }
+            return [
+                'httpcode'=> 200,
+                'success'=> true,
+                'message'=> 'Student successfully archived',
+                'data'=> $data
             ];
         }
         catch(DatabaseException $e) {

@@ -254,7 +254,7 @@ function editStudentDetails(studentId) {
 }
 
 async function deleteAndArchiveStudent(studentId) {
-    if (confirm('Are you sure you want to delete this student? This action cannot be undone.')) {
+    if (confirm('Are you sure you want to archive this student?')) {
         Loader.show();
         const result = await deleteAndArchive(studentId);
         if(!result.success) {
@@ -272,7 +272,7 @@ async function deleteAndArchive(studentId) {
     const controller = new AbortController();
     const timeoutId = setTimeout(()=> controller.abort(),TIME_OUT);
     try {
-        const response = await fetch(`../../../BackEnd/api/admin/postDeleteAndArchiveStudent.php`,{
+        const response = await fetch(`../../../BackEnd/api/admin/postArchiveStudent.php`,{
             signal: controller.signal,
             method: 'POST',
             headers: {

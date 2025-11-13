@@ -122,13 +122,16 @@ class adminSystemManagementModel {
                             WHEN 1 THEN 'Active'
                             WHEN 2 THEN 'Inactive'
                             WHEN 3 THEN 'Dropped'
+                            WHEN 4 THEN 'Transferred'
+                            WHEN 5 THEN 'Graduated'
                             ELSE 'Unknown'
                             END AS Status,
                             g.Grade_Level,
                             se.Section_Name
-                    FROM archive_students AS s
+                    FROM students AS s
                     LEFT JOIN grade_level AS g ON s.Grade_Level_Id = g.Grade_Level_Id
-                    LEFT JOIN sections AS se ON s.Section_Id = se.Section_Id";
+                    LEFT JOIN sections AS se ON s.Section_Id = se.Section_Id
+                    WHERE Is_Archived = 1";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

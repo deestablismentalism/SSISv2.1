@@ -2,6 +2,7 @@
 ob_start();
 $pageTitle = 'Students Archives';
 $pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-student-archives.css">';
+$pageJs = '<script src="../../assets/js/admin/admin-student-archives.js" defer></script>';
 require_once __DIR__ . '/../../../BackEnd/admin/views/adminSystemManagementView.php';
 $view = new adminSystemManagementView();
 ?>
