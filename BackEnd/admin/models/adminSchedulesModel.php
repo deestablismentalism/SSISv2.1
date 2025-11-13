@@ -255,7 +255,7 @@ class adminSchedulesModel {
                 $this->conn->rollBack();
                 return [
                     'success' => false,
-                    'message' => 'No active school year found.',
+                    'message' => 'Cannot insert. No valid academic year found',
                     'inserted' => [],
                     'skipped' => [],
                     'failed' => []

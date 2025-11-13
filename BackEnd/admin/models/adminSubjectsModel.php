@@ -225,17 +225,40 @@ class adminSubjectsModel {
             throw new DatabaseException('Failed to fetch sections by subject',0,$e);
         }
     }
+    private function getActiveSchoolYear() : ?array {
+        try {
+            $sql = "SELECT School_Year_Details_Id, start_year, end_year 
+                    FROM school_year_details 
+                    WHERE Is_Expired = 0 
+                    ORDER BY School_Year_Details_Id DESC 
+                    LIMIT 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $result ?: null;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch active school year', 0, $e);
+        }
+    }
     public function insertSubjectTeacher(int $sectionSubjectId, int $staffId) : bool {
         try {
-            $sql = "INSERT INTO section_subject_teachers(Staff_Id,Section_Subejcts_Id) 
-            VALUES(:staffId,:sectionSubjectId)";
+            $this->conn->beginTransaction();
+            $schoolYear = $this->getActiveSchoolYear();
+            $schoolYearId = $schoolYear ? (int)$schoolYear['School_Year_Details_Id'] : null;
+            if(is_null($schoolYearId)) {
+                throw new PDOException("Cannot insert. No valid academic year found");
+            }
+            $sql = "INSERT INTO section_subject_teachers(Staff_Id,Section_Subjects_Id,School_Year_Details_Id) 
+            VALUES(:staffId,:sectionSubjectId,:syId)";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':staffId',$staffId);
-            $stmt->bindParam(':sectionSubjectId',$sectionSubjectId);
-            $result = $stmt->execute();
+            $stmt->execute([':staffId'=>$staffId,':sectionSubjectId'=>$sectionSubjectId,':syId'=>$schoolYearId]);
             if($stmt->rowCount()===0) {
                 return false;
             }
+            $this->conn->commit();
             return true;
         }
         catch(PDOException $e) {

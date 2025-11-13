@@ -380,9 +380,9 @@ class adminSectionsModel {
             $schoolYear = $this->getActiveSchoolYear();
             $schoolYearId = $schoolYear ? (int)$schoolYear['School_Year_Details_Id'] : null;
             if(is_null($schoolYearId)) {
-                throw new PDOException("This school year's ID is not found");
+                throw new PDOException("Cannot insert. No valid academic year found");
             }
-            if($this->checkIfSectionAdviserExists($staffId)) {
+            if($this->checkIfSectionAdviserExists($staffId,$schoolYearId)) {
                 throw new PDOException("Staff assigned is already an adviser");
             }
             $sql = "INSERT INTO section_advisers(Section_Id,Staff_Id,School_Year_Details_Id)
@@ -393,18 +393,18 @@ class adminSectionsModel {
                 return false;
             }
             $this->conn->commit();
-            return $result;
+            return true;
         }
         catch(PDOException $e) {
             $this->conn->rollBack();
             throw new DatabaseException('Failed to update section adviser: ' . $e->getMessage(), 0, $e);
         }
     }
-    private function checkIfSectionAdviserExists(int $staffId):bool {
+    private function checkIfSectionAdviserExists(int $staffId, $syId):bool {
         try {
-            $sql = "SELECT 1 FROM section_advisers WHERE Staff_Id = :staffId";
+            $sql = "SELECT 1 FROM section_advisers WHERE Staff_Id = :staffId AND School_Year_Details_Id = :syId";
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute([':staffId'=>$staffId]);
+            $stmt->execute([':staffId'=>$staffId,':syId'=>$syId]);
             return (bool)$stmt->fetchColumn();
         }   
         catch(PDOException $e) {

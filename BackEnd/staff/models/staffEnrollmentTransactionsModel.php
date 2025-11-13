@@ -9,6 +9,24 @@ class staffEnrollmentTransactionsModel {
         $db = new Connect();
         $this->conn = $db->getConnection();
     }
+    private function getActiveSchoolYear() : ?array {
+        try {
+            $sql = "SELECT School_Year_Details_Id, start_year, end_year 
+                    FROM school_year_details 
+                    WHERE Is_Expired = 0 
+                    ORDER BY School_Year_Details_Id DESC 
+                    LIMIT 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $result ?: null;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch active school year', 0, $e);
+        }
+    }
     // function to insert any enrollment transaction
     public function insertEnrolleeTransaction(int $enrolleeId,string $transactionCode , 
     int $enrollmentStatus,int $staffId,string $remarks,int $isApproved):bool{ // F 4.3.1
