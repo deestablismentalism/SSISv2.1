@@ -178,7 +178,11 @@ class adminEnrolleesModel {
             $stmt->execute(['id' => $id]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            return (string)$result['directory'] ?: null;
+            if ($result === false || empty($result['directory'])) {
+                return null;
+            }
+            
+            return (string)$result['directory'];
         }
         catch(PDOException $e) {
             throw new DatabaseException('Failed to fetch PSA directory', 0 ,$e);
