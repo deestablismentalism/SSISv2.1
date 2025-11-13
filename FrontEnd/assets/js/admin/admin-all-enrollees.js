@@ -59,4 +59,51 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    
+    // Filtering functionality
+    const searchBox = document.getElementById('search');
+    const statusFilter = document.getElementById('status-filter');
+    const sourceFilter = document.getElementById('source-filter');
+    const table = document.querySelector('.enrollees-table tbody');
+    
+    function filterTable() {
+        const searchTerm = searchBox.value.toLowerCase();
+        const statusValue = statusFilter.value;
+        const sourceValue = sourceFilter.value;
+        const rows = table.querySelectorAll('tr');
+        
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            const statusBadge = row.querySelector('.status-badge');
+            const sourceBadge = row.querySelector('.source-badge');
+            
+            let matchesSearch = searchTerm === '' || text.includes(searchTerm);
+            let matchesStatus = statusValue === '' || 
+                (statusBadge && statusBadge.textContent.toLowerCase() === getStatusText(statusValue));
+            let matchesSource = sourceValue === '' || 
+                (sourceBadge && sourceBadge.textContent.toLowerCase() === sourceValue);
+            
+            row.style.display = (matchesSearch && matchesStatus && matchesSource) ? '' : 'none';
+        });
+        
+        updateCount();
+    }
+    
+    function getStatusText(value) {
+        const map = { '1': 'enrolled', '2': 'rejected', '3': 'pending', '4': 'archived' };
+        return map[value] || '';
+    }
+    
+    function updateCount() {
+        const visibleRows = table.querySelectorAll('tr:not([style*="display: none"])').length;
+        const totalRows = table.querySelectorAll('tr').length;
+        const countElement = document.querySelector('.count-number');
+        if (countElement) {
+            countElement.textContent = `${visibleRows} / ${totalRows}`;
+        }
+    }
+    
+    if (searchBox) searchBox.addEventListener('input', filterTable);
+    if (statusFilter) statusFilter.addEventListener('change', filterTable);
+    if (sourceFilter) sourceFilter.addEventListener('change', filterTable);
 });

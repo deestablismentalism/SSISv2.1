@@ -14,8 +14,8 @@ $model = new userEnrolleesModel();
 
 try {
     $enrollmentStatus = $model->getUserStatus($userId, $enrolleeId);
-    $transactionData = $model->sendTransactionStatus($enrolleeId);
-    $enrollmentInfo = $model->getEnrollmentInformation($enrolleeId);
+    $transactionData = $model->getUserTransactionStatus($enrolleeId);
+    $enrollmentInfo = $model->getEnrolleeInformation($enrolleeId);
     $statusLabels = [
         1 => 'Enrolled',
         2 => 'Denied',
@@ -34,7 +34,7 @@ try {
     $statusCssClass = $statusClass[$enrollmentStatus] ?? '';
     
     if (!empty($enrollmentInfo)) {
-        $info = $enrollmentInfo[0];
+        $info = $enrollmentInfo;
         $studentName = htmlspecialchars(($info['Student_First_Name'] ?? '') . ' ' . ($info['Student_Middle_Name'] ?? '') . ' ' . ($info['Student_Last_Name'] ?? ''));
         $lrn = htmlspecialchars((string)($info['Learner_Reference_Number'] ?? 'N/A'));
         $gradeLevel = htmlspecialchars((string)($info['E_Grade_Level'] ?? 'N/A'));

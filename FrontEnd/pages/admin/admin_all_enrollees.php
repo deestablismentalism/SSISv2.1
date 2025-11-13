@@ -18,6 +18,20 @@ $view = new adminAllEnrolleesView();
                         ?>
                     </span>
                 </div>
+                <div class="filter-group">
+                    <select id="status-filter" class="filter-select">
+                        <option value="">All Statuses</option>
+                        <option value="1">Enrolled</option>
+                        <option value="2">Rejected</option>
+                        <option value="3">Pending</option>
+                        <option value="4">Archived</option>
+                    </select>
+                    <select id="source-filter" class="filter-select">
+                        <option value="">All Sources</option>
+                        <option value="admin">Admin Created</option>
+                        <option value="user">User Created</option>
+                    </select>
+                </div>
             </div>
             <div class="header-right">
                 <input type="text" id="search" class="search-box" placeholder="Search by name, LRN, grade level, or status...">

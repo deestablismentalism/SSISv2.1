@@ -1,28 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+/*====================================*/
+/*   TEACHER DASHBOARD STYLES          */
+/*====================================*/
+
+/* ============================================ */
+/* DEFAULT/BASE STYLES - 1440px and above */
+/* ============================================ */
+
+:root {
+  --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  --card-bg: rgb(36 186 255 / 28%);
+  --text-color: #120303;
+  --main-color: #1c4a72;
+  --accent-color: #00b4d8;
+  --secondary-color: #F1BD22;
+  --hover-accent: #48cae4;
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --hover-glow: rgba(255, 255, 255, 0.3);
+  --success: #44d07b;
+  --warning: #ffcc00;
+  --danger: #ff5f5f;
+  --border-radius: 1rem;
+  --transition: all 0.3s ease;
+  
+  /* Optimized for 1440px */
+  --base-padding: 1.75rem;
+  --card-padding: 1.5rem;
+  --gap-size: 1.5rem;
+  --font-main: "Poppins", "Segoe UI", sans-serif;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
 .teacher-dashboard-content {
-    margin: 1.5rem;
-    font-family: var(--main-fonts);
+    padding: var(--base-padding);
+    max-width: 1600px;
+    margin: 0 auto;
+    font-family: var(--font-main);
+    min-height: 100vh;
+    background-image: url("../../imgs/paper.jpg");
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .dashboard-wrapper {
-    padding: 2rem;
-    background: rgb(36 186 255 / 28%);
-    backdrop-filter: blur(10px);
-    border-radius: 1.5rem;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    padding: var(--card-padding);
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
 }
 
+/* ---- DASHBOARD HEADER ---- */
 .dashboard-header {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    background: linear-gradient(135deg, #3e9ec4 0%, #2d7a9a 100%);
+    background: #3e9ec4;
+    border-bottom: 8px solid #d7fbff94;
     min-height: 90px;
-    padding: 1.5rem 2rem;
+    padding: var(--card-padding);
     border: 1px solid var(--glass-border);
-    border-radius: 20px;
+    border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--gap-size);
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.dashboard-header:hover::before {
+    transform: scaleX(1);
 }
 
 .dashboard-title {
@@ -30,46 +104,70 @@
     font-weight: 700;
     letter-spacing: 1px;
     color: white;
-    font-family: var(--main-fonts);
+    font-family: var(--font-main);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     margin: 0 0 0.5rem 0;
 }
 
 .dashboard-subtitle {
     font-size: 1rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95);
     margin: 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    opacity: 0.85;
 }
 
+/* ---- STATS CONTAINER ---- */
 .dashboard-stats-container {
-    margin-top: 2rem;
+    margin-top: var(--gap-size);
 }
 
 .dashboard-stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
+    gap: var(--gap-size);
+    margin-top: var(--gap-size);
 }
 
 .stat-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5rem;
+    padding: var(--card-padding);
     background: rgba(255, 255, 255, 0.95);
     border: 1px solid var(--glass-border);
-    border-radius: 12px;
+    border-radius: var(--border-radius);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-decoration: none;
     color: inherit;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+    transition: var(--transition);
+    backdrop-filter: blur(12px);
+    position: relative;
+    overflow: hidden;
+    border-bottom: 4px solid transparent;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), #48cae4);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover::before {
+    transform: scaleX(1);
 }
 
 .stat-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 180, 216, 0.25);
+    border-color: var(--accent-color);
     background: white;
 }
 
@@ -82,13 +180,26 @@
     font-weight: 500;
     color: #666;
     margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: var(--transition);
+}
+
+.stat-card:hover .stat-title {
+    color: var(--accent-color);
 }
 
 .stat-value {
     font-size: 2rem;
     font-weight: 600;
-    color: #333;
+    color: var(--accent-color);
     display: block;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+.stat-card:hover .stat-value {
+    color: var(--hover-accent);
 }
 
 .stat-icon {
@@ -97,19 +208,229 @@
     object-fit: contain;
     margin-left: 1rem;
     opacity: 0.7;
+    transition: var(--transition);
 }
 
-@media (max-width: 768px) {
-    .teacher-dashboard-content {
-        padding: 1rem;
-    }
+.stat-card:hover .stat-icon {
+    opacity: 1;
+    transform: scale(1.1);
+}
 
-    .dashboard-stats-grid {
-        grid-template-columns: 1fr;
-    }
+/* ============================================ */
+/* RESPONSIVE BREAKPOINTS */
+/* ============================================ */
 
-    .dashboard-title {
-        font-size: 1.5rem;
-    }
+/* Large screens - Above 1440px */
+@media screen and (min-width: 1920px) {
+  :root {
+    --base-padding: 2rem;
+    --card-padding: 1.75rem;
+    --gap-size: 2rem;
+  }
+
+  .dashboard-title {
+    font-size: 2.5rem;
+  }
+
+  .dashboard-subtitle {
+    font-size: 1.15rem;
+  }
+
+  .stat-value {
+    font-size: 2.5rem;
+  }
+
+  .stat-title {
+    font-size: 1rem;
+  }
+
+  .stat-icon {
+    width: 54px;
+    height: 54px;
+  }
+}
+
+/* 1440px - Default optimization point */
+@media screen and (max-width: 1440px) {
+  /* Already optimized at root level */
+}
+
+/* 1064px screens - Tablet landscape */
+@media screen and (max-width: 1064px) {
+  :root {
+    --base-padding: 1.5rem;
+    --card-padding: 1.25rem;
+    --gap-size: 1.25rem;
+  }
+
+  .dashboard-header {
+    min-height: 80px;
+    padding: 1.25rem;
+  }
+
+  .dashboard-title {
+    font-size: 1.75rem;
+  }
+
+  .dashboard-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .stat-card {
+    padding: 1.25rem;
+  }
+
+  .stat-title {
+    font-size: 0.85rem;
+  }
+
+  .stat-value {
+    font-size: 1.75rem;
+  }
+
+  .stat-icon {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* 768px screens - Tablet portrait & Mobile landscape */
+@media screen and (max-width: 768px) {
+  :root {
+    --base-padding: 1.25rem;
+    --card-padding: 1rem;
+    --gap-size: 1rem;
+    --border-radius: 0.75rem;
+  }
+
+  .teacher-dashboard-content {
+    padding: 1.25rem;
+  }
+
+  .dashboard-wrapper {
+    padding: 1rem;
+  }
+
+  .dashboard-header {
+    min-height: 70px;
+    padding: 1rem;
+  }
+
+  .dashboard-title {
+    font-size: 1.4rem;
+  }
+
+  .dashboard-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .dashboard-stats-container {
+    margin-top: 1rem;
+  }
+
+  .dashboard-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .stat-card {
+    padding: 1rem;
+  }
+
+  .stat-title {
+    font-size: 0.8rem;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Small mobile screens */
+@media screen and (max-width: 480px) {
+  :root {
+    --base-padding: 1rem;
+    --card-padding: 0.875rem;
+    --gap-size: 0.875rem;
+  }
+
+  .teacher-dashboard-content {
+    padding: 1rem;
+  }
+
+  .dashboard-wrapper {
+    padding: 0.875rem;
+  }
+
+  .dashboard-header {
+    min-height: 60px;
+    padding: 0.875rem;
+  }
+
+  .dashboard-title {
+    font-size: 1.2rem;
+  }
+
+  .dashboard-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .dashboard-stats-grid {
+    gap: 0.875rem;
+    margin-top: 0.875rem;
+  }
+
+  .stat-card {
+    padding: 0.875rem;
+  }
+
+  .stat-title {
+    font-size: 0.75rem;
+  }
+
+  .stat-value {
+    font-size: 1.3rem;
+  }
+
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .teacher-dashboard-content {
+    padding: 0;
+    background: white;
+  }
+
+  .dashboard-wrapper {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    background: white;
+  }
+
+  .dashboard-header {
+    background: #3e9ec4;
+    box-shadow: none;
+  }
+
+  .stat-card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    page-break-inside: avoid;
+  }
 }
 

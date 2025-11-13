@@ -33,10 +33,10 @@ class adminTeachersView {
                 $contactNumber = $rows['Staff_Contact_Number'];
                 $position = !empty($rows['Position']) ? $rows['Position'] : 'No position set';
                 $actionButtons = new safeHTML('
-                <button id="view-teacher">
+                <button id="view-teacher" class="view-teacher-btn" data-staff-id="'. $rows['Staff_Id'] . '">
                     <img class="view-icon" src="../../assets/imgs/eye-regular.svg" alt="View">
                 </button>
-                <button id="edit-teacher">
+                <button id="edit-teacher" class="edit-teacher-btn" data-staff-id="'. $rows['Staff_Id'] . '">
                     <img class="edit-icon" src="../../assets/imgs/edit-yellow-green.svg" alt="Edit">
                 </button>
                 ');

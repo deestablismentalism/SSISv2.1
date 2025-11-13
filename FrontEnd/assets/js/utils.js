@@ -32,8 +32,8 @@ export const loadingText = `
     </style>
 `; //global loading pop up modal
 export function modalHeader(backButton = false) {
-    let hasBackButton = backButton === true ? '<button class="back-button"> <img src="../../assets/imgs/arrow-left-solid.svg"> </button>' : '';
-    const headerContent = `<div class="modal-header">${hasBackButton}<span class="close">&times;</span> </div><br>`;   
+    let hasBackButton = backButton === true ? '<a href="staff_pending_enrollments.php" class="modal-back-btn">Back to Pending Enrollments</a>' : '';
+    const headerContent = `${hasBackButton}<span class="close">&times;</span><br>`;   
     return headerContent;
 }
 export function generateOptions(data,selectContainer) {
@@ -106,32 +106,135 @@ export const ValidationUtils = {
         return !element.value.trim();
     },
     clearError(errorElement, childElement) {
-        let container = childElement.parentElement.querySelector('.error-msg');
-        if (!container) {
-            container = childElement.closest('div').querySelector('.error-msg');
+        if (!childElement) {
+            return;
         }
+        let container = null;
+        
+        // Try multiple strategies to find the error container
+        // Strategy 1: Check parent element
+        if (childElement.parentElement) {
+            container = childElement.parentElement.querySelector('.error-msg');
+        }
+        
+        // Strategy 2: Use closest to find parent with error-msg
         if (!container) {
+            const parentDiv = childElement.closest('div');
+            if (parentDiv) {
+                container = parentDiv.querySelector('.error-msg');
+            }
+        }
+        
+        // Strategy 3: Check parent's parent
+        if (!container && childElement.parentElement?.parentElement) {
             container = childElement.parentElement.parentElement.querySelector('.error-msg');
         }
+        
+        // Strategy 4: Check parent's parent's parent
+        if (!container && childElement.parentElement?.parentElement?.parentElement) {
+            container = childElement.parentElement.parentElement.parentElement.querySelector('.error-msg');
+        }
+        
+        // Strategy 5: Check parent's parent's parent's parent (for deeply nested elements)
+        if (!container && childElement.parentElement?.parentElement?.parentElement?.parentElement) {
+            container = childElement.parentElement.parentElement.parentElement.parentElement.querySelector('.error-msg');
+        }
+        
+        // Strategy 6: Search up the DOM tree using closest
+        if (!container) {
+            let current = childElement.parentElement;
+            let depth = 0;
+            while (current && depth < 10) {
+                container = current.querySelector('.error-msg');
+                if (container) break;
+                current = current.parentElement;
+                depth++;
+            }
+        }
+        
+        if (!container) {
+            // If no error container found, just reset the border and return
+            if (childElement && childElement.style) {
+                childElement.style.border = "1px solid #616161";
+            }
+            return;
+        }
+        
         const errorSpan = container.querySelector('.' + errorElement);
 
-        container.classList.remove('show');
-        childElement.style.border = "1px solid #616161";
+        if (container.classList) {
+            container.classList.remove('show');
+        }
+        if (childElement && childElement.style) {
+            childElement.style.border = "1px solid #616161";
+        }
         if (errorSpan) {
             errorSpan.innerHTML = '';
         }
     },
     errorMessages(errorElement, message, childElement) {
-        let container = childElement.parentElement.querySelector('.error-msg');
-        if (!container) {
-            container = childElement.closest('div').querySelector('.error-msg');
+        if (!childElement) {
+            return false;
         }
+        let container = null;
+        
+        // Try multiple strategies to find the error container
+        // Strategy 1: Check parent element
+        if (childElement.parentElement) {
+            container = childElement.parentElement.querySelector('.error-msg');
+        }
+        
+        // Strategy 2: Use closest to find parent with error-msg
         if (!container) {
+            const parentDiv = childElement.closest('div');
+            if (parentDiv) {
+                container = parentDiv.querySelector('.error-msg');
+            }
+        }
+        
+        // Strategy 3: Check parent's parent
+        if (!container && childElement.parentElement?.parentElement) {
             container = childElement.parentElement.parentElement.querySelector('.error-msg');
         }
+        
+        // Strategy 4: Check parent's parent's parent
+        if (!container && childElement.parentElement?.parentElement?.parentElement) {
+            container = childElement.parentElement.parentElement.parentElement.querySelector('.error-msg');
+        }
+        
+        // Strategy 5: Check parent's parent's parent's parent
+        if (!container && childElement.parentElement?.parentElement?.parentElement?.parentElement) {
+            container = childElement.parentElement.parentElement.parentElement.parentElement.querySelector('.error-msg');
+        }
+        
+        // Strategy 6: Search up the DOM tree using closest
+        if (!container) {
+            let current = childElement.parentElement;
+            let depth = 0;
+            while (current && depth < 10) {
+                container = current.querySelector('.error-msg');
+                if (container) break;
+                current = current.parentElement;
+                depth++;
+            }
+        }
+        
+        if (!container) {
+            // If no error container found, just set the border and return
+            if (childElement && childElement.style) {
+                childElement.style.border = "1px solid red";
+            }
+            return false;
+        }
+        
         const errorSpan = container.querySelector('.' + errorElement);
-        container.classList.add('show');
-        childElement.style.border = "1px solid red";
+        
+        if (container.classList) {
+            container.classList.add('show');
+        }
+        if (childElement && childElement.style) {
+            childElement.style.border = "1px solid red";
+        }
         if (errorSpan) {
             errorSpan.innerHTML = message;
         }
@@ -160,3 +263,140 @@ export const ValidationUtils = {
         return Object.values(this.validationState).every(state => state === true);
     }
 };
+export function preventInputByRegex(element, regex, errorCallback = null) {
+    element.addEventListener('beforeinput', function(e) {
+        if (e.inputType === 'deleteContentBackward' || 
+            e.inputType === 'deleteContentForward' ||
+            e.inputType === 'deleteByCut') {
+            return;
+        }
+
+        if (e.data && regex.test(e.data)) {
+            e.preventDefault();
+            
+            if (errorCallback && typeof errorCallback === 'function') {
+                errorCallback(element, e.data);
+            }
+            return;
+        }
+
+        if (e.inputType === 'insertText' || e.inputType === 'insertFromPaste') {
+            const currentValue = element.value;
+            const start = element.selectionStart;
+            const end = element.selectionEnd;
+            const newValue = currentValue.substring(0, start) + (e.data || '') + currentValue.substring(end);
+            
+            if (regex.test(newValue)) {
+                e.preventDefault();
+                
+                if (errorCallback && typeof errorCallback === 'function') {
+                    errorCallback(element, e.data);
+                }
+            }
+        }
+    });
+
+    element.addEventListener('paste', function(e) {
+        const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+        
+        if (regex.test(pastedText)) {
+            e.preventDefault();
+            
+            if (errorCallback && typeof errorCallback === 'function') {
+                errorCallback(element, pastedText);
+            }
+        }
+    });
+}
+
+export function preventCharactersByRegex(element, regex, errorCallback = null) {
+    const sanitizeValue = function(e) {
+        const currentValue = element.value;
+        const cursorPos = element.selectionStart;
+        const cursorEnd = element.selectionEnd;
+        
+        const cleanedValue = currentValue.replace(regex, '');
+        
+        if (cleanedValue !== currentValue) {
+            const removedChars = currentValue.replace(cleanedValue, '');
+            
+            element.value = cleanedValue;
+            
+            const charsRemovedBeforeCursor = currentValue.substring(0, cursorPos).length - 
+                                            currentValue.substring(0, cursorPos).replace(regex, '').length;
+            const newCursorPos = Math.max(0, cursorPos - charsRemovedBeforeCursor);
+            
+            element.setSelectionRange(newCursorPos, newCursorPos);
+            
+            if (errorCallback && typeof errorCallback === 'function') {
+                errorCallback(element, removedChars);
+            }
+        }
+    };
+
+    element.addEventListener('input', sanitizeValue);
+
+    element.addEventListener('paste', function(e) {
+        setTimeout(() => sanitizeValue(e), 0);
+    });
+
+    const initialValue = element.value;
+    if (initialValue && regex.test(initialValue)) {
+        element.value = initialValue.replace(regex, '');
+    }
+}
+
+export function limitCharacters(element, maxLength) {
+    element.addEventListener('beforeinput', function(e) {
+        if (e.inputType === 'deleteContentBackward' || 
+            e.inputType === 'deleteContentForward' ||
+            e.inputType === 'deleteByCut') {
+            return;
+        }
+
+        const currentValue = element.value;
+        const start = element.selectionStart;
+        const end = element.selectionEnd;
+        const selectedLength = end - start;
+        const availableSpace = maxLength - (currentValue.length - selectedLength);
+
+        if (e.data && availableSpace <= 0) {
+            e.preventDefault();
+            return;
+        }
+
+        if (e.inputType === 'insertText' || e.inputType === 'insertFromPaste') {
+            const newValue = currentValue.substring(0, start) + (e.data || '') + currentValue.substring(end);
+            
+            if (newValue.length > maxLength) {
+                e.preventDefault();
+            }
+        }
+    });
+
+    element.addEventListener('paste', function(e) {
+        e.preventDefault();
+        
+        const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+        const currentValue = element.value;
+        const start = element.selectionStart;
+        const end = element.selectionEnd;
+        const selectedLength = end - start;
+        const availableSpace = maxLength - (currentValue.length - selectedLength);
+        
+        if (availableSpace > 0) {
+            const textToInsert = pastedText.substring(0, availableSpace);
+            const newValue = currentValue.substring(0, start) + textToInsert + currentValue.substring(end);
+            element.value = newValue;
+            
+            const newCursorPos = start + textToInsert.length;
+            element.setSelectionRange(newCursorPos, newCursorPos);
+        }
+    });
+
+    const initialValue = element.value;
+    if (initialValue.length > maxLength) {
+        element.value = initialValue.substring(0, maxLength);
+    }
+}
+

@@ -8,6 +8,8 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-all-students
 ?>
 <div class="user-all-enrolled-content">
     <div class="table-container">
+        <a href="./user_enrollees.php"><img src="../../assets/imgs/arrow-left-solid.svg"></a>
+        <h3> Enrolled Students List</h3>
         <?php 
             $data = new userAllStudentsView();
             $data->displayAllStudents();

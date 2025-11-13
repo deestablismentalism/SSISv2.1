@@ -11,6 +11,38 @@
   --border-color: rgba(255, 255, 255, 0.15);
   --shadow-color: rgba(0, 0, 0, 0.2);
   --font-family: "Poppins", "Segoe UI", sans-serif;
+  --main-fonts:  "Poppins", "Segoe UI", sans-serif;
+  --title-fonts: "Barlow", sans-serif;
+  --button-fonts: 'Baloo-Thambi-2';
+  --link-fonts: 'Roboto', sans-serif;
+  --sidebar-width: 60px;
+  --sidebar-expanded-width: 280px; /* Changed from 20dvw to fixed pixels */
+  --title-font-size: 3em;
+  --sidebar-expanded-width: 20dvw;
+  --title-font-size: 3em;
+  --main-color: #1c4a72;
+  --secondary-color: #F1BD22;
+  --wrapper-bg-color: #fffdfdf5;
+  --title-main-color: #3e9ec4;
+  --hover: #48cae4;
+  --container-color: rgba(36, 186, 255, 0.28);
+  --button-color: ;
+  --button-hover-color: ;
+  --button-click: scale(.9);
+  --border-radius: 1rem;
+  --title-h1-font-size: 1.6rem;
+  --title-font-weight: 600;
+  --title-letter-spacing: 1px;
+  --card-border: rgba(255, 255, 255, 0.2);
+  --warning: #ffcc00;
+  --danger: #ff5f5f;
+  --success: #44d07b;
+  --status-active: #44d07b;
+  --status-inactive: #ffc107;
+  --status-dropped: #ff6b6b;
+  --warning: #ffcc00;
+  --danger: #ff5f5f;
+  --success: #44d07b;
 }
 
 /* === GENERAL LAYOUT === */
@@ -50,6 +82,8 @@ body {
     width: 8px;
     height: 8px;
 }
+
+
 
 .menu-content::-webkit-scrollbar-track {
     background: transparent;
@@ -144,14 +178,36 @@ body {
 #deny-followup {
     display: flex;
     flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
 }
+
+#deny-followup p {
+    font-weight: 500;
+    color: #1c4a72;
+    margin-bottom: 0.5rem;
+}
+
 #deny-followup button {
-    padding: 1em;
-    background-color: #003366d5;
+    padding: 0.7rem 1.5rem;
+    background-color: #1c4a72;
     color: white;
-    border-radius: 5px;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
-    width: 10em;
+    width: fit-content;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+#deny-followup button:hover {
+    background-color: #3e9ec4;
+}
+
+#deny-followup button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
 }
 
 .header {
@@ -160,17 +216,17 @@ body {
 }
 
 .header-title p {
-    letter-spacing: 1px;
-    width: 106%;
+letter-spacing: 1px; 
     background: #ffb811;
     text-align: left;
     margin: -33px -11px -11px -33px;
+    font-family: 'Barlow', Arial, sans-serif;
+    position: relative;
     padding: .2em;
-    padding: .2em;
+    font-family: var(--title-fonts);
     padding-left: 1em;
     font-size: 1.8rem;
-    font-weight: 900;
-    font-family: 'Barlow', Arial, sans-serif;
+    color: white;
     position: relative;
 }
 
@@ -212,11 +268,11 @@ body {
     transition: 0.2s ease;
 }
 
-.header-right input :hover {
-  border-color: #00bcd4;
-  transition: ease-in-out 0.3s;
-  color: white;
-
+.header-right input:hover {
+    border-color: #00bcd4;
+    transition: ease-in-out 0.3s;
+    color: var(--hover);
+    background: #dbf6ff66;
 }
 
 .header-right input::placeholder {
@@ -258,6 +314,7 @@ table.enrollments th {
 
 table.enrollments td{
     color:black;
+    align-content: center;
 }
 
 table.enrollments tr:nth-child(even) td {
@@ -288,22 +345,7 @@ table.enrollments tr:hover td{
 
 }
 
-.close {
-    padding: 4px 11px;
-    cursor: pointer;
-    transition: background-color #9ffaff 0.3s ease;
-    font-size: 1.2rem;
-    font-weight: bold;
-    background: #fff;
-    border-radius: 14px;
-    color: #5c5cc2;
-}
 
-.close:hover {
-    background-color: #7cd9fd;
-    color: white;
-    transition: ease-in-out 0.3s;
-}
 /* === MODAL === */
 /* Clean modern modal design – same as All Students page */
 
@@ -320,134 +362,198 @@ table.enrollments tr:hover td{
 }
 
 .modal-content {
-  border-radius: 16px;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
-  background-color: #6decff36;
-  border: 1px solid #3387de;
-  backdrop-filter: blur(20px);
-  padding: 2rem;
-  max-width: 917px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  padding: 2.5rem;
+  max-width: 920px;
   margin: auto;
   height: 87vh;
-  overflow-y: scroll;
-  /* overflow: auto; */
+  overflow-y: auto;
   scrollbar-width: thin;
   margin-bottom: 31px;
-  scrollbar-color: rgb(53 198 255 / 83%) transparent;
+  scrollbar-color: #3e9ec4 #f0f0f0;
+  position: relative;
 }
 
-.accept-btn {
-    background-color:rgb(0, 199, 132);
-    padding: 0.3em 1em 0.3em 1em;
-    margin: 0.4em;
-    border-radius: 5px;
-}
-.reject-btn {
-    background-color:rgb(255, 0, 0);
-    padding: 0.3em 1em 0.3em 1em;
-    margin: 0.4em;
-    border-radius: 5px;
-}
-.toFollow-btn {
-    background-color:rgb(255, 255, 0);
-    padding: 0.3em 1em 0.3em 1em;
-    margin: 0.4em;
-    border-radius: 5px;
-}
-.description-box {
-    border: 1px solid black;
-}
-
-.enrollee-modal-title {
-  font-weight: 600;
-  font-size: 1.4rem;
-  color: #459cff;
-  padding: 15px 0;
-}
-
-.modal-title td{
-    padding-bottom: 12px;
-}
-.modal-body {
-  max-height: 75vh;
-  overflow-y: auto;
-  padding-top: 1rem;
-  line-height: 1.7;
-  color: #333;
-  font-size: 0.95rem;
-}
-
-.modal-footer {
-  border-top: none;
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-}
-
-.modal-table td {
-    width: 23em;
-    padding: 0.4rem;
+/* Back Button inside Modal */
+.modal-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    background: linear-gradient(135deg, #3e9ec4, #48cae4);
     color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
+    margin-bottom: 1.5rem;
 }
 
-.loading {
-    text-align: center;
-    font-size: 2rem;
-    font-weight: 900;
-    color: #0c0657;
+.modal-back-btn:hover {
+    background: linear-gradient(135deg, #48cae4, #3e9ec4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
 }
 
-.modal-body h5,
-.modal-body strong {
-  color: #1e2a78;
+.modal-back-btn:active {
+    transform: translateY(0);
+}
+
+.modal-back-btn::before {
+    content: '←';
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.description-box {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+    resize: vertical;
+    min-height: 100px;
+    transition: border-color 0.2s ease;
+}
+
+.description-box:focus {
+    outline: none;
+    border-color: #3e9ec4;
+    box-shadow: 0 0 0 3px rgba(62, 158, 196, 0.1);
+}
+
+.modal-content h1 {
+  font-size: 1.1rem;
   font-weight: 600;
+  color: #1c4a72;
+  margin: 1.5rem 0 0.8rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #3e9ec4;
 }
 
-.modal-body section {
-  margin-bottom: 1.8rem;
+.modal-content h1:first-of-type {
+  margin-top: 0;
 }
 
 .modal-table {
   width: 100%;
   border-collapse: collapse;
-  gap: 120px;
-  margin-top: 1rem;
-  color:black;
-  gap: 120px;
+  margin-bottom: 1.2rem;
+  background: #ffffff;
 }
 
-.modal-body p {
-  margin: 0.3rem 0;
+.modal-table tr {
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.modal-table tr:last-child {
+  border-bottom: none;
+}
+
+.modal-table td {
+  padding: 0.7rem 1rem;
+  font-size: 0.9rem;
+  vertical-align: top;
+}
+
+.modal-table td:first-child {
+  font-weight: 500;
+  color: #1c4a72;
+  width: 35%;
+  background-color: #f8f9fa;
+}
+
+.modal-table td:last-child {
+  color: #333333;
+  width: 65%;
+}
+
+.img-container {
+  margin: 1rem 0 2rem 0;
+  text-align: center;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.img-container img {
+  max-width: 100%;
+  max-height: 600px;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1c4a72;
+  padding: 3rem;
+}
+
+.error-message {
+  background-color: #fee;
+  color: #c33;
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 4px solid #c33;
+  margin: 1rem 0;
 }
 
 .accept-btn, .toFollow-btn, .reject-btn{
-    padding: 0.7rem;
+    padding: 0.7rem 1.2rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     border: none;
-    border-radius: 20px;
-    margin: 2px;
-    width: 117px;
+    border-radius: 6px;
+    margin: 0.5rem 0.25rem;
+    min-width: 120px;
     text-align: center;
     font-weight: 500;
+    font-size: 0.9rem;
 }
 
 .accept-btn {
-    background-color: #5cff4d84;
-    color: rgb(15, 82, 12);
-    border: 1px solid #25c125;
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+.accept-btn:hover {
+    background-color: #218838;
 }
 
 .toFollow-btn {
-    background-color: #eaff4d84;
-    color: rgb(104, 105, 15);
-    border: 1px solid #bcc125;
+    background-color: #ffc107;
+    color: #333333;
+}
+
+.toFollow-btn:hover {
+    background-color: #e0a800;
 }
 
 .reject-btn {
-    background-color: #ff6b4d84;
-    color: rgb(82, 18, 12);
-    border: 1px solid #c12d25;
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+.reject-btn:hover {
+    background-color: #c82333;
+}
+
+.modal-content > .accept-btn,
+.modal-content > .toFollow-btn,
+.modal-content > .reject-btn {
+    margin-top: 1.5rem;
 }
 @keyframes dots {
     0%, 20% {content: '.';}
@@ -457,21 +563,64 @@ table.enrollments tr:hover td{
 
 @media (max-width: 768px) {
   .modal-content {
-    padding: 1.2rem;
+    padding: 1.5rem;
     max-width: 95%;
   }
 
-  .modal-title {
-    font-size: 1.2rem;
+  .modal-content h1 {
+    font-size: 1rem;
+  }
+
+  .modal-table td {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+  }
+
+  .modal-table td:first-child {
+    background-color: transparent;
+    font-weight: 600;
+    padding-bottom: 0.2rem;
+  }
+
+  .modal-table td:last-child {
+    padding-top: 0.2rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid #e8e8e8;
+  }
+
+  .accept-btn, .toFollow-btn, .reject-btn {
+    width: 100%;
+    margin: 0.25rem 0;
   }
 }
 /* Global pop up modal design*/
-.modal-header .back-button {
-    padding: 0.3rem  0.8rem;
-    background-color: gray ;
-    border-radius: 0.3rem;
-    cursor: pointer;
+.modal-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e0e0e0;
 }
+
+.modal-header .back-button {
+    padding: 0.5rem 1rem;
+    background-color: #6c757d;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.modal-header .back-button:hover {
+    background-color: #5a6268;
+}
+
 .modal-header .back-button img {
     width: 1rem;
     height: 1rem;
@@ -480,18 +629,20 @@ table.enrollments tr:hover td{
 .close {
     position: absolute;
     right: 20px;
-    top: 10px;
-    color: #aaa;
+    top: 20px;
+    color: #999;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    transition: color 0.2s ease;
+    line-height: 1;
+    z-index: 10;
 }
 
 .close:hover,
 .close:focus {
-    color: #000;
+    color: #1c4a72;
     text-decoration: none;
-    cursor: pointer;
 }
 /* Medium devices (601px to 1024px) */
 @media (min-width: 601px) and (max-width: 1024px) {
@@ -532,7 +683,6 @@ table.enrollments tr:hover td{
     }
     
     .enrollment-start {
-        padding: 20px;
         width: 99%;
     }
     

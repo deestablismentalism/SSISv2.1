@@ -71,18 +71,55 @@ p {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     background: #f8af00;
     height: 3rem;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 1000;
     margin-bottom: 1.5rem;
+    padding: 0 1.5rem;
+}
+
+/* Hamburger Menu Button - Hidden by default, shown on mobile */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 22px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+}
+
+.hamburger-menu span {
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.hamburger-menu.active span:nth-child(1) {
+    transform: translateY(9.5px) rotate(45deg);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active span:nth-child(3) {
+    transform: translateY(-9.5px) rotate(-45deg);
 }
 .account {
     display: flex;
-    padding-right: 2em;
+    align-items: center;
+    padding-right: 0;
+    gap: 0.5rem;
 }
 
 .account-settings-wrapper {
@@ -105,6 +142,7 @@ p {
     object-fit: cover;
     border: 2px solid white;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    flex-shrink: 0;
 }
 
 .user-text-wrapper {
@@ -117,12 +155,35 @@ p {
     margin: 0;
     font-size: 1rem;
     color: white;
+    white-space: nowrap;
 }
 
 .user-text-wrapper span {
     font-size: 0.85rem;
     opacity: 0.9;
     color: white;
+    white-space: nowrap;
+}
+
+.account-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.account-btn:hover {
+    transform: scale(1.1);
+}
+
+.account-btn img {
+    width: 1.3rem;
+    height: 1.3rem;
+    filter: brightness(0) invert(1);
 }
 
 /*-- FIRST NAVIGATION CONTAINER DESIGN--*/
@@ -160,14 +221,23 @@ p {
 /* --NAVIGATION CONTAINER 1-- */
 .nav-container-1 {
     border-radius: 12px;
-    max-width: 600px;
-    margin-left: 19px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    margin: 0 1rem;
 }
 
 .nav-1 {
     display: flex;
     gap: 15px;
     list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.nav-1 .nav-item {
+    margin: 0;
 }
 
 .nav-1 .nav-item a {
@@ -180,6 +250,7 @@ p {
     border-radius: 8px;
     transition: all 0.3s ease;
     display: inline-block;
+    white-space: nowrap;
 }
 
 /*  Updated hover background to light teal with dark text */
@@ -495,28 +566,404 @@ p {
     }
 }
 
-/* ===== Dropdown Responsive Design ===== */
-@media screen and (min-width: 2560px) {
+/*====================================*/
+/*   RESPONSIVE HEADER DESIGN         */
+/*====================================*/
+
+/* ===== MOBILE FIRST - Base Styles (320px+) ===== */
+/* Mobile view - Hamburger menu */
+@media screen and (max-width: 767px) {
+    .header-wrapper {
+        height: auto;
+        padding: 0.8rem 1rem;
+        flex-wrap: wrap;
+    }
+    
+    /* Show hamburger menu */
+    .hamburger-menu {
+        display: flex;
+        order: 1;
+    }
+    
+    /* Hide navigation by default on mobile */
+    .nav-container-1 {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 280px;
+        height: 100vh;
+        background: linear-gradient(180deg, #f8af00, #e09e00);
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 5rem 1.5rem 2rem 1.5rem;
+        margin: 0;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+        transition: left 0.3s ease;
+        z-index: 999;
+        overflow-y: auto;
+    }
+    
+    .nav-container-1.active {
+        left: 0;
+    }
+    
+    .nav-1 {
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+    }
+    
+    .nav-1 .nav-item {
+        width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .nav-1 .nav-item a {
+        width: 100%;
+        padding: 1rem 1.2rem;
+        font-size: 1rem;
+        color: white;
+        display: block;
+        border-radius: 0;
+    }
+    
+    .nav-1 .nav-item a:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        transform: none;
+        padding-left: 1.5rem;
+    }
+    
+    .nav-1 .nav-item a.active {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border-left: 4px solid white;
+    }
+    
+    .nav-1 .nav-item a::after {
+        display: none;
+    }
+    
+    /* Account section on mobile */
+    .account {
+        order: 2;
+        margin-left: auto;
+    }
+    
+    .user-text-wrapper {
+        display: none;
+    }
+    
+    .user-profile-pic {
+        width: 2rem;
+        height: 2rem;
+    }
+    
+    .account-btn img {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 260px;
+        right: 0;
+        left: auto;
+    }
+    
+    /* Mobile overlay */
+    .nav-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+    }
+    
+    .nav-overlay.active {
+        display: block;
+    }
+}
+
+/* ===== Small Mobile (max-width: 479px) ===== */
+@media screen and (max-width: 479px) {
+    .header-wrapper {
+        padding: 0.6rem 0.8rem;
+    }
+    
+    .hamburger-menu {
+        width: 24px;
+        height: 20px;
+    }
+    
+    .hamburger-menu span {
+        height: 2.5px;
+    }
+    
+    .nav-container-1 {
+        width: 260px;
+        padding: 4.5rem 1rem 1.5rem 1rem;
+    }
+    
+    .nav-1 .nav-item a {
+        padding: 0.9rem 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .user-profile-pic {
+        width: 1.8rem;
+        height: 1.8rem;
+    }
+    
+    .account-btn img {
+        width: 1rem;
+        height: 1rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 240px;
+    }
+}
+
+/* ===== Extra Small Mobile (max-width: 374px) ===== */
+@media screen and (max-width: 374px) {
+    .header-wrapper {
+        padding: 0.5rem 0.6rem;
+    }
+    
+    .hamburger-menu {
+        width: 22px;
+        height: 18px;
+    }
+    
+    .nav-container-1 {
+        width: 240px;
+    }
+    
+    .nav-1 .nav-item a {
+        padding: 0.8rem 0.9rem;
+        font-size: 0.9rem;
+    }
+    
+    .user-profile-pic {
+        width: 1.6rem;
+        height: 1.6rem;
+        border-width: 1px;
+    }
+    
+    .account-btn img {
+        width: 0.9rem;
+        height: 0.9rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 220px;
+    }
+}
+
+/* ===== TABLET LANDSCAPE (768px - 1023px) ===== */
+/* Full navigation visible, no hamburger */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .header-wrapper {
+        height: 3rem;
+        padding: 0 1.2rem;
+        flex-wrap: nowrap;
+    }
+    
+    .hamburger-menu {
+        display: none;
+    }
+    
+    .nav-container-1 {
+        position: static;
+        width: auto;
+        height: auto;
+        background: transparent;
+        flex-direction: row;
+        padding: 0;
+        margin: 0 1rem;
+        box-shadow: none;
+        flex: 1;
+        justify-content: center;
+    }
+    
+    .nav-1 {
+        flex-direction: row;
+        gap: 8px;
+    }
+    
+    .nav-1 .nav-item {
+        border-bottom: none;
+    }
+    
+    .nav-1 .nav-item a {
+        font-size: 14px;
+        padding: 8px 14px;
+        color: #004d51;
+    }
+    
+    .nav-1 .nav-item a:hover {
+        background: rgba(19, 149, 172, 0.1);
+        color: #007084;
+        transform: translateY(-2px);
+    }
+    
+    .nav-1 .nav-item a.active {
+        background: #00a7c4;
+        color: white;
+    }
+    
+    .nav-1 .nav-item a::after {
+        display: block;
+    }
+    
+    .user-profile-pic {
+        width: 2.2rem;
+        height: 2.2rem;
+    }
+    
+    .user-text-wrapper {
+        display: flex;
+    }
+    
+    .user-text-wrapper .user-name {
+        font-size: 0.9rem;
+    }
+    
+    .user-text-wrapper span {
+        font-size: 0.75rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 260px;
+    }
+}
+
+/* ===== TABLET PORTRAIT (768px - 991px) ===== */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .nav-1 .nav-item a {
+        font-size: 13px;
+        padding: 7px 12px;
+    }
+    
+    .user-text-wrapper .user-name {
+        font-size: 0.85rem;
+    }
+    
+    .user-text-wrapper span {
+        font-size: 0.7rem;
+    }
+}
+
+/* ===== DESKTOP - 1024px to 1439px ===== */
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+    .header-wrapper {
+        height: 3rem;
+        padding: 0 1.5rem;
+    }
+    
+    .nav-container-1 {
+        margin: 0 1.2rem;
+    }
+    
+    .nav-1 {
+        gap: 12px;
+    }
+    
+    .nav-1 .nav-item a {
+        font-size: 15px;
+        padding: 9px 16px;
+    }
+    
+    .user-profile-pic {
+        width: 2.3rem;
+        height: 2.3rem;
+    }
+    
+    .user-text-wrapper .user-name {
+        font-size: 0.95rem;
+    }
+    
+    .user-text-wrapper span {
+        font-size: 0.8rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 270px;
+    }
+}
+
+/* ===== DESKTOP - 1440px to 1919px (Default) ===== */
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+    .header-wrapper {
+        height: 3rem;
+        padding: 0 1.5rem;
+    }
+    
+    .nav-1 {
+        gap: 15px;
+    }
+    
+    .nav-1 .nav-item a {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 280px;
+    }
+}
+
+/* ===== DESKTOP - 1920px to 2499px (Full HD) ===== */
+@media screen and (min-width: 1920px) and (max-width: 2499px) {
+    .header-wrapper {
+        height: 3.5rem;
+        padding: 0 2rem;
+    }
+    
+    .nav-1 {
+        gap: 18px;
+    }
+    
+    .nav-1 .nav-item a {
+        font-size: 17px;
+        padding: 11px 22px;
+    }
+    
+    .user-profile-pic {
+        width: 2.8rem;
+        height: 2.8rem;
+    }
+    
+    .user-text-wrapper .user-name {
+        font-size: 1.1rem;
+    }
+    
+    .user-text-wrapper span {
+        font-size: 0.95rem;
+    }
+    
+    .account-settings-btn-content-wrapper {
+        min-width: 300px;
+    }
+}
+
+/* ===== LARGE DESKTOP - 2500px and above ===== */
+@media screen and (min-width: 2500px) {
     .header-wrapper {
         height: 4rem;
         padding: 0 2.5rem;
     }
     
-    .nav-container-1 {
-        margin-left: 30px;
+    .nav-1 {
+        gap: 20px;
     }
     
     .nav-1 .nav-item a {
         font-size: 18px;
         padding: 12px 24px;
-    }
-    
-    .account {
-        padding-right: 2.5rem;
-    }
-    
-    .account-settings-btn-content-wrapper {
-        min-width: 320px;
     }
     
     .user-profile-pic {
@@ -531,250 +978,37 @@ p {
     .user-text-wrapper span {
         font-size: 1rem;
     }
-}
-
-@media screen and (min-width: 1920px) and (max-width: 2559px) {
-    .header-wrapper {
-        height: 3.5rem;
-        padding: 0 2rem;
-    }
     
-    .nav-1 .nav-item a {
-        font-size: 17px;
-    }
-    
-    .account-settings-btn-content-wrapper {
-        min-width: 300px;
-    }
-}
-
-@media screen and (min-width: 1440px) and (max-width: 1919px) {
-    .header-wrapper {
-        height: 3.2rem;
-        padding: 0 1.5rem;
-    }
-    
-    .nav-1 .nav-item a {
-        font-size: 16px;
-        padding: 10px 18px;
-    }
-}
-
-@media screen and (max-width: 1439px) {
-    .header-wrapper {
-        padding: 0 1rem;
-    }
-    
-    .nav-container-1 {
-        margin-left: 15px;
-    }
-    
-    .nav-1 {
-        gap: 12px;
-    }
-    
-    .nav-1 .nav-item a {
-        font-size: 15px;
-        padding: 8px 16px;
-    }
-    
-    .account-settings-btn-content-wrapper {
-        min-width: 260px;
-    }
-}
-
-@media screen and (max-width: 1023px) {
-    .header-wrapper {
-        height: auto;
-        padding: 0.8rem 1rem;
-        flex-wrap: wrap;
-    }
-    
-    .nav-container-1 {
-        order: 3;
-        width: 100%;
-        margin: 0.5rem 0 0 0;
-        max-width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-    
-    .nav-1 {
-        gap: 8px;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    
-    .nav-1 .nav-item a {
-        font-size: 14px;
-        padding: 8px 14px;
-    }
-    
-    .account {
-        padding-right: 1rem;
-    }
-    
-    .user-profile-pic {
-        width: 2.2rem;
-        height: 2.2rem;
-    }
-    
-    .user-text-wrapper .user-name {
-        font-size: 0.95rem;
-    }
-    
-    .user-text-wrapper span {
-        font-size: 0.8rem;
-    }
-    
-    .account-settings-wrapper {
-        gap: 0.6rem;
-    }
-    
-    .account-settings-btn-content-wrapper {
-        min-width: 240px;
-        right: 5px;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .header-wrapper {
-        padding: 0.6rem 0.8rem;
-    }
-    
-    .nav-container-1 {
-        margin: 0.4rem 0 0 0;
-    }
-    
-    .nav-1 .nav-item a {
-        font-size: 13px;
-        padding: 6px 12px;
-    }
-    
-    .user-profile-pic {
-        width: 2rem;
-        height: 2rem;
-    }
-    
-    .user-text-wrapper {
-        display: none;
-    }
-    
-    .account {
-        padding-right: 0.5rem;
-    }
-    
-    .account-settings-btn-content-wrapper {
-        min-width: 260px;
-        right: 0;
-        left: auto;
-    }
-    
-    .account-link-wrapper, 
-    .account-logout-wrapper {
-        padding: 0.8rem 1rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .header-wrapper {
-        padding: 0.5rem;
-        margin-bottom: 1rem;
-    }
-    
-    .nav-container-1 {
-        margin: 0.3rem 0 0 0;
-    }
-    
-    .nav-1 {
-        gap: 6px;
-    }
-    
-    .nav-1 .nav-item a {
-        font-size: 12px;
-        padding: 6px 10px;
-    }
-    
-    .user-profile-pic {
-        width: 1.8rem;
-        height: 1.8rem;
-    }
-    
-    .account {
-        padding-right: 0;
-    }
-    
-    .account-settings-btn-content-wrapper {
-        min-width: 240px;
-        max-width: calc(100vw - 20px);
-    }
-    
-    .user-info-wrapper {
-        padding: 0.8rem 1rem;
-    }
-    
-    .account-link-wrapper, 
-    .account-logout-wrapper {
-        padding: 0.7rem 0.9rem;
-    }
-}
-
-@media screen and (max-width: 375px) {
-    .nav-1 .nav-item a {
-        font-size: 11px;
-        padding: 5px 8px;
-    }
-    
-    .user-profile-pic {
-        width: 1.6rem;
-        height: 1.6rem;
-    }
-    
-    .account-settings-btn-content-wrapper {
-        min-width: 220px;
-    }
-}
-
-@media screen and (max-width: 320px) {
-    .header-wrapper {
-        padding: 0.4rem;
-    }
-    
-    .nav-container-1 {
-        margin: 0.2rem 0 0 0;
-    }
-    
-    .nav-1 {
-        gap: 4px;
-    }
-    
-    .nav-1 .nav-item a {
-        font-size: 10px;
-        padding: 4px 6px;
-    }
-    
-    .user-profile-pic {
+    .account-btn img {
         width: 1.5rem;
         height: 1.5rem;
     }
     
     .account-settings-btn-content-wrapper {
-        min-width: 200px;
-    }
-    
-    .user-info-wrapper .user-name,
-    .account-link-wrapper a:last-child,
-    .account-logout-wrapper a:last-child {
-        font-size: 0.85rem;
-    }
-    
-    .user-info-wrapper .account-type {
-        font-size: 0.8rem;
+        min-width: 320px;
     }
 }
 
-/* Touch device optimizations */
+/* ===== Touch device optimizations ===== */
 @media (hover: none) and (pointer: coarse) {
+    .nav-1 .nav-item a {
+        min-height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .hamburger-menu {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .account-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
     .account-link-wrapper:hover, 
     .account-logout-wrapper:hover {
         padding-left: 1.2rem;
@@ -786,7 +1020,7 @@ p {
     }
 }
 
-/* Landscape orientation for small devices */
+/* ===== Landscape orientation for small devices ===== */
 @media screen and (max-height: 500px) and (orientation: landscape) {
     .header-wrapper {
         height: auto;
@@ -805,13 +1039,20 @@ p {
         max-height: 80vh;
         overflow-y: auto;
     }
+    
+    /* Mobile landscape - adjust menu */
+    @media screen and (max-width: 767px) {
+        .nav-container-1 {
+            width: 240px;
+            padding: 4rem 1rem 1rem 1rem;
+        }
+        
+        .nav-1 .nav-item a {
+            padding: 0.7rem 1rem;
+        }
+    }
 }
 
-/*----END OF THE BASE DESIGNS----*/
-
-
-/*----START OF MAIN CONTENT----*/
-/*----END OF MAIN CONTENT----*/
 
 /*MOBILE VERSION OF HEADER & SIDEBAR*/
 @media (max-width: 768px ) {
@@ -822,7 +1063,13 @@ p {
         overflow-x: hidden;
     }
 
-    .sidebar, .header-wrapper, .sidebar-wrapper,.mobile-sidebar-wrapper    {
+    /* Hide old sidebar, but keep header-wrapper visible for hamburger menu */
+    .sidebar, .sidebar-wrapper {
+        display: none;
+    }
+    
+    /* Keep mobile-sidebar-wrapper hidden by default */
+    .mobile-sidebar-wrapper {
         display: none;
     }
 
@@ -837,13 +1084,9 @@ p {
         animation-name: slidein;
     }
 
+    /* Hide old mobile header in favor of new hamburger menu */
     .mobile-header-wrapper {
-        position:absolute;
-        z-index: 0;
-        display: grid;
-        width: 100%;
-        background-color: #fff;
-        grid-template-columns: 10% 70% 20%;
+        display: none !important;
     }
 
     .mobile-mob-wrapper {

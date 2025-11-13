@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: ssis_app_devB
+    environment:
+      - APP_ENV=development
+
+  web:
+    container_name: ssis_web_devB
+    ports:
+      - "3001:80"  # Different port
+
+  db:
+    container_name: ssis_db_devB
+    ports:
+      - "3307:3306"  # Different port
+
+  tunnel:
+    container_name: ssis_tunnel_devB
+    environment:
+      # Developer B needs their own tunnel token here
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN_DEV_B}

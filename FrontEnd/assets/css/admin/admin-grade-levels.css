@@ -11,8 +11,10 @@
   --transition: all 0.3s ease;
   --font-main: "Poppins", "Segoe UI", sans-serif;
 }
-
-/* ========== PAGE BASE ========== */
+/* 
+table bg   background: rgb(155 231 255)
+header bg   background: rgb(207 241 255)
+========== PAGE BASE ========== */
 body {
   font-family: var(--font-main);
   background: var(--bg-gradient);
@@ -34,41 +36,60 @@ body {
 
 /* ========== HEADER ========== */
 .grade-levels-title-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #3e9ec4;
-  border: 1px solid var(--card-border);
-  backdrop-filter: blur(15px) saturate(180%);
-  -webkit-backdrop-filter: blur(15px) saturate(180%);
-  padding: 1rem 1.5rem;
-  border-radius: var(--border-radius);
-  box-shadow: 0 8px 30px rgb(0 0 0 / 14%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background: #3e9ec4; */
+    border: 1px solid var(--card-border);
+    /* backdrop-filter: blur(15px) saturate(180%); */
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
 }
 
 .grade-levels-title-wrapper .page-title {
-  font-size: 1.8rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: #e9f1ff;
+    font-family: var(--font-main);
+    color: var(--main-color);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    margin-top: 0;
+    position: relative;
+    padding-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #3e9ec4, #48cae4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.grade-levels-title-wrapper  > h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 120px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+    border-radius: 2px;
 }
 
 .submit-btn {
-  background: var(--accent-color);
-  color: #fff;
-  font-weight: 500;
-  border: none;
-  border-radius: 0.6rem;
-  padding: 0.7rem 1.4rem;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 0.95rem;
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
 }
 
 .submit-btn:hover {
-  background: var(--hover-accent);
-  transform: translateY(-3px);
-  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+  background: linear-gradient(135deg, var(--hover-accent), var(--accent-color));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
 }
 
 /* ========== GRADE LEVELS CONTAINER ========== */
@@ -114,30 +135,36 @@ body {
 }
 
 .grade-level-item {
-  background: rgb(21 182 255 / 27%);
-  border: 1px solid var(--card-border);
-  border-radius: var(--border-radius);
-  backdrop-filter: blur(15px) saturate(180%);
-  -webkit-backdrop-filter: blur(15px) saturate(180%);
-  box-shadow: 0 8px 30px rgb(0 0 0 / 14%);
-  overflow: hidden;
-  transition: var(--transition);
+    border: 1px solid var(--card-border);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    transition: var(--transition);
+    margin-bottom: .5rem;
 }
 
 .grade-level-item:hover {
   border-color: var(--accent-color);
   box-shadow: 0 7px 15px rgba(0, 180, 216, 0.3);
+  transform: scale(1.01);
 }
 
 /* ========== GRADE LEVEL HEADER ========== */
 .grade-level-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.2rem 1.5rem;
-  cursor: pointer;
-  transition: var(--transition);
-  background: rgba(62, 158, 196, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    background: rgb(184 224 240);
+    font-size: 1.4rem;
+    color: var(--main-color);
+    font-weight: 600;
+    padding-bottom: 0.8rem;
+    border-bottom: 3px solid var(--accent-color);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.5px;
+    column-gap: 21px;
 }
 
 .grade-level-header:hover {
@@ -173,7 +200,7 @@ body {
   align-items: center;
   justify-content: center;
   transition: var(--transition);
-  color: var(--text-color);
+  color: var(--accent-color);
 }
 
 .toggle-btn:hover {
@@ -187,8 +214,7 @@ body {
 
 /* ========== GRADE LEVEL CONTENT ========== */
 .grade-level-content {
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(209 229 236 / 0%);
 }
 
 .sections-table-container {
@@ -198,8 +224,7 @@ body {
 .sections-table {
   width: 100%;
   border-collapse: collapse;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 0.5rem;
+  background: rgb(155 231 255);
   overflow: hidden;
 }
 
@@ -211,7 +236,7 @@ body {
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  color: var(--hover-accent);
+  color: white;
   font-size: 0.95rem;
   border-bottom: 2px solid rgba(0, 180, 216, 0.3);
 }
@@ -219,8 +244,9 @@ body {
 .sections-table td {
   padding: 0.9rem 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
+  color: var(--main-color);
   font-size: 0.9rem;
+  border-bottom: 1px solid var(--hover-accent);
 }
 
 .sections-table tbody tr {

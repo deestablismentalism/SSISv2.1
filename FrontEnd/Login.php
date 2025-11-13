@@ -25,6 +25,7 @@
   <div class="login-container">
     <!-- LEFT ILLUSTRATION -->
     <div class="login-illustration">
+      <p class="img-header"> Lucena South II Elementary School</p>
       <img src="./assets/imgs/users-login.png" alt="Users Illustration" />
     </div>
 

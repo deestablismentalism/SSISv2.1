@@ -1,17 +1,11 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-// Load environment variables
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
 
-class SMSFailureException extends Exception {} //Domain specific exception
+class SMSFailureException extends Exception {}
 class SendPassword {
-    /**
-     * Cleans and formats a Philippine mobile number
-     * @param string $phoneNumber The phone number to clean (e.g., 09123456789)
-     * @return string The cleaned phone number in international format (e.g., 639123456789)
-     */
     private function cleanPhoneNumber($phoneNumber) {
         $cleaned = preg_replace('/[^0-9]/', '', $phoneNumber);
         if (substr($cleaned, 0, 2) === '09') {
@@ -27,13 +21,15 @@ class SendPassword {
         $gatewayUrl = $_ENV['SMS_GATEWAY_URL'];
         $username = $_ENV['SMS_GATEWAY_USERNAME'];
         $password = $_ENV['SMS_GATEWAY_PASSWORD'];
+        $senderId = $_ENV['SMS_SENDER_ID'] ?? 'LucenaSouthII';
 
         $Cleaned_Contact_Number = $this->cleanPhoneNumber($Recipient_Contact_Number);
         
         $data = [
             "message" => "Hello $Last_Name, $First_Name $Middle_Name! Your password is $User_Password. Please keep this password safe and don't share it with anyone",
             "phoneNumbers" => ["+$Cleaned_Contact_Number"],
-            "simNumber" => 1
+            "simNumber" => 1,
+            "senderId" => $senderId
         ];
 
         $ch = curl_init($gatewayUrl);

@@ -1,6 +1,15 @@
+/*====================================*/
+/*   ALL STUDENTS PAGE - MOBILE-FIRST */
+/*   Enrolled Students List           */
+/*====================================*/
+
+/* ===== Root Theme Colors & Fluid Design System ===== */
 :root {
+  /* Fonts */
   --main-fonts: "Poppins", "Segoe UI", sans-serif;
   --title-fonts: "Barlow", sans-serif;
+  
+  /* Colors */
   --main-color: #1c4a72;
   --title-main-color: #3e9ec4;
   --container-color: rgba(36, 186, 255, 0.28);
@@ -10,6 +19,55 @@
   --success: #44d07b;
   --warning: #ffcc00;
   --danger: #ff5f5f;
+  --text-color: #e8edf3;
+  
+  /* Fluid Spacing - Mobile First */
+  --spacing-xs: clamp(0.25rem, 0.5vw, 0.5rem);
+  --spacing-sm: clamp(0.5rem, 1vw, 0.75rem);
+  --spacing-md: clamp(0.75rem, 2vw, 1rem);
+  --spacing-lg: clamp(1rem, 3vw, 1.1rem);
+  --spacing-xl: clamp(1.5rem, 4vw, 2rem);
+  --spacing-2xl: clamp(2rem, 5vw, 3rem);
+  
+  /* Fluid Typography */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --text-base: clamp(0.9375rem, 0.875rem + 0.3125vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.5rem);
+  --text-xl: clamp(1.25rem, 1.125rem + 0.625vw, 1.75rem);
+  --text-2xl: clamp(1.5rem, 1.25rem + 1.25vw, 2.25rem);
+  
+  /* Fluid Border Radius */
+  --radius-sm: clamp(0.5rem, 1vw, 0.75rem);
+  --radius-md: clamp(0.75rem, 1.5vw, 1rem);
+  --radius-lg: clamp(1rem, 2vw, 1.5rem);
+  --radius-xl: clamp(1.25rem, 2.5vw, 2rem);
+  
+  /* Touch Targets - WCAG AA */
+  --touch-target-min: 44px;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* Z-index Scale */
+  --z-base: 1;
+  --z-sticky: 10;
+  --z-modal: 100;
+  --z-overlay: 99;
+  --z-toast: 1000;
+}
+
+/*====================================*/
+/*   MOBILE-FIRST BASE STYLES (320px+) */
+/*====================================*/
+
+/* Reset & Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
@@ -18,30 +76,54 @@ body {
   padding: 0;
 }
 
+/* Main Container - Mobile First */
 .user-all-enrolled-content {
-  padding: 2rem;
-  transition: margin-left 0.3s ease;
+  padding: var(--spacing-md);
   background-image: url('../../imgs/paper.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll; /* Better mobile performance */
   font-family: var(--main-fonts);
+  min-height: 100vh;
+  /* Performance optimizations */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
+
+/*====================================*/
+/*   TABLE CONTAINER - Glass-morphism */
+/*====================================*/
 
 .table-container {
-  margin-top: 1.5rem;
-  background: rgb(36 186 255 / 28%);
-  backdrop-filter: blur(10px);
+  /* Mobile-first: Full width on mobile */
+  width: 100%;
+  max-width: 1600px; /* Max width for large screens */
+  margin: 0 auto;
+  margin-top: var(--spacing-lg);
+  /* Glass-morphism styling */
+  background: var(--container-color);
+  backdrop-filter: blur(8px); /* Lighter for mobile performance */
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-  padding: 1.5rem;
-  width: 50%;
-  height: 70vh;
-  min-height: 400px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: var(--spacing-md);
+  /* Height constraints */
+  height: clamp(50vh, 60vh, 70vh);
+  min-height: 280px;
+  /* Overflow handling */
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  /* Scrollbar styling */
   scrollbar-width: thin;
   scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
-  margin: 0 auto;
+  /* Performance */
+  will-change: scroll-position;
+  contain: layout style paint;
 }
 
+/* Custom scrollbar styling */
 .table-container::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -49,67 +131,311 @@ body {
 
 .table-container::-webkit-scrollbar-track {
   background: transparent;
+  border-radius: 20px;
 }
 
 .table-container::-webkit-scrollbar-thumb {
   background-color: rgba(62, 158, 196, 0.5);
   border-radius: 20px;
+  transition: background-color var(--transition);
 }
 
+.table-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(62, 158, 196, 0.7);
+}
+
+/*====================================*/
+/*   BACK BUTTON - Touch Optimized    */
+/*====================================*/
+
+.table-container > a {
+  /* Touch target minimum */
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  /* Styling */
+  background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
+  color: white;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  /* Spacing */
+  margin-bottom: var(--spacing-lg);
+  margin-right: 0; /* Remove fixed margin for mobile */
+  /* Interactions */
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  /* Transitions */
+  transition: all var(--transition);
+  box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
+}
+
+/* Hover state only on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .table-container > a:hover {
+    background: linear-gradient(135deg, var(--hover-accent), var(--accent-color));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
+  }
+  
+  .table-container > a:hover img {
+    transform: translateX(-3px);
+  }
+}
+
+/* Focus state for accessibility */
+.table-container > a:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Active state */
+.table-container > a:active {
+  transform: scale(0.98);
+}
+
+.table-container > a img {
+  width: clamp(1rem, 2vw, 1.2rem);
+  height: clamp(1rem, 2vw, 1.2rem);
+  filter: brightness(0) invert(1);
+  flex-shrink: 0;
+  transition: transform var(--transition);
+}
+
+/*====================================*/
+/*   PAGE HEADING                      */
+/*====================================*/
+
+.table-container > h3 {
+  font-family: var(--title-fonts);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--main-color);
+  display: inline-block;
+  margin: 0 0 var(--spacing-lg) 0;
+  padding-bottom: var(--spacing-sm);
+  position: relative;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+}
+
+/*====================================*/
+/*   STUDENTS TABLE - Mobile-First    */
+/*   Mobile: Card layout              */
+/*   Tablet+: Table layout            */
+/*====================================*/
+
+/* Base Table Styles - Mobile: Card layout */
 .students {
   width: 100%;
   border-collapse: collapse;
-  background: rgba(21, 182, 255, 0.27);
+  border-spacing: 0;
+  color: var(--main-color);
+  font-size: var(--text-xs);
+  background: transparent;
   text-align: center;
+  /* Mobile: Block display for card stacking */
+  display: block;
 }
 
+/* Mobile: Hide thead visually but keep for accessibility */
 .students thead {
-  background: rgb(21 182 255 / 27%);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  /* Hide but keep for screen readers */
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-.students th {
-  color: rgb(255, 255, 255);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-shadow: rgba(9, 103, 162, 0.4) 0px 1.5px;
-  padding: 1rem;
+/* Mobile: tbody as flex container for cards */
+.students tbody {
+  display: block;
+  width: 100%;
 }
 
-.students td {
-  padding: 1rem;
-  border-top: 1px solid rgba(63, 166, 210, 0.897);
-  vertical-align: middle;
-  color: black;
-  letter-spacing: 0.5px;
-  font-weight: 400;
+/* Mobile: Each row becomes a card */
+.students tbody tr {
+  display: block;
+  margin-bottom: var(--spacing-lg);
   background: #bbe5f8;
+  border: 1px solid rgba(63, 166, 210, 0.3);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* Remove zebra striping for cards */
+  background: #bbe5f8 !important;
 }
 
-.students tr:nth-child(even) td {
-  background: rgb(71 168 255 / 8%);
+/* Mobile: Each cell becomes a row in the card */
+.students td {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-sm);
+  border: none;
+  border-bottom: 1px solid rgba(63, 166, 210, 0.15);
+  text-align: left;
+  position: relative;
+  min-height: var(--touch-target-min);
+  color: #1a1a1a;
+  font-size: var(--text-sm);
+  font-weight: 400;
+  line-height: 1.5;
+  gap: var(--spacing-md);
 }
 
-.students tr:hover td {
-  color: var(--hover-accent);
-  transition: all 0.25s ease-in-out;
+/* Remove border from last cell in each card */
+.students td:last-child {
+  border-bottom: none;
 }
 
-.students tbody tr:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transition: 0.3s ease;
+/* Mobile: Add labels using CSS nth-child */
+.students td::before {
+  flex: 0 0 50%;
+  font-weight: 600;
+  color: var(--main-color);
+  text-transform: uppercase;
+  font-size: var(--text-xs);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
 }
+
+/* Make the actual content take up remaining 50% */
+.students td > * {
+  flex: 1 1 50%;
+  max-width: 50%;
+}
+
+/* Column labels for Enrolled Students table */
+.students td:nth-child(1)::before {
+  content: "LRN";
+}
+
+.students td:nth-child(2)::before {
+  content: "STUDENT NAME";
+}
+
+.students td:nth-child(3)::before {
+  content: "GRADE LEVEL";
+}
+.students td:nth-child(4)::before {
+  content: "SECTION";
+}
+.students td:nth-child(5)::before {
+  content: "STATUS";
+}
+.students td:nth-child(6)::before {
+  content: "ACTION";
+}
+
+/* Status badges in cards - full width, centered */
+.students td .status {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Visit button in cards - equal width with label */
+.students td .visit-btn {
+  justify-content: center;
+}
+
+/*====================================*/
+/*   MOBILE COMPACT (320px-425px)     */
+/*   Hide LRN & Student Name labels   */
+/*   Show only name at top, button at bottom */
+/*====================================*/
+
+@media (max-width: 425px) {
+
+  
+  /* Student Name - Show at top without label, larger font */
+  .students td:nth-child(2) {
+    display: flex !important;
+    padding-left: 0 !important;
+    font-size: var(--text-lg) !important;
+    font-weight: 700 !important;
+    color: var(--title-main-color) !important;
+    justify-content: center !important;
+    text-align: center !important;
+    border-bottom: 2px solid rgba(63, 166, 210, 0.3) !important;
+    padding: var(--spacing-md) 0 !important;
+    min-height: auto !important;
+  }
+  
+  /* Hide "STUDENT NAME" label */
+  .students td:nth-child(2)::before {
+    display: none !important;
+    content: none !important;
+  }
+  
+  /* Hide Grade Level field */
+  .students td:nth-child(3) {
+    display: none !important;
+  }
+  
+  /* Hide Section field */
+  .students td:nth-child(4) {
+    display: none !important;
+  }
+  
+  /* Hide Status field */
+  .students td:nth-child(5) {
+    display: none !important;
+  }
+  
+  /* Hide "ACTION" label for Visit button */
+  .students td:nth-child(6)::before {
+    display: none !important;
+    content: none !important;
+  }
+  
+  /* Visit button - Full width at bottom, no label */
+  .students td:nth-child(6) {
+    display: flex !important;
+    padding-left: 0 !important;
+    padding: var(--spacing-md) 0 0 0 !important;
+    border-bottom: none !important;
+    min-height: auto !important;
+  }
+}
+
+/*====================================*/
+/*   STATUS BADGES                     */
+/*====================================*/
 
 .status {
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
+  padding: clamp(0.2rem, 0.5vw, 0.4rem) clamp(0.4rem, 1vw, 0.8rem);
+  border-radius: var(--radius-xl);
   font-weight: 500;
-  font-size: 0.85rem;
+  font-size: var(--text-xs);
   display: inline-block;
   white-space: nowrap;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  /* Touch target minimum */
+  min-height: var(--touch-target-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .statusActive {
@@ -130,38 +456,77 @@ body {
   border: 1px solid var(--danger);
 }
 
+/*====================================*/
+/*   ACTION BUTTONS                    */
+/*====================================*/
+
+/* Icon Buttons in Table */
 .students td button {
+  /* Touch target minimum */
+  min-width: clamp(24px, 5vw, 31px);
+  min-height: clamp(24px, 5vw, 31px);
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Styling */
   border: none;
-  cursor: pointer;
-  margin-right: 6px;
-  transition: 0.25s ease;
-  border-radius: 6px;
-  padding: 6px;
-  width: 31px;
-  height: auto;
   background: transparent;
+  border-radius: var(--radius-sm);
+  padding: clamp(2px, 0.5vw, 6px);
+  /* Spacing */
+  margin-right: clamp(2px, 1vw, 6px);
+  /* Interactions */
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  /* Transitions */
+  transition: all var(--transition-fast);
 }
 
-.students td button:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: scale(1.1);
+/* Hover state only on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .students td button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.1);
+  }
 }
 
-.students td button:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: scale(1.1);
+/* Focus state for accessibility */
+.students td button:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
 }
 
+/* Active state */
+.students td button:active {
+  transform: scale(0.95);
+}
+
+/* Visit Button - Touch Optimized */
 .visit-btn {
-  display: inline-block;
-  padding: 0.6rem 1.2rem;
+  /* Touch target minimum */
+  min-height: var(--touch-target-min);
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Styling */
   background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
   color: white;
   text-decoration: none;
-  border-radius: 8px;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: var(--text-sm);
   font-weight: 500;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
+  /* Interactions */
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  /* Transitions */
+  transition: all var(--transition);
   box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
 }
 .students td .button.reenroll-btn {
@@ -184,297 +549,404 @@ body {
   height: 16px;
 }
 
-.visit-btn:hover {
-  background: linear-gradient(135deg, var(--hover-accent), var(--accent-color));
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
+/* Hover state only on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .visit-btn:hover {
+    background: linear-gradient(135deg, var(--hover-accent), var(--accent-color));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
+  }
 }
 
+/* Focus state for accessibility */
+.visit-btn:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Active state */
 .visit-btn:active {
-  transform: translateY(0);
+  transform: scale(0.98);
 }
 
 .view-button {
   text-align: center;
 }
 
-/* ===== Responsive Design ===== */
+/*====================================*/
+/*   PROGRESSIVE ENHANCEMENT          */
+/*   Mobile-First Breakpoints         */
+/*====================================*/
 
-/* 2500px and above */
+/* ===== SMALL MOBILE (375px+) ===== */
+@media (min-width: 375px) {
+  .table-container > a {
+    padding: var(--spacing-sm) var(--spacing-lg);
+  }
+}
+
+/* ===== MOBILE LANDSCAPE / SMALL TABLET (426px-767px) ===== */
+@media (min-width: 426px) and (max-width: 767px) {
+  .user-all-enrolled-content {
+    padding: var(--spacing-lg);
+  }
+  
+  /* Keep card layout but with more spacing */
+  .students th,
+  .students td {
+    padding: var(--spacing-md);
+  }
+}
+
+/* ===== TABLET PORTRAIT (600px-767px) ===== */
+@media (min-width: 600px) and (max-width: 767px) {
+  .table-container {
+    padding: var(--spacing-lg);
+  }
+  
+  .table-container > h3 {
+    font-size: var(--text-2xl);
+  }
+}
+
+/* ===== TABLET LANDSCAPE (768px+) ===== */
+@media (min-width: 768px) {
+  .user-all-enrolled-content {
+    padding: var(--spacing-xl);
+    background-attachment: fixed;
+  }
+  
+  .table-container {
+    width: 95%;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    min-height: 300px;
+    height: clamp(60vh, 70vh, 75vh);
+  }
+  
+  /* RESTORE TABLE LAYOUT - Desktop/Tablet */
+  /* Revert all mobile card styles back to traditional table */
+  
+  .students {
+    display: table;
+    min-width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: var(--text-sm);
+  }
+  
+  .students thead {
+    display: table-header-group;
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: rgb(97 206 255);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Restore visibility */
+    clip: auto;
+    clip-path: none;
+    overflow: visible;
+    white-space: normal;
+  }
+  
+  .students th {
+    display: table-cell;
+    padding: var(--spacing-sm);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: center;
+    color: white;
+    text-shadow: 0 1px 2px rgba(9, 103, 162, 0.4);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .students tbody {
+    display: table-row-group;
+    background: #bbe5f8;
+  }
+  
+  .students tbody tr {
+    display: table-row;
+    margin-bottom: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+  
+  /* Restore zebra stripes */
+  .students tbody tr:nth-child(even) {
+    background: rgba(71, 168, 255, 0.08) !important;
+  }
+  
+  .students td {
+    display: table-cell;
+    padding: var(--spacing-sm);
+    border-top: 1px solid rgba(63, 166, 210, 0.3);
+    border-bottom: none;
+    vertical-align: middle;
+    text-align: center;
+    position: static;
+    padding-left: var(--spacing-sm);
+    min-height: auto;
+    font-size: var(--text-sm);
+  }
+  
+  .students td:last-child {
+    border-bottom: 1px solid rgba(63, 166, 210, 0.3);
+  }
+  
+  /* Remove all ::before labels on desktop */
+  .students td::before {
+    display: none !important;
+    content: none !important;
+  }
+  
+  /* Restore status badges normal width */
+  .students td .status {
+    width: auto;
+  }
+  
+  /* Restore visit button normal width */
+  .students td .visit-btn {
+    width: 12rem;
+  }
+  
+  /* Hover effects only on devices that support hover */
+  .students tbody tr:hover {
+    background: rgba(62, 158, 196, 0.15) !important;
+    transition: background var(--transition-fast);
+  }
+  
+  .students tbody tr:hover td {
+    color: var(--hover-accent);
+  }
+}
+
+/* ===== SMALL DESKTOP (1024px+) ===== */
+@media (min-width: 1024px) {
+  .user-all-enrolled-content {
+    padding: var(--spacing-2xl);
+  }
+  
+  .table-container {
+    width: 50%;
+    min-height: 340px;
+    height: clamp(65vh, 70vh, 78vh);
+  }
+  
+  .students th,
+  .students td {
+    padding: var(--spacing-lg);
+  }
+}
+
+/* ===== LAPTOP (1280px+) ===== */
+@media (min-width: 1280px) {
+  .students {
+    font-size: var(--text-base);
+  }
+  
+  .students th {
+    font-size: var(--text-sm);
+    letter-spacing: 0.06em;
+  }
+  
+  .students td {
+    font-size: var(--text-sm);
+  }
+}
+
+/* ===== DESKTOP (1440px+) ===== */
+@media (min-width: 1440px) {
+  .user-all-enrolled-content {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+  
+  .table-container {
+    min-height: 400px;
+    height: clamp(68vh, 70vh, 72vh);
+  }
+}
+
+  .students td .visit-btn {
+    width: 16rem;
+  }
+
+/* ===== FULL HD (1920px+) ===== */
+@media (min-width: 1920px) {
+  .user-all-enrolled-content {
+    max-width: 1800px;
+  }
+  
+  .table-container {
+    min-height: 480px;
+    height: clamp(70vh, 71vh, 75vh);
+  }
+  
+  .students th {
+    padding: clamp(1rem, 1.5vw, 1.2rem);
+    font-size: var(--text-base);
+    letter-spacing: 0.07em;
+  }
+  
+  .students td {
+    padding: clamp(1rem, 1.5vw, 1.2rem);
+    font-size: var(--text-base);
+  }
+}
+
+/* ===== ULTRA-WIDE (2500px+) ===== */
 @media (min-width: 2500px) {
   .user-all-enrolled-content {
-    padding: 2.8rem;
-  }
-  
-  .students th {
-    letter-spacing: 0.7px;
-    padding: 1.4rem;
-    font-size: 1.2rem;
-  }
-  
-  .students td {
-    padding: 1.4rem;
-    letter-spacing: 0.7px;
-    font-size: 1.15rem;
+    max-width: 2000px;
   }
   
   .table-container {
-    margin-top: 2rem;
-    border-radius: 26px;
-    padding: 2rem;
-    height: 72vh;
     min-height: 550px;
-  }
-  
-  .status {
-    padding: 0.55rem 1.1rem;
-    border-radius: 26px;
-    font-size: 1.1rem;
-  }
-  
-  .students td button {
-    width: 45px;
-    padding: 7px;
-    border-radius: 7px;
-  }
-}
-
-/* 1920px - Full HD */
-@media (min-width: 1920px) and (max-width: 2499px) {
-  .user-all-enrolled-content {
-    padding: 2.4rem;
+    height: clamp(70vh, 72vh, 75vh);
   }
   
   .students th {
-    letter-spacing: 0.6px;
-    padding: 1.2rem;
-    font-size: 1.1rem;
+    padding: clamp(1.2rem, 2vw, 1.4rem);
+    font-size: var(--text-lg);
+    letter-spacing: 0.08em;
   }
   
   .students td {
-    padding: 1.2rem;
-    letter-spacing: 0.6px;
-    font-size: 1.05rem;
-  }
-  
-  .table-container {
-    margin-top: 1.8rem;
-    border-radius: 23px;
-    padding: 1.8rem;
-    height: 71vh;
-    min-height: 480px;
-  }
-  
-  .status {
-    padding: 0.5rem 1rem;
-    border-radius: 23px;
-    font-size: 1rem;
-  }
-  
-  .students td button {
-    width: 40px;
-    padding: 6px;
+    padding: clamp(1.2rem, 2vw, 1.4rem);
+    font-size: var(--text-lg);
   }
 }
 
-/* 1440px - Default */
-@media (min-width: 1441px) and (max-width: 1919px) {
-  /* Default styles already applied */
-}
+/*====================================*/
+/*   ACCESSIBILITY & SPECIAL CASES    */
+/*====================================*/
 
-/* 1024px - Smaller desktop */
-@media (min-width: 1024px) and (max-width: 1440px) {
-  .user-all-enrolled-content {
-    padding: 1.5rem;
-  }
-  
-  .students th {
-    letter-spacing: 0.4px;
-    padding: 0.75rem;
-    font-size: 0.88rem;
-  }
-  
-  .students td {
-    padding: 0.75rem;
-    letter-spacing: 0.38px;
-    font-size: 0.83rem;
-  }
-  
+/* Landscape Orientation (Mobile) */
+@media (max-height: 500px) and (orientation: landscape) and (max-width: 900px) {
   .table-container {
-    margin-top: 1.15rem;
-    border-radius: 15px;
-    padding: 1.15rem;
-    height: 67vh;
-    min-height: 340px;
-  }
-  
-  .status {
-    padding: 0.33rem 0.62rem;
-    border-radius: 15px;
-    font-size: 0.73rem;
-  }
-  
-  .students td button {
-    width: 28px;
-    padding: 4px;
-  }
-}
-
-/* Tablets */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .user-all-enrolled-content {
-    padding: 1.2rem;
-  }
-  
-  .students th {
-    padding: 0.7rem;
-    font-size: 0.85rem;
-    letter-spacing: 0.3px;
-  }
-  
-  .students td {
-    padding: 0.7rem;
-    font-size: 0.8rem;
-  }
-  
-  .table-container {
-    margin-top: 1rem;
-    border-radius: 12px;
-    padding: 1rem;
     height: 65vh;
-    min-height: 300px;
+    min-height: 200px;
   }
   
-  .status {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.7rem;
-    border-radius: 12px;
-  }
-  
-  .students td button {
-    width: 26px;
-    padding: 3px;
-    border-radius: 5px;
+  .user-all-enrolled-content {
+    padding: var(--spacing-sm);
   }
 }
 
-/* Mobile */
-@media (max-width: 767px) {
-  .user-all-enrolled-content {
-    padding: 1rem;
+/* Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  
-  .students th {
-    padding: 0.6rem 0.4rem;
-    font-size: 0.75rem;
-    letter-spacing: 0.2px;
-  }
-  
-  .students td {
-    padding: 0.6rem 0.4rem;
-    font-size: 0.75rem;
-  }
-  
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
   .table-container {
-    margin-top: 0.8rem;
-    border-radius: 10px;
-    padding: 0.8rem;
-    height: 60vh;
-    min-height: 280px;
+    border: 2px solid currentColor;
   }
   
-  .status {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.65rem;
-    border-radius: 10px;
-  }
-  
-  .students td button {
-    width: 24px;
-    padding: 2px;
-    margin-right: 4px;
-    border-radius: 4px;
-  }
-}
-
-/* Small Mobile */
-@media (max-width: 480px) {
-  .user-all-enrolled-content {
-    padding: 0.8rem;
+  .table-container > a {
+    border-width: 2px;
   }
   
   .students {
-    min-width: 600px;
+    border: 1px solid currentColor;
   }
   
-  .students th {
-    padding: 0.5rem 0.3rem;
-    font-size: 0.7rem;
-  }
-  
+  .students th,
   .students td {
-    padding: 0.5rem 0.3rem;
-    font-size: 0.7rem;
-  }
-  
-  .table-container {
-    padding: 0.6rem;
-    height: 55vh;
-    overflow-x: auto;
+    border: 1px solid currentColor;
   }
   
   .status {
-    padding: 0.2rem 0.4rem;
-    font-size: 0.6rem;
-  }
-  
-  .students td button {
-    width: 22px;
-    padding: 2px;
+    border-width: 2px;
   }
 }
 
-/* Extra Small Mobile */
-@media (max-width: 374px) {
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Ensure all interactive elements meet touch target size */
+  .table-container > a,
+  .visit-btn,
+  .status {
+    min-height: var(--touch-target-min);
+  }
+  
+  .students td,
+  .students th {
+    min-height: var(--touch-target-min);
+  }
+  
+  .students td button {
+    min-width: var(--touch-target-min);
+    min-height: var(--touch-target-min);
+  }
+}
+
+/* Print Styles */
+@media print {
+  @page {
+    margin: 1cm;
+  }
+  
   .user-all-enrolled-content {
-    padding: 0.6rem;
+    background: white;
+    padding: 0;
+  }
+  
+  .table-container > a {
+    display: none !important;
+  }
+  
+  .table-container {
+    box-shadow: none;
+    border: 1px solid #000;
+    page-break-inside: avoid;
+    background: white;
+    backdrop-filter: none;
+    height: auto;
+    overflow: visible;
+  }
+  
+  .students {
+    page-break-inside: avoid;
   }
   
   .students th {
-    padding: 0.4rem 0.25rem;
-    font-size: 0.65rem;
+    background: #e0e0e0 !important;
+    color: #000 !important;
+    border: 1px solid #000;
   }
   
   .students td {
-    padding: 0.4rem 0.25rem;
-    font-size: 0.65rem;
-  }
-  
-  .table-container {
-    padding: 0.5rem;
-    height: 50vh;
-    border-radius: 8px;
-  }
-  
-  .status {
-    padding: 0.2rem 0.35rem;
-    font-size: 0.55rem;
-    border-radius: 8px;
+    border: 1px solid #000;
+    background: white !important;
+    color: #000 !important;
   }
   
   .students td button {
-    width: 20px;
-    padding: 1px;
+    display: none !important;
+  }
+  
+  .visit-btn {
+    display: none !important;
   }
 }
 
-/* Landscape */
-@media screen and (max-height: 500px) and (orientation: landscape) {
-  .table-container {
-    height: 65vh;
-  }
-  
-  .user-all-enrolled-content {
-    padding: 0.8rem;
-  }
-}
+/*====================================*/
+/*   END ALL STUDENTS PAGE RESPONSIVE */
+/*====================================*/

@@ -1,4 +1,4 @@
-import {ValidationUtils,capitalizeFirstLetter,generateOptions, getRegions, getProvinces, getCities, getBarangays } from "../utils.js";
+import {ValidationUtils,capitalizeFirstLetter,generateOptions, getRegions, getProvinces, getCities, getBarangays, preventCharactersByRegex, limitCharacters} from "../utils.js";
 document.addEventListener('DOMContentLoaded',function(){
     // |=================|
     // |===== ORDER =====|
@@ -73,6 +73,14 @@ document.addEventListener('DOMContentLoaded',function(){
     const idRegex = /^([0-9]){6}$/;
     const charRegex = /^[A-Za-z0-9\s.,'-]{3,100}$/;
     const onlyDigits = /^[0-9]+$/;
+    const nonAlphaRegex = /[^A-Za-z\s]/g;  // Only allow letters and spaces, reject ALL special characters
+    const nonNumericRegex = /[^0-9]/g;
+
+    const numLimitLRN = 12;
+    const numLimitPSA = 13;
+    const numLimitSchoolID = 6;
+    const numLimitPhone = 11;
+
     // |=============================|
     // |===== VALIDATION UTILS ======|
     // |=============================|
@@ -83,9 +91,41 @@ document.addEventListener('DOMContentLoaded',function(){
         let createTBox = document.createElement("input");
         createTBox.type = "text";
         createTBox.id = addressType;
+        createTBox.name = replaceElement.name || addressType;
         createTBox.placeholder = `Enter ${addressType} manually`;
         createTBox.className = "textbox";
         replaceElement.replaceWith(createTBox);
+        
+        // If replacing city/municipality, also replace barangay with text input
+        if (addressType === "city-municipality" || addressType === "city") {
+            const barangayElement = document.getElementById("barangay");
+            if (barangayElement && barangayElement.tagName === "SELECT") {
+                const barangayTextBox = document.createElement("input");
+                barangayTextBox.type = "text";
+                barangayTextBox.id = "barangay";
+                barangayTextBox.name = "barangay";
+                barangayTextBox.placeholder = "Enter barangay manually";
+                barangayTextBox.className = "textbox";
+                barangayElement.replaceWith(barangayTextBox);
+                // Update the reference and add event listener
+                const newBarangay = document.getElementById("barangay");
+                if (newBarangay) {
+                    // Set the barangay-name hidden field
+                    const barangayNameField = document.getElementById("barangay-name");
+                    if (barangayNameField) {
+                        barangayNameField.value = newBarangay.value || '';
+                    }
+                    // Add input event listener
+                    newBarangay.addEventListener('input', function() {
+                        if (barangayNameField) {
+                            barangayNameField.value = this.value;
+                        }
+                        validateAddressInfo();
+                    });
+                }
+            }
+        }
+        return createTBox;
     }
     async function changeAddressValues() {
         try {
@@ -103,13 +143,23 @@ document.addEventListener('DOMContentLoaded',function(){
                 addressData.province.code = provinces.value;
                 addressData.province.text = provinces.options[provinces.selectedIndex].text;
             }
-            if(cityOrMunicipality.value && cityOrMunicipality.selectedIndex !== -1) {
-                addressData.city.code = cityOrMunicipality.value;
-                addressData.city.text = cityOrMunicipality.options[cityOrMunicipality.selectedIndex].text;
+            if(cityOrMunicipality.value) {
+                if (cityOrMunicipality.tagName === "SELECT" && cityOrMunicipality.selectedIndex !== -1) {
+                    addressData.city.code = cityOrMunicipality.value;
+                    addressData.city.text = cityOrMunicipality.options[cityOrMunicipality.selectedIndex].text;
+                } else if (cityOrMunicipality.tagName === "INPUT") {
+                    addressData.city.code = '';
+                    addressData.city.text = cityOrMunicipality.value;
+                }
             }
-            if(barangay.value && barangay.selectedIndex !== -1) {
-                addressData.barangay.code = barangay.value;
-                addressData.barangay.text = barangay.options[barangay.selectedIndex].text;
+            if(barangay.value) {
+                if (barangay.tagName === "SELECT" && barangay.selectedIndex !== -1) {
+                    addressData.barangay.code = barangay.value;
+                    addressData.barangay.text = barangay.options[barangay.selectedIndex].text;
+                } else if (barangay.tagName === "INPUT") {
+                    addressData.barangay.code = '';
+                    addressData.barangay.text = barangay.value;
+                }
             }
             Object.entries(addressData).forEach(([key, value]) => {
                 let codeInput = form.querySelector(`input[name="${key}_code"]`);
@@ -129,6 +179,21 @@ document.addEventListener('DOMContentLoaded',function(){
                 }
                 textInput.value = value.text;
             });
+            
+            // Also set the name fields that PHP expects
+            if (addressData.city.text) {
+                const cityNameField = document.getElementById("city-municipality-name");
+                if (cityNameField) {
+                    cityNameField.value = addressData.city.text;
+                }
+            }
+            if (addressData.barangay.text) {
+                const barangayNameField = document.getElementById("barangay-name");
+                if (barangayNameField) {
+                    barangayNameField.value = addressData.barangay.text;
+                }
+            }
+            
             return addressData;
         } catch(error) {
             console.error('Error in changeAddressValues:', error);
@@ -494,9 +559,9 @@ document.addEventListener('DOMContentLoaded',function(){
             {element: disability, error: "em-boolsn" },
             {element: assistiveTech, error: "em-atdevice" }
         ];
-        disabiltiyFields.forEach((element,error)=>{
-            if(!element.disabled) return;
-            if(!ValidationUtils.validateEmpty(element,error)) {
+        disabiltiyFields.forEach(({element, error})=>{
+            if(element.disabled) return;
+            if(!ValidationUtils.validateEmpty(element, error)) {
                 isValid = false;
             }
         });
@@ -683,6 +748,16 @@ document.addEventListener('DOMContentLoaded',function(){
         initialSelectValue(provinces, "Region");
         initialSelectValue(cityOrMunicipality, "Province");
         initialSelectValue(barangay, "City/Municipality");
+        
+        // Check if city is already a text input (manually entered) and replace barangay accordingly
+        setTimeout(() => {
+            const cityElement = document.getElementById("city-municipality");
+            const barangayElement = document.getElementById("barangay");
+            if (cityElement && cityElement.tagName === "INPUT" && cityElement.value.trim() !== "" && 
+                barangayElement && barangayElement.tagName === "SELECT") {
+                replaceTextBox(barangayElement, "barangay");
+            }
+        }, 100);
     })();
     async function getProvinceOptions() {
         try {
@@ -821,7 +896,7 @@ document.addEventListener('DOMContentLoaded',function(){
                 nativeGroup.style.opacity = 1;
                 nativeGroup.value = saveNativeGroup || '';
                 if (saveNativeGroup && saveNativeGroup.trim() !== '') {
-                    field.dispatchEvent(new Event('input'));
+                    nativeGroup.dispatchEvent(new Event('input'));
                 };  // run once after enabling
             }
         })
@@ -854,6 +929,43 @@ document.addEventListener('DOMContentLoaded',function(){
             }
         });
     });
+
+    const nameFields = [lname, fname, fatherLname, fatherFname, motherLname, motherFname, guardianLname, guardianFname];
+    nameFields.forEach(field => {
+        if (field) {
+            preventCharactersByRegex(field, nonAlphaRegex, (element, rejectedChars) => {
+                console.log(`Rejected characters in ${element.id}: ${rejectedChars}`);
+            });
+        }
+    });
+
+    const numericFields = [psaNumber, lrn, startYear, endYear, lastYear, lschoolId, fschoolId, 
+                          fatherCPnum, motherCPnum, guardianCPnum, houseNumber];
+    numericFields.forEach(field => {
+        if (field) {
+            preventCharactersByRegex(field, nonNumericRegex, (element, rejectedChars) => {
+                console.log(`Prevented non-numeric characters: ${rejectedChars}`);
+            });
+        }
+    });
+
+    limitCharacters(lrn, numLimitLRN);
+    limitCharacters(psaNumber, numLimitPSA);
+
+    const schoolIdFields = [lschoolId, fschoolId];
+    schoolIdFields.forEach(field => {
+        if (field) {
+            limitCharacters(field, numLimitSchoolID);
+        }
+    });
+
+    const phoneNumbers = [fatherCPnum, motherCPnum, guardianCPnum];
+    phoneNumbers.forEach(field => {
+        if (field) {
+            limitCharacters(field, numLimitPhone);
+        }
+    });
+
     // === DISABLITY EVENTS ===
     function toggleField(radioChecked, field, savedValue,errorElement) {
         if (!radioChecked) {
@@ -912,16 +1024,44 @@ document.addEventListener('DOMContentLoaded',function(){
             validateAddress("em-province",this);
         });
         cityOrMunicipality.addEventListener("change", async function() {
-            await getBarangayOptions();
-            document.getElementById("city-municipality-name").value = cityOrMunicipality.options[cityOrMunicipality.selectedIndex].text;
-            if (cityCode == "") {
-                initialSelectValue(barangay, "City/Municipality");
+            // Check if city is a text input (manually entered) or a select dropdown
+            if (this.tagName === "INPUT") {
+                // City is manually entered, replace barangay with text input
+                document.getElementById("city-municipality-name").value = this.value;
+                const barangayElement = document.getElementById("barangay");
+                if (barangayElement && barangayElement.tagName === "SELECT") {
+                    await replaceTextBox(barangayElement, "barangay");
+                }
+                validateAddress('em-city', this);
+            } else {
+                // City is selected from dropdown
+                await getBarangayOptions();
+                document.getElementById("city-municipality-name").value = cityOrMunicipality.options[cityOrMunicipality.selectedIndex].text;
+                if (cityCode == "") {
+                    initialSelectValue(barangay, "City/Municipality");
+                }
+                validateAddress('em-city', this);
             }
-            validateAddress('em-city',this);
         });
+        
+        // Also handle input event for manually entered city (when it's already a text input)
+        cityOrMunicipality.addEventListener("input", async function() {
+            if (this.tagName === "INPUT" && this.value.trim() !== "") {
+                document.getElementById("city-municipality-name").value = this.value;
+                const barangayElement = document.getElementById("barangay");
+                if (barangayElement && barangayElement.tagName === "SELECT") {
+                    await replaceTextBox(barangayElement, "barangay");
+                }
+            }
+        });
+        
         barangay.addEventListener("change", function() {
-            document.getElementById("barangay-name").value = barangay.options[barangay.selectedIndex].text;
-            validateAddress("em-barangay",this);
+            if (this.tagName === "SELECT") {
+                document.getElementById("barangay-name").value = barangay.options[barangay.selectedIndex].text;
+            } else {
+                document.getElementById("barangay-name").value = this.value;
+            }
+            validateAddress("em-barangay", this);
         });
     }
     // === PARENT INFO EVENTS ===
@@ -1091,12 +1231,31 @@ async function postEnrollmentForm(formData) {
             body: formData
         });
         clearTimeout(timeoutId);
+        let responseText = await response.text();
         let data;
         try {
-            data = await response.json();
+            // Try to parse as JSON
+            if (!responseText || !responseText.trim()) {
+                throw new Error('Empty response from server');
+            }
+            data = JSON.parse(responseText);
         }
-        catch{
-            throw new Error('Invalid response');
+        catch(parseError) {
+            console.error('JSON Parse Error:', parseError);
+            console.error('Response text:', responseText);
+            // Check if response is HTML (likely an error page)
+            if (responseText.trim().startsWith('<!DOCTYPE') || responseText.trim().startsWith('<html')) {
+                return {
+                    success: false,
+                    message: 'Server returned an error page. Please check server logs.',
+                    data: null
+                };
+            }
+            return {
+                success: false,
+                message: `Invalid response from server: ${responseText.substring(0, 200)}`,
+                data: null
+            };
         }
         if(!response.ok) {
             return {

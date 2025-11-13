@@ -14,10 +14,8 @@ $middleName = $_POST['middle-name'] ?? null;
 $lastName = $_POST['last-name'] ?? null;
 $staffEmail = $_POST['staff-email'] ?? null;
 $contactNumber = $_POST['contact-number'] ?? null;
-$status = 1;
-$staffType = 2;
 
-$response = $controller->apiPostRegisterTeacher($firstName, $middleName, $lastName, $staffEmail, $contactNumber, $status, $staffType);
+$response = $controller->apiPostRegisterTeacher($firstName, $middleName, $lastName, $staffEmail, $contactNumber);
 http_response_code($response['httpcode']);
 echo json_encode($response);
 exit();

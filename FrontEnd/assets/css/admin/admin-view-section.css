@@ -10,6 +10,10 @@
   --border-radius: 1rem;
   --transition: all 0.3s ease;
   --font-main: "Poppins", "Segoe UI", sans-serif;
+  --header-bg: rgba(62, 158, 196, 0.2);
+  --table-thead: rgba(62, 158, 196, 0.3);
+  --table-bg: rgb(0 165 216 / 44%);
+
 }
 
 /* ========== PAGE BASE ========== */
@@ -131,18 +135,18 @@ body {
 }
 
 .stat-card {
-  background: rgb(21 182 255 / 27%);
-  border: 1px solid var(--card-border);
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  backdrop-filter: blur(15px) saturate(180%);
-  -webkit-backdrop-filter: blur(15px) saturate(180%);
-  box-shadow: 0 8px 30px rgb(0 0 0 / 14%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  transition: var(--transition);
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    padding-bottom: 1.5rem;
+    /* backdrop-filter: blur(15px) saturate(180%); */
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
+    box-shadow: 0 8px 30px rgb(0 0 0 / 14%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: var(--transition);
 }
 
 .stat-card:hover {
@@ -152,48 +156,26 @@ body {
 }
 
 .stat-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.students-icon {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  position: relative;
-}
-
-.students-icon::before {
-  content: '👥';
-  font-size: 2rem;
-}
-
-.boys-icon {
-  background: #fef3c7;
-}
-
-.girls-icon {
-  background: #fed7aa;
-}
-
-.subjects-icon {
-  background: #d1fae5;
+    width: 18rem;
+    height: 1rem;
+    border-radius: 12px 12px 0px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
 }
 
 .stat-value {
   font-size: 2.5rem;
   font-weight: 700;
-  color: var(--text-color);
+  color: var(--main-color);
   margin-bottom: 0.5rem;
 }
 
 .stat-label {
   font-size: 0.9rem;
-  color: rgba(245, 245, 245, 0.8);
+  color: var(--main-color);
   font-weight: 500;
 }
 
@@ -206,14 +188,12 @@ body {
 
 .students-panel,
 .subjects-panel {
-  background: rgb(21 182 255 / 27%);
-  border: 1px solid var(--card-border);
-  border-radius: var(--border-radius);
-  backdrop-filter: blur(15px) saturate(180%);
-  -webkit-backdrop-filter: blur(15px) saturate(180%);
-  box-shadow: 0 8px 30px rgb(0 0 0 / 14%);
-  overflow: hidden;
-  transition: var(--transition);
+    background: rgb(183 234 255);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 8px 30px rgb(0 0 0 / 14%);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    transition: var(--transition);
 }
 
 .students-panel:hover,
@@ -224,14 +204,14 @@ body {
 
 .panel-header {
   padding: 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(62, 158, 196, 0.2);
+  border-bottom: 1px solid var(--accent-color);
+  background: rgb(207 241 255);
 }
 
 .panel-title {
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--hover-accent);
+  color: var(--main-color);
   margin: 0;
   display: flex;
   align-items: center;
@@ -240,10 +220,6 @@ body {
 
 .panel-title svg {
   color: var(--accent-color);
-}
-
-.panel-content {
-  padding: 1.5rem;
 }
 
 /* ========== STUDENTS TABLE ========== */
@@ -345,16 +321,16 @@ body {
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  color: var(--hover-accent);
+  color: white;
   font-size: 0.95rem;
   border-bottom: 2px solid rgba(0, 180, 216, 0.3);
 }
 
 .subject-details-table td {
-  padding: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
-  font-size: 0.9rem;
+    padding: 1rem;
+    border-bottom: 1px solid rgb(82 195 220 / 52%);
+    color: var(--main-color);
+    font-size: 0.9rem;
 }
 
 .subject-details-table tbody tr {
@@ -370,17 +346,19 @@ body {
 }
 
 .subjects-summary {
-  margin-top: 1rem;
-  color: rgba(245, 245, 245, 0.8);
-  font-size: 0.9rem;
-  font-weight: 500;
+    margin-top: 1rem;
+    color: var(--title-main-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-top: 1px solid var(--hover-accent);
+    padding: 12px;
 }
 
 /* ========== UTILITY CLASSES ========== */
 .no-data {
   text-align: center;
   padding: 2rem;
-  color: rgba(245, 245, 245, 0.7);
+  color: var(--main-color);
   font-style: italic;
 }
 

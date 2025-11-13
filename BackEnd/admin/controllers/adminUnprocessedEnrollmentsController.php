@@ -4,15 +4,18 @@ require_once __DIR__ . '/../models/adminEnrollmentTransactionsModel.php';
 require_once __DIR__ . '/../models/adminEnrolleesModel.php';
 require_once __DIR__ . '/../models/adminStudentsModel.php';
 require_once __DIR__ . '/../../Exceptions/IdNotFoundException.php';
+require_once __DIR__ . '/../../common/sendEnrollmentStatus.php';
 class adminUnprocessedEnrollmentsController {
     protected $transactionsModel;
     protected $enrolleesModel;
     protected $studentsModel;
+    protected $smsService;
     protected const BOOL_TRUE = 1;
     public function __construct() {
         $this->transactionsModel = new adminEnrollmentTransactionsModel();
         $this->enrolleesModel = new adminEnrolleesModel();
         $this->studentsModel = new adminStudentsModel();
+        $this->smsService = new SendEnrollmentStatus();
     }
     //API
     public function apiPostUpdateEnrollee(?int $enrollmentStatus, ?int $enrolleeId):array {
@@ -30,12 +33,14 @@ class adminUnprocessedEnrollmentsController {
                 if(!$this->studentsModel->insertEnrolleeToStudent($enrolleeId)) {
                     return ['httpcode'=> 500,'success'=> false,'message'=> 'Failed to insert enrollee to student'];
                 }
+                $this->sendEnrollmentStatusSMS($enrolleeId, 'Enrolled');
                 return ['httpcode'=> 200,'success'=> true,'message'=> 'Successfully enrolled Enrollee and inserted to student','data'=>[]];
             }
             else if($enrollmentStatus === 2){
                 if(!$this->enrolleesModel->updateEnrollee($enrolleeId,$enrollmentStatus) || !$this->transactionsModel->updateIsApprovedToTrue($enrolleeId,self::BOOL_TRUE)) {
                     return ['httpcode'=> 500,'success'=> false,'message'=> "Failed to update Enrollee's statuses",'data'=>[]];
                 }
+                $this->sendEnrollmentStatusSMS($enrolleeId, 'Denied');
                 return ['httpcode'=> 200,'success'=> true,'message'=> 'Enrollee was updated and denied','data'=>[]];
             }
             else if($enrollmentStatus === 4){
@@ -45,6 +50,7 @@ class adminUnprocessedEnrollmentsController {
                 if(!$this->transactionsModel->updateTransactionToFollowUp($enrolleeId,$enrollmentStatus)) {
                     return ['httpcode'=> 500,'success'=> false,'message'=>'Failed to flag Enrollee for follow up','data'=>[]];
                 }
+                $this->sendEnrollmentStatusSMS($enrolleeId, 'Follow-Up');
                 return ['httpcode'=> 200,'success'=> true,'message'=>'Successfully followed up enrollee','data'=>[]];
             }
             else {
@@ -148,6 +154,27 @@ class adminUnprocessedEnrollmentsController {
         }
     }
     //HELPERS
+    private function sendEnrollmentStatusSMS(int $enrolleeId, string $enrollmentStatus): void {
+        try {
+            $smsData = $this->enrolleesModel->getEnrolleeDetailsForSMS($enrolleeId);
+            
+            if(empty($smsData) || empty($smsData['Recipient_Contact_Number'])) {
+                error_log("[".date('Y-m-d H:i:s')."] Missing SMS data for Enrollee ID: $enrolleeId\n", 3, __DIR__ . '/../../errorLogs.txt');
+                return;
+            }
+            
+            $smsData['Enrollment_Status'] = $enrollmentStatus;
+            $this->smsService->sendEnrollmentStatus($smsData);
+            
+            error_log("[".date('Y-m-d H:i:s')."] SMS sent to {$smsData['Recipient_Contact_Number']} for Enrollee ID: $enrolleeId - Status: $enrollmentStatus\n", 3, __DIR__ . '/../../errorLogs.txt');
+        }
+        catch(SMSFailureException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] SMS failed for Enrollee ID: $enrolleeId - " . $e->getMessage() . "\n", 3, __DIR__ . '/../../errorLogs.txt');
+        }
+        catch(Exception $e) {
+            error_log("[".date('Y-m-d H:i:s')."] SMS error for Enrollee ID: $enrolleeId - " . $e->getMessage() . "\n", 3, __DIR__ . '/../../errorLogs.txt');
+        }
+    }
     //VIEW
     public function viewMarkedEnrolledTransactions() : array {
         try {

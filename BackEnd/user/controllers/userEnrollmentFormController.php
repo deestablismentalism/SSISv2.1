@@ -24,11 +24,13 @@ class userEnrollmentFormController {
     string $gFName,string $gLName,?string $gMName,string $gEduAttainment,string $gCpNum, int $gIs4Ps,
     string $stuFName,string $stuLName,?string $stuMName,?string $stuSuffix,?int $lrn,int $psaNum, string $birthDate,
     int $age,string $sex,string $religion,string $natLang,int $isCultural,?string $culturalG, string $studentEmail, int $enrollStat,
-    ?array $psaImageFile) : array { //F 3.5.1
+    ?array $psaImageFile) : array {
         try {
-            if(is_null($uId)) {
-                throw new IdNotFoundException("Current User's ID not found");
-            }
+            // Remove the strict null check - allow admin enrollment with null userId
+            // if(is_null($uId)) {
+            //     throw new IdNotFoundException("Current User's ID not found");
+            // }
+            
             if($hasLRN === 1 && empty($lrn)) {
                 return [
                     'httpcode'=>400,
@@ -37,23 +39,29 @@ class userEnrollmentFormController {
                     'data'=> []
                 ];
             }
-            $isMatchingLrn = $this->postFormModel->checkLRN($lrn);
-            $isMatchingPsa = $this->postFormModel->checkPSA($psaNum);
-            if($isMatchingLrn) {
-                return [
-                    'httpcode'=> 400,
-                    'success'=> false,
-                    'message'=> 'LRN provided already exists. Cannot input an existing Learner Reference Number',
-                    'data'=> []
-                ];
+            // Only check LRN if it's provided (not null)
+            if($lrn !== null) {
+                $isMatchingLrn = $this->postFormModel->checkLRN($lrn);
+                if($isMatchingLrn) {
+                    return [
+                        'httpcode'=> 400,
+                        'success'=> false,
+                        'message'=> 'LRN provided already exists. Cannot input an existing Learner Reference Number',
+                        'data'=> []
+                    ];
+                }
             }
-            if($isMatchingPsa) {
-                return [
-                    'httpcode'=> 400,
-                    'success'=> false,
-                    'message'=> 'PSA number provided already exists. Cannot input an existing PSA number',
-                    'data'=> []
-                ];
+            // Only check PSA if it's provided (not null)
+            if($psaNum !== null) {
+                $isMatchingPsa = $this->postFormModel->checkPSA($psaNum);
+                if($isMatchingPsa) {
+                    return [
+                        'httpcode'=> 400,
+                        'success'=> false,
+                        'message'=> 'PSA number provided already exists. Cannot input an existing PSA number',
+                        'data'=> []
+                    ];
+                }
             }
             $currentYear = (int)date('Y');
             if (($schoolYStart < $currentYear || $schoolYStart > ($currentYear + 1)) || ($schoolYEnd <= $schoolYStart || $schoolYEnd > ($currentYear + 2)) ) {
@@ -105,7 +113,7 @@ class userEnrollmentFormController {
                     'data'=> []
                 ];
             }
-            $saveImage = $this->storeImage($uId, $psaImageFile);
+            $saveImage = $this->storeImage($uId ?? 0, $psaImageFile);
             if(!$saveImage['success']) {
                 return [
                     'httpcode'=> 400,
@@ -132,7 +140,7 @@ class userEnrollmentFormController {
             //get diretory if success is true
             $filename = $saveImage['filename'];
             $filePath = $saveImage['filepath'];
-            //attempt enrollee insert
+            //attempt enrollee insert - userId can be null for admin enrollment
             $insertEnrollee = $this->postFormModel->insert_enrollee($uId, $schoolYStart,$schoolYEnd,$hasLRN,$enrollGLevel,$lastGLevel,$lastYAttended,
             $lastSAttended,$sId,$sAddress,$sType,$initalSChoice,$initialSId,$initialSAddrress,
             $hasSpecialCondition,$hasAssistiveTech,$specialCondition,$assistiveTech,
@@ -451,7 +459,7 @@ class userEnrollmentFormController {
             ];
         }
     }
-    private function storeImage(int $userId, ?array $fileName) : array { //F 3.6.3
+    private function storeImage(?int $userId, ?array $fileName) : array { //F 3.6.3
         try {
             if(empty($fileName)) {
                 return [
@@ -497,7 +505,9 @@ class userEnrollmentFormController {
             }
             $imageTime = time();
             $imageRandString = bin2hex(random_bytes(5));
-            $imageCustomFileName = $userId .'-'. $imageTime.'-'.$imageRandString;
+            // Handle null userId for admin enrollment
+            $userIdentifier = $userId ?? 'admin_' . time();
+            $imageCustomFileName = $userIdentifier .'-'. $imageTime.'-'.$imageRandString;
             //db stored values
             $imageFileName = $imageCustomFileName .'.'. $imageExtension;
             $imageFilePath = $relPath . $imageFileName;

@@ -95,37 +95,47 @@
         }
 
         public function displayEmployeeNumber() {
-            if(!isset($this->teacherInformation['Employee_Number'])) {
-                echo "N/A";
+            if(empty($this->teacherInformation['Employee_Number'])) {
+                echo "No Employee Number";
             }
             else {
-                $Employee_Number = $this->teacherInformation['Employee_Number'];
-                $Decrypted_Employee_Number = $this->encryption->passDecrypt($Employee_Number);
-                echo $Decrypted_Employee_Number;
+                try {
+                    $Employee_Number = $this->teacherInformation['Employee_Number'];
+                    $Decrypted_Employee_Number = $this->encryption->passDecrypt($Employee_Number);
+                    echo $Decrypted_Employee_Number ?? "No Employee Number";
+                } catch (Exception $e) {
+                    echo "No Employee Number";
+                }
             }
-
-
         }
 
         public function displayPhilhealthNumber() {
-            if(!isset($this->teacherInformation['Philhealth_Number'])) {
-                echo "N/A";
+            if(empty($this->teacherInformation['Philhealth_Number'])) {
+                echo "No Philhealth";
             }
             else {
-                $Philhealth_Number = $this->teacherInformation['Philhealth_Number'];
-                $Decrypted_Philhealth_Number = $this->encryption->passDecrypt($Philhealth_Number);
-                echo $Decrypted_Philhealth_Number;
+                try {
+                    $Philhealth_Number = $this->teacherInformation['Philhealth_Number'];
+                    $Decrypted_Philhealth_Number = $this->encryption->passDecrypt($Philhealth_Number);
+                    echo $Decrypted_Philhealth_Number ?? "No Philhealth";
+                } catch (Exception $e) {
+                    echo "No Philhealth";
+                }
             }
         }
 
         public function displayTIN() {
-            if(!isset($this->teacherInformation['TIN'])) {
-                echo "N/A";
+            if(empty($this->teacherInformation['TIN'])) {
+                echo "No TIN";
             }
             else {
-                $TIN = $this->teacherInformation['TIN'];
-                $Decrypted_TIN = $this->encryption->passDecrypt($TIN);
-                echo $Decrypted_TIN;
+                try {
+                    $TIN = $this->teacherInformation['TIN'];
+                    $Decrypted_TIN = $this->encryption->passDecrypt($TIN);
+                    echo $Decrypted_TIN ?? "No TIN";
+                } catch (Exception $e) {
+                    echo "No TIN";
+                }
             }
         }
     }

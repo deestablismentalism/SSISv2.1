@@ -1,7 +1,15 @@
-/* ===== Root Theme Colors ===== */
+/*====================================*/
+/*   STUDENT PAGES - MOBILE-FIRST     */
+/*   My Schedules | My Section | My Grades */
+/*====================================*/
+
+/* ===== Root Theme Colors & Fluid Design System ===== */
 :root {
+  /* Fonts */
   --main-fonts: "Poppins", "Segoe UI", sans-serif;
   --title-fonts: "Barlow", sans-serif;
+  
+  /* Colors */
   --main-color: #1c4a72;
   --title-main-color: #3e9ec4;
   --container-color: rgba(36, 186, 255, 0.28);
@@ -12,105 +20,218 @@
   --warning: #ffcc00;
   --danger: #ff5f5f;
   --text-color: #e8edf3;
+  
+  /* Fluid Spacing - Mobile First */
+  --spacing-xs: clamp(0.25rem, 0.5vw, 0.5rem);
+  --spacing-sm: clamp(0.5rem, 1vw, 0.75rem);
+  --spacing-md: clamp(0.75rem, 2vw, 1rem);
+  --spacing-lg: clamp(1rem, 3vw, 1.5rem);
+  --spacing-xl: clamp(1.5rem, 4vw, 2rem);
+  --spacing-2xl: clamp(1rem, 4vw, 2rem);
+  
+  /* Fluid Typography */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --text-base: clamp(0.9375rem, 0.875rem + 0.3125vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.5rem);
+  --text-xl: clamp(1.25rem, 1.125rem + 0.625vw, 1.75rem);
+  --text-2xl: clamp(1.5rem, 1.25rem + 1.25vw, 2.25rem);
+  
+  /* Fluid Border Radius */
+  --radius-sm: clamp(0.5rem, 1vw, 0.75rem);
+  --radius-md: clamp(0.75rem, 1.5vw, 1rem);
+  --radius-lg: clamp(1rem, 2vw, 1.5rem);
+  --radius-xl: clamp(1.25rem, 2.5vw, 2rem);
+  
+  /* Touch Targets - WCAG AA */
+  --touch-target-min: 44px;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* Z-index Scale */
+  --z-base: 1;
+  --z-sticky: 10;
+  --z-modal: 100;
+  --z-overlay: 99;
+  --z-toast: 1000;
 }
 
-/* ===== Overall Layout ===== */
+/*====================================*/
+/*   MOBILE-FIRST BASE STYLES (320px+) */
+/*====================================*/
+
+/* Reset & Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   font-family: var(--main-fonts);
   margin: 0;
   padding: 0;
 }
 
+/* Main Container - Mobile First */
 .user-students-page-content {
-  padding: 2rem; /* Base padding for 1440px */
-  transition: margin-left 0.3s ease;
+  padding: var(--spacing-md);
   background-image: url('../../imgs/paper.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll; /* Better mobile performance */
   font-family: var(--main-fonts);
+  min-height: 100vh;
+  /* Performance optimizations */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
+/* Page Headings - Consistent across all three tabs */
 .student-dynamic-content h1 {
-    font-size: 20px;
-    font-weight: 700;
-    padding: 17px 0px;
-    color: var(--accent-color);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  padding: var(--spacing-md) 0;
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--accent-color);
+  line-height: 1.3;
+  letter-spacing: 0.02em;
 }
-/* ===== Back Button ===== */
+/*====================================*/
+/*   BACK BUTTON - Touch Optimized    */
+/*====================================*/
+
 .back-button {
-  margin-bottom: 1.5rem; /* Base for 1440px */
+  margin-bottom: var(--spacing-lg);
 }
 
 .back-button button {
-  display: flex;
+  /* Touch target minimum */
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  /* Layout */
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  /* Styling */
   background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
   color: white;
   border: none;
-  border-radius: 12px; /* Base for 1440px */
-  padding: 0.8rem 1.5rem; /* Base for 1440px */
-  font-size: 0.95rem; /* Base for 1440px */
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: var(--text-sm);
   font-weight: 500;
+  /* Interactions */
   cursor: pointer;
-  transition: all 0.3s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  /* Transitions */
+  transition: all var(--transition);
   box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
 }
 
-.back-button button:hover {
-  background: linear-gradient(135deg, var(--hover-accent), var(--accent-color));
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
+/* Hover state only on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .back-button button:hover {
+    background: linear-gradient(135deg, var(--hover-accent), var(--accent-color));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
+  }
 }
 
+/* Focus state for accessibility */
+.back-button button:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Active state */
 .back-button button:active {
-  transform: translateY(0);
+  transform: scale(0.98);
 }
 
 .back-button img {
-  width: 1.2rem; /* Base for 1440px */
-  height: 1.2rem; /* Base for 1440px */
+  width: clamp(1rem, 2vw, 1.2rem);
+  height: clamp(1rem, 2vw, 1.2rem);
   filter: invert(1);
+  flex-shrink: 0;
 }
 
-/* ===== Header Section ===== */
+/*====================================*/
+/*   HEADER SECTION - Student Details & Navigation */
+/*====================================*/
+
 .user-students-page-header {
+  /* Layout - Mobile: Stacked */
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  backdrop-filter: blur(12px);
-  background: rgb(36 186 255 / 28%);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  /* Glass-morphism styling */
+  backdrop-filter: blur(8px); /* Lighter for mobile performance */
+  -webkit-backdrop-filter: blur(8px);
+  background: var(--container-color);
   border: 1px solid var(--glass-border);
-  border-radius: 20px; /* Base for 1440px */
-  padding: 1.5rem; /* Base for 1440px */
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  margin-bottom: 1.5rem; /* Base for 1440px */
-  flex-wrap: wrap;
-  gap: 1rem;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  margin-bottom: var(--spacing-lg);
+  /* Performance */
+  will-change: transform;
+  contain: layout style paint;
 }
 
+/* Student Details Section */
 .student-details {
-  flex: 1;
-  min-width: 250px;
+  width: 100%;
 }
 
 .student-details h2 {
-  font-size: 1.8rem; /* Base for 1440px */
+  font-size: var(--text-xl);
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.02em;
   color: var(--title-main-color);
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 var(--spacing-xs) 0;
+  line-height: 1.3;
 }
 
 .student-details p {
-  font-size: 1rem; /* Base for 1440px */
+  font-size: var(--text-sm);
   color: var(--main-color);
-  margin: 0.3rem 0;
+  margin: var(--spacing-xs) 0;
   font-weight: 500;
+  line-height: 1.5;
 }
 
-/* ===== Navigation Tabs ===== */
+/*====================================*/
+/*   NAVIGATION TABS - Persistent Segmented Control */
+/*   CRITICAL: Buttons must maintain consistent size to prevent layout shifts */
+/*====================================*/
+
 .student-navigation-list-wrapper {
-  display: flex;
-  align-items: center;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(62, 158, 196, 0.3) transparent;
+}
+
+.student-navigation-list-wrapper::-webkit-scrollbar {
+  height: 4px;
+}
+
+.student-navigation-list-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.student-navigation-list-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(62, 158, 196, 0.3);
+  border-radius: 20px;
 }
 
 .student-navigation-list {
@@ -118,60 +239,117 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 0.5rem; /* Base for 1440px */
-  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  /* Prevent wrapping to maintain consistent layout */
+  flex-wrap: nowrap;
+  /* Minimum width for mobile scroll */
+  min-width: min-content;
 }
 
 .student-navigation-list li {
-  padding: 0; /* Base for 1440px */
+  padding: 0;
+  /* Prevent flex shrinking */
+  flex-shrink: 0;
 }
 
+/* Tab Button Base Styles */
 .student-navigation-list label {
-  display: flex;
+  /* Touch target minimum */
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  /* Layout */
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  padding: 0.8rem 1.2rem; /* Base for 1440px */
+  justify-content: center;
+  gap: var(--spacing-xs);
+  /* Styling */
   background: rgba(255, 255, 255, 0.1);
-  border: 1px solid var(--glass-border);
-  border-radius: 10px; /* Base for 1440px */
-  font-size: 0.95rem; /* Base for 1440px */
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--text-sm);
   font-weight: 500;
   color: var(--main-color);
-  transition: all 0.3s ease;
+  white-space: nowrap;
+  /* Interactions */
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  /* Transitions */
+  transition: all var(--transition);
+  /* Prevent text selection */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
-.student-navigation-list label:hover {
-  background: rgba(62, 158, 196, 0.15);
-  border-color: var(--hover-accent);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(62, 158, 196, 0.2);
+/* Hover state only on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+  .student-navigation-list label:hover {
+    background: rgba(62, 158, 196, 0.15);
+    border-color: var(--hover-accent);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(62, 158, 196, 0.2);
+  }
 }
 
+/* Focus state for accessibility */
+.student-navigation-list label:focus-within {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Hide radio buttons */
 .student-navigation-list input[type="radio"] {
-  display: none;
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
+/* Active/Checked Tab State */
 .student-navigation-list label:has(input[type="radio"]:checked) {
   background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
   color: white;
   border-color: var(--accent-color);
   box-shadow: 0 4px 12px rgba(62, 158, 196, 0.4);
-  transform: translateY(-2px);
+  /* CRITICAL: Don't transform on checked to prevent layout shift */
+  transform: none;
 }
 
-/* ===== Dynamic Content Container ===== */
+/* Active state (pressed) */
+.student-navigation-list label:active {
+  transform: scale(0.98);
+}
+
+/*====================================*/
+/*   DYNAMIC CONTENT CONTAINER        */
+/*   Mobile: Maximized view for cards */
+/*   Desktop/Tablet: Pop-out style    */
+/*====================================*/
+
 .student-dynamic-container {
-  background: rgb(36 186 255 / 28%);
-  backdrop-filter: blur(10px);
+  /* Mobile: Larger min-height for card layout readability */
+  min-height: clamp(400px, 60vh, 800px);
+  /* Glass-morphism styling */
+  background: var(--container-color);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--glass-border);
-  border-radius: 20px; /* Base for 1440px */
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
-  padding: 1.5rem; /* Base for 1440px */
-  min-height: 400px; /* Base for 1440px */
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
+  /* Spacing - Consistent padding */
+  padding: var(--spacing-md);
+  /* Overflow handling */
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  /* Scrollbar styling */
   scrollbar-width: thin;
   scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
+  /* Performance */
+  will-change: scroll-position;
+  contain: layout style paint;
 }
 
 /* Custom scrollbar styling */
@@ -182,84 +360,337 @@ body {
 
 .student-dynamic-container::-webkit-scrollbar-track {
   background: transparent;
+  border-radius: 20px;
 }
 
 .student-dynamic-container::-webkit-scrollbar-thumb {
   background-color: rgba(62, 158, 196, 0.5);
   border-radius: 20px;
+  transition: background-color var(--transition);
 }
 
+.student-dynamic-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(62, 158, 196, 0.7);
+}
+
+/* Content wrapper */
 .student-dynamic-content {
   width: 100%;
+  /* Ensure content doesn't cause horizontal scroll */
+  max-width: 100%;
+  overflow-x: auto;
 }
 
-/* ===== Table Styling (for schedules/grades) ===== */
+/*====================================*/
+/*   UNIFIED TABLE STRUCTURE          */
+/*   Applies to: My Schedules, My Section, My Grades */
+/*   Mobile: Card layout (CSS-only transformation) */
+/*   Tablet+: Full table display */
+/*====================================*/
+
+/* Table wrapper - Mobile: No scroll indicators (cards), Desktop: Horizontal scroll */
+.student-dynamic-content .my-class-schedule,
+.student-dynamic-content .section-details {
+  position: relative;
+  width: 100%;
+  /* Mobile: No horizontal scroll needed for cards */
+  overflow-x: visible;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* MY GRADES - Mobile: Horizontal scroll table (exception to card layout) */
+.student-dynamic-content .student-grades {
+  position: relative;
+  width: 100%;
+  /* Mobile: Enable horizontal scroll for full table visibility */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Visual scroll indicators */
+  background: 
+    linear-gradient(to right, white 30%, rgba(255,255,255,0)) 0 0,
+    linear-gradient(to right, rgba(255,255,255,0), white 70%) 100% 0,
+    radial-gradient(farthest-side at 0% 50%, rgba(0,0,0,.15), transparent) 0 0,
+    radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.15), transparent) 100% 0;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+
+/*====================================*/
+/*   MOBILE CARD LAYOUT (<768px)      */
+/*   CSS-Only transformation          */
+/*   No HTML/JS modifications         */
+/*====================================*/
+
+/* Base Table Styles - Mobile: Card layout */
 .student-dynamic-content table {
   width: 100%;
   border-collapse: collapse;
+  border-spacing: 0;
   color: var(--main-color);
-  font-size: 0.95rem; /* Base for 1440px */
+  font-size: var(--text-sm);
+  background: transparent;
+  /* Mobile: Remove min-width to allow card stacking */
+  display: block;
 }
 
+/* Mobile: Hide thead visually but keep for accessibility */
 .student-dynamic-content thead {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background: rgb(97 206 255);
+  /* Hide but keep for screen readers */
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  /* Accessibility: Clip instead of display:none */
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-.student-dynamic-content th {
-  padding: 1rem; /* Base for 1440px */
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  text-shadow: 0 1.5px rgba(9, 103, 162, 0.4);
-  color: white;
+/* Mobile: tbody as flex container for cards */
+.student-dynamic-content tbody {
+  display: block;
+  width: 100%;
 }
 
+/* Mobile: Each row becomes a card */
+.student-dynamic-content tbody tr {
+  display: block;
+  margin-bottom: var(--spacing-lg);
+  background: #bbe5f8;
+  border: 1px solid rgba(63, 166, 210, 0.3);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* Remove zebra striping for cards */
+  background: #bbe5f8 !important;
+}
+
+/* Mobile: Each cell becomes a row in the card */
 .student-dynamic-content td {
-  padding: 1rem; /* Base for 1440px */
-  border-top: 1px solid rgba(63, 166, 210, 0.897);
-  vertical-align: middle;
-  color: black;
-  letter-spacing: 0.5px;
+  display: block;
+  width: 100%;
+  padding: var(--spacing-sm) 0;
+  border: none;
+  border-bottom: 1px solid rgba(63, 166, 210, 0.15);
+  text-align: left;
+  position: relative;
+  padding-left: 45%;
+  min-height: var(--touch-target-min);
+  /* Flex for better alignment */
+  display: flex;
+  align-items: center;
+  color: #1a1a1a;
+  font-size: var(--text-sm);
   font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Remove border from last cell in each card */
+.student-dynamic-content td:last-child {
+  border-bottom: none;
+}
+
+/* Mobile: Add labels using CSS (since we can't add data-label to HTML) */
+/* MY SCHEDULES - Schedule table labels */
+.student-dynamic-content .my-class-schedule td::before {
+  content: attr(data-label);
+  position: absolute;
+  left: 0;
+  width: 43%;
+  padding-left: var(--spacing-sm);
+  font-weight: 600;
+  color: var(--main-color);
+  text-transform: uppercase;
+  font-size: var(--text-xs);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Since we can't add data-label in PHP, use nth-child for schedule */
+.student-dynamic-content .my-class-schedule td:nth-child(1)::before {
+  content: "TIME";
+}
+.student-dynamic-content .my-class-schedule td:nth-child(2)::before {
+  content: "MONDAY";
+}
+.student-dynamic-content .my-class-schedule td:nth-child(3)::before {
+  content: "TUESDAY";
+}
+.student-dynamic-content .my-class-schedule td:nth-child(4)::before {
+  content: "WEDNESDAY";
+}
+.student-dynamic-content .my-class-schedule td:nth-child(5)::before {
+  content: "THURSDAY";
+}
+.student-dynamic-content .my-class-schedule td:nth-child(6)::before {
+  content: "FRIDAY";
+}
+.student-dynamic-content .my-class-schedule td:nth-child(7)::before {
+  content: "SATURDAY";
+}
+.student-dynamic-content .my-class-schedule td:nth-child(8)::before {
+  content: "SUNDAY";
+}
+
+/* MY GRADES - Mobile: Keep as scrollable table (override card layout) */
+/* Restore table display for grades on mobile */
+.student-dynamic-content .student-grades table {
+  display: table;
+  min-width: 600px; /* Ensure minimum width for horizontal scroll */
+  border-collapse: separate;
+  border-spacing: 0;
   background: #bbe5f8;
 }
 
-/* Zebra stripes for readability */
-.student-dynamic-content tr:nth-child(even) td {
-  background: rgb(71 168 255 / 8%);
+.student-dynamic-content .student-grades thead {
+  display: table-header-group;
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: rgb(97 206 255);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Restore visibility */
+  clip: auto;
+  clip-path: none;
+  overflow: visible;
+  white-space: normal;
 }
 
-.student-dynamic-content tr:hover td {
-  color: var(--hover-accent);
-  transition: all 0.25s ease-in-out;
+.student-dynamic-content .student-grades th {
+  display: table-cell;
+  padding: var(--spacing-md);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: center;
+  color: white;
+  text-shadow: 0 1px 2px rgba(9, 103, 162, 0.4);
+  white-space: nowrap;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.student-dynamic-content tbody tr:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transition: 0.3s ease;
+.student-dynamic-content .student-grades th:last-child {
+  border-right: none;
 }
 
-/* ===== Loading Modal ===== */
+.student-dynamic-content .student-grades tbody {
+  display: table-row-group;
+  background: transparent;
+}
+
+.student-dynamic-content .student-grades tbody tr {
+  display: table-row;
+  margin-bottom: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.student-dynamic-content .student-grades tbody tr:nth-child(even) {
+  background: rgba(71, 168, 255, 0.08) !important;
+}
+
+.student-dynamic-content .student-grades td {
+  display: table-cell;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-top: 1px solid rgba(63, 166, 210, 0.3);
+  border-bottom: 1px solid rgba(63, 166, 210, 0.3);
+  border-right: 1px solid rgba(63, 166, 210, 0.15);
+  vertical-align: middle;
+  text-align: center;
+  position: static;
+  padding-left: var(--spacing-md);
+  min-height: auto;
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  color: #1a1a1a;
+  font-weight: 400;
+  /* Override card layout flex */
+  align-items: initial;
+  width: auto;
+}
+
+.student-dynamic-content .student-grades td:first-child {
+  text-align: left;
+  font-weight: 600;
+  color: var(--main-color);
+  position: sticky;
+  left: 0;
+  background: #bbe5f8;
+  z-index: 5;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.student-dynamic-content .student-grades td:last-child {
+  border-right: none;
+}
+
+/* Remove card layout labels from grades table */
+.student-dynamic-content .student-grades td::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* MY SECTION - Classmates list (single column, no label needed) */
+.student-dynamic-content .section-details td {
+  padding-left: var(--spacing-sm);
+  font-weight: 600;
+  color: var(--main-color);
+  font-size: var(--text-base);
+  justify-content: flex-start;
+}
+
+.student-dynamic-content .section-details td::before {
+  display: none;
+}
+
+/* Empty state styling */
+.student-dynamic-content table tbody tr:only-child td {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  color: #666;
+  font-style: italic;
+  padding-left: 0;
+}
+
+.student-dynamic-content table tbody tr:only-child td::before {
+  display: none;
+}
+
+/*====================================*/
+/*   TABLET+ TABLE LAYOUT (768px+)    */
+/*   Restore traditional table view   */
+/*====================================*/
+
+/*====================================*/
+/*   LOADING & EMPTY STATES           */
+/*====================================*/
+
 .loading-modal {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
-  padding: 2rem;
+  min-height: clamp(250px, 40vh, 400px);
+  padding: var(--spacing-xl);
+  gap: var(--spacing-md);
 }
 
 .loading-spinner {
-  width: 60px;
-  height: 60px;
-  border: 6px solid rgba(62, 158, 196, 0.2);
-  border-top: 6px solid var(--title-main-color);
+  width: clamp(40px, 10vw, 60px);
+  height: clamp(40px, 10vw, 60px);
+  border: clamp(4px, 1vw, 6px) solid rgba(62, 158, 196, 0.2);
+  border-top: clamp(4px, 1vw, 6px) solid var(--title-main-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 1.5rem;
+  flex-shrink: 0;
 }
 
 @keyframes spin {
@@ -268,11 +699,11 @@ body {
 }
 
 .loading-text {
-  font-size: 1.1rem;
+  font-size: var(--text-base);
   font-weight: 500;
   color: var(--title-main-color);
   text-align: center;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.02em;
   animation: pulse 1.5s ease-in-out infinite;
 }
 
@@ -281,587 +712,424 @@ body {
   50% { opacity: 0.5; }
 }
 
+/* Error/Empty States */
+.student-dynamic-content .error-message,
+.student-dynamic-content .empty-state {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  color: #666;
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
 /*====================================*/
-/*  STUDENTS PAGE RESPONSIVE DESIGN   */
+/*   PROGRESSIVE ENHANCEMENT          */
+/*   Mobile-First Breakpoints         */
 /*====================================*/
 
-/* 2500px and above - Larger screens */
-@media (min-width: 2500px) {
-  .user-students-page-content {
-    padding: 2.8rem;
-  }
-  
-  .back-button {
-    margin-bottom: 2rem;
-  }
-  
-  .back-button button {
-    border-radius: 16px;
-    padding: 1.1rem 2rem;
-    font-size: 1.2rem;
-  }
-  
-  .back-button img {
-    width: 1.6rem;
-    height: 1.6rem;
-  }
-  
-  .user-students-page-header {
-    border-radius: 26px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-  }
-  
-  .student-details h2 {
-    font-size: 2.4rem;
-    letter-spacing: 1.3px;
-  }
-  
-  .student-details p {
-    font-size: 1.3rem;
-  }
-  
-  .student-navigation-list {
-    gap: 0.8rem;
-  }
-  
+/* ===== SMALL MOBILE (375px+) ===== */
+@media (min-width: 375px) {
   .student-navigation-list label {
-    padding: 1.1rem 1.6rem;
-    border-radius: 14px;
-    font-size: 1.2rem;
+    padding: var(--spacing-sm) var(--spacing-lg);
   }
-  
-  .student-dynamic-container {
-    border-radius: 26px;
-    padding: 2rem;
-    min-height: 520px;
+}
+
+/* ===== MOBILE LANDSCAPE / SMALL TABLET (480px+) ===== */
+@media (min-width: 480px) {
+  .user-students-page-content {
+    padding: var(--spacing-lg);
   }
   
   .student-dynamic-content table {
-    font-size: 1.2rem;
-  }
-  
-  .student-dynamic-content th {
-    padding: 1.4rem;
-    letter-spacing: 0.6px;
-    font-size: 1.15rem;
-  }
-  
-  .student-dynamic-content td {
-    padding: 1.4rem;
-    letter-spacing: 0.7px;
-  }
-  
-  .loading-modal {
-    min-height: 520px;
-  }
-  
-  .loading-spinner {
-    width: 80px;
-    height: 80px;
-    border-width: 8px;
-  }
-  
-  .loading-text {
-    font-size: 1.4rem;
-  }
-}
-
-/* 1920px - Full HD */
-@media (min-width: 1920px) and (max-width: 2499px) {
-  .user-students-page-content {
-    padding: 2.4rem;
-  }
-  
-  .back-button {
-    margin-bottom: 1.8rem;
-  }
-  
-  .back-button button {
-    border-radius: 14px;
-    padding: 1rem 1.8rem;
-    font-size: 1.1rem;
-  }
-  
-  .back-button img {
-    width: 1.4rem;
-    height: 1.4rem;
-  }
-  
-  .user-students-page-header {
-    border-radius: 23px;
-    padding: 1.8rem;
-    margin-bottom: 1.8rem;
-  }
-  
-  .student-details h2 {
-    font-size: 2.1rem;
-    letter-spacing: 1.2px;
-  }
-  
-  .student-details p {
-    font-size: 1.15rem;
+    min-width: 700px;
   }
   
   .student-navigation-list {
-    gap: 0.7rem;
-  }
-  
-  .student-navigation-list label {
-    padding: 1rem 1.4rem;
-    border-radius: 12px;
-    font-size: 1.1rem;
-  }
-  
-  .student-dynamic-container {
-    border-radius: 23px;
-    padding: 1.8rem;
-    min-height: 460px;
-  }
-  
-  .student-dynamic-content table {
-    font-size: 1.1rem;
-  }
-  
-  .student-dynamic-content th {
-    padding: 1.2rem;
-    letter-spacing: 0.5px;
-    font-size: 1.05rem;
-  }
-  
-  .student-dynamic-content td {
-    padding: 1.2rem;
-    letter-spacing: 0.6px;
-  }
-  
-  .loading-modal {
-    min-height: 460px;
-  }
-  
-  .loading-spinner {
-    width: 70px;
-    height: 70px;
-    border-width: 7px;
-  }
-  
-  .loading-text {
-    font-size: 1.25rem;
+    gap: var(--spacing-md);
   }
 }
 
-/* 1440px - Default (already set above, this is just for clarity) */
-@media (min-width: 1441px) and (max-width: 1919px) {
-  /* Default styles apply - no changes needed */
-}
-
-/* 1024px - Smaller desktop */
-@media (min-width: 1024px) and (max-width: 1440px) {
-  .user-students-page-content {
-    padding: 1.5rem;
-  }
-  
-  .back-button {
-    margin-bottom: 1.15rem;
-  }
-  
-  .back-button button {
-    border-radius: 9px;
-    padding: 0.6rem 1.15rem;
-    font-size: 0.83rem;
-  }
-  
-  .back-button img {
-    width: 1rem;
-    height: 1rem;
-  }
-  
+/* ===== TABLET PORTRAIT (600px+) ===== */
+@media (min-width: 600px) {
   .user-students-page-header {
-    border-radius: 15px;
-    padding: 1.15rem;
-    margin-bottom: 1.15rem;
-  }
-  
-  .student-details h2 {
-    font-size: 1.45rem;
-    letter-spacing: 0.75px;
-  }
-  
-  .student-details p {
-    font-size: 0.83rem;
-  }
-  
-  .student-navigation-list {
-    gap: 0.4rem;
-  }
-  
-  .student-navigation-list label {
-    padding: 0.6rem 0.9rem;
-    border-radius: 8px;
-    font-size: 0.83rem;
-  }
-  
-  .student-dynamic-container {
-    border-radius: 15px;
-    padding: 1.15rem;
-    min-height: 340px;
-  }
-  
-  .student-dynamic-content table {
-    font-size: 0.83rem;
-  }
-  
-  .student-dynamic-content th {
-    padding: 0.75rem;
-    letter-spacing: 0.28px;
-    font-size: 0.88rem;
-  }
-  
-  .student-dynamic-content td {
-    padding: 0.75rem;
-    letter-spacing: 0.38px;
-  }
-  
-  .loading-modal {
-    min-height: 340px;
-  }
-  
-  .loading-spinner {
-    width: 50px;
-    height: 50px;
-    border-width: 5px;
-  }
-  
-  .loading-text {
-    font-size: 0.95rem;
-  }
-}
-
-/* Tablets */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .user-students-page-content {
-    padding: 1.2rem;
-  }
-  
-  .back-button {
-    margin-bottom: 1rem;
-  }
-  
-  .back-button button {
-    border-radius: 8px;
-    padding: 0.6rem 1rem;
-    font-size: 0.85rem;
-  }
-  
-  .back-button img {
-    width: 1rem;
-    height: 1rem;
-  }
-  
-  .user-students-page-header {
-    border-radius: 12px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .student-details h2 {
-    font-size: 1.3rem;
-    letter-spacing: 0.6px;
-  }
-  
-  .student-details p {
-    font-size: 0.85rem;
-  }
-  
-  .student-navigation-list {
-    gap: 0.3rem;
-    width: 100%;
-  }
-  
-  .student-navigation-list label {
-    padding: 0.6rem 0.8rem;
-    border-radius: 8px;
-    font-size: 0.8rem;
-  }
-  
-  .student-dynamic-container {
-    border-radius: 12px;
-    padding: 1rem;
-    min-height: 300px;
-  }
-  
-  .student-dynamic-content table {
-    font-size: 0.8rem;
-  }
-  
-  .student-dynamic-content th {
-    padding: 0.7rem;
-    font-size: 0.85rem;
-  }
-  
-  .student-dynamic-content td {
-    padding: 0.7rem;
-  }
-  
-  .loading-modal {
-    min-height: 300px;
-    padding: 1.5rem;
-  }
-  
-  .loading-spinner {
-    width: 45px;
-    height: 45px;
-    border-width: 4px;
-    margin-bottom: 1rem;
-  }
-  
-  .loading-text {
-    font-size: 0.9rem;
-  }
-}
-
-/* Mobile */
-@media (max-width: 767px) {
-  .user-students-page-content {
-    padding: 1rem;
-  }
-  
-  .back-button {
-    margin-bottom: 0.8rem;
-  }
-  
-  .back-button button {
-    border-radius: 8px;
-    padding: 0.5rem 0.8rem;
-    font-size: 0.75rem;
-  }
-  
-  .back-button img {
-    width: 0.9rem;
-    height: 0.9rem;
-  }
-  
-  .user-students-page-header {
-    border-radius: 10px;
-    padding: 0.8rem;
-    margin-bottom: 0.8rem;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.8rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
   }
   
   .student-details {
-    width: 100%;
-  }
-  
-  .student-details h2 {
-    font-size: 1.1rem;
-    letter-spacing: 0.4px;
-  }
-  
-  .student-details p {
-    font-size: 0.75rem;
+    width: auto;
+    flex: 1;
   }
   
   .student-navigation-list-wrapper {
-    width: 100%;
-    overflow-x: auto;
+    width: auto;
+    overflow-x: visible;
   }
   
   .student-navigation-list {
-    gap: 0.3rem;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
   }
-  
-  .student-navigation-list label {
-    padding: 0.5rem 0.7rem;
-    border-radius: 8px;
-    font-size: 0.7rem;
-    white-space: nowrap;
+}
+
+/* ===== TABLET LANDSCAPE (768px+) ===== */
+@media (min-width: 768px) {
+  .user-students-page-content {
+    padding: var(--spacing-xl);
+    background-attachment: fixed;
   }
   
   .student-dynamic-container {
-    border-radius: 10px;
-    padding: 0.8rem;
-    min-height: 280px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  
+  .user-students-page-header {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  
+  /* RESTORE TABLE LAYOUT - Desktop/Tablet */
+  /* Revert all mobile card styles back to traditional table */
+  
+  .student-dynamic-content .my-class-schedule {
+    overflow-x: auto;
+    background: transparent;
+  }
+  
+  .student-dynamic-content .section-details,
+  .student-dynamic-content .student-grades {
+    overflow-x: auto;
+    /* Restore scroll indicators */
+    background: 
+      linear-gradient(to right, white 30%, rgba(255,255,255,0)) 0 0,
+      linear-gradient(to right, rgba(255,255,255,0), white 70%) 100% 0,
+      radial-gradient(farthest-side at 0% 50%, rgba(0,0,0,.2), transparent) 0 0,
+      radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.2), transparent) 100% 0;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+    background-attachment: local, local, scroll, scroll;
   }
   
   .student-dynamic-content table {
-    font-size: 0.75rem;
-    min-width: 600px;
+    display: table;
+    min-width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: var(--text-sm);
+  }
+  
+  .student-dynamic-content thead {
+    display: table-header-group;
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: rgb(97 206 255);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Restore visibility */
+    clip: auto;
+    clip-path: none;
+    overflow: visible;
+    white-space: normal;
   }
   
   .student-dynamic-content th {
-    padding: 0.6rem 0.4rem;
-    font-size: 0.75rem;
+    display: table-cell;
+    padding: var(--spacing-md);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: left;
+    color: white;
+    text-shadow: 0 1px 2px rgba(9, 103, 162, 0.4);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .student-dynamic-content tbody {
+    display: table-row-group;
+    background: #bbe5f8;
+  }
+  
+  .student-dynamic-content tbody tr {
+    display: table-row;
+    margin-bottom: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+  
+  /* Restore zebra stripes */
+  .student-dynamic-content tbody tr:nth-child(even) {
+    background: rgba(71, 168, 255, 0.08) !important;
   }
   
   .student-dynamic-content td {
-    padding: 0.6rem 0.4rem;
+    display: table-cell;
+    padding: var(--spacing-md);
+    border-top: 1px solid rgba(63, 166, 210, 0.3);
+    border-bottom: none;
+    vertical-align: middle;
+    text-align: left;
+    position: static;
+    padding-left: var(--spacing-md);
+    min-height: auto;
+    font-size: var(--text-sm);
   }
   
-  .loading-modal {
-    min-height: 280px;
-    padding: 1rem;
+  .student-dynamic-content td:last-child {
+    border-bottom: 1px solid rgba(63, 166, 210, 0.3);
   }
   
-  .loading-spinner {
-    width: 40px;
-    height: 40px;
-    border-width: 4px;
-    margin-bottom: 0.8rem;
+  /* Remove all ::before labels on desktop */
+  .student-dynamic-content td::before {
+    display: none !important;
+    content: none !important;
   }
   
-  .loading-text {
-    font-size: 0.85rem;
+  /* First column emphasis */
+  .student-dynamic-content td:first-child {
+    font-weight: 600;
+    color: var(--main-color);
+  }
+  
+  /* Restore section details normal styling */
+  .student-dynamic-content .section-details td {
+    font-weight: 400;
+    font-size: var(--text-sm);
+  }
+  
+  .student-dynamic-content .section-details td:first-child {
+    font-weight: 600;
+  }
+  
+  /* MY GRADES - Desktop/Tablet: Center grade columns, left-align subject */
+  .student-dynamic-content .student-grades th {
+    text-align: center;
+  }
+  
+  .student-dynamic-content .student-grades th:first-child {
+    text-align: left;
+  }
+  
+  .student-dynamic-content .student-grades td {
+    text-align: center;
+  }
+  
+  .student-dynamic-content .student-grades td:first-child {
+    text-align: left;
+    font-weight: 600;
+    color: var(--main-color);
+    /* Remove sticky on desktop - not needed with full table visible */
+    position: static;
+    box-shadow: none;
+  }
+  
+  /* Hover effects only on devices that support hover */
+  .student-dynamic-content tbody tr:hover {
+    background: rgba(62, 158, 196, 0.15) !important;
+    transition: background var(--transition-fast);
+  }
+  
+  .student-dynamic-content tbody tr:hover td {
+    color: var(--hover-accent);
   }
 }
 
-/* Small Mobile */
-@media (max-width: 480px) {
+/* ===== SMALL DESKTOP (1024px+) ===== */
+@media (min-width: 1024px) {
   .user-students-page-content {
-    padding: 0.8rem;
-  }
-  
-  .back-button button {
-    padding: 0.4rem 0.7rem;
-    font-size: 0.7rem;
-  }
-  
-  .back-button img {
-    width: 0.8rem;
-    height: 0.8rem;
-  }
-  
-  .user-students-page-header {
-    padding: 0.6rem;
-  }
-  
-  .student-details h2 {
-    font-size: 1rem;
-  }
-  
-  .student-details p {
-    font-size: 0.7rem;
-  }
-  
-  .student-navigation-list label {
-    padding: 0.4rem 0.6rem;
-    font-size: 0.65rem;
+    padding: var(--spacing-2xl);
   }
   
   .student-dynamic-container {
-    padding: 0.6rem;
-    min-height: 250px;
-    overflow-x: auto;
+    min-height: clamp(400px, 55vh, 650px);
+  }
+  
+  .student-navigation-list {
+    gap: var(--spacing-md);
+  }
+}
+
+/* ===== LAPTOP (1280px+) ===== */
+@media (min-width: 1280px) {
+  .student-dynamic-content table {
+    font-size: var(--text-base);
   }
   
   .student-dynamic-content th {
-    padding: 0.5rem 0.3rem;
-    font-size: 0.7rem;
+    font-size: var(--text-sm);
+    padding: var(--spacing-lg);
   }
   
   .student-dynamic-content td {
-    padding: 0.5rem 0.3rem;
-    font-size: 0.7rem;
-  }
-  
-  .loading-modal {
-    min-height: 250px;
-    padding: 0.8rem;
-  }
-  
-  .loading-spinner {
-    width: 35px;
-    height: 35px;
-    border-width: 3px;
-    margin-bottom: 0.8rem;
-  }
-  
-  .loading-text {
-    font-size: 0.75rem;
+    font-size: var(--text-sm);
+    padding: var(--spacing-lg);
   }
 }
 
-/* Extra Small Mobile */
-@media (max-width: 374px) {
+/* ===== DESKTOP (1440px+) ===== */
+@media (min-width: 1440px) {
   .user-students-page-content {
-    padding: 0.6rem;
-  }
-  
-  .back-button button {
-    padding: 0.4rem 0.6rem;
-    font-size: 0.65rem;
-  }
-  
-  .back-button img {
-    width: 0.75rem;
-    height: 0.75rem;
-  }
-  
-  .user-students-page-header {
-    padding: 0.5rem;
-    border-radius: 8px;
-  }
-  
-  .student-details h2 {
-    font-size: 0.9rem;
-  }
-  
-  .student-details p {
-    font-size: 0.65rem;
-  }
-  
-  .student-navigation-list label {
-    padding: 0.35rem 0.5rem;
-    font-size: 0.6rem;
+    max-width: 1600px;
+    margin: 0 auto;
   }
   
   .student-dynamic-container {
-    padding: 0.5rem;
-    min-height: 220px;
-    border-radius: 8px;
-  }
-  
-  .student-dynamic-content th {
-    padding: 0.4rem 0.25rem;
-    font-size: 0.65rem;
-  }
-  
-  .student-dynamic-content td {
-    padding: 0.4rem 0.25rem;
-    font-size: 0.65rem;
-  }
-  
-  .loading-modal {
-    min-height: 220px;
-    padding: 0.6rem;
-  }
-  
-  .loading-spinner {
-    width: 30px;
-    height: 30px;
-    border-width: 3px;
-    margin-bottom: 0.6rem;
-  }
-  
-  .loading-text {
-    font-size: 0.7rem;
+    min-height: clamp(450px, 60vh, 700px);
   }
 }
 
-/* Landscape */
-@media screen and (max-height: 500px) and (orientation: landscape) {
-  .student-dynamic-container {
-    min-height: 250px;
+/* ===== FULL HD (1920px+) ===== */
+@media (min-width: 1920px) {
+  .user-students-page-content {
+    max-width: 1800px;
   }
   
+  .student-dynamic-container {
+    min-height: clamp(500px, 65vh, 750px);
+  }
+}
+
+/* ===== ULTRA-WIDE (2500px+) ===== */
+@media (min-width: 2500px) {
   .user-students-page-content {
-    padding: 0.8rem;
+    max-width: 2000px;
+  }
+  
+  .student-dynamic-container {
+    min-height: clamp(550px, 70vh, 800px);
   }
 }
 
 /*====================================*/
-/* END STUDENTS PAGE RESPONSIVE DESIGN*/
+/*   ACCESSIBILITY & SPECIAL CASES    */
+/*====================================*/
+
+/* Landscape Orientation (Mobile) */
+@media (max-height: 500px) and (orientation: landscape) and (max-width: 900px) {
+  .student-dynamic-container {
+    min-height: 200px;
+  }
+  
+  .user-students-page-content {
+    padding: var(--spacing-sm);
+  }
+  
+  .user-students-page-header {
+    padding: var(--spacing-sm);
+  }
+}
+
+/* Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .loading-spinner {
+    animation: none;
+    border: clamp(4px, 1vw, 6px) solid var(--title-main-color);
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .user-students-page-header,
+  .student-dynamic-container {
+    border: 2px solid currentColor;
+  }
+  
+  .student-navigation-list label {
+    border-width: 2px;
+  }
+  
+  .student-dynamic-content table {
+    border: 1px solid currentColor;
+  }
+  
+  .student-dynamic-content th,
+  .student-dynamic-content td {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Ensure all interactive elements meet touch target size */
+  .back-button button,
+  .student-navigation-list label {
+    min-height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+  }
+  
+  /* Larger tap targets */
+  .student-dynamic-content table td,
+  .student-dynamic-content table th {
+    min-height: var(--touch-target-min);
+  }
+}
+
+/* Print Styles */
+@media print {
+  @page {
+    margin: 1cm;
+  }
+  
+  .user-students-page-content {
+    background: white;
+    padding: 0;
+  }
+  
+  .back-button {
+    display: none !important;
+  }
+  
+  .user-students-page-header,
+  .student-dynamic-container {
+    box-shadow: none;
+    border: 1px solid #000;
+    page-break-inside: avoid;
+    background: white;
+    backdrop-filter: none;
+  }
+  
+  .student-navigation-list-wrapper {
+    display: none !important;
+  }
+  
+  .student-dynamic-content table {
+    page-break-inside: avoid;
+  }
+  
+  .student-dynamic-content th {
+    background: #e0e0e0 !important;
+    color: #000 !important;
+    border: 1px solid #000;
+  }
+  
+  .student-dynamic-content td {
+    border: 1px solid #000;
+    background: white !important;
+    color: #000 !important;
+  }
+  
+  .loading-modal {
+    display: none !important;
+  }
+}
+
+/*====================================*/
+/*   END STUDENT PAGES RESPONSIVE     */
 /*====================================*/
