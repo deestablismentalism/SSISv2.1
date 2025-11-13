@@ -249,7 +249,7 @@ class userPostEnrollmentFormModel {
     string $guardianCpNumber , $GIf_4Ps,
     string $studentFirstName,string $studentLastName,?string $studentMiddleName,?string $studentSuffix,?int $lrn,int $psaNumber,string $birthDate, 
     int $age,string $sex,string $religion, 
-    string $nativeLanguage,int $isCultural,?string $culturalGroup,string $studentEmail,int $enrollmentStatus,string $filename,string $directory) : bool { //F 3.3.4
+    string $nativeLanguage,int $isCultural,?string $culturalGroup,string $studentEmail,int $enrollmentStatus,string $filename,string $directory) : int { //F 3.3.4
         //Initialize variable for parent types
         $fatherParentType = 'Father';
         $motherParentType = 'Mother';
@@ -337,7 +337,7 @@ class userPostEnrollmentFormModel {
                 throw new PDOException('Failed to insert guardian to enrollee parents');
             }
             $this->conn->commit();
-            return true;
+            return $enrolleeId;
         }
         catch(PDOException $e) {
             //rollback if something goes wrong

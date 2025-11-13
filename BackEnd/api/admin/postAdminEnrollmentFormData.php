@@ -13,6 +13,8 @@ session_start();
 
 // Include required files
 require_once __DIR__ .  '/../../user/controllers/userEnrollmentFormController.php';
+require_once __DIR__ . '/../../admin/models/adminEnrolleesModel.php';
+require_once __DIR__ . '/../../admin/models/adminStudentsModel.php';
 require_once __DIR__ . '/../../Exceptions/IdNotFoundException.php';
 
 // Clear buffer and set headers
@@ -48,6 +50,8 @@ try {
     }
     
     $controller = new userEnrollmentFormController();
+    $enrolleesModel = new adminEnrolleesModel();
+    $studentsModel = new adminStudentsModel();
     
     // Extract and sanitize POST data
     $School_Year_Start = isset($_POST['start-year']) ? (int)$_POST['start-year'] : null;
@@ -142,6 +146,30 @@ try {
     
     // Log result
     error_log("[ADMIN ENROLLMENT] Result: " . json_encode($response) . "\n", 3, __DIR__ . '/../../adminEnrollmentLog.txt');
+    
+    // If enrollment was successful and status is 1 (Enrolled), add to students table and mark as handled
+    if ($response['success'] && $Enrollment_Status === 1 && isset($response['data']['enrollee_id'])) {
+        $enrolleeId = (int)$response['data']['enrollee_id'];
+        
+        try {
+            // Set Is_Handled to 1
+            $handledResult = $enrolleesModel->setIsHandledStatus($enrolleeId, 1);
+            if (!$handledResult) {
+                error_log("[ADMIN ENROLLMENT] Failed to set Is_Handled for Enrollee ID: $enrolleeId\n", 3, __DIR__ . '/../../adminEnrollmentLog.txt');
+            }
+            
+            // Insert into students table
+            $studentInsert = $studentsModel->insertEnrolleeToStudent($enrolleeId);
+            if (!$studentInsert) {
+                error_log("[ADMIN ENROLLMENT] Failed to insert enrollee to students table for Enrollee ID: $enrolleeId\n", 3, __DIR__ . '/../../adminEnrollmentLog.txt');
+                $response['message'] = 'Enrollment successful but failed to add to students table';
+            } else {
+                error_log("[ADMIN ENROLLMENT] Successfully inserted Enrollee ID: $enrolleeId to students table\n", 3, __DIR__ . '/../../adminEnrollmentLog.txt');
+            }
+        } catch (Exception $e) {
+            error_log("[ADMIN ENROLLMENT] Error in post-enrollment processing: " . $e->getMessage() . "\n", 3, __DIR__ . '/../../adminEnrollmentLog.txt');
+        }
+    }
     
     // Clear buffer
     ob_clean();

@@ -107,7 +107,7 @@ class OTPHandler extends Connect {
             $data = [
                 "message" => $message,
                 "phoneNumbers" => ["+$cleanedPhone"],
-                "simNumber" => 1,
+                "simNumber" => 2,
                 "senderId" => $senderId
             ];
 

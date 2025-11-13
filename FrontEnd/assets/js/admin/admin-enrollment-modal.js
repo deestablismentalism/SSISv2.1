@@ -60,10 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (closeModalBtn) closeModalBtn.addEventListener('click', closeEnrollmentModal);
     if (cancelBtn) cancelBtn.addEventListener('click', closeEnrollmentModal);
     
-    window.addEventListener('click', function(e) {
-        if (e.target === modal) closeEnrollmentModal();
-    });
-    
     // Get all form elements with admin- prefix
     const startYear = document.getElementById("admin-start-year");
     const endYear = document.getElementById("admin-end-year");

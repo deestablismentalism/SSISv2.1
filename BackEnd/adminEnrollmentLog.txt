@@ -1,0 +1,4 @@
+[ADMIN ENROLLMENT] Request received at 2025-11-13 18:34:44
+[ADMIN ENROLLMENT] Attempting to enroll: Aleon Shin Palermo, LRN: 109732220042, Status: 1
+[ADMIN ENROLLMENT] Result: {"httpcode":201,"success":true,"message":"Enrollment form submitted successfully","data":{"enrollee_id":123}}
+[ADMIN ENROLLMENT] Successfully inserted Enrollee ID: 123 to students table

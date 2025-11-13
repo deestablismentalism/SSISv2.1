@@ -28,7 +28,7 @@ class SendPassword {
         $data = [
             "message" => "Hello $Last_Name, $First_Name $Middle_Name! Your password is $User_Password. Please keep this password safe and don't share it with anyone",
             "phoneNumbers" => ["+$Cleaned_Contact_Number"],
-            "simNumber" => 1,
+            "simNumber" => 2,
             "senderId" => $senderId
         ];
 
