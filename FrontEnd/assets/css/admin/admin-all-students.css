@@ -4,8 +4,9 @@
   --card-bg: rgba(255, 255, 255, 0.08);
   --glass-border: rgba(255, 255, 255, 0.2);
   --hover-glow: rgba(255, 255, 255, 0.3);
-  --text-color: #e8edf3;
+  --text-color: #000000;
   --accent-color: #00bcd4;
+  --hover-accent: #48cae4;   
   --success: #44d07b;
   --warning: #ffcc00;
   --danger: #ff5f5f;

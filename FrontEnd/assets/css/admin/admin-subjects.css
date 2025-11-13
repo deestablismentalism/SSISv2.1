@@ -222,7 +222,7 @@ body {
 }
 
 .batch-assign-btn {
-  background: rgba(0, 180, 216, 0.3);
+  background: rgb(0 180 216 / 65%);
   color: #fff;
   border: 1px solid rgba(0, 180, 216, 0.5);
   padding: 0.6rem 1.2rem;
@@ -254,6 +254,7 @@ body {
 .select-all-container label {
   cursor: pointer;
   user-select: none;
+  color: var(--accent-color);
 }
 
 /* ========== SECTIONS TABLE ========== */
@@ -351,6 +352,7 @@ input[type="checkbox"] {
   position: relative;
   cursor: pointer;
   transition: var(--transition);
+  margin-right: 0.5rem;
 }
 
 input[type="checkbox"]:hover {
@@ -529,6 +531,7 @@ input[type="checkbox"]:checked::after {
   cursor: pointer;
   transition: var(--transition);
   font-size: 0.95rem;
+  display: flex;
 }
 
 .submit-button:hover {
@@ -548,7 +551,7 @@ input[type="checkbox"]:checked::after {
 .form select {
   width: 100%;
   padding: 0.75em;
-  margin-bottom: 1em;
+  margin: 1em 0em;
   border: 1px solid rgba(255, 255, 255, 0.3);
   background: rgba(255, 255, 255, 0.1);
   color: var(--text-color);
@@ -558,6 +561,82 @@ input[type="checkbox"]:checked::after {
   transition: var(--transition);
 }
 
+/* Radio button styling for form - Enhanced from admin-modal-shared */
+.radio-container {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(0, 188, 212, 0.04) 0%, rgba(72, 202, 228, 0.04) 100%);
+  border-radius: 10px;
+  border: 2px solid rgba(72, 202, 228, 0.2);
+}
+
+.radio-container p {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.radio-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition);
+  min-height: 44px;
+  position: relative;
+}
+
+.radio-label:hover {
+  background: linear-gradient(135deg, rgba(0, 188, 212, 0.15), rgba(72, 202, 228, 0.15));
+  border-color: var(--hover-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 188, 212, 0.18);
+}
+
+.radio-label input[type="radio"] {
+  -webkit-appearance: radio !important;
+  -moz-appearance: radio !important;
+  appearance: radio !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  z-index: 1 !important;
+  pointer-events: auto !important;
+  accent-color: var(--accent-color);
+}
+
+.radio-label input[type="radio"]:checked {
+  accent-color: var(--accent-color) !important;
+}
+
+.radio-text {
+  font-size: 0.95rem;
+  color: var(--text-color);
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0;
+  user-select: none;
+  flex: 1;
+}
+
+.radio-label:hover .radio-text {
+  color: var(--hover-accent);
+}
+
 .form input[type="text"]:focus,
 .form select:focus {
   outline: none;
@@ -565,7 +644,60 @@ input[type="checkbox"]:checked::after {
   background: rgba(255, 255, 255, 0.15);
 }
 
-.select-container select,
+/* Select container styling */
+.select-container {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.select-container::before {
+  content: 'Grade Level';
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.select-container select {
+  width: 100%;
+  padding: 0.9em 2.5em 0.9em 1em;
+  border-radius: 0.6em;
+  border: 2px solid var(--accent-color);
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.15), rgba(72, 202, 228, 0.1));
+  color: var(--text-color);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2348cae4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7em center;
+  background-size: 1.2em;
+  box-shadow: 0 2px 8px rgba(0, 180, 216, 0.2);
+}
+
+.select-container select:hover {
+  border-color: var(--hover-accent);
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.2), rgba(72, 202, 228, 0.15));
+  box-shadow: 0 4px 12px rgba(0, 180, 216, 0.3);
+}
+
+.select-container select:focus {
+  outline: none;
+  border-color: var(--hover-accent);
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.25), rgba(72, 202, 228, 0.2));
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.2), 0 4px 12px rgba(0, 180, 216, 0.3);
+}
+
+.select-container select option {
+  background: rgba(20, 30, 48, 0.98);
+  color: var(--text-color);
+  padding: 0.75em;
+}
+
 .drop-down button {
   padding: 0.75em;
   border-radius: 0.5em;
@@ -574,28 +706,90 @@ input[type="checkbox"]:checked::after {
   color: var(--text-color);
   min-width: 200px;
   cursor: pointer;
+  margin-bottom: .6rem;
 }
 
+/* Checkbox container styling */
 .checkbox-container {
   position: relative;
   min-width: 250px;
+  margin-bottom: 1.5rem;
+}
+
+.checkbox-container::before {
+  content: 'Select Grade Levels';
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.drop-down button {
+  width: 100%;
+  padding: 0.9em 2.5em 0.9em 1em;
+  border-radius: 0.6em;
+  border: 2px solid var(--accent-color);
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.15), rgba(72, 202, 228, 0.1));
+  color: var(--text-color);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: left;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 180, 216, 0.2);
+  margin-bottom: 0;
+}
+
+.drop-down button::after {
+  content: '';
+  position: absolute;
+  right: 0.7em;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.2em;
+  height: 1.2em;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2348cae4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transition: var(--transition);
+}
+
+.drop-down button:hover {
+  border-color: var(--hover-accent);
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.2), rgba(72, 202, 228, 0.15));
+  box-shadow: 0 4px 12px rgba(0, 180, 216, 0.3);
+}
+
+.drop-down button:focus {
+  outline: none;
+  border-color: var(--hover-accent);
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.25), rgba(72, 202, 228, 0.2));
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.2), 0 4px 12px rgba(0, 180, 216, 0.3);
+}
+
+.checkboxes.show + .drop-down button::after,
+.drop-down button:focus::after {
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .checkboxes {
   display: none;
-  padding: 0.5em;
-  background-color: rgba(20, 30, 48, 0.95);
-  position: absolute;
+  padding: 0.8em;
+  background: linear-gradient(135deg, rgba(20, 30, 48, 0.98), rgba(36, 59, 85, 0.98));
   top: 100%;
   left: 0;
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
+  border: 2px solid var(--accent-color);
+  border-radius: 0.6em;
   margin-top: 0.5em;
   flex-direction: column;
   z-index: 1002;
   max-height: 300px;
   overflow-y: auto;
+  box-shadow: 0 8px 20px rgba(0, 180, 216, 0.3);
+  backdrop-filter: blur(10px);
 }
 
 .checkboxes.show {
@@ -603,14 +797,42 @@ input[type="checkbox"]:checked::after {
 }
 
 .checkboxes label {
-  padding: 0.5rem;
+  padding: 0.7rem;
   cursor: pointer;
   transition: var(--transition);
-  border-radius: 0.3rem;
+  border-radius: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
 .checkboxes label:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.2), rgba(72, 202, 228, 0.15));
+  border-left: 3px solid var(--accent-color);
+  padding-left: calc(0.7rem - 3px);
+}
+
+.checkboxes label input[type="checkbox"] {
+  flex-shrink: 0;
+}
+
+/* Custom scrollbar for checkboxes */
+.checkboxes::-webkit-scrollbar {
+  width: 8px;
+}
+
+.checkboxes::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.checkboxes::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 4px;
+}
+
+.checkboxes::-webkit-scrollbar-thumb:hover {
+  background: var(--hover-accent);
 }
 
 /* ========== RESPONSIVE ========== */
