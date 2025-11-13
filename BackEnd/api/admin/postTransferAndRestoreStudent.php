@@ -10,7 +10,7 @@ if($_SERVER['REQUEST_METHOD'] !== 'POST') {
 try {
     $studentId = isset($_POST['id']) ? (int)$_POST['id'] : null;
     $controller = new adminStudentsController();
-    $response = $controller->apiDeleteAndArchiveStudent($studentId);
+    $response = $controller->apiTransferAndRestoreStudent($studentId);
     http_response_code($response['httpcode']);
     echo json_encode($response);
     exit();
@@ -20,7 +20,7 @@ catch(IdNotFoundException $e) {
     exit();
 }
 catch(Throwable $t) {
-    error_log("[".date('Y-m-d H:i:s')."]" .$t ."\n",3, __DIR__ . '/../../errorLogs.txt');
+    error_log("[".date('Y-m-d H:i:s')."]" .$t."\n",3, __DIR__ . '/../../errorLogs.txt');
     echo json_encode(['success'=> false,'message'=> 'There was a syntax problem. Please wait for it to be fixed']);
     exit();
 }
