@@ -618,8 +618,9 @@ body {
   
   .modal-content {
     padding: 15px;
-    border-radius: 4px;
-    width: 500px;
+border-radius: 4px;
+        width: 70rem;
+        height: 70rem;
   }
   
   .modal-header h2 {
