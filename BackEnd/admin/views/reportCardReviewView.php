@@ -87,20 +87,42 @@ class reportCardReviewView {
             echo '<div class="detail-row"><strong>Status:</strong> ' . $this->getStatusBadge($submission['status']) . '</div>';
             echo '<div class="detail-row"><strong>Created At:</strong> ' . date('Y-m-d H:i:s', strtotime($submission['created_at'])) . '</div>';
             
-            if (!empty($submission['report_card_path'])) {
-                $imagePath = htmlspecialchars($submission['report_card_path']);
-                echo '<div class="detail-row"><strong>Report Card:</strong></div>';
-                echo '<div class="report-card-image"><img src="../../' . $imagePath . '" alt="Report Card" style="max-width: 100%; height: auto;"></div>';
+            if (!empty($submission['report_card_front_path'])) {
+                $frontPath = htmlspecialchars($submission['report_card_front_path']);
+                echo '<div class="detail-row"><strong>Report Card - Front:</strong></div>';
+                echo '<div class="report-card-image"><img src="../../' . $frontPath . '" alt="Report Card Front" style="max-width: 100%; height: auto;"></div>';
+            }
+            
+            if (!empty($submission['report_card_back_path'])) {
+                $backPath = htmlspecialchars($submission['report_card_back_path']);
+                echo '<div class="detail-row"><strong>Report Card - Back:</strong></div>';
+                echo '<div class="report-card-image"><img src="../../' . $backPath . '" alt="Report Card Back" style="max-width: 100%; height: auto;"></div>';
             }
             
             if ($ocrData !== null) {
-                echo '<div class="detail-row"><strong>OCR Results:</strong></div>';
+                echo '<div class="detail-row"><strong>OCR Results (Combined):</strong></div>';
                 echo '<div class="ocr-results">';
                 echo '<div><strong>LRN Found:</strong> ' . ($ocrData['lrn'] ?? 'Not found') . '</div>';
-                echo '<div><strong>Grades Found:</strong> ' . ($ocrData['grades_found'] ?? 0) . '</div>';
-                echo '<div><strong>Word Count:</strong> ' . ($ocrData['word_count'] ?? 0) . '</div>';
+                echo '<div><strong>Total Grades Found:</strong> ' . ($ocrData['grades_found'] ?? 0) . '</div>';
+                echo '<div><strong>Total Word Count:</strong> ' . ($ocrData['word_count'] ?? 0) . '</div>';
                 if (!empty($ocrData['flags'])) {
                     echo '<div><strong>Flags:</strong> ' . implode(', ', array_map('htmlspecialchars', $ocrData['flags'])) . '</div>';
+                }
+                if (isset($ocrData['front_ocr'])) {
+                    echo '<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;"><strong>Front Side OCR (Student Info):</strong></div>';
+                    echo '<div>LRN: ' . ($ocrData['front_ocr']['lrn'] ?? 'Not found') . '</div>';
+                    echo '<div>Grades: ' . ($ocrData['front_ocr']['grades_found'] ?? 0) . ', Words: ' . ($ocrData['front_ocr']['word_count'] ?? 0) . '</div>';
+                }
+                if (isset($ocrData['back_ocr'])) {
+                    echo '<div style="margin-top: 10px;"><strong>Back Side OCR (Grades):</strong></div>';
+                    echo '<div>LRN: ' . ($ocrData['back_ocr']['lrn'] ?? 'Not found') . '</div>';
+                    echo '<div>Grades: ' . ($ocrData['back_ocr']['grades_found'] ?? 0) . ', Words: ' . ($ocrData['back_ocr']['word_count'] ?? 0) . '</div>';
+                }
+                if (isset($ocrData['lrn_source'])) {
+                    echo '<div style="margin-top: 10px; font-style: italic; color: #666;">LRN found on: ' . ucfirst($ocrData['lrn_source']) . ' side</div>';
+                }
+                if (isset($ocrData['grades_primary_source'])) {
+                    echo '<div style="font-style: italic; color: #666;">Grades primarily from: ' . ucfirst($ocrData['grades_primary_source']) . ' side</div>';
                 }
                 echo '</div>';
             }

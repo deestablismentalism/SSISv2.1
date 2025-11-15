@@ -557,8 +557,11 @@ $view = new getGradeLevels();
                     </div>
                 </div>
                 <div class="image-confirm">
-                    <p class="dfont">Ipasa ang malinaw na larawan ng mga Dokumento gaya ng <b>PSA BIRTH CERTIFICATE at REPORT CARD <span class="required">*</span></b></p>
-                    <input type="file" name="psa-image" value="Insert Image (Di pa nagana)"> 
+                    <p class="dfont">Ipasa ang malinaw na larawan ng <b>REPORT CARD <span class="required">*</span></b></p>
+                    <label for="report-card-front" style="display: block; margin-bottom: 8px;">Front Side <span class="required">*</span></label>
+                    <input type="file" id="report-card-front" name="report-card-front" accept="image/jpeg,image/jpg,image/png" required style="margin-bottom: 15px;"> 
+                    <label for="report-card-back" style="display: block; margin-bottom: 8px;">Back Side <span class="required">*</span></label>
+                    <input type="file" id="report-card-back" name="report-card-back" accept="image/jpeg,image/jpg,image/png" required> 
                 </div>
                 <?php if($set->isSet()): ?>
                     <button type="submit" class="submit-button" >Submit</button>

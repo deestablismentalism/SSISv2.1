@@ -68,24 +68,45 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="detail-row"><strong>Created At:</strong> ${formatDate(submission.created_at)}</div>
         `;
         
-        if (submission.report_card_path) {
+        if (submission.report_card_front_path) {
             html += `
-                <div class="detail-row"><strong>Report Card:</strong></div>
+                <div class="detail-row"><strong>Report Card - Front:</strong></div>
                 <div class="report-card-image">
-                    <img src="../../${submission.report_card_path}" alt="Report Card" style="max-width: 100%; height: auto;">
+                    <img src="../../${submission.report_card_front_path}" alt="Report Card Front" style="max-width: 100%; height: auto;">
+                </div>
+            `;
+        }
+        
+        if (submission.report_card_back_path) {
+            html += `
+                <div class="detail-row"><strong>Report Card - Back:</strong></div>
+                <div class="report-card-image">
+                    <img src="../../${submission.report_card_back_path}" alt="Report Card Back" style="max-width: 100%; height: auto;">
                 </div>
             `;
         }
         
         if (ocrData) {
             html += `
-                <div class="detail-row"><strong>OCR Results:</strong></div>
+                <div class="detail-row"><strong>OCR Results (Combined):</strong></div>
                 <div class="ocr-results">
                     <div><strong>LRN Found:</strong> ${ocrData.lrn || 'Not found'}</div>
-                    <div><strong>Grades Found:</strong> ${ocrData.grades_found || 0}</div>
-                    <div><strong>Word Count:</strong> ${ocrData.word_count || 0}</div>
+                    <div><strong>Total Grades Found:</strong> ${ocrData.grades_found || 0}</div>
+                    <div><strong>Total Word Count:</strong> ${ocrData.word_count || 0}</div>
                     ${ocrData.flags && ocrData.flags.length > 0 ? 
                         `<div><strong>Flags:</strong> ${ocrData.flags.join(', ')}</div>` : ''}
+                    ${ocrData.front_ocr ? 
+                        `<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;"><strong>Front Side OCR (Student Info):</strong><br>
+                        LRN: ${ocrData.front_ocr.lrn || 'Not found'}<br>
+                        Grades: ${ocrData.front_ocr.grades_found || 0}, Words: ${ocrData.front_ocr.word_count || 0}</div>` : ''}
+                    ${ocrData.back_ocr ? 
+                        `<div style="margin-top: 10px;"><strong>Back Side OCR (Grades):</strong><br>
+                        LRN: ${ocrData.back_ocr.lrn || 'Not found'}<br>
+                        Grades: ${ocrData.back_ocr.grades_found || 0}, Words: ${ocrData.back_ocr.word_count || 0}</div>` : ''}
+                    ${ocrData.lrn_source ? 
+                        `<div style="margin-top: 10px; font-style: italic; color: #666;">LRN found on: ${ocrData.lrn_source.charAt(0).toUpperCase() + ocrData.lrn_source.slice(1)} side</div>` : ''}
+                    ${ocrData.grades_primary_source ? 
+                        `<div style="font-style: italic; color: #666;">Grades primarily from: ${ocrData.grades_primary_source.charAt(0).toUpperCase() + ocrData.grades_primary_source.slice(1)} side</div>` : ''}
                 </div>
             `;
         }

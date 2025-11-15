@@ -139,6 +139,64 @@ class reportCardController {
         }
     }
     
+    private function combineOcrResults(array $frontResult, array $backResult): array {
+        // If either OCR failed, return error
+        if (!$frontResult['success'] || !$backResult['success']) {
+            return [
+                'success' => false,
+                'data' => null,
+                'error' => 'OCR failed on one or both images'
+            ];
+        }
+        
+        $frontData = $frontResult['data'];
+        $backData = $backResult['data'];
+        
+        // Report card structure: Front = student info (name, section, LRN), Back = grades
+        // Prioritize LRN from front (where student info is), but fallback to back if not found
+        $combinedLrn = $frontData['lrn'] ?? $backData['lrn'] ?? null;
+        
+        // Grades are typically on the back, but sum both sides in case some grades appear on front
+        // Prioritize back side for grades count
+        $frontGrades = $frontData['grades_found'] ?? 0;
+        $backGrades = $backData['grades_found'] ?? 0;
+        $combinedGrades = $backGrades + $frontGrades; // Back grades are primary
+        
+        // Word count from both sides
+        $combinedWords = ($frontData['word_count'] ?? 0) + ($backData['word_count'] ?? 0);
+        
+        // Merge flags, but adjust based on expected content location
+        $frontFlags = $frontData['flags'] ?? [];
+        $backFlags = $backData['flags'] ?? [];
+        
+        // If no LRN found on front (where it should be), add flag
+        if (empty($frontData['lrn']) && !empty($backData['lrn'])) {
+            $frontFlags[] = 'lrn_not_on_front';
+        }
+        
+        // If no grades found on back (where they should be), add flag
+        if ($backGrades === 0 && $frontGrades > 0) {
+            $backFlags[] = 'grades_not_on_back';
+        }
+        
+        $combinedFlags = array_unique(array_merge($frontFlags, $backFlags));
+        
+        return [
+            'success' => true,
+            'data' => [
+                'lrn' => $combinedLrn,
+                'grades_found' => $combinedGrades,
+                'word_count' => $combinedWords,
+                'flags' => array_values($combinedFlags),
+                'front_ocr' => $frontData,
+                'back_ocr' => $backData,
+                'lrn_source' => !empty($frontData['lrn']) ? 'front' : (!empty($backData['lrn']) ? 'back' : null),
+                'grades_primary_source' => $backGrades > 0 ? 'back' : ($frontGrades > 0 ? 'front' : null)
+            ],
+            'error' => null
+        ];
+    }
+    
     private function determineStatus(array $ocrResult, string $submittedLrn): string {
         $ocrLrn = $ocrResult['lrn'] ?? null;
         $gradesFound = $ocrResult['grades_found'] ?? 0;
@@ -148,8 +206,11 @@ class reportCardController {
         $criticalFlags = ['no_lrn', 'no_grades', 'low_text', 'file_not_found', 'processing_error', 'ocr_error'];
         $hasCriticalFlag = !empty(array_intersect($flags, $criticalFlags));
         
-        if ($ocrLrn && 
-            $ocrLrn === $submittedLrn && 
+        // If submitted LRN is empty or placeholder, skip LRN matching but still check other criteria
+        $isPlaceholderLrn = empty($submittedLrn) || $submittedLrn === '000000000000';
+        $lrnMatches = $isPlaceholderLrn ? true : ($ocrLrn && $ocrLrn === $submittedLrn);
+        
+        if ($lrnMatches && 
             $gradesFound >= 5 && 
             $wordCount >= 50 && 
             !$hasCriticalFlag) {
@@ -159,51 +220,75 @@ class reportCardController {
         return 'flagged_for_review';
     }
     
-    public function processReportCardUpload(?int $userId, string $studentName, string $studentLrn, ?array $file, ?int $enrolleeId = null): array {
+    public function processReportCardUpload(?int $userId, string $studentName, string $studentLrn, ?array $frontFile, ?array $backFile, ?int $enrolleeId = null): array {
         try {
-            if (empty($studentName) || empty($studentLrn)) {
+            if (empty($studentName)) {
                 return [
                     'httpcode' => 400,
                     'success' => false,
-                    'message' => 'Student name and LRN are required',
+                    'message' => 'Student name is required',
                     'data' => []
                 ];
             }
             
-            if (empty($file)) {
+            if (empty($frontFile)) {
                 return [
                     'httpcode' => 400,
                     'success' => false,
-                    'message' => 'Report card image is required',
+                    'message' => 'Report card front image is required',
                     'data' => []
                 ];
             }
             
-            $saveImage = $this->storeReportCardImage($userId, $file);
-            if (!$saveImage['success']) {
+            if (empty($backFile)) {
                 return [
                     'httpcode' => 400,
                     'success' => false,
-                    'message' => $saveImage['message'],
+                    'message' => 'Report card back image is required',
                     'data' => []
                 ];
             }
             
-            $fullImagePath = $saveImage['full_path'];
-            $ocrResult = $this->runOCR($fullImagePath);
+            $saveFrontImage = $this->storeReportCardImage($userId, $frontFile);
+            if (!$saveFrontImage['success']) {
+                return [
+                    'httpcode' => 400,
+                    'success' => false,
+                    'message' => 'Failed to save front image: ' . $saveFrontImage['message'],
+                    'data' => []
+                ];
+            }
             
-            if (!$ocrResult['success']) {
-                $ocrJson = json_encode(['error' => $ocrResult['error']]);
+            $saveBackImage = $this->storeReportCardImage($userId, $backFile);
+            if (!$saveBackImage['success']) {
+                return [
+                    'httpcode' => 400,
+                    'success' => false,
+                    'message' => 'Failed to save back image: ' . $saveBackImage['message'],
+                    'data' => []
+                ];
+            }
+            
+            // Run OCR on both images and combine results
+            $frontOcrResult = $this->runOCR($saveFrontImage['full_path']);
+            $backOcrResult = $this->runOCR($saveBackImage['full_path']);
+            
+            // Combine OCR results - merge LRN, sum grades, sum word count, combine flags
+            $combinedOcrResult = $this->combineOcrResults($frontOcrResult, $backOcrResult);
+            
+            if (!$combinedOcrResult['success']) {
+                $ocrJson = json_encode(['error' => $combinedOcrResult['error'] ?? 'OCR processing failed']);
                 $status = 'flagged_for_review';
             } else {
-                $ocrJson = json_encode($ocrResult['data']);
-                $status = $this->determineStatus($ocrResult['data'], $studentLrn);
+                $ocrJson = json_encode($combinedOcrResult['data']);
+                $status = $this->determineStatus($combinedOcrResult['data'], $studentLrn);
             }
             
             $submissionId = $this->model->insertSubmission(
                 $studentName,
                 $studentLrn,
-                $saveImage['filepath'],
+                $saveFrontImage['filepath'],
+                $saveBackImage['filepath'],
                 $ocrJson,
                 $status,
                 $enrolleeId

@@ -11,14 +11,15 @@ class reportCardModel {
         $this->conn = $db->getConnection();
     }
     
-    public function insertSubmission(string $studentName, string $studentLrn, string $reportCardPath, ?string $ocrJson, string $status, ?int $enrolleeId = null): int {
+    public function insertSubmission(string $studentName, string $studentLrn, string $reportCardFrontPath, ?string $reportCardBackPath, ?string $ocrJson, string $status, ?int $enrolleeId = null): int {
         try {
-            $sql = "INSERT INTO report_card_submissions (student_name, student_lrn, report_card_path, ocr_json, status, enrollee_id) 
-                    VALUES (:student_name, :student_lrn, :report_card_path, :ocr_json, :status, :enrollee_id)";
+            $sql = "INSERT INTO report_card_submissions (student_name, student_lrn, report_card_front_path, report_card_back_path, ocr_json, status, enrollee_id) 
+                    VALUES (:student_name, :student_lrn, :report_card_front_path, :report_card_back_path, :ocr_json, :status, :enrollee_id)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':student_name', $studentName);
             $stmt->bindParam(':student_lrn', $studentLrn);
-            $stmt->bindParam(':report_card_path', $reportCardPath);
+            $stmt->bindParam(':report_card_front_path', $reportCardFrontPath);
+            $stmt->bindParam(':report_card_back_path', $reportCardBackPath);
             $stmt->bindParam(':ocr_json', $ocrJson);
             $stmt->bindParam(':status', $status);
             $stmt->bindParam(':enrollee_id', $enrolleeId, $enrolleeId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);

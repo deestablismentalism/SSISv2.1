@@ -91,8 +91,9 @@ try {
     $GIf_4Ps = isset($_POST['fourPS']) ? ($_POST['fourPS'] === 'yes' ? 1 : 0) : null;
     // ENROLLEE STATUS(PENDING)
     $Enrollment_Status = 3;
-    //IMAGE
-    $image = $_FILES['psa-image'] ?? null;
+    //REPORT CARD IMAGES (FRONT AND BACK)
+    $reportCardFront = $_FILES['report-card-front'] ?? null;
+    $reportCardBack = $_FILES['report-card-back'] ?? null;
     // Insert the values into the database
     $response = $controller->apiPostAddEnrollee(
         $userId, $School_Year_Start, $School_Year_End, $hasLRN, $Enrolling_Grade_Level, $Last_Grade_Level, $Last_Year_Attended,
@@ -103,7 +104,7 @@ try {
         $Mother_First_Name, $Mother_Last_Name, $Mother_Middle_Name, $Mother_Educational_Attainment, $Mother_Contact_Number, $MIf_4Ps,
         $Guardian_First_Name, $Guardian_Last_Name, $Guardian_Middle_Name, $Guardian_Educational_Attainment, $Guardian_Contact_Number, $GIf_4Ps,
         $Student_First_Name,$Student_Last_Name,$Student_Middle_Name,$Student_Extension, $Learner_Reference_Number, $Psa_Number, $Birth_Date, $Age, $Sex, $Religion,
-        $Native_Language, $If_Cultural, $Cultural_Group, $Student_Email, $Enrollment_Status, $image);
+        $Native_Language, $If_Cultural, $Cultural_Group, $Student_Email, $Enrollment_Status, $reportCardFront, $reportCardBack);
     //SET CONTROLLER HTTP RESPONSE CODE
     http_response_code($response['httpcode']);
     echo json_encode($response);

@@ -24,7 +24,7 @@ class userEnrollmentFormController {
     string $gFName,string $gLName,?string $gMName,string $gEduAttainment,string $gCpNum, int $gIs4Ps,
     string $stuFName,string $stuLName,?string $stuMName,?string $stuSuffix,?int $lrn,int $psaNum, string $birthDate,
     int $age,string $sex,string $religion,string $natLang,int $isCultural,?string $culturalG, string $studentEmail, int $enrollStat,
-    ?array $psaImageFile) : array {
+    ?array $reportCardFront, ?array $reportCardBack) : array {
         try {
             // Remove the strict null check - allow admin enrollment with null userId
             // if(is_null($uId)) {
@@ -113,15 +113,25 @@ class userEnrollmentFormController {
                     'data'=> []
                 ];
             }
-            $saveImage = $this->storeImage($uId ?? 0, $psaImageFile);
-            if(!$saveImage['success']) {
+            
+            if(empty($reportCardFront)) {
                 return [
                     'httpcode'=> 400,
                     'success'=> false,
-                    'message'=> $saveImage['message'],
+                    'message'=> 'Report card front image is required',
                     'data'=> []
                 ];
             }
+            
+            if(empty($reportCardBack)) {
+                return [
+                    'httpcode'=> 400,
+                    'success'=> false,
+                    'message'=> 'Report card back image is required',
+                    'data'=> []
+                ];
+            }
+            
             //===NORMALIZE NAMES===
             $normalize = fn($n)=>(new normalizeName($n))->validatedNormalize();
             $fFname = $normalize($fFName); 
@@ -137,9 +147,11 @@ class userEnrollmentFormController {
             $mMName = !empty($mMName) ? $normalize($mMName) : null;
             $gMName = !empty($gMName) ? $normalize($gMName) : null;
             $stuMName = !empty($stuMName) ? $normalize($stuMName) : null;
-            //get diretory if success is true
-            $filename = $saveImage['filename'];
-            $filePath = $saveImage['filepath'];
+            
+            // Create a placeholder PSA entry (for backward compatibility with existing DB structure)
+            $placeholderFilename = 'placeholder-' . time() . '.jpg';
+            $placeholderPath = '../../../ImageUploads/' . date('Y') . '/' . $placeholderFilename;
+            
             //attempt enrollee insert - userId can be null for admin enrollment
             $enrolleeId = $this->postFormModel->insert_enrollee($uId, $schoolYStart,$schoolYEnd,$hasLRN,$enrollGLevel,$lastGLevel,$lastYAttended,
             $lastSAttended,$sId,$sAddress,$sType,$initalSChoice,$initialSId,$initialSAddrress,
@@ -149,13 +161,28 @@ class userEnrollmentFormController {
             $mFName,$mLName,$mMName,$mEduAttainment,$mCpNum,$mIs4Ps,
             $gFName,$gLName,$gMName,$gEduAttainment,$gCpNum,$gIs4Ps,
             $stuFName,$stuLName,$stuMName,$stuSuffix,$lrn,$psaNum,$birthDate,$age,$sex,$religion,
-            $natLang,$isCultural,$culturalG,$studentEmail,$enrollStat,$filename,$filePath);
+            $natLang,$isCultural,$culturalG,$studentEmail,$enrollStat,$placeholderFilename,$placeholderPath);
+            
             if($enrolleeId > 0) {
+                // Process report card with OCR verification
+                require_once __DIR__ . '/../../admin/controllers/reportCardController.php';
+                $reportCardController = new reportCardController();
+                
+                $studentFullName = trim($stuFName . ' ' . ($stuMName ? $stuMName . ' ' : '') . $stuLName);
+                $studentLrnStr = $lrn !== null ? str_pad((string)$lrn, 12, '0', STR_PAD_LEFT) : '000000000000';
+                
+                $reportCardResult = $reportCardController->processReportCardUpload($uId, $studentFullName, $studentLrnStr, $reportCardFront, $reportCardBack, $enrolleeId);
+                
+                // Even if OCR fails, enrollment is still created (just flagged for review)
                 return [
                     'httpcode'=> 201,
                     'success'=> true,
-                    'message'=> 'Enrollment form submitted successfully',
-                    'data'=> ['enrollee_id' => $enrolleeId]
+                    'message'=> 'Enrollment form submitted successfully. Report card ' . ($reportCardResult['data']['status'] === 'approved' ? 'auto-approved' : 'flagged for review'),
+                    'data'=> [
+                        'enrollee_id' => $enrolleeId,
+                        'report_card_status' => $reportCardResult['data']['status'] ?? 'pending_review',
+                        'report_card_submission_id' => $reportCardResult['data']['submission_id'] ?? null
+                    ]
                 ];
             }
             else {
