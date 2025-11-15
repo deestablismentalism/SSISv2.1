@@ -196,6 +196,28 @@ class reportCardController {
             $validationFlags[] = 'low_text';
         }
         
+        // Track if BOTH images have critical issues (for rejection logic)
+        $bothHaveNoText = in_array('no_text', $frontFlags) && in_array('no_text', $backFlags);
+        $bothHaveNoKeywords = in_array('no_keywords', $frontFlags) && in_array('no_keywords', $backFlags);
+        $bothHaveNoGrades = ($frontGrades === 0) && ($backGrades === 0);
+        $bothHaveLowText = in_array('low_text', $validationFlags) && 
+                          ($frontData['word_count'] ?? 0) < 25 && 
+                          ($backData['word_count'] ?? 0) < 25;
+        
+        // Add metadata for rejection decision
+        if ($bothHaveNoText) {
+            $validationFlags[] = 'both_no_text';
+        }
+        if ($bothHaveNoKeywords) {
+            $validationFlags[] = 'both_no_keywords';
+        }
+        if ($bothHaveNoGrades) {
+            $validationFlags[] = 'both_no_grades';
+        }
+        if ($bothHaveLowText && $combinedGrades < 5) {
+            $validationFlags[] = 'both_low_quality';
+        }
+        
         // Merge validation flags with extraction flags
         $allFlags = array_unique(array_merge($combinedFlags, $validationFlags));
         
@@ -220,7 +242,48 @@ class reportCardController {
         $wordCount = $ocrResult['word_count'] ?? 0;
         $flags = $ocrResult['flags'] ?? [];
         
-        // LRN removed from validation - focus only on grades and content quality
+        // Check for auto-rejection conditions (BOTH images must fail)
+        // 1. If BOTH images have no text - definitely not readable report cards
+        if (in_array('both_no_text', $flags)) {
+            return [
+                'status' => 'rejected',
+                'reason' => 'Please submit a report card'
+            ];
+        }
+        
+        // 2. If BOTH images have no keywords - likely not report cards
+        if (in_array('both_no_keywords', $flags)) {
+            return [
+                'status' => 'rejected',
+                'reason' => 'Please submit a report card'
+            ];
+        }
+        
+        // 3. If BOTH images have zero grades - no grade information found
+        if (in_array('both_no_grades', $flags)) {
+            return [
+                'status' => 'rejected',
+                'reason' => 'Please submit a report card'
+            ];
+        }
+        
+        // 4. If combined text is low AND no grades - poor quality or wrong document
+        if (in_array('low_text', $flags) && in_array('no_grades', $flags)) {
+            return [
+                'status' => 'rejected',
+                'reason' => 'Please submit a report card or send a higher quality image'
+            ];
+        }
+        
+        // 5. If BOTH images have very low text AND no grades total (backup check)
+        if (in_array('both_low_quality', $flags)) {
+            return [
+                'status' => 'rejected',
+                'reason' => 'Please submit a report card or send a higher quality image'
+            ];
+        }
+        
+        // Check for critical flags that prevent auto-approval
         $criticalFlags = ['no_grades', 'low_text', 'file_not_found', 'processing_error', 'ocr_error'];
         $hasCriticalFlag = !empty(array_intersect($flags, $criticalFlags));
         
@@ -234,6 +297,7 @@ class reportCardController {
             ];
         }
         
+        // Flag for manual review if doesn't meet auto-approval but at least one image is readable
         return [
             'status' => 'flagged_for_review',
             'reason' => $this->generateFlagReason($ocrResult, $gradesFound, $wordCount)
@@ -433,7 +497,7 @@ class reportCardController {
             return [
                 'httpcode' => 201,
                 'success' => true,
-                'message' => 'Report card processed successfully',
+                'message' => $status === 'rejected' ? 'Report card rejected' : 'Report card processed successfully',
                 'data' => [
                     'submission_id' => $submissionId,
                     'status' => $status,
@@ -463,7 +527,7 @@ class reportCardController {
     
     public function updateSubmissionStatus(int $id, string $status): array {
         try {
-            $allowedStatuses = ['approved', 'flagged_for_review', 'pending_review', 'reupload_needed'];
+            $allowedStatuses = ['approved', 'flagged_for_review', 'pending_review', 'reupload_needed', 'rejected'];
             if (!in_array($status, $allowedStatuses)) {
                 return [
                     'httpcode' => 400,
