@@ -100,7 +100,12 @@ class reportCardController {
             }
             $pythonCmd = 'python3';
             if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                $pythonCmd = 'python';
+                // Check if running in Docker or native Windows
+                if (file_exists('/.dockerenv')) {
+                    $pythonCmd = 'python3'; // Docker container
+                } else {
+                    $pythonCmd = 'python'; // Native Windows
+                }
             }
             $command = escapeshellarg($pythonCmd) . ' ' . escapeshellarg($pythonScript) . ' ' . escapeshellarg($imagePath) . ' 2>&1';
             
@@ -140,46 +145,59 @@ class reportCardController {
     }
     
     private function combineOcrResults(array $frontResult, array $backResult): array {
-        // If either OCR failed, return error
+        // If either OCR failed, return detailed error
         if (!$frontResult['success'] || !$backResult['success']) {
+            $errorDetails = [];
+            
+            if (!$frontResult['success']) {
+                $errorDetails[] = 'Front image: ' . ($frontResult['error'] ?? 'Unknown error');
+            }
+            if (!$backResult['success']) {
+                $errorDetails[] = 'Back image: ' . ($backResult['error'] ?? 'Unknown error');
+            }
+            
             return [
                 'success' => false,
                 'data' => null,
-                'error' => 'OCR failed on one or both images'
+                'error' => implode('; ', $errorDetails),
+                'front_error' => !$frontResult['success'] ? ($frontResult['error'] ?? 'Unknown error') : null,
+                'back_error' => !$backResult['success'] ? ($backResult['error'] ?? 'Unknown error') : null
             ];
         }
         
         $frontData = $frontResult['data'];
         $backData = $backResult['data'];
         
-        // Report card structure: Front = student info (name, section, LRN), Back = grades
-        // Prioritize LRN from front (where student info is), but fallback to back if not found
+        // Combine data from both sides - report cards vary in layout
+        // LRN can appear on either side
         $combinedLrn = $frontData['lrn'] ?? $backData['lrn'] ?? null;
         
-        // Grades are typically on the back, but sum both sides in case some grades appear on front
-        // Prioritize back side for grades count
+        // Sum grades from both sides (grades can appear on either side)
         $frontGrades = $frontData['grades_found'] ?? 0;
         $backGrades = $backData['grades_found'] ?? 0;
-        $combinedGrades = $backGrades + $frontGrades; // Back grades are primary
+        $combinedGrades = $frontGrades + $backGrades;
         
-        // Word count from both sides
+        // Sum word count from both sides
         $combinedWords = ($frontData['word_count'] ?? 0) + ($backData['word_count'] ?? 0);
         
-        // Merge flags, but adjust based on expected content location
+        // Merge all flags without side-specific judgments
         $frontFlags = $frontData['flags'] ?? [];
         $backFlags = $backData['flags'] ?? [];
-        
-        // If no LRN found on front (where it should be), add flag
-        if (empty($frontData['lrn']) && !empty($backData['lrn'])) {
-            $frontFlags[] = 'lrn_not_on_front';
-        }
-        
-        // If no grades found on back (where they should be), add flag
-        if ($backGrades === 0 && $frontGrades > 0) {
-            $backFlags[] = 'grades_not_on_back';
-        }
-        
         $combinedFlags = array_unique(array_merge($frontFlags, $backFlags));
+        
+        // Apply validation rules to COMBINED data
+        $validationFlags = [];
+        
+        if ($combinedGrades < 5) {
+            $validationFlags[] = 'no_grades';
+        }
+        
+        if ($combinedWords < 50) {
+            $validationFlags[] = 'low_text';
+        }
+        
+        // Merge validation flags with extraction flags
+        $allFlags = array_unique(array_merge($combinedFlags, $validationFlags));
         
         return [
             'success' => true,
@@ -187,37 +205,107 @@ class reportCardController {
                 'lrn' => $combinedLrn,
                 'grades_found' => $combinedGrades,
                 'word_count' => $combinedWords,
-                'flags' => array_values($combinedFlags),
+                'flags' => array_values($allFlags),
                 'front_ocr' => $frontData,
                 'back_ocr' => $backData,
                 'lrn_source' => !empty($frontData['lrn']) ? 'front' : (!empty($backData['lrn']) ? 'back' : null),
-                'grades_primary_source' => $backGrades > 0 ? 'back' : ($frontGrades > 0 ? 'front' : null)
+                'grades_primary_source' => $backGrades > $frontGrades ? 'back' : ($frontGrades > 0 ? 'front' : null)
             ],
             'error' => null
         ];
     }
     
-    private function determineStatus(array $ocrResult, string $submittedLrn): string {
-        $ocrLrn = $ocrResult['lrn'] ?? null;
+    private function determineStatus(array $ocrResult, string $submittedLrn): array {
         $gradesFound = $ocrResult['grades_found'] ?? 0;
         $wordCount = $ocrResult['word_count'] ?? 0;
         $flags = $ocrResult['flags'] ?? [];
         
-        $criticalFlags = ['no_lrn', 'no_grades', 'low_text', 'file_not_found', 'processing_error', 'ocr_error'];
+        // LRN removed from validation - focus only on grades and content quality
+        $criticalFlags = ['no_grades', 'low_text', 'file_not_found', 'processing_error', 'ocr_error'];
         $hasCriticalFlag = !empty(array_intersect($flags, $criticalFlags));
         
-        // If submitted LRN is empty or placeholder, skip LRN matching but still check other criteria
-        $isPlaceholderLrn = empty($submittedLrn) || $submittedLrn === '000000000000';
-        $lrnMatches = $isPlaceholderLrn ? true : ($ocrLrn && $ocrLrn === $submittedLrn);
-        
-        if ($lrnMatches && 
-            $gradesFound >= 5 && 
+        // Auto-approve if report card has sufficient grades and content
+        if ($gradesFound >= 5 && 
             $wordCount >= 50 && 
             !$hasCriticalFlag) {
-            return 'approved';
+            return [
+                'status' => 'approved',
+                'reason' => null
+            ];
         }
         
-        return 'flagged_for_review';
+        return [
+            'status' => 'flagged_for_review',
+            'reason' => $this->generateFlagReason($ocrResult, $gradesFound, $wordCount)
+        ];
+    }
+    
+    private function generateFlagReason(array $ocrResult, int $gradesFound, int $wordCount): string {
+        $reasons = [];
+        $flags = $ocrResult['flags'] ?? [];
+        
+        // Check for critical OCR errors
+        if (in_array('file_not_found', $flags)) {
+            $reasons[] = 'Image file could not be found';
+        }
+        if (in_array('processing_error', $flags)) {
+            $reasons[] = 'Error occurred during image processing';
+        }
+        if (in_array('ocr_error', $flags)) {
+            $reasons[] = 'OCR extraction failed';
+        }
+        if (in_array('no_text', $flags)) {
+            $reasons[] = 'No readable text detected in image';
+        }
+        if (in_array('missing_dependencies', $flags)) {
+            $reasons[] = 'OCR dependencies not installed (pytesseract/pillow)';
+        }
+        
+        // Check for side-specific extraction issues
+        if (isset($ocrResult['front_ocr'])) {
+            $frontFlags = $ocrResult['front_ocr']['flags'] ?? [];
+            if (in_array('ocr_error', $frontFlags)) {
+                $reasons[] = 'Front image: OCR extraction failed';
+            }
+            if (in_array('no_text', $frontFlags)) {
+                $reasons[] = 'Front image: No readable text detected';
+            }
+        }
+        
+        if (isset($ocrResult['back_ocr'])) {
+            $backFlags = $ocrResult['back_ocr']['flags'] ?? [];
+            if (in_array('ocr_error', $backFlags)) {
+                $reasons[] = 'Back image: OCR extraction failed';
+            }
+            if (in_array('no_text', $backFlags)) {
+                $reasons[] = 'Back image: No readable text detected';
+            }
+        }
+        
+        // Check combined content quality (validation applied to totals)
+        if (in_array('no_grades', $flags) || $gradesFound < 5) {
+            $frontGrades = $ocrResult['front_ocr']['grades_found'] ?? 0;
+            $backGrades = $ocrResult['back_ocr']['grades_found'] ?? 0;
+            $reasons[] = "Insufficient grades detected (Total: {$gradesFound} [Front: {$frontGrades}, Back: {$backGrades}], Required: 5+)";
+        }
+        
+        if (in_array('low_text', $flags) || $wordCount < 50) {
+            $frontWords = $ocrResult['front_ocr']['word_count'] ?? 0;
+            $backWords = $ocrResult['back_ocr']['word_count'] ?? 0;
+            $reasons[] = "Low text content (Total: {$wordCount} [Front: {$frontWords}, Back: {$backWords}] words, Required: 50+)";
+        }
+        
+        // Check for additional warnings
+        if (in_array('no_keywords', $flags)) {
+            $reasons[] = 'Missing expected report card keywords (quarter, grade, subject, etc.)';
+        }
+        
+        // If no specific reasons found, provide generic message
+        if (empty($reasons)) {
+            $reasons[] = 'Report card does not meet automatic approval criteria';
+        }
+        
+        return implode('; ', $reasons);
     }
     
     public function processReportCardUpload(?int $userId, string $studentName, string $studentLrn, ?array $frontFile, ?array $backFile, ?int $enrolleeId = null): array {
@@ -276,12 +364,59 @@ class reportCardController {
             // Combine OCR results - merge LRN, sum grades, sum word count, combine flags
             $combinedOcrResult = $this->combineOcrResults($frontOcrResult, $backOcrResult);
             
+            $flagReason = null;
             if (!$combinedOcrResult['success']) {
-                $ocrJson = json_encode(['error' => $combinedOcrResult['error'] ?? 'OCR processing failed']);
+                // Build detailed OCR failure data
+                $ocrErrorData = [
+                    'error' => $combinedOcrResult['error'] ?? 'OCR processing failed',
+                    'front_error' => $combinedOcrResult['front_error'] ?? null,
+                    'back_error' => $combinedOcrResult['back_error'] ?? null,
+                    'front_ocr' => $frontOcrResult['data'] ?? null,
+                    'back_ocr' => $backOcrResult['data'] ?? null
+                ];
+                
+                $ocrJson = json_encode($ocrErrorData);
                 $status = 'flagged_for_review';
+                
+                // Generate detailed flag reason
+                $reasonParts = [];
+                if (!empty($combinedOcrResult['front_error'])) {
+                    $reasonParts[] = 'Front image error: ' . $combinedOcrResult['front_error'];
+                }
+                if (!empty($combinedOcrResult['back_error'])) {
+                    $reasonParts[] = 'Back image error: ' . $combinedOcrResult['back_error'];
+                }
+                
+                // If we have partial OCR data, analyze it for additional context
+                if ($frontOcrResult['success'] && isset($frontOcrResult['data'])) {
+                    $frontData = $frontOcrResult['data'];
+                    if (empty($frontData['lrn']) && in_array('no_lrn', $frontData['flags'] ?? [])) {
+                        $reasonParts[] = 'Front: No LRN detected';
+                    }
+                    if (($frontData['grades_found'] ?? 0) < 5) {
+                        $reasonParts[] = 'Front: Insufficient grades (' . ($frontData['grades_found'] ?? 0) . ')';
+                    }
+                    if (($frontData['word_count'] ?? 0) < 25) {
+                        $reasonParts[] = 'Front: Low text content (' . ($frontData['word_count'] ?? 0) . ' words)';
+                    }
+                }
+                
+                if ($backOcrResult['success'] && isset($backOcrResult['data'])) {
+                    $backData = $backOcrResult['data'];
+                    if (($backData['grades_found'] ?? 0) < 5) {
+                        $reasonParts[] = 'Back: Insufficient grades (' . ($backData['grades_found'] ?? 0) . ')';
+                    }
+                    if (($backData['word_count'] ?? 0) < 25) {
+                        $reasonParts[] = 'Back: Low text content (' . ($backData['word_count'] ?? 0) . ' words)';
+                    }
+                }
+                
+                $flagReason = !empty($reasonParts) ? implode('; ', $reasonParts) : 'OCR processing failed on one or both images';
             } else {
                 $ocrJson = json_encode($combinedOcrResult['data']);
-                $status = $this->determineStatus($combinedOcrResult['data'], $studentLrn);
+                $statusResult = $this->determineStatus($combinedOcrResult['data'], $studentLrn);
+                $status = $statusResult['status'];
+                $flagReason = $statusResult['reason'];
             }
             
             $submissionId = $this->model->insertSubmission(
@@ -291,7 +426,8 @@ class reportCardController {
                 $saveBackImage['filepath'],
                 $ocrJson,
                 $status,
-                $enrolleeId
+                $enrolleeId,
+                $flagReason
             );
             
             return [
@@ -301,7 +437,8 @@ class reportCardController {
                 'data' => [
                     'submission_id' => $submissionId,
                     'status' => $status,
-                    'ocr_result' => $ocrResult['data'] ?? null
+                    'flag_reason' => $flagReason,
+                    'ocr_result' => $combinedOcrResult['data'] ?? null
                 ]
             ];
         }

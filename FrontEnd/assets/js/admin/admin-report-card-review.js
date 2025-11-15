@@ -68,6 +68,15 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="detail-row"><strong>Created At:</strong> ${formatDate(submission.created_at)}</div>
         `;
         
+        if (submission.flag_reason) {
+            html += `
+                <div class="detail-row"><strong>Flag Reason:</strong></div>
+                <div class="flag-reason-box" style="background: #fff3cd; border: 1px solid #ffc107; padding: 10px; margin: 10px 0; border-radius: 4px;">
+                    ${escapeHtml(submission.flag_reason)}
+                </div>
+            `;
+        }
+        
         if (submission.report_card_front_path) {
             html += `
                 <div class="detail-row"><strong>Report Card - Front:</strong></div>

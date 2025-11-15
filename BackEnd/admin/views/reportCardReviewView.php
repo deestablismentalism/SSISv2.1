@@ -87,6 +87,13 @@ class reportCardReviewView {
             echo '<div class="detail-row"><strong>Status:</strong> ' . $this->getStatusBadge($submission['status']) . '</div>';
             echo '<div class="detail-row"><strong>Created At:</strong> ' . date('Y-m-d H:i:s', strtotime($submission['created_at'])) . '</div>';
             
+            if (!empty($submission['flag_reason'])) {
+                echo '<div class="detail-row"><strong>Flag Reason:</strong></div>';
+                echo '<div class="flag-reason-box" style="background: #fff3cd; border: 1px solid #ffc107; padding: 10px; margin: 10px 0; border-radius: 4px;">';
+                echo htmlspecialchars($submission['flag_reason']);
+                echo '</div>';
+            }
+            
             if (!empty($submission['report_card_front_path'])) {
                 $frontPath = htmlspecialchars($submission['report_card_front_path']);
                 echo '<div class="detail-row"><strong>Report Card - Front:</strong></div>';

@@ -11,10 +11,10 @@ class reportCardModel {
         $this->conn = $db->getConnection();
     }
     
-    public function insertSubmission(string $studentName, string $studentLrn, string $reportCardFrontPath, ?string $reportCardBackPath, ?string $ocrJson, string $status, ?int $enrolleeId = null): int {
+    public function insertSubmission(string $studentName, string $studentLrn, string $reportCardFrontPath, ?string $reportCardBackPath, ?string $ocrJson, string $status, ?int $enrolleeId = null, ?string $flagReason = null): int {
         try {
-            $sql = "INSERT INTO report_card_submissions (student_name, student_lrn, report_card_front_path, report_card_back_path, ocr_json, status, enrollee_id) 
-                    VALUES (:student_name, :student_lrn, :report_card_front_path, :report_card_back_path, :ocr_json, :status, :enrollee_id)";
+            $sql = "INSERT INTO report_card_submissions (student_name, student_lrn, report_card_front_path, report_card_back_path, ocr_json, status, flag_reason, enrollee_id) 
+                    VALUES (:student_name, :student_lrn, :report_card_front_path, :report_card_back_path, :ocr_json, :status, :flag_reason, :enrollee_id)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':student_name', $studentName);
             $stmt->bindParam(':student_lrn', $studentLrn);
@@ -22,6 +22,7 @@ class reportCardModel {
             $stmt->bindParam(':report_card_back_path', $reportCardBackPath);
             $stmt->bindParam(':ocr_json', $ocrJson);
             $stmt->bindParam(':status', $status);
+            $stmt->bindParam(':flag_reason', $flagReason);
             $stmt->bindParam(':enrollee_id', $enrolleeId, $enrolleeId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
             
             if (!$stmt->execute()) {
@@ -52,6 +53,25 @@ class reportCardModel {
         catch (PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to update submission status', 0, $e);
+        }
+    }
+    
+    public function updateFlagReason(int $id, ?string $flagReason): bool {
+        try {
+            $sql = "UPDATE report_card_submissions SET flag_reason = :flag_reason WHERE id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':flag_reason', $flagReason);
+            $stmt->bindParam(':id', $id);
+            
+            if (!$stmt->execute()) {
+                throw new PDOException('Failed to update flag reason');
+            }
+            
+            return $stmt->rowCount() > 0;
+        }
+        catch (PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
+            throw new DatabaseException('Failed to update flag reason', 0, $e);
         }
     }
     
