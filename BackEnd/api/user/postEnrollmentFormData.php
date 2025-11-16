@@ -38,7 +38,6 @@ try {
     $Student_Last_Name = $_POST['lname'] ?? null;
     $Student_Extension = $_POST['extension'] ?? null;
     $Learner_Reference_Number = isset($_POST['LRN']) ? (int)$_POST['LRN'] : null;
-    $Psa_Number = isset($_POST['PSA-number']) ? (int)$_POST['PSA-number'] : null;
     $Birth_Date = $_POST['bday'] ?? null;
     $Age = isset($_POST['age']) ? (int)$_POST['age'] : null;
     $Sex = $_POST['gender'] ?? null;
@@ -55,33 +54,23 @@ try {
     //  EROLLEE ADDRESS
     $House_Number = isset($_POST['house-number']) ? (int)$_POST['house-number'] : null;
     $Subd_Name = $_POST['subdivision'] ?? null;
-    // Handle barangay - could be code (int) from dropdown or text from manual input
+    // Handle barangay - should be code (string) from dropdown or text from manual input
     $barangayValue = $_POST['barangay'] ?? null;
-    $Brgy_Code = (isset($barangayValue) && is_numeric($barangayValue) && $barangayValue !== '') ? (int)$barangayValue : null;
-    $Brgy_Name = $_POST['barangay-name'] ?? ($barangayValue && !is_numeric($barangayValue) ? $barangayValue : null);
-    // Handle city/municipality - could be code (int) from dropdown or text from manual input
+    $Brgy_Code = (isset($barangayValue) && !empty($barangayValue)) ? $barangayValue : null;
+    $Brgy_Name = $_POST['barangay-name'] ?? null;
+    // Handle city/municipality - could be code (string) from dropdown or text from manual input
     $cityValue = $_POST['city-municipality'] ?? null;
-    $Municipality_Code = (isset($cityValue) && is_numeric($cityValue) && $cityValue !== '') ? (int)$cityValue : null;
-    $Municipality_Name = $_POST['city-municipality-name'] ?? ($cityValue && !is_numeric($cityValue) ? $cityValue : null);
-    $Province_Code = isset($_POST['province']) ? (int)$_POST['province'] : null;
+    $Municipality_Code = (isset($cityValue) && !empty($cityValue)) ? $cityValue : null;
+    $Municipality_Name = $_POST['city-municipality-name'] ?? null;
+    //HANDLE Province
+    $provinceValue = $_POST['province'] ?? null;
+    $Province_Code = (isset($provinceValue) && !empty($provinceValue)) ? $provinceValue : null;
     $Province_Name = $_POST['province-name'] ?? null;
-    $Region_Code = isset($_POST['region']) ? (int)$_POST['region'] : null;
+    //HANDLE Region
+    $regionValue = $_POST['region'] ?? null;
+    $Region_Code = (isset($regionValue) && !empty($regionValue)) ? $regionValue : null;
     $Region = $_POST['region-name'] ?? null;
     // ENROLLEE PARENTS INFORMATION
-    // FATHER
-    $Father_First_Name = $_POST['Father-First-Name'] ?? null;
-    $Father_Last_Name = $_POST['Father-Last-Name'] ?? null;
-    $Father_Middle_Name = $_POST['Father-Middle-Name'] ?? null;
-    $Father_Educational_Attainment = $_POST['F-highest-education'] ?? null;
-    $Father_Contact_Number = $_POST['F-Number'] ?? null;
-    $FIf_4Ps = isset($_POST['fourPS']) ? ($_POST['fourPS'] === 'yes' ? 1 : 0) : null;
-    //MOTHER
-    $Mother_First_Name = $_POST['Mother-First-Name'] ?? null;
-    $Mother_Last_Name = $_POST['Mother-Last-Name'] ?? null;
-    $Mother_Middle_Name = $_POST['Mother-Middle-Name'] ?? null;
-    $Mother_Educational_Attainment = $_POST['M-highest-education'] ?? null;
-    $Mother_Contact_Number = $_POST['M-Number'] ?? null;
-    $MIf_4Ps = isset($_POST['fourPS']) ? ($_POST['fourPS'] === 'yes' ? 1 : 0) : null;
     //GUARDIAN
     $Guardian_First_Name = $_POST['Guardian-First-Name'] ?? null;
     $Guardian_Last_Name = $_POST['Guardian-Last-Name'] ?? null;
@@ -99,10 +88,8 @@ try {
         $Last_School_Attended, $School_Id, $School_Address, $School_Type, $Initial_School_Choice, $Initial_School_Id, $Initial_School_Address,
         $Have_Special_Condition, $Have_Assistive_Tech, $Special_Condition, $Assistive_Tech,
         $House_Number, $Subd_Name, $Brgy_Name, $Brgy_Code, $Municipality_Name, $Municipality_Code, $Province_Name, $Province_Code, $Region, $Region_Code,
-        $Father_First_Name, $Father_Last_Name, $Father_Middle_Name, $Father_Educational_Attainment, $Father_Contact_Number, $FIf_4Ps,
-        $Mother_First_Name, $Mother_Last_Name, $Mother_Middle_Name, $Mother_Educational_Attainment, $Mother_Contact_Number, $MIf_4Ps,
         $Guardian_First_Name, $Guardian_Last_Name, $Guardian_Middle_Name, $Guardian_Educational_Attainment, $Guardian_Contact_Number, $GIf_4Ps,
-        $Student_First_Name,$Student_Last_Name,$Student_Middle_Name,$Student_Extension, $Learner_Reference_Number, $Psa_Number, $Birth_Date, $Age, $Sex, $Religion,
+        $Student_First_Name,$Student_Last_Name,$Student_Middle_Name,$Student_Extension, $Learner_Reference_Number,$Birth_Date, $Age, $Sex, $Religion,
         $Native_Language, $If_Cultural, $Cultural_Group, $Student_Email, $Enrollment_Status, $image);
     //SET CONTROLLER HTTP RESPONSE CODE
     http_response_code($response['httpcode']);
