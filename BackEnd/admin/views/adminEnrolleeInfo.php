@@ -78,9 +78,9 @@ class adminEnrolleeInfo {
                     . $address['Province_Name'] . ' ' . $address['Region'];
             echo '<table class="modal-table"></tbody>';
             echo $this->tableTemplate->returnVerticalTables(
-                ['Numero ng Sertipiko ng Kapanganakan','Learner Reference Number','Apelyido','Pangalan','Panggitna','Suffix','Petsa ng Kapanganakan',
+                ['Learner Reference Number','Apelyido','Pangalan','Panggitna','Suffix','Petsa ng Kapanganakan',
                 'Edad','Kasarian', 'Kabilang sa katutubong grupo','Kinagisnang wika','Relihiyon','Email Address', 'Buong Address'],
-                [$rows['Psa_Number'], $lrn,$rows['Student_Last_Name'],$rows['Student_First_Name'],$middleName, $suffix,$rows['Birth_Date'],
+                [$lrn,$rows['Student_Last_Name'],$rows['Student_First_Name'],$middleName, $suffix,$rows['Birth_Date'],
                 $rows['Age'], $sex, $culutralGroup,$rows['Native_Language'],$rows['Religion'],$rows['Student_Email'],$completeAddress],
                 'personal-info'
             ); 

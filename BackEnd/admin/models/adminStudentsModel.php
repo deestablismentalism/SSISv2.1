@@ -35,7 +35,7 @@ class adminStudentsModel {
                             se.Section_Name
                     FROM students AS s
                     LEFT JOIN grade_level AS g ON s.Grade_Level_Id = g.Grade_Level_Id
-                    LEFT JOIN sections AS se ON s.Section_Id = se.Section_Id WHERE Is_Archived = 0";
+                    LEFT JOIN sections AS se ON s.Section_Id = se.Section_Id WHERE s.Is_Archived = 0";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -77,7 +77,7 @@ class adminStudentsModel {
                     CASE ds.Have_Assistive_Tech
                     WHEN 0 THEN 'None'
                     WHEN 1 THEN ds.Assistive_Tech END AS Has_Tech,
-                    e.Psa_Number,e.Religion,e.Native_Language,e.Student_Email,
+                    e.Religion,e.Native_Language,e.Student_Email,
                     CASE e.If_Cultural 
                     WHEN 0 THEN 'None'
                     WHEN 1 THEN e.Cultural_Group
@@ -124,7 +124,7 @@ class adminStudentsModel {
     public function getAdditionalStudentInfo(int $studentId) : ?array {
         try {
             $sql = "SELECT 
-                         e.Psa_Number, e.Religion, e.Native_Language,e.Student_Email,
+                        e.Religion, e.Native_Language,e.Student_Email,
                         e.If_Cultural, e.Cultural_Group,
                         eb.Last_School_Attended, eb.School_Id AS Last_School_ID, eb.School_Address AS Last_School_Address, 
                         eb.School_Type AS Last_School_Type, eb.Initial_School_Choice, eb.Initial_School_Id, eb.Initial_School_Address,
@@ -161,7 +161,6 @@ class adminStudentsModel {
             $lastName = $data['last_name'];
             $nameExtension = $data['name_extension'] ?? null;
             $lrn = $data['lrn'];
-            $psaNumber = $data['psa_number'] ?? null;
             $birthdate = $data['birthdate'] ?? null;
             $age = $data['age'] ?? null;
             $gender = $data['gender'] ?? null;
@@ -196,7 +195,6 @@ class adminStudentsModel {
                             Student_Last_Name = :last_name,
                             Student_Extension = :name_extension,
                             Learner_Reference_Number = :lrn,
-                            Psa_Number = :psa_number,
                             Birth_Date = :birthdate,
                             Age = :age,
                             Sex = :gender,
@@ -210,7 +208,6 @@ class adminStudentsModel {
                 $stmt->bindParam(':last_name', $lastName);
                 $stmt->bindParam(':name_extension', $nameExtension);
                 $stmt->bindParam(':lrn', $lrn);
-                $stmt->bindParam(':psa_number', $psaNumber);
                 $stmt->bindParam(':birthdate', $birthdate);
                 $stmt->bindParam(':age', $age);
                 $stmt->bindParam(':gender', $gender);
