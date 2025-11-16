@@ -283,21 +283,8 @@ class reportCardController {
             ];
         }
         
-        // Check for critical flags that prevent auto-approval
-        $criticalFlags = ['no_grades', 'low_text', 'file_not_found', 'processing_error', 'ocr_error'];
-        $hasCriticalFlag = !empty(array_intersect($flags, $criticalFlags));
-        
-        // Auto-approve if report card has sufficient grades and content
-        if ($gradesFound >= 5 && 
-            $wordCount >= 50 && 
-            !$hasCriticalFlag) {
-            return [
-                'status' => 'approved',
-                'reason' => null
-            ];
-        }
-        
-        // Flag for manual review if doesn't meet auto-approval but at least one image is readable
+        // All valid report cards require manual review for legitimacy verification
+        // OCR cannot verify authenticity, tampering, or document validity
         return [
             'status' => 'flagged_for_review',
             'reason' => $this->generateFlagReason($ocrResult, $gradesFound, $wordCount)
@@ -307,6 +294,9 @@ class reportCardController {
     private function generateFlagReason(array $ocrResult, int $gradesFound, int $wordCount): string {
         $reasons = [];
         $flags = $ocrResult['flags'] ?? [];
+        
+        // Default reason for manual review
+        $baseReason = 'Manual verification required for report card authenticity';
         
         // Check for critical OCR errors
         if (in_array('file_not_found', $flags)) {
@@ -346,17 +336,17 @@ class reportCardController {
             }
         }
         
-        // Check combined content quality (validation applied to totals)
+        // Check combined content quality (informational, not blocking)
         if (in_array('no_grades', $flags) || $gradesFound < 5) {
             $frontGrades = $ocrResult['front_ocr']['grades_found'] ?? 0;
             $backGrades = $ocrResult['back_ocr']['grades_found'] ?? 0;
-            $reasons[] = "Insufficient grades detected (Total: {$gradesFound} [Front: {$frontGrades}, Back: {$backGrades}], Required: 5+)";
+            $reasons[] = "Low grade count detected (Total: {$gradesFound} [Front: {$frontGrades}, Back: {$backGrades}])";
         }
         
         if (in_array('low_text', $flags) || $wordCount < 50) {
             $frontWords = $ocrResult['front_ocr']['word_count'] ?? 0;
             $backWords = $ocrResult['back_ocr']['word_count'] ?? 0;
-            $reasons[] = "Low text content (Total: {$wordCount} [Front: {$frontWords}, Back: {$backWords}] words, Required: 50+)";
+            $reasons[] = "Low text content (Total: {$wordCount} [Front: {$frontWords}, Back: {$backWords}] words)";
         }
         
         // Check for additional warnings
@@ -364,12 +354,12 @@ class reportCardController {
             $reasons[] = 'Missing expected report card keywords (quarter, grade, subject, etc.)';
         }
         
-        // If no specific reasons found, provide generic message
+        // Return reasons or default message
         if (empty($reasons)) {
-            $reasons[] = 'Report card does not meet automatic approval criteria';
+            return $baseReason;
         }
         
-        return implode('; ', $reasons);
+        return $baseReason . '; ' . implode('; ', $reasons);
     }
     
     public function processReportCardUpload(?int $userId, string $studentName, string $studentLrn, ?array $frontFile, ?array $backFile, ?int $enrolleeId = null): array {
