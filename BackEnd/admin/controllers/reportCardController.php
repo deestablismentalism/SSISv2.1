@@ -238,56 +238,97 @@ class reportCardController {
     }
     
     private function determineStatus(array $ocrResult, string $submittedLrn): array {
-        $gradesFound = $ocrResult['grades_found'] ?? 0;
-        $wordCount = $ocrResult['word_count'] ?? 0;
-        $flags = $ocrResult['flags'] ?? [];
+        $frontOcr = $ocrResult['front_ocr'] ?? [];
+        $backOcr = $ocrResult['back_ocr'] ?? [];
         
-        // Check for auto-rejection conditions (BOTH images must fail)
-        // 1. If BOTH images have no text - definitely not readable report cards
-        if (in_array('both_no_text', $flags)) {
+        $frontFlags = $frontOcr['flags'] ?? [];
+        $backFlags = $backOcr['flags'] ?? [];
+        
+        $frontGrades = $frontOcr['grades_found'] ?? 0;
+        $backGrades = $backOcr['grades_found'] ?? 0;
+        
+        // Helper functions for flag checks
+        $hasFlag = function($flags, $flag) {
+            return in_array($flag, $flags);
+        };
+        
+        // REJECTION CONDITIONS (checked first)
+        
+        // 1. At least one picture has "no_text" flag
+        if ($hasFlag($frontFlags, 'no_text') || $hasFlag($backFlags, 'no_text')) {
             return [
                 'status' => 'rejected',
-                'reason' => 'Please submit a report card'
+                'reason' => 'Unrelated picture, please submit a report card'
             ];
         }
         
-        // 2. If BOTH images have no keywords - likely not report cards
-        if (in_array('both_no_keywords', $flags)) {
-            return [
-                'status' => 'rejected',
-                'reason' => 'Please submit a report card'
-            ];
-        }
-        
-        // 3. If BOTH images have zero grades - no grade information found
-        if (in_array('both_no_grades', $flags)) {
-            return [
-                'status' => 'rejected',
-                'reason' => 'Please submit a report card'
-            ];
-        }
-        
-        // 4. If combined text is low AND no grades - poor quality or wrong document
-        if (in_array('low_text', $flags) && in_array('no_grades', $flags)) {
+        // 3. One side low_text + other side no_grades
+        if (($hasFlag($frontFlags, 'low_text') && $backGrades === 0) || 
+            ($hasFlag($backFlags, 'low_text') && $frontGrades === 0)) {
             return [
                 'status' => 'rejected',
                 'reason' => 'Please submit a report card or send a higher quality image'
             ];
         }
         
-        // 5. If BOTH images have very low text AND no grades total (backup check)
-        if (in_array('both_low_quality', $flags)) {
+        // 4. One side low_text + other side no_keywords
+        if (($hasFlag($frontFlags, 'low_text') && $hasFlag($backFlags, 'no_keywords')) || 
+            ($hasFlag($backFlags, 'low_text') && $hasFlag($frontFlags, 'no_keywords'))) {
             return [
                 'status' => 'rejected',
                 'reason' => 'Please submit a report card or send a higher quality image'
             ];
         }
         
-        // All valid report cards require manual review for legitimacy verification
-        // OCR cannot verify authenticity, tampering, or document validity
+        // 5. Both sides have low_text
+        if ($hasFlag($frontFlags, 'low_text') && $hasFlag($backFlags, 'low_text')) {
+            return [
+                'status' => 'rejected',
+                'reason' => 'Please submit a report card or send a higher quality image'
+            ];
+        }
+        
+        // 6. One has grades but other has no_keywords (one side valid, other invalid)
+        if (($frontGrades > 0 && $hasFlag($backFlags, 'no_keywords') && $backGrades === 0) || 
+            ($backGrades > 0 && $hasFlag($frontFlags, 'no_keywords') && $frontGrades === 0)) {
+            return [
+                'status' => 'rejected',
+                'reason' => 'Please submit a report card'
+            ];
+        }
+        
+        // 7. One has keywords but other has no grades (one side valid, other invalid)
+        if ((!$hasFlag($frontFlags, 'no_keywords') && $frontGrades > 0 && $backGrades === 0 && $hasFlag($backFlags, 'no_keywords')) || 
+            (!$hasFlag($backFlags, 'no_keywords') && $backGrades > 0 && $frontGrades === 0 && $hasFlag($frontFlags, 'no_keywords'))) {
+            return [
+                'status' => 'rejected',
+                'reason' => 'Please submit a report card'
+            ];
+        }
+        
+        // FLAGGED CONDITION (pass to manual review)
+        // One image must have good text + keywords, other must have at least 3 grades
+        
+        // Front has good text + keywords, Back has >= 3 grades
+        if (!$hasFlag($frontFlags, 'low_text') && !$hasFlag($frontFlags, 'no_keywords') && $backGrades >= 3) {
+            return [
+                'status' => 'flagged_for_review',
+                'reason' => $this->generateFlagReason($ocrResult, $frontGrades + $backGrades, ($frontOcr['word_count'] ?? 0) + ($backOcr['word_count'] ?? 0))
+            ];
+        }
+        
+        // Back has good text + keywords, Front has >= 3 grades
+        if (!$hasFlag($backFlags, 'low_text') && !$hasFlag($backFlags, 'no_keywords') && $frontGrades >= 3) {
+            return [
+                'status' => 'flagged_for_review',
+                'reason' => $this->generateFlagReason($ocrResult, $frontGrades + $backGrades, ($frontOcr['word_count'] ?? 0) + ($backOcr['word_count'] ?? 0))
+            ];
+        }
+        
+        // 2. Default: Anything not caught by flagged conditions = rejected
         return [
-            'status' => 'flagged_for_review',
-            'reason' => $this->generateFlagReason($ocrResult, $gradesFound, $wordCount)
+            'status' => 'rejected',
+            'reason' => 'Please submit a report card'
         ];
     }
     
@@ -408,6 +449,41 @@ class reportCardController {
                     'success' => false,
                     'message' => 'Failed to save back image: ' . $saveBackImage['message'],
                     'data' => []
+                ];
+            }
+            
+            // Check if both images are identical (same content)
+            $frontHash = hash_file('sha256', $saveFrontImage['full_path']);
+            $backHash = hash_file('sha256', $saveBackImage['full_path']);
+            
+            if ($frontHash === $backHash) {
+                // Store as rejected submission with flag reason
+                $ocrJson = json_encode([
+                    'error' => 'Duplicate images detected',
+                    'front_ocr' => null,
+                    'back_ocr' => null
+                ]);
+                
+                $submissionId = $this->model->insertSubmission(
+                    $studentName,
+                    $studentLrn,
+                    $saveFrontImage['filepath'],
+                    $saveBackImage['filepath'],
+                    $ocrJson,
+                    'rejected',
+                    $enrolleeId,
+                    'Front and back images are identical. Please submit different images for front and back of report card.'
+                );
+                
+                return [
+                    'httpcode' => 400,
+                    'success' => false,
+                    'message' => 'Front and back images are identical',
+                    'data' => [
+                        'submission_id' => $submissionId,
+                        'status' => 'rejected',
+                        'flag_reason' => 'Front and back images are identical. Please submit different images for front and back of report card.'
+                    ]
                 ];
             }
             

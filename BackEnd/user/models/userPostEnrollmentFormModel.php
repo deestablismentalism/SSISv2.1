@@ -111,56 +111,6 @@ class userPostEnrollmentFormModel {
             throw new DatabaseException('Failed to insert enrollee address',3211,$e);
         }
     }
-    private function father_information(string $Father_First_Name, string $Father_Last_Name, ?string $Father_Middle_Name, string $Father_Parent_Type,
-    string $Father_Educational_Attainment, string $Father_Contact_Number, int $FIf_4Ps) : int { //F 3.2.12
-        try {
-            $sql  = "INSERT INTO parent_information (First_Name, Last_Name, Middle_Name, Parent_Type, 
-                                        Educational_Attainment, Contact_Number, If_4Ps)
-                                        VALUES (:First_Name, :Last_Name, :Middle_Name, :Parent_Type, :Educational_Attainment,
-                                        :Contact_Number, :If_4Ps)";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':First_Name', $Father_First_Name);
-            $stmt->bindParam(':Last_Name', $Father_Last_Name);
-            $stmt->bindParam(':Middle_Name', $Father_Middle_Name);
-            $stmt->bindParam(':Parent_Type', $Father_Parent_Type);
-            $stmt->bindParam(':Educational_Attainment', $Father_Educational_Attainment);
-            $stmt->bindParam(':Contact_Number', $Father_Contact_Number);
-            $stmt->bindParam(':If_4Ps', $FIf_4Ps);
-            if (!$stmt->execute()) {
-                throw new PDOException('Failed to execute father information insert');
-            } 
-            return (int) $this->conn->lastInsertId();                                    
-        }
-        catch (PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert father information',3212,$e);
-        }
-    }
-    private function mother_information(string $Mother_First_Name, string $Mother_Last_Name, ?string $Mother_Middle_Name, string $Parent_Type, 
-    string $Mother_Educational_Attainment, string $Mother_Contact_Number, int $MIf_4Ps) : int {  //F 3.2.13
-        try {
-            $sql  = "INSERT INTO parent_information (First_Name, Last_Name, Middle_Name, Parent_Type, 
-                                        Educational_Attainment, Contact_Number, If_4Ps)
-                                        VALUES (:First_Name, :Last_Name, :Middle_Name, :Parent_Type, :Educational_Attainment,
-                                        :Contact_Number, :If_4Ps)";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':First_Name', $Mother_First_Name);
-            $stmt->bindParam(':Last_Name', $Mother_Last_Name);
-            $stmt->bindParam(':Middle_Name', $Mother_Middle_Name);
-            $stmt->bindParam(':Parent_Type', $Parent_Type);
-            $stmt->bindParam(':Educational_Attainment', $Mother_Educational_Attainment);
-            $stmt->bindParam(':Contact_Number', $Mother_Contact_Number);
-            $stmt->bindParam(':If_4Ps', $MIf_4Ps);
-            if (!$stmt->execute()) {
-                throw new PDOException('Failed to execute mother information insert');
-            } 
-            return (int) $this->conn->lastInsertId();                                    
-        }
-        catch (PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert mother information',3213,$e);
-        }
-    }
     private function guardian_information(string $Guardian_First_Name, string $Guardian_Last_Name, ?string $Guardian_Middle_Name, string $Parent_Type, 
     string $Guardian_Educational_Attainment, string $Guardian_Contact_Number, int $GIf_4Ps) :int { //F 3.2.14
         try {
@@ -239,20 +189,14 @@ class userPostEnrollmentFormModel {
     public function insert_enrollee(?int $userId,int $schoolYearStart,int $schoolYearEnd,int $hasLrn,int $enrollingGradeLevel,?int $lastGradeLevel,?int $lastYearAttended,
     string $lastSchoolAttended,int $schoolId,string $schoolAddress,string $schoolType,string $initialSchoolChoice,int $initialSchoolId,string $initialSchoolAddress,
     int $hasSpecialCondition,int $hasAssistiveTech, ?string $specialCondition, ?string $assistiveTech,
-    int $houseNumber,string $subdName, string $brgyName,int $brgyCode,string $municipalityName,int $municipalityCode,string $provinceName,int $provinceCode, 
+    ?int $houseNumber,?string $subdName, string $brgyName,int $brgyCode,string $municipalityName,int $municipalityCode,string $provinceName,int $provinceCode, 
     string $region,int $regionCode,
-    string $fatherFirstName,string $Father_Last_Name,?string $fatherMiddleName,string $fatherEducationalAttainment, string $fatherCpNumber, 
-    int $isFather4ps,
-    string $motherFirstName,string $motherLastName,?string $motherMiddleName,string $motherEducationalAttainment, 
-    string $motherCpNumber, int $isMother4ps,
     string $guardianFirstName,string $guardianLastName,?string $guardianMiddleName,string $guardianEducationalAttainment,
     string $guardianCpNumber , $GIf_4Ps,
-    string $studentFirstName,string $studentLastName,?string $studentMiddleName,?string $studentSuffix,?int $lrn,int $psaNumber,string $birthDate, 
+    string $studentFirstName,string $studentLastName,?string $studentMiddleName,?string $studentSuffix,?int $lrn,string $birthDate, 
     int $age,string $sex,string $religion, 
     string $nativeLanguage,int $isCultural,?string $culturalGroup,string $studentEmail,int $enrollmentStatus,string $filename,string $directory) : int { //F 3.3.4
         //Initialize variable for parent types
-        $fatherParentType = 'Father';
-        $motherParentType = 'Mother';
         $guardianParentType = 'Guardian';
         try{
             $this->conn->beginTransaction();
@@ -270,12 +214,6 @@ class userPostEnrollmentFormModel {
             //REF: 3.2.11
             $enrolleeAddressId = $this->enrollee_address($houseNumber, $subdName, $brgyName, $brgyCode, $municipalityName, 
             $municipalityCode, $provinceName, $provinceCode, $region, $regionCode);
-            //REF: 3.2.12
-            $fatherInformationId = $this->father_information($fatherFirstName, $Father_Last_Name, $fatherMiddleName, $fatherParentType, 
-            $fatherEducationalAttainment, $fatherCpNumber, $isFather4ps);
-            //REF: 3.2.13
-            $motherInformationId = $this->mother_information($motherFirstName, $motherLastName, $motherMiddleName, $motherParentType, 
-            $motherEducationalAttainment, $motherCpNumber, $isMother4ps);
             //REF: 3.2.14
             $guardianInformationId = $this->guardian_information($guardianFirstName, $guardianLastName, $guardianMiddleName, $guardianParentType, 
             $guardianEducationalAttainment, $guardianCpNumber, $GIf_4Ps);
@@ -296,7 +234,6 @@ class userPostEnrollmentFormModel {
             $stmt->bindParam(':Student_Last_Name', $studentLastName);
             $stmt->bindParam(':Student_Extension', $studentSuffix);
             $stmt->bindParam(':Learner_Reference_Number', $lrn);
-            $stmt->bindParam(':Psa_Number', $psaNumber);
             $stmt->bindParam(':Birth_Date', $birthDate);
             $stmt->bindParam(':Age', $age);
             $stmt->bindParam(':Sex', $sex);
@@ -318,18 +255,6 @@ class userPostEnrollmentFormModel {
             } 
             // If the enrollee is successfully inserted, get the last inserted ID
             $enrolleeId = (int)$this->conn->lastInsertId();
-            //REF: 3.2.16
-            $insertFatherToEnrolleeParents = $this->insertParentToEnrolleeParents($enrolleeId,$fatherInformationId,$fatherParentType);
-            if(!$insertFatherToEnrolleeParents) {
-                $this->conn->rollBack();
-                throw new PDOException('Failed to insert father to enrollee parents');
-            }
-            //REF: 3.2.16
-            $insertMotherToEnrolleeParents = $this->insertParentToEnrolleeParents($enrolleeId, $motherInformationId, $motherParentType);
-            if(!$insertMotherToEnrolleeParents) {
-                $this->conn->rollBack();
-                throw new PDOException('Failed to insert mother to enrollee parents');
-            }
             //REF:3.2.16
             $insertGuardianToEnrolleeParents = $this->insertParentToEnrolleeParents($enrolleeId, $guardianInformationId,$guardianParentType);
             if(!$insertGuardianToEnrolleeParents) {
@@ -349,10 +274,12 @@ class userPostEnrollmentFormModel {
     //check matching numeric values in the database
     public function checkLRN(int $lrn, ?int $enrolleeId = null) : bool { //F 3.3.5
         try {
-            $sql = 'SELECT 1 FROM enrollee WHERE Learner_Reference_Number = :lrn';
+            $sql = 'SELECT 1 FROM enrollee e LEFT JOIN students s ON s.Enrollee_Id = e.Enrollee_Id 
+            WHERE (e.Learner_Reference_Number = :lrn OR s.LRN = :lrn)';
             if($enrolleeId !== null) {
-                $sql .= ' AND Enrollee_Id != :id';
+                $sql .= ' AND e.Enrollee_Id != :id';
             }
+            $sql .= 'LIMIT 1';
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':lrn', $lrn);
             if($enrolleeId !== null) {
@@ -365,26 +292,6 @@ class userPostEnrollmentFormModel {
         catch(PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to check LRN',335,$e);
-        }
-    }
-    public function checkPSA(int $psa, ?int $enrolleeId = null) : bool { //F 3.3.6
-        try {
-            $sql = 'SELECT 1 FROM enrollee WHERE Psa_Number = :psa';
-            if($enrolleeId !== null) {
-                $sql .= ' AND Enrollee_Id != :id';
-            }
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':psa', $psa);
-            if($enrolleeId !== null) {
-                $stmt->bindParam(':id',$enrolleeId);
-            }
-            $stmt->execute();
-            $result = $stmt->fetchColumn();
-            return (bool)$result;
-        }
-        catch(PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to check PSA',336,$e);
         }
     }
 }

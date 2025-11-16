@@ -18,9 +18,7 @@ class userEnrollmentFormController {
     public function apiPostAddEnrollee(?int $uId,int $schoolYStart,int $schoolYEnd,int $hasLRN, int $enrollGLevel,?int $lastGLevel,?int $lastYAttended, 
     string $lastSAttended,int $sId,string $sAddress,string $sType, string $initalSChoice, int $initialSId,string $initialSAddrress
     ,int $hasSpecialCondition,int $hasAssistiveTech,?string $specialCondition,?string $assistiveTech,
-    int $hNumber,string $subdName,string $bName,int $bCode,string $mName,int $mCode,string $pName,int $pCode, string $rName, int $rCode,
-    string $fFName,string $fLName,?string $fMName,string $fEduAttainment,string $fCpNum, int $fIs4Ps,
-    string $mFName,string $mLName,?string $mMName,string $mEduAttainment,string $mCpNum, int $mIs4Ps,
+    ?int $hNumber,?string $subdName,string $bName,int $bCode,string $mName,int $mCode,string $pName,int $pCode, string $rName, int $rCode,
     string $gFName,string $gLName,?string $gMName,string $gEduAttainment,string $gCpNum, int $gIs4Ps,
     string $stuFName,string $stuLName,?string $stuMName,?string $stuSuffix,?int $lrn,int $psaNum, string $birthDate,
     int $age,string $sex,string $religion,string $natLang,int $isCultural,?string $culturalG, string $studentEmail, int $enrollStat,
@@ -47,18 +45,6 @@ class userEnrollmentFormController {
                         'httpcode'=> 400,
                         'success'=> false,
                         'message'=> 'LRN provided already exists. Cannot input an existing Learner Reference Number',
-                        'data'=> []
-                    ];
-                }
-            }
-            // Only check PSA if it's provided (not null)
-            if($psaNum !== null) {
-                $isMatchingPsa = $this->postFormModel->checkPSA($psaNum);
-                if($isMatchingPsa) {
-                    return [
-                        'httpcode'=> 400,
-                        'success'=> false,
-                        'message'=> 'PSA number provided already exists. Cannot input an existing PSA number',
                         'data'=> []
                     ];
                 }
@@ -157,12 +143,9 @@ class userEnrollmentFormController {
             $lastSAttended,$sId,$sAddress,$sType,$initalSChoice,$initialSId,$initialSAddrress,
             $hasSpecialCondition,$hasAssistiveTech,$specialCondition,$assistiveTech,
             $hNumber,$subdName,$bName,$bCode,$mName,$mCode,$pName,$pCode,$rName,$rCode,
-            $fFName,$fLName,$fMName,$fEduAttainment,$fCpNum,$fIs4Ps,
-            $mFName,$mLName,$mMName,$mEduAttainment,$mCpNum,$mIs4Ps,
             $gFName,$gLName,$gMName,$gEduAttainment,$gCpNum,$gIs4Ps,
-            $stuFName,$stuLName,$stuMName,$stuSuffix,$lrn,$psaNum,$birthDate,$age,$sex,$religion,
-            $natLang,$isCultural,$culturalG,$studentEmail,$enrollStat,$placeholderFilename,$placeholderPath);
-            
+            $stuFName,$stuLName,$stuMName,$stuSuffix,$lrn,$birthDate,$age,$sex,$religion,
+            $natLang,$isCultural,$culturalG,$studentEmail,$enrollStat,$filename,$filePath);
             if($enrolleeId > 0) {
                 // Process report card with OCR verification
                 require_once __DIR__ . '/../../admin/controllers/reportCardController.php';
@@ -265,7 +248,6 @@ class userEnrollmentFormController {
                 ];
             }
             $isMatchingLrn = $this->postFormModel->checkLRN($allData['lrn'],$enrolleeId);
-            $isMatchingPsa = $this->postFormModel->checkPSA($allData['psa'], $enrolleeId);
             $psaImage = $formData['psa_image'] ?? null;
             $psaData = $this->updateImage($userId, $enrolleeId, $psaImage);
             if(!$psaData['success']) {
@@ -330,14 +312,12 @@ class userEnrollmentFormController {
     private function associateFormData(?array $postData) : array { //F 3.6.1
         try {
             $lrn = isset($postData['lrn']) ? (int) trim($postData['lrn']) : null;
-            $psa = isset($postData['psa']) ? (int) trim($postData['psa']) : null;
             $formData = [
                 'first_name' => $postData['first_name'] ?? null,
                 'last_name' => $postData['last_name'] ?? null,
                 'middle_name' => $postData['middle_name'] ?? null,
                 'extension' => $postData['extension'] ?? null,
                 'lrn' => $lrn,  // Add trim to remove any whitespace
-                'psa' =>$psa,  // Add trim to remove any whitespace
                 'age' => $postData['age'] ?? null,
                 'birthdate' => $postData['birthdate'] ?? null,
                 'sex' => $postData['sex'] ?? null,
@@ -370,22 +350,6 @@ class userEnrollmentFormController {
             ];
             // Add parent information
             $formData['parent_information'] = [
-                'Father' => [
-                    'first_name' => $postData['father_first_name'] ?? null,
-                    'middle_name' => $postData['father_middle_name'] ?? null,
-                    'last_name' => $postData['father_last_name'] ?? null,
-                    'educational_attainment' => $postData['father_educational_attainment'] ?? null,
-                    'contact_number' => $postData['father_contact_number'] ?? null,
-                    'if_4ps' => $postData['father_4ps_member'] ?? 0
-                ],
-                'Mother' => [
-                    'first_name' => $postData['mother_first_name'] ?? null,
-                    'middle_name' => $postData['mother_middle_name'] ?? null,
-                    'last_name' => $postData['mother_last_name'] ?? null,
-                    'educational_attainment' => $postData['mother_educational_attainment'] ?? null,
-                    'contact_number' => $postData['mother_contact_number'] ?? null,
-                    'if_4ps' => $postData['mother_4ps_member'] ?? 0
-                ],
                 'Guardian' => [
                     'first_name' => $postData['guardian_first_name'] ?? null,
                     'middle_name' => $postData['guardian_middle_name'] ?? null,
@@ -553,9 +517,6 @@ class userEnrollmentFormController {
                 'message'=> 'There was an unexpected problem in storing the image'
             ];
         }
-    }
-    private function checkValidEmails() : bool {
-        
     }
     //VIEW
 }
