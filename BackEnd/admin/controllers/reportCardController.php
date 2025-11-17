@@ -403,7 +403,7 @@ class reportCardController {
         return $baseReason . '; ' . implode('; ', $reasons);
     }
     
-    public function processReportCardUpload(?int $userId, string $studentName, string $studentLrn, ?array $frontFile, ?array $backFile, ?int $enrolleeId = null): array {
+    public function processReportCardUpload(?int $userId, string $studentName, string $studentLrn, ?array $frontFile, ?array $backFile, ?int $enrolleeId = null, ?string $sessionId = null, int $validationOnly = 0): array {
         try {
             if (empty($studentName)) {
                 return [
@@ -472,7 +472,10 @@ class reportCardController {
                     $ocrJson,
                     'rejected',
                     $enrolleeId,
-                    'Front and back images are identical. Please submit different images for front and back of report card.'
+                    'Front and back images are identical. Please submit different images for front and back of report card.',
+                    $userId,
+                    $sessionId,
+                    $validationOnly
                 );
                 
                 return [
@@ -557,7 +560,10 @@ class reportCardController {
                 $ocrJson,
                 $status,
                 $enrolleeId,
-                $flagReason
+                $flagReason,
+                $userId,
+                $sessionId,
+                $validationOnly
             );
             
             return [

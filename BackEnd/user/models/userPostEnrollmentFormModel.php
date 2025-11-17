@@ -83,8 +83,8 @@ class userPostEnrollmentFormModel {
             throw new DatabaseException('Failed to insert disabled student',3210,$e);
         } 
     }
-    private function enrollee_address(int $House_Number, string $Subd_Name, string $Brgy_Name, int $Brgy_Code, string $Municipality_Name, int $Municipality_Code, 
-    string $Province_Name, int $Province_Code, string $Region, int $Region_Code) : int { //F 3.2.11
+    private function enrollee_address(int $House_Number, string $Subd_Name, string $Brgy_Name, ?string $Brgy_Code, string $Municipality_Name, ?string $Municipality_Code, 
+    string $Province_Name, ?string $Province_Code, string $Region, ?string $Region_Code) : int { //F 3.2.11
         try {
             $sql = "INSERT INTO enrollee_address (House_Number, Subd_Name, Brgy_Name, Brgy_Code, Municipality_Name, Municipality_Code, 
                                     Province_Name, Province_Code, Region, Region_Code)
@@ -136,23 +136,7 @@ class userPostEnrollmentFormModel {
             throw new DatabaseException('Failed to insert guardian information',3214,$e);
         }
     }
-    private function psa_directory(string $filename, string $directory) :int { //F 3.2.15
-        try {
-            $sql = "INSERT INTO Psa_directory(filename, directory) 
-                            VALUES (:filename, :directory)";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':filename', $filename);
-            $stmt->bindParam(':directory', $directory);
-            if (!$stmt->execute()) {
-                throw new PDOException('Failed to execute psa directory insert');
-            } 
-            return (int)$this->conn->lastInsertId();
-        } 
-        catch (PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert PSA image directory', 3215, $e);
-        }
-    }   
+    
     private function insertParentToEnrolleeParents(int $enrolleeId,int $parentId,string $relationship) : bool{ //F 3.2.16
         try {
             $sql = "INSERT INTO enrollee_parents(Enrollee_Id, Parent_Id, Relationship) VALUES(:enrolleeId, :parentId, :relationship)";
@@ -189,15 +173,13 @@ class userPostEnrollmentFormModel {
     public function insert_enrollee(?int $userId,int $schoolYearStart,int $schoolYearEnd,int $hasLrn,int $enrollingGradeLevel,?int $lastGradeLevel,?int $lastYearAttended,
     string $lastSchoolAttended,int $schoolId,string $schoolAddress,string $schoolType,string $initialSchoolChoice,int $initialSchoolId,string $initialSchoolAddress,
     int $hasSpecialCondition,int $hasAssistiveTech, ?string $specialCondition, ?string $assistiveTech,
-    ?int $houseNumber,?string $subdName, string $brgyName,int $brgyCode,string $municipalityName,int $municipalityCode,string $provinceName,int $provinceCode, 
-    string $region,int $regionCode,
-    string $guardianFirstName,string $guardianLastName,?string $guardianMiddleName,string $guardianEducationalAttainment,
+    ?int $houseNumber,?string $subdName, string $brgyName,?string $brgyCode,string $municipalityName,?string $municipalityCode,string $provinceName,?string $provinceCode, 
+    string $region,?string $regionCode,
+    string $guardianFirstName,string $guardianLastName,?string $guardianMiddleName,string $guardianParentType,string $guardianEducationalAttainment,
     string $guardianCpNumber , $GIf_4Ps,
-    string $studentFirstName,string $studentLastName,?string $studentMiddleName,?string $studentSuffix,?int $lrn,string $birthDate, 
+    string $studentFirstName,string $studentLastName,?string $studentMiddleName,?string $studentSuffix,?int $lrn, string $birthDate, 
     int $age,string $sex,string $religion, 
-    string $nativeLanguage,int $isCultural,?string $culturalGroup,string $studentEmail,int $enrollmentStatus,string $filename,string $directory) : int { //F 3.3.4
-        //Initialize variable for parent types
-        $guardianParentType = 'Guardian';
+    string $nativeLanguage,int $isCultural,?string $culturalGroup,string $studentEmail,int $enrollmentStatus) : int { //F 3.3.4
         try{
             $this->conn->beginTransaction();
             $schoolYearId =  $this->getSchoolYearId();
@@ -217,15 +199,14 @@ class userPostEnrollmentFormModel {
             //REF: 3.2.14
             $guardianInformationId = $this->guardian_information($guardianFirstName, $guardianLastName, $guardianMiddleName, $guardianParentType, 
             $guardianEducationalAttainment, $guardianCpNumber, $GIf_4Ps);
-            //REF: 3.2.15
-            $psaDirectoryId = $this->psa_directory($filename, $directory);
+            
             // Insert enrollee - userId can be null for admin enrollment
-            $sql = "INSERT INTO enrollee (User_Id,Student_First_Name, Student_Middle_Name, Student_Last_Name, Student_Extension, Learner_Reference_Number, Psa_Number, Birth_Date, Age, Sex, Religion, 
+            $sql = "INSERT INTO enrollee (User_Id,Student_First_Name, Student_Middle_Name, Student_Last_Name, Student_Extension, Learner_Reference_Number, Birth_Date, Age, Sex, Religion, 
                             Native_Language, If_Cultural, Cultural_Group, Student_Email, Enrollment_Status, Enrollee_Address_Id,
-                            Educational_Information_Id, Educational_Background_Id, Disabled_Student_Id, Psa_Image_Id,  School_Year_Details_Id)
-                            VALUES (:User_Id,:Student_First_Name, :Student_Middle_Name, :Student_Last_Name, :Student_Extension, :Learner_Reference_Number, :Psa_Number, :Birth_Date, :Age, :Sex, :Religion, :Native_Language, 
+                            Educational_Information_Id, Educational_Background_Id, Disabled_Student_Id, School_Year_Details_Id)
+                            VALUES (:User_Id,:Student_First_Name, :Student_Middle_Name, :Student_Last_Name, :Student_Extension, :Learner_Reference_Number, :Birth_Date, :Age, :Sex, :Religion, :Native_Language, 
                             :If_Cultural, :Cultural_Group, :Student_Email, :Enrollment_Status, :Enrollee_Address_Id, :Educational_Information_Id, 
-                            :Educational_Background_Id, :Disabled_Student_Id, :Psa_Image_Id, :syId);";
+                            :Educational_Background_Id, :Disabled_Student_Id, :syId)";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':User_Id', $userId, $userId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
@@ -247,7 +228,6 @@ class userPostEnrollmentFormModel {
             $stmt->bindParam(':Educational_Information_Id', $educationalInformationId);
             $stmt->bindParam(':Educational_Background_Id', $educationalBackgroundId);
             $stmt->bindParam(':Disabled_Student_Id', $disabledStudentId);
-            $stmt->bindParam(':Psa_Image_Id', $psaDirectoryId);
             $stmt->bindParam(':syId',$schoolYearId);
             if (!$stmt->execute()) {
                 $this->conn->rollBack();
@@ -256,7 +236,7 @@ class userPostEnrollmentFormModel {
             // If the enrollee is successfully inserted, get the last inserted ID
             $enrolleeId = (int)$this->conn->lastInsertId();
             //REF:3.2.16
-            $insertGuardianToEnrolleeParents = $this->insertParentToEnrolleeParents($enrolleeId, $guardianInformationId,$guardianParentType);
+            $insertGuardianToEnrolleeParents = $this->insertParentToEnrolleeParents($enrolleeId, $guardianInformationId, $guardianParentType);
             if(!$insertGuardianToEnrolleeParents) {
                 $this->conn->rollBack();
                 throw new PDOException('Failed to insert guardian to enrollee parents');
@@ -292,6 +272,25 @@ class userPostEnrollmentFormModel {
         catch(PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
             throw new DatabaseException('Failed to check LRN',335,$e);
+        }
+    }
+    
+    public function updateReportCardId(int $enrolleeId, int $reportCardId): bool {
+        try {
+            $sql = "UPDATE enrollee SET Report_Card_Id = :reportCardId WHERE Enrollee_Id = :enrolleeId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':reportCardId', $reportCardId, PDO::PARAM_INT);
+            $stmt->bindParam(':enrolleeId', $enrolleeId, PDO::PARAM_INT);
+            
+            if (!$stmt->execute()) {
+                throw new PDOException('Failed to update report card ID');
+            }
+            
+            return $stmt->rowCount() > 0;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
+            throw new DatabaseException('Failed to update report card ID', 336, $e);
         }
     }
 }

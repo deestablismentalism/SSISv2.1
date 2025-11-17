@@ -18,9 +18,9 @@ class userEnrollmentFormController {
     public function apiPostAddEnrollee(?int $uId,int $schoolYStart,int $schoolYEnd,int $hasLRN, int $enrollGLevel,?int $lastGLevel,?int $lastYAttended, 
     string $lastSAttended,int $sId,string $sAddress,string $sType, string $initalSChoice, int $initialSId,string $initialSAddrress
     ,int $hasSpecialCondition,int $hasAssistiveTech,?string $specialCondition,?string $assistiveTech,
-    ?int $hNumber,?string $subdName,string $bName,int $bCode,string $mName,int $mCode,string $pName,int $pCode, string $rName, int $rCode,
-    string $gFName,string $gLName,?string $gMName,string $gEduAttainment,string $gCpNum, int $gIs4Ps,
-    string $stuFName,string $stuLName,?string $stuMName,?string $stuSuffix,?int $lrn,int $psaNum, string $birthDate,
+    ?int $hNumber,?string $subdName,?string $bName,?string $bCode,?string $mName,?string $mCode,?string $pName,?string $pCode,?string $rName,?string $rCode,
+    string $gFName,string $gLName,?string $gMName,string $gParentType,string $gEduAttainment,string $gCpNum, int $gIs4Ps,
+    string $stuFName,string $stuLName,?string $stuMName,?string $stuSuffix,?int $lrn, string $birthDate,
     int $age,string $sex,string $religion,string $natLang,int $isCultural,?string $culturalG, string $studentEmail, int $enrollStat,
     ?array $reportCardFront, ?array $reportCardBack) : array {
         try {
@@ -82,14 +82,6 @@ class userEnrollmentFormController {
                     'data'=> []
                 ];
             }
-            if(empty($fFName) || empty($fLName) || empty($mFName) || empty($mLName) || empty($gFName) || empty($gLName)) {
-                return [
-                    'httpcode'=> 400,
-                    'success'=> false,
-                    'message'=> 'Make sure all first names and last names in parent information are not empty. Check Again',
-                    'data'=> []
-                ];
-            }
             if(empty($stuFName) || empty($stuLName)) {
                 $isFirstName = empty($stuFName) ? 'first name' : 'last name';
                 return [
@@ -120,32 +112,22 @@ class userEnrollmentFormController {
             
             //===NORMALIZE NAMES===
             $normalize = fn($n)=>(new normalizeName($n))->validatedNormalize();
-            $fFname = $normalize($fFName); 
-            $fLName = $normalize($fLName);
-            $mFName = $normalize($mFName);
-            $mLName = $normalize($mLName);
             $gFName = $normalize($gFName);
             $gLName = $normalize($gLName);
             $stuFName = $normalize($stuFName);
             $stuLName = $normalize($stuLName);
             //===NORMALIZE MIDDLE NAMES IF NOT EMPTY===
-            $fMName = !empty($fMName) ? $normalize($fMName) : null;
-            $mMName = !empty($mMName) ? $normalize($mMName) : null;
             $gMName = !empty($gMName) ? $normalize($gMName) : null;
             $stuMName = !empty($stuMName) ? $normalize($stuMName) : null;
-            
-            // Create a placeholder PSA entry (for backward compatibility with existing DB structure)
-            $placeholderFilename = 'placeholder-' . time() . '.jpg';
-            $placeholderPath = '../../../ImageUploads/' . date('Y') . '/' . $placeholderFilename;
             
             //attempt enrollee insert - userId can be null for admin enrollment
             $enrolleeId = $this->postFormModel->insert_enrollee($uId, $schoolYStart,$schoolYEnd,$hasLRN,$enrollGLevel,$lastGLevel,$lastYAttended,
             $lastSAttended,$sId,$sAddress,$sType,$initalSChoice,$initialSId,$initialSAddrress,
             $hasSpecialCondition,$hasAssistiveTech,$specialCondition,$assistiveTech,
             $hNumber,$subdName,$bName,$bCode,$mName,$mCode,$pName,$pCode,$rName,$rCode,
-            $gFName,$gLName,$gMName,$gEduAttainment,$gCpNum,$gIs4Ps,
+            $gFName,$gLName,$gMName,$gParentType,$gEduAttainment,$gCpNum,$gIs4Ps,
             $stuFName,$stuLName,$stuMName,$stuSuffix,$lrn,$birthDate,$age,$sex,$religion,
-            $natLang,$isCultural,$culturalG,$studentEmail,$enrollStat,$filename,$filePath);
+            $natLang,$isCultural,$culturalG,$studentEmail,$enrollStat);
             if($enrolleeId > 0) {
                 // Process report card with OCR verification
                 require_once __DIR__ . '/../../admin/controllers/reportCardController.php';
@@ -154,7 +136,35 @@ class userEnrollmentFormController {
                 $studentFullName = trim($stuFName . ' ' . ($stuMName ? $stuMName . ' ' : '') . $stuLName);
                 $studentLrnStr = $lrn !== null ? str_pad((string)$lrn, 12, '0', STR_PAD_LEFT) : '000000000000';
                 
-                $reportCardResult = $reportCardController->processReportCardUpload($uId, $studentFullName, $studentLrnStr, $reportCardFront, $reportCardBack, $enrolleeId);
+                // Generate session ID for tracking
+                $sessionId = session_id();
+                
+                // Delete any previous validation-only submissions from this session
+                require_once __DIR__ . '/../../admin/models/reportCardModel.php';
+                $reportCardModel = new reportCardModel();
+                $reportCardModel->deleteValidationSubmissions($sessionId);
+                
+                // Process final report card submission (not validation_only)
+                $reportCardResult = $reportCardController->processReportCardUpload(
+                    $uId, 
+                    $studentFullName, 
+                    $studentLrnStr, 
+                    $reportCardFront, 
+                    $reportCardBack, 
+                    $enrolleeId,
+                    $sessionId,
+                    0  // validation_only = 0 (this is final submission)
+                );
+                
+                // Update Report_Card_Id in enrollee table if submission was created
+                if (isset($reportCardResult['data']['submission_id']) && $reportCardResult['data']['submission_id'] > 0) {
+                    $reportCardSubmissionId = (int)$reportCardResult['data']['submission_id'];
+                    $updateResult = $this->postFormModel->updateReportCardId($enrolleeId, $reportCardSubmissionId);
+                    
+                    if (!$updateResult) {
+                        error_log("[".date('Y-m-d H:i:s')."] Warning: Failed to update Report_Card_Id for Enrollee_Id: {$enrolleeId}\n", 3, __DIR__ . '/../../../errorLogs.txt');
+                    }
+                }
                 
                 // Even if OCR fails, enrollment is still created (just flagged for review)
                 return [

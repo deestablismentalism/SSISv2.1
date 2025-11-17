@@ -564,3 +564,33 @@ Stack trace:
 #1 /var/www/html/BackEnd/admin/views/adminEnrolleeInfo.php(80): TableCreator->returnVerticalTables(Array, Array, 'personal-info')
 #2 /var/www/html/BackEnd/templates/staff/fetchEnrolleeInfo.php(8): adminEnrolleeInfo->displayEnrolleePersonalInfo()
 #3 {main}
+[2025-11-16 18:49:02] TypeError: htmlspecialchars(): Argument #1 ($string) must be of type string, null given in /var/www/html/BackEnd/core/tableDataTemplate.php:11
+Stack trace:
+#0 /var/www/html/BackEnd/core/tableDataTemplate.php(11): htmlspecialchars(NULL)
+#1 /var/www/html/BackEnd/admin/views/adminEnrolleeInfo.php(80): TableCreator->returnVerticalTables(Array, Array, 'personal-info')
+#2 /var/www/html/BackEnd/templates/staff/fetchEnrolleeInfo.php(8): adminEnrolleeInfo->displayEnrolleePersonalInfo()
+#3 {main}
+[2025-11-16 18:49:50] TypeError: htmlspecialchars(): Argument #1 ($string) must be of type string, null given in /var/www/html/BackEnd/core/tableDataTemplate.php:11
+Stack trace:
+#0 /var/www/html/BackEnd/core/tableDataTemplate.php(11): htmlspecialchars(NULL)
+#1 /var/www/html/BackEnd/admin/views/adminEnrolleeInfo.php(80): TableCreator->returnVerticalTables(Array, Array, 'personal-info')
+#2 /var/www/html/BackEnd/templates/staff/fetchEnrolleeInfo.php(8): adminEnrolleeInfo->displayEnrolleePersonalInfo()
+#3 {main}
+[2025-11-16 18:52:33] ValueError: array_combine(): Argument #1 ($keys) and argument #2 ($values) must have the same number of elements in /var/www/html/BackEnd/core/tableDataTemplate.php:7
+Stack trace:
+#0 /var/www/html/BackEnd/core/tableDataTemplate.php(7): array_combine(Array, Array)
+#1 /var/www/html/BackEnd/admin/views/adminEnrolleeInfo.php(80): TableCreator->returnVerticalTables(Array, Array, 'personal-info')
+#2 /var/www/html/BackEnd/templates/staff/fetchEnrolleeInfo.php(8): adminEnrolleeInfo->displayEnrolleePersonalInfo()
+#3 {main}
+[2025-11-16 18:52:55] ValueError: array_combine(): Argument #1 ($keys) and argument #2 ($values) must have the same number of elements in /var/www/html/BackEnd/core/tableDataTemplate.php:7
+Stack trace:
+#0 /var/www/html/BackEnd/core/tableDataTemplate.php(7): array_combine(Array, Array)
+#1 /var/www/html/BackEnd/admin/views/adminEnrolleeInfo.php(80): TableCreator->returnVerticalTables(Array, Array, 'personal-info')
+#2 /var/www/html/BackEnd/templates/staff/fetchEnrolleeInfo.php(8): adminEnrolleeInfo->displayEnrolleePersonalInfo()
+#3 {main}
+[2025-11-16 18:54:57] ValueError: array_combine(): Argument #1 ($keys) and argument #2 ($values) must have the same number of elements in /var/www/html/BackEnd/core/tableDataTemplate.php:7
+Stack trace:
+#0 /var/www/html/BackEnd/core/tableDataTemplate.php(7): array_combine(Array, Array)
+#1 /var/www/html/BackEnd/admin/views/adminEnrolleeInfo.php(80): TableCreator->returnVerticalTables(Array, Array, 'personal-info')
+#2 /var/www/html/BackEnd/templates/staff/fetchEnrolleeInfo.php(8): adminEnrolleeInfo->displayEnrolleePersonalInfo()
+#3 {main}

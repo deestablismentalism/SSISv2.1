@@ -47,34 +47,35 @@ try {
     $Cultural_Group = $_POST['community'] ?? null;
     $Student_Email = $_POST['email'] ?? null;
     //  DISABILITY INFORMATION
-    $Have_Special_Condition = isset($_POST['sn']) ? (int)$_POST['sn'] : null;
+    $Have_Special_Condition = isset($_POST['sn']) ? (int)$_POST['sn'] : 0;
     $Special_Condition = $_POST['boolsn'] ?? null;
-    $Have_Assistive_Tech = isset($_POST['at']) ? (int)$_POST['at'] : null;
+    $Have_Assistive_Tech = isset($_POST['at']) ? (int)$_POST['at'] : 0;
     $Assistive_Tech = $_POST['atdevice'] ?? null;
     //  EROLLEE ADDRESS
     $House_Number = isset($_POST['house-number']) ? (int)$_POST['house-number'] : null;
     $Subd_Name = $_POST['subdivision'] ?? null;
     // Handle barangay - should be code (string) from dropdown or text from manual input
     $barangayValue = $_POST['barangay'] ?? null;
-    $Brgy_Code = (isset($barangayValue) && !empty($barangayValue)) ? $barangayValue : null;
-    $Brgy_Name = $_POST['barangay-name'] ?? null;
+    $Brgy_Code = (!empty($barangayValue) && $barangayValue !== 'Select a Barangay first') ? (string)$barangayValue : null;
+    $Brgy_Name = $_POST['barangay-name'] ?? $_POST['barangay'] ?? null;
     // Handle city/municipality - could be code (string) from dropdown or text from manual input
     $cityValue = $_POST['city-municipality'] ?? null;
-    $Municipality_Code = (isset($cityValue) && !empty($cityValue)) ? $cityValue : null;
-    $Municipality_Name = $_POST['city-municipality-name'] ?? null;
+    $Municipality_Code = (!empty($cityValue) && $cityValue !== 'Select a City/Municipality first' && !preg_match('/^Select/', $cityValue)) ? (string)$cityValue : null;
+    $Municipality_Name = $_POST['city-municipality-name'] ?? $_POST['city-municipality'] ?? null;
     //HANDLE Province
     $provinceValue = $_POST['province'] ?? null;
-    $Province_Code = (isset($provinceValue) && !empty($provinceValue)) ? $provinceValue : null;
-    $Province_Name = $_POST['province-name'] ?? null;
+    $Province_Code = (!empty($provinceValue) && $provinceValue !== 'Select a Province first' && !preg_match('/^Select/', $provinceValue)) ? (string)$provinceValue : null;
+    $Province_Name = $_POST['province-name'] ?? $_POST['province'] ?? null;
     //HANDLE Region
     $regionValue = $_POST['region'] ?? null;
-    $Region_Code = (isset($regionValue) && !empty($regionValue)) ? $regionValue : null;
-    $Region = $_POST['region-name'] ?? null;
+    $Region_Code = (!empty($regionValue) && !preg_match('/^Select/', $regionValue)) ? (string)$regionValue : null;
+    $Region = $_POST['region-name'] ?? $_POST['region'] ?? null;
     // ENROLLEE PARENTS INFORMATION
     //GUARDIAN
     $Guardian_First_Name = $_POST['Guardian-First-Name'] ?? null;
     $Guardian_Last_Name = $_POST['Guardian-Last-Name'] ?? null;
     $Guardian_Middle_Name = $_POST['Guardian-Middle-Name'] ?? null;
+    $Guardian_Parent_Type = $_POST['G-Relationship'] ?? 'Guardian';
     $Guardian_Educational_Attainment = $_POST['G-highest-education'] ?? null;
     $Guardian_Contact_Number = $_POST['G-Number'] ?? null;
     $GIf_4Ps = isset($_POST['fourPS']) ? ($_POST['fourPS'] === 'yes' ? 1 : 0) : null;
@@ -83,15 +84,37 @@ try {
     //REPORT CARD IMAGES (FRONT AND BACK)
     $reportCardFront = $_FILES['report-card-front'] ?? null;
     $reportCardBack = $_FILES['report-card-back'] ?? null;
+    
+    // Get session ID to check for existing validation
+    $sessionId = session_id();
+    
+    // Check if report card was pre-validated in this session
+    require_once __DIR__ . '/../../admin/models/reportCardModel.php';
+    $reportCardModel = new reportCardModel();
+    $existingValidation = $reportCardModel->getSubmissionBySessionId($sessionId);
+    
+    // If validation exists and status is 'rejected', prevent enrollment
+    if ($existingValidation && $existingValidation['status'] === 'rejected') {
+        http_response_code(400);
+        echo json_encode([
+            'success' => false, 
+            'message' => 'Report card was rejected. Please resubmit valid images.',
+            'data' => [
+                'flag_reason' => $existingValidation['flag_reason'] ?? 'Report card images do not meet requirements'
+            ]
+        ]);
+        exit();
+    }
+    
     // Insert the values into the database
     $response = $controller->apiPostAddEnrollee(
         $userId, $School_Year_Start, $School_Year_End, $hasLRN, $Enrolling_Grade_Level, $Last_Grade_Level, $Last_Year_Attended,
         $Last_School_Attended, $School_Id, $School_Address, $School_Type, $Initial_School_Choice, $Initial_School_Id, $Initial_School_Address,
         $Have_Special_Condition, $Have_Assistive_Tech, $Special_Condition, $Assistive_Tech,
         $House_Number, $Subd_Name, $Brgy_Name, $Brgy_Code, $Municipality_Name, $Municipality_Code, $Province_Name, $Province_Code, $Region, $Region_Code,
-        $Guardian_First_Name, $Guardian_Last_Name, $Guardian_Middle_Name, $Guardian_Educational_Attainment, $Guardian_Contact_Number, $GIf_4Ps,
+        $Guardian_First_Name, $Guardian_Last_Name, $Guardian_Middle_Name, $Guardian_Parent_Type, $Guardian_Educational_Attainment, $Guardian_Contact_Number, $GIf_4Ps,
         $Student_First_Name,$Student_Last_Name,$Student_Middle_Name,$Student_Extension, $Learner_Reference_Number,$Birth_Date, $Age, $Sex, $Religion,
-        $Native_Language, $If_Cultural, $Cultural_Group, $Student_Email, $Enrollment_Status, $image);
+        $Native_Language, $If_Cultural, $Cultural_Group, $Student_Email, $Enrollment_Status, $reportCardFront, $reportCardBack);
     //SET CONTROLLER HTTP RESPONSE CODE
     http_response_code($response['httpcode']);
     echo json_encode($response);

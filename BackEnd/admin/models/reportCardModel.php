@@ -11,19 +11,23 @@ class reportCardModel {
         $this->conn = $db->getConnection();
     }
     
-    public function insertSubmission(string $studentName, string $studentLrn, string $reportCardFrontPath, ?string $reportCardBackPath, ?string $ocrJson, string $status, ?int $enrolleeId = null, ?string $flagReason = null): int {
+    public function insertSubmission(string $studentName, string $studentLrn, string $reportCardFrontPath, ?string $reportCardBackPath, ?string $ocrJson, string $status, ?int $enrolleeId = null, ?string $flagReason = null, ?int $userId = null, ?string $sessionId = null, int $validationOnly = 0, ?string $formDataJson = null): int {
         try {
-            $sql = "INSERT INTO report_card_submissions (student_name, student_lrn, report_card_front_path, report_card_back_path, ocr_json, status, flag_reason, enrollee_id) 
-                    VALUES (:student_name, :student_lrn, :report_card_front_path, :report_card_back_path, :ocr_json, :status, :flag_reason, :enrollee_id)";
+            $sql = "INSERT INTO report_card_submissions (student_name, student_lrn, user_id, session_id, report_card_front_path, report_card_back_path, ocr_json, form_data_json, status, flag_reason, enrollee_id, validation_only) 
+                    VALUES (:student_name, :student_lrn, :user_id, :session_id, :report_card_front_path, :report_card_back_path, :ocr_json, :form_data_json, :status, :flag_reason, :enrollee_id, :validation_only)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':student_name', $studentName);
             $stmt->bindParam(':student_lrn', $studentLrn);
+            $stmt->bindParam(':user_id', $userId, $userId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
+            $stmt->bindParam(':session_id', $sessionId);
             $stmt->bindParam(':report_card_front_path', $reportCardFrontPath);
             $stmt->bindParam(':report_card_back_path', $reportCardBackPath);
             $stmt->bindParam(':ocr_json', $ocrJson);
+            $stmt->bindParam(':form_data_json', $formDataJson);
             $stmt->bindParam(':status', $status);
             $stmt->bindParam(':flag_reason', $flagReason);
             $stmt->bindParam(':enrollee_id', $enrolleeId, $enrolleeId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
+            $stmt->bindParam(':validation_only', $validationOnly, PDO::PARAM_INT);
             
             if (!$stmt->execute()) {
                 throw new PDOException('Failed to insert report card submission');
@@ -113,7 +117,7 @@ class reportCardModel {
     
     public function getFlaggedSubmissions(): array {
         try {
-            $sql = "SELECT * FROM report_card_submissions WHERE status = 'flagged_for_review' OR status = 'pending_review' ORDER BY created_at DESC";
+            $sql = "SELECT * FROM report_card_submissions WHERE (status = 'flagged_for_review' OR status = 'pending_review') AND validation_only = 0 ORDER BY created_at DESC";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -123,5 +127,49 @@ class reportCardModel {
             throw new DatabaseException('Failed to fetch flagged submissions', 0, $e);
         }
     }
+    
+    public function getSubmissionBySessionId(string $sessionId): ?array {
+        try {
+            $sql = "SELECT * FROM report_card_submissions WHERE session_id = :session_id ORDER BY created_at DESC LIMIT 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':session_id', $sessionId);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ?: null;
+        }
+        catch (PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch submission by session', 0, $e);
+        }
+    }
+    
+    public function getSubmissionByEnrolleeId(int $enrolleeId): ?array {
+        try {
+            $sql = "SELECT * FROM report_card_submissions WHERE enrollee_id = :enrollee_id AND validation_only = 0 ORDER BY created_at DESC LIMIT 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':enrollee_id', $enrolleeId, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ?: null;
+        }
+        catch (PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch submission by enrollee', 0, $e);
+        }
+    }
+    
+    public function deleteValidationSubmissions(string $sessionId): bool {
+        try {
+            $sql = "DELETE FROM report_card_submissions WHERE session_id = :session_id AND validation_only = 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':session_id', $sessionId);
+            return $stmt->execute();
+        }
+        catch (PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
+            throw new DatabaseException('Failed to delete validation submissions', 0, $e);
+        }
+    }
 }
+
 

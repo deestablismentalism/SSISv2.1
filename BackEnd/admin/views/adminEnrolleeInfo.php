@@ -13,7 +13,7 @@ class adminEnrolleeInfo {
     protected $parentInfo;
     protected $disability;
     protected $address;
-    protected $psaDIR;
+    protected $reportCardData;
     //GLOBAL ERROR FLAG
     protected $isGlobalError = false;
     protected $globalError = '';
@@ -37,7 +37,7 @@ class adminEnrolleeInfo {
             $this->parentInfo = $response['parent_info'];
             $this->address = $response['address'];
             $this->disability = $response['disability_info'];
-            $this->psaDIR = $response['psa_dir'];
+            $this->reportCardData = $response['report_card'];
         }
         catch(IdNotFoundException $e) {
             $this->isGlobalError = true;
@@ -73,14 +73,14 @@ class adminEnrolleeInfo {
             $suffix = !empty($rows['Student_Extension']) ? $rows['Student_Extension'] : '';
             $lrn = !is_null($rows['Learner_Reference_Number']) ? $rows['Learner_Reference_Number']:"No LRN"  ; 
             $sex = !empty($rows['Sex']) ? $rows['Sex'] : 'No Biological sex provided';
-            $completeAddress = $address['House_Number'] .' ' .$address['Subd_Name']
-                    . '. ' .$address['Brgy_Name']. ', ' .$address['Municipality_Name'] . ', '
-                    . $address['Province_Name'] . ' ' . $address['Region'];
+            $completeAddress = ($address['House_Number'] ?? '') . ' ' . ($address['Subd_Name'] ?? '')
+                    . '. ' . ($address['Brgy_Name'] ?? '') . ', ' . ($address['Municipality_Name'] ?? '') . ', '
+                    . ($address['Province_Name'] ?? '') . ' ' . ($address['Region'] ?? '');
             echo '<table class="modal-table"></tbody>';
             echo $this->tableTemplate->returnVerticalTables(
-                ['Numero ng Sertipiko ng Kapanganakan','Learner Reference Number','Apelyido','Pangalan','Panggitna','Suffix','Petsa ng Kapanganakan',
+                ['Learner Reference Number','Apelyido','Pangalan','Panggitna','Suffix','Petsa ng Kapanganakan',
                 'Edad','Kasarian', 'Kabilang sa katutubong grupo','Kinagisnang wika','Relihiyon','Email Address', 'Buong Address'],
-                [$rows['Psa_Number'], $lrn,$rows['Student_Last_Name'],$rows['Student_First_Name'],$middleName, $suffix,$rows['Birth_Date'],
+                [$lrn,$rows['Student_Last_Name'],$rows['Student_First_Name'],$middleName, $suffix,$rows['Birth_Date'],
                 $rows['Age'], $sex, $culutralGroup,$rows['Native_Language'],$rows['Religion'],$rows['Student_Email'],$completeAddress],
                 'personal-info'
             ); 
@@ -212,23 +212,54 @@ class adminEnrolleeInfo {
             echo '<div class="error-message"> There was a syntax problem. Please wait for this to be fixed </div>';
         }
     }
-    public function displayPsaImg() {
+    public function displayReportCard() {
         try{
             if($this->isGlobalError) {
                 return;
             }
-            $data = $this->psaDIR;
+            $data = $this->reportCardData;
             if(!$data['success']) {
                 echo '<div class="error-message">'.$data['message'].'</div>';
                 return;
             }
             if($data['success'] && empty($data['data'])) {
-                echo '<div class="error-message">'.$data['message'].'</div>';
+                echo '<div class="info-message">No report card submission found for this enrollee.</div>';
                 return;
             }
-            $imgDIR = !is_null($data['data']) ? '<img src="'.htmlspecialchars($data['data']).'" alt="PSA IMAGE">' : 'NO PSA IMAGE FOUND!';
-
-            echo '<div class="img-container">'.$imgDIR.'</div>';
+            
+            $submission = $data['data'];
+            $frontPath = !empty($submission['report_card_front_path']) ? htmlspecialchars($submission['report_card_front_path']) : null;
+            $backPath = !empty($submission['report_card_back_path']) ? htmlspecialchars($submission['report_card_back_path']) : null;
+            
+            if($frontPath) {
+                $frontPath = '../../../' . $frontPath;
+            }
+            if($backPath) {
+                $backPath = '../../../' . $backPath;
+            }
+            
+            $status = htmlspecialchars($submission['status'] ?? 'unknown');
+            $statusLabel = match($status) {
+                'approved' => '<span style="color: green;">✓ Approved</span>',
+                'flagged_for_review' => '<span style="color: orange;">⚠ Flagged for Review</span>',
+                'pending_review' => '<span style="color: blue;">⏳ Pending Review</span>',
+                'rejected' => '<span style="color: red;">✗ Rejected</span>',
+                default => '<span style="color: gray;">Unknown</span>'
+            };
+            
+            echo '<div class="report-card-container">';
+            echo '<p><strong>Status:</strong> ' . $statusLabel . '</p>';
+            if(!empty($submission['flag_reason'])) {
+                echo '<p><strong>Flag Reason:</strong> ' . htmlspecialchars($submission['flag_reason']) . '</p>';
+            }
+            echo '<div class="img-container">';
+            if($frontPath) {
+                echo '<div><p><strong>Front:</strong></p><img src="'.$frontPath.'" alt="Report Card Front" style="max-width: 100%; height: auto;"></div>';
+            }
+            if($backPath) {
+                echo '<div><p><strong>Back:</strong></p><img src="'.$backPath.'" alt="Report Card Back" style="max-width: 100%; height: auto;"></div>';
+            }
+            echo '</div></div>';
         }
         catch(Throwable $t) {
             error_log("[".date('Y-m-d H:i:s')."] " . $t . "\n",3, __DIR__ . '/../../errorLogs.txt');

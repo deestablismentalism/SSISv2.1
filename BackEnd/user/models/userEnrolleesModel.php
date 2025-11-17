@@ -72,7 +72,7 @@ class userEnrolleesModel {
                 INNER JOIN educational_background AS eb ON e.Educational_Background_Id = eb.Educational_Background_Id
                 INNER JOIN enrollee_address AS ea ON e.Enrollee_Address_Id = ea.Enrollee_Address_Id
                 INNER JOIN disabled_student AS ds ON e.Disabled_Student_Id = ds.Disabled_Student_Id
-                INNER JOIN Psa_directory AS pd ON e.Psa_Image_Id = pd.Psa_Image_Id 
+                LEFT JOIN Psa_directory AS pd ON e.Psa_Image_Id = pd.Psa_Image_Id 
                 WHERE e.Enrollee_Id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(':id', $enrolleeId,PDO::PARAM_INT);
@@ -113,10 +113,10 @@ class userEnrolleesModel {
     public function getPsaImg(int $enrolleeId) : ?string { //F 3.1.5
         try {
             $sql = " SELECT psa_directory.directory FROM enrollee 
-                INNER JOIN psa_directory ON enrollee.Psa_Image_Id = Psa_directory.Psa_Image_Id
+                LEFT JOIN psa_directory ON enrollee.Psa_Image_Id = Psa_directory.Psa_Image_Id
                 WHERE Enrollee_Id = :id";
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute(['id' => $id]);
+            $stmt->execute(['id' => $enrolleeId]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
             return isset($result['directory']) ? (string)$result['directory'] : null;
@@ -286,7 +286,7 @@ class userEnrolleesModel {
         try {
             $sql = "SELECT pd.filename, pd.directory 
                     FROM enrollee e
-                    JOIN Psa_directory pd ON e.Psa_Image_Id = pd.Psa_Image_Id
+                    LEFT JOIN Psa_directory pd ON e.Psa_Image_Id = pd.Psa_Image_Id
                     WHERE e.Enrollee_Id = :enrolleeId";
             
             $stmt = $this->conn->prepare($sql);
