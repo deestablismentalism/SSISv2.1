@@ -33,11 +33,12 @@ class staffEnrollmentController {
                     'data'=> []
                 ];
             }
-            if(!in_array($status, [1,2,4])) {
+            // Updated: Only accept status 1 (enroll) or 5 (request resubmission)
+            if(!in_array($status, [1, 5])) {
                 return [
                     'httpcode'=> 400,
                     'success'=> false,
-                    'message'=> 'Invalid enrollment status provided',
+                    'message'=> 'Invalid enrollment action provided',
                     'data'=> []
                 ];
             }
@@ -53,20 +54,15 @@ class staffEnrollmentController {
             $transactionCode = $this->generateTransactionCode($status);
             $remarks = $remarks ?? '';
 
-            // NEW WORKFLOW: Teacher directly finalizes enrollment
+            // NEW WORKFLOW: Teacher has 2 options only
             if($status === 1) {
                 // ENROLL: Direct path to student table
                 $result = $this->processEnrollment($enrolleeId, $transactionCode, $staffId, $remarks);
                 return $result;
             }
-            else if($status === 2) {
-                // DENY: Mark as denied
-                $result = $this->processDenial($enrolleeId, $transactionCode, $staffId, $remarks);
-                return $result;
-            }
-            else if($status === 4) {
-                // FOLLOW-UP: Flag for additional review
-                $result = $this->processFollowUp($enrolleeId, $transactionCode, $staffId, $remarks);
+            else if($status === 5) {
+                // REQUEST RESUBMISSION: Flag for user to edit and resubmit
+                $result = $this->processResubmissionRequest($enrolleeId, $transactionCode, $staffId, $remarks);
                 return $result;
             }
             else {
@@ -101,10 +97,9 @@ class staffEnrollmentController {
     //HELPERS
     private function generateTransactionCode(int $status): string {
         $statusCode = [
-            1 => 'E',
-            2 => 'D',
-            4 => 'F'
-        ][$status];
+            1 => 'E',  // Enroll
+            5 => 'R'   // Resubmission Request
+        ][$status] ?? 'U'; // Unknown fallback
         
         $rand = '';
         for($i = 0; $i < 8; $i++) {
@@ -184,92 +179,39 @@ class staffEnrollmentController {
         }
     }
 
-    private function processDenial(int $enrolleeId, string $transactionCode, int $staffId, string $remarks): array {
+    private function processResubmissionRequest(int $enrolleeId, string $transactionCode, int $staffId, string $remarks): array {
         try {
-            // 1. Update enrollee status to denied
-            if(!$this->adminEnrolleeModel->updateEnrollee($enrolleeId, 2)) {
-                return [
-                    'httpcode'=> 500,
-                    'success'=> false,
-                    'message'=> 'Failed to update enrollee status to denied'
-                ];
-            }
-
-            // 2. Set Is_Handled flag
-            if(!$this->adminEnrolleeModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE)) {
-                return [
-                    'httpcode'=> 500,
-                    'success'=> false,
-                    'message'=> 'Failed to set handled status'
-                ];
-            }
-
-            // 3. Insert transaction record with Is_Approved=1 (finalized)
-            if(!$this->transactionsModel->insertEnrolleeTransaction($enrolleeId, $transactionCode, 2, $staffId, $remarks, self::BOOL_TRUE)) {
-                return [
-                    'httpcode'=> 500,
-                    'success'=> false,
-                    'message'=> 'Failed to create transaction record'
-                ];
-            }
-
-            // 4. Send SMS notification
-            $smsResult = $this->sendEnrollmentStatusSMS($enrolleeId, 'Denied');
-
-            return [
-                'httpcode'=> 200,
-                'success'=> true,
-                'message'=> 'Enrollment denied. ' . $smsResult,
-                'data'=> []
-            ];
-        }
-        catch(Exception $e) {
-            error_log("[".date('Y-m-d H:i:s')."] Denial Error: ".$e->getMessage()."\n", 3, __DIR__ . '/../../errorLogs.txt');
-            throw $e;
-        }
-    }
-
-    private function processFollowUp(int $enrolleeId, string $transactionCode, int $staffId, string $remarks): array {
-        try {
-            // 1. Update enrollee status to follow-up
+            // 1. Set enrollee to Follow-up status (4) to remove from pending queue
+            // Enrollee will return to pending (3) when parent resubmits
             if(!$this->adminEnrolleeModel->updateEnrollee($enrolleeId, 4)) {
                 return [
                     'httpcode'=> 500,
                     'success'=> false,
-                    'message'=> 'Failed to update enrollee status to follow-up'
+                    'message'=> 'Failed to update enrollee status'
                 ];
             }
-
-            // 2. Set Is_Handled flag
-            if(!$this->adminEnrolleeModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE)) {
+            
+            // 2. Insert transaction with Transaction_Status=1 (allow resubmit), Is_Approved=0
+            if(!$this->transactionsModel->insertEnrolleeTransactionWithStatus($enrolleeId, $transactionCode, 3, $staffId, $remarks, self::BOOL_FALSE, 1)) {
                 return [
                     'httpcode'=> 500,
                     'success'=> false,
-                    'message'=> 'Failed to set handled status'
+                    'message'=> 'Failed to create resubmission transaction'
                 ];
             }
 
-            // 3. Insert transaction record with Is_Approved=0 (requires follow-up)
-            if(!$this->transactionsModel->insertEnrolleeTransaction($enrolleeId, $transactionCode, 4, $staffId, $remarks, self::BOOL_FALSE)) {
-                return [
-                    'httpcode'=> 500,
-                    'success'=> false,
-                    'message'=> 'Failed to create transaction record'
-                ];
-            }
-
-            // 4. Send SMS notification
-            $smsResult = $this->sendEnrollmentStatusSMS($enrolleeId, 'Follow-Up');
+            // 3. Send SMS notification
+            $smsResult = $this->sendResubmissionRequestSMS($enrolleeId, $remarks);
 
             return [
                 'httpcode'=> 200,
                 'success'=> true,
-                'message'=> 'Enrollment flagged for follow-up. ' . $smsResult,
+                'message'=> 'Resubmission requested. User can now edit their enrollment form. ' . $smsResult,
                 'data'=> []
             ];
         }
         catch(Exception $e) {
-            error_log("[".date('Y-m-d H:i:s')."] Follow-up Error: ".$e->getMessage()."\n", 3, __DIR__ . '/../../errorLogs.txt');
+            error_log("[".date('Y-m-d H:i:s')."] Resubmission Error: ".$e->getMessage()."\n", 3, __DIR__ . '/../../errorLogs.txt');
             throw $e;
         }
     }
@@ -278,6 +220,21 @@ class staffEnrollmentController {
         try {
             $smsData = $this->adminEnrolleeModel->getEnrolleeDetailsForSMS($enrolleeId);
             $smsData['Enrollment_Status'] = $enrollmentStatus;
+            $this->smsService->sendEnrollmentStatus($smsData);
+            return "SMS sent successfully.";
+        }
+        catch(Exception $e) {
+            error_log("[".date('Y-m-d H:i:s')."] SMS Error: ".$e->getMessage()."\n", 3, __DIR__ . '/../../errorLogs.txt');
+            return "SMS failed to send: " . $e->getMessage();
+        }
+    }
+
+    private function sendResubmissionRequestSMS(int $enrolleeId, string $remarks): string {
+        try {
+            $smsData = $this->adminEnrolleeModel->getEnrolleeDetailsForSMS($enrolleeId);
+            $smsData['Enrollment_Status'] = 'Resubmission';
+            $smsData['Remarks'] = $remarks;
+            // Note: Ensure SendEnrollmentStatus class handles 'Resubmission' status
             $this->smsService->sendEnrollmentStatus($smsData);
             return "SMS sent successfully.";
         }

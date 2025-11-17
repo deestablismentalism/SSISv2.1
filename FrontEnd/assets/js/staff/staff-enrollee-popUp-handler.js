@@ -21,8 +21,7 @@ document.addEventListener('DOMContentLoaded',async function (){
             modalContent.innerHTML += result.data;
             modalContent.innerHTML += `
             <button class="accept-btn" data-action="accept" data-id="${enrolleeId}">✓ Enroll Student</button>
-            <button class="reject-btn" data-action="deny" data-id="${enrolleeId}">✗ Deny Enrollment</button>
-            <button class="toFollow-btn" data-action="toFollow" data-id="${enrolleeId}">⚠ Flag for Follow-up</button>
+            <button class="resubmit-btn" data-action="resubmit" data-id="${enrolleeId}">↻ Request Resubmission</button>
             `;
             initialModalContent = modalContent.innerHTML;
             close(modal);
@@ -30,22 +29,22 @@ document.addEventListener('DOMContentLoaded',async function (){
     })
     //DELEGATED MODAL CLICK LISTENER
     modalContent.addEventListener('click', async function(e){
-        if (e.target.matches('.toFollow-btn, .reject-btn, .accept-btn')) {
+        if (e.target.matches('.resubmit-btn, .accept-btn')) {
             const enrolleeId = e.target.getAttribute('data-id');
             const action = e.target.getAttribute('data-action');
             let status = {
-                "toFollow" : 4,
-                "deny" : 2,
-                "accept" :1
+                "resubmit" : 5,
+                "accept" : 1
             }[action];
+            
             modalContent.innerHTML = modalHeader(true);
             modalContent.innerHTML += `
                 <form id="enrollment-action-form">
                     <input type="hidden" name="id" value="${enrolleeId}">
                     <input type="hidden" name="status" value="${status}">
-                    <p>State Remarks ${status === 1 ? '(Optional)' : ''}</p>
+                    <p>State Remarks ${status === 1 ? '(Optional)' : '(Required - explain what needs correction)'}</p>
                     <textarea id="description" class="description-box" name="remarks" rows="6" cols="40" 
-                        placeholder="${status === 1 ? 'Optional: Add notes about this enrollment...' : 'Explain reason for this action...'}" 
+                        placeholder="${status === 1 ? 'Optional: Add notes about this enrollment...' : 'Explain what the parent needs to fix or update...'}" 
                         ${status !== 1 ? 'required' : ''}></textarea><br>
                     <button type="submit">Submit</button>
                 </form>

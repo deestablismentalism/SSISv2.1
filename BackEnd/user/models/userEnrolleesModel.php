@@ -304,12 +304,22 @@ class userEnrolleesModel {
     public function setResubmitStatus(int $enrolleeId) : bool { //F 3.2.1
         $result = true;
         try {
+            // Update transaction status to 3 (Resubmitted)
             $sql = "UPDATE enrollment_transactions SET Transaction_Status = 3 WHERE Enrollee_ID = :enrolleeId";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(':enrolleeId', $enrolleeId, PDO::PARAM_INT);
             if(!$stmt->execute()) {
                 $result = false;
             }
+            
+            // Reset enrollee back to Pending status (3) so it returns to teacher's queue
+            $sql2 = "UPDATE enrollee SET Enrollment_Status = 3 WHERE Enrollee_ID = :enrolleeId";
+            $stmt2 = $this->conn->prepare($sql2);
+            $stmt2->bindValue(':enrolleeId', $enrolleeId, PDO::PARAM_INT);
+            if(!$stmt2->execute()) {
+                $result = false;
+            }
+            
             return $result;
             }
         catch (PDOException $e) {

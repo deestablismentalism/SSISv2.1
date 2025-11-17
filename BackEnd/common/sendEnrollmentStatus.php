@@ -29,6 +29,7 @@ class SendEnrollmentStatus {
         $Middle_Name = $data['Middle_Name'];
         $Enrollee_Name = $data['Enrollee_Name'];
         $Enrollment_Status = $data['Enrollment_Status'];
+        $Remarks = $data['Remarks'] ?? '';
         
         switch ($Enrollment_Status) {
             case 'Enrolled':
@@ -36,6 +37,15 @@ class SendEnrollmentStatus {
                     "message" => "Hello $Last_Name, $First_Name $Middle_Name! Your child, $Enrollee_Name, is successfully enrolled! For further announcements, please log on to your account or contact the school.",
                     "phoneNumbers" => ["+$Cleaned_Contact_Number"],
                     "simNumber" => 2,
+                    "senderId" => $senderId
+                ];
+                break;
+            case 'Resubmission':
+                $remarksText = !empty($Remarks) ? " Reason: $Remarks" : "";
+                $data = [
+                    "message" => "Hello $Last_Name, $First_Name $Middle_Name! Your child, $Enrollee_Name's, enrollment requires corrections.$remarksText Please log on to your account to edit and resubmit the enrollment form.",
+                    "phoneNumbers" => ["+$Cleaned_Contact_Number"],
+                    "simNumber" => 1,
                     "senderId" => $senderId
                 ];
                 break;
