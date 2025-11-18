@@ -432,14 +432,14 @@ $view = new getGradeLevels();
                         <div class="error-msg">
                             <span class="em-subdivision"></span>
                         </div>
-                        <p class="dfont">Subdivision/ baryo/ purok/ sitio <span class="required">*</span></p>
+                        <p class="dfont">Subdivision/ baryo/ purok/ sitio</p>
                         <input type="text" name="subdivision" id="subdivision" class="textbox" placeholder="Talipan">
                     </div>
                     <div class="house-number">
                         <div class="error-msg">
                             <span class="em-house-number"></span>
                         </div>
-                        <p class="dfont">Numero ng Bahay at kalye <span class="required">*</span></p>
+                        <p class="dfont">Numero ng Bahay at kalye</p>
                         <input type="text" name="house-number" id="house-number" class="textbox" placeholder="32">
                     </div>
                 </div>

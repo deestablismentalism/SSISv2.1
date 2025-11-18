@@ -594,3 +594,6 @@ Stack trace:
 #1 /var/www/html/BackEnd/admin/views/adminEnrolleeInfo.php(80): TableCreator->returnVerticalTables(Array, Array, 'personal-info')
 #2 /var/www/html/BackEnd/templates/staff/fetchEnrolleeInfo.php(8): adminEnrolleeInfo->displayEnrolleePersonalInfo()
 #3 {main}
+[2025-11-18 06:28:12]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
+[2025-11-18 06:28:23]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
+[2025-11-18 06:29:06]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous

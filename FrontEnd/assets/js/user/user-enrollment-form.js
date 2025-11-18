@@ -608,15 +608,21 @@ document.addEventListener('DOMContentLoaded',function(){
     // === ADDRESS VALIDATION ===
     function validateAddressInfo() {
         let isValid = true;
-        const addressFields = [
+        // Required address fields
+        const requiredAddressFields = [
             { element: regions, error: "em-region", label: "Region" },
             { element: provinces, error: "em-province", label: "Province" },
             { element: cityOrMunicipality, error: "em-city", label: "City/Municipality" },
-            { element: barangay, error: "em-barangay", label: "Barangay" },
-            { element: subdivsion, error: "em-subdivision", label: "Subdivision/Street" },
-            { element: houseNumber, error: "em-house-number", label: "House Number" }
+            { element: barangay, error: "em-barangay", label: "Barangay" }
         ];
-        addressFields.forEach(({ element, error, label }) => {
+        // Optional address fields (subdivision, house number)
+        const optionalAddressFields = [
+            { element: subdivsion, error: "em-subdivision" },
+            { element: houseNumber, error: "em-house-number" }
+        ];
+        
+        // Validate required fields
+        requiredAddressFields.forEach(({ element, error, label }) => {
             if (!element) return;
             if (element.tagName === "SELECT") {
                 if (!element.value) {
@@ -633,14 +639,27 @@ document.addEventListener('DOMContentLoaded',function(){
                 } else {
                     ValidationUtils.clearError(error, element);
                 }
-                if (element === houseNumber && !ValidationUtils.isEmpty(element)) {
-                    if (isNaN(element.value)) {
-                        ValidationUtils.errorMessages(error, ValidationUtils.notNumber, element);
-                        isValid = false;
-                    }
-                }
             }
         });
+        
+        // Validate optional fields (only if filled)
+        optionalAddressFields.forEach(({ element, error }) => {
+            if (!element) return;
+            // Clear any existing errors for optional fields
+            if (!ValidationUtils.isEmpty(element)) {
+                // If house number is filled, validate it's numeric
+                if (element === houseNumber && isNaN(element.value)) {
+                    ValidationUtils.errorMessages(error, ValidationUtils.notNumber, element);
+                    isValid = false;
+                } else {
+                    ValidationUtils.clearError(error, element);
+                }
+            } else {
+                // Clear errors for empty optional fields
+                ValidationUtils.clearError(error, element);
+            }
+        });
+        
         ValidationUtils.validationState.addressInfo = isValid;
         return isValid;
     }
@@ -668,16 +687,24 @@ document.addEventListener('DOMContentLoaded',function(){
     }
     function validateParentInfo() {
         let isValid = true;
-        const allInfo = [
+        // Required parent info fields (middle name is optional)
+        const requiredInfo = [
             {element: guardianLname, error: "em-guardian-last-name"},
-            {element: guardianFname, error: "em-guardian-first-name"},
-            {element: guardianMname, error: "em-guardian-middle-name"}
+            {element: guardianFname, error: "em-guardian-first-name"}
         ];
-        allInfo.forEach(({element, error}) => {
+        requiredInfo.forEach(({element, error}) => {
             if (!ValidationUtils.validateEmpty(element, error)) {
                 isValid = false;
             }
         });
+        
+        // Optional field - Guardian Middle Name (clear error if empty)
+        if (guardianMname) {
+            if (ValidationUtils.isEmpty(guardianMname)) {
+                ValidationUtils.clearError("em-guardian-middle-name", guardianMname);
+            }
+        }
+        
         const phoneInfo = [ 
             {element: guardianCPnum, error: "em-g-number"}
         ];
