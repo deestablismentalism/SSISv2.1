@@ -54,7 +54,7 @@ class teacherDashboardView {
             <a href="./teacher_advisory.php?adv_id=<?php echo htmlspecialchars((string)$stats['advisory_section_id']); ?>" class="stat-card">
                 <div class="stat-card-content">
                     <h2 class="stat-title">Advisory Class</h2>
-                    <span class="stat-value">Active</span>
+                    <span class="stat-value">Kinder II - Maria</span>
                 </div>
                 <img src="../../assets/imgs/door-open.png" alt="Advisory" class="stat-icon">
             </a>

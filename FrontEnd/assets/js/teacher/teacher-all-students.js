@@ -145,18 +145,27 @@ async function viewStudentDetails(studentId) {
     }
 }
 function createModal(data, studentId) {
-    const modalContainer = document.createElement('div');
-    modalContainer.className = 'modal-container';
+    // Create main modal wrapper
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
     
     // Create modal content
     const modalContent = document.createElement('div');
     modalContent.className = 'modal-content';
     
+    // Create modal header
+    const modalHeader = document.createElement('div');
+    modalHeader.className = 'modal-header';
+    
+    const headerTitle = document.createElement('h2');
+    headerTitle.textContent = 'Student Information';
+    
     const closeBtn = document.createElement('span');
     closeBtn.className = 'close';
     closeBtn.innerHTML = '&times;';
     closeBtn.onclick = function() {
-        document.body.removeChild(modalContainer);
+        document.body.removeChild(modal);
     };
     //CREATE HYPERLINK TO PDF GENERATED
     const pdfButton  =  document.createElement('a');

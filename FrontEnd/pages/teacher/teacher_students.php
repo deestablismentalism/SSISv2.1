@@ -1,7 +1,8 @@
 <?php
 ob_start(); 
     $pageTitle = "All Students";
-    $pageCss = '<link rel="stylesheet" href="../../assets/css/teacher/teacher-all-students.css">';
+    $pageCss = '<link rel="stylesheet" href="../../assets/css/teacher/teacher-modal-shared.css">
+    <link rel="stylesheet" href="../../assets/css/teacher/teacher-all-students.css">';
     $pageJs = '<script src="../../assets/js/teacher/teacher-all-students.js" defer></script>';
 ?>
    <div class="teacher-all-students-content">

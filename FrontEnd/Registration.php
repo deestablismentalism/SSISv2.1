@@ -32,7 +32,15 @@
   <div class="login-container">
     <!-- LEFT ILLUSTRATION -->
    <div id="img-container">
+      <div class="page-title">
+          <h3>Maligayang Pagdating!</h3>
+          <p class="subtitle">Magregister ng iyong Account</p>
+      </div>      
+      <div class="ls2-logo"> 
+        <img src="./assets/imgs/LS2ES.png" alt="LS2ES Logo">
+      </div>
       <img src="./assets/imgs/users-login.png" id="image" />     
+
     </div>
 
     <!-- RIGHT LOGIN FORM -->
@@ -41,15 +49,11 @@
     <div class="container">
         <form id="registration-form" action="../BackEnd/api/postRegistrationForm.php" method="post">
             <div class="user-details">
-                <div class="page-title">
-                    <h3>Maligayang Pagdating!</h3>
-                    <p class="subtitle">Magregister sa iyong Account</p>
-                </div>
 
                 <!-- Informative Label -->
                 <div class="form-info-section">
                     <p class="form-instruction-label">
-                        <strong>Impormasyon ng Magulang o Tagapag-alaga</strong>
+                        <strong>Impormasyon ng Tagapag-alaga</strong>
                         <span class="required" style="color: red;">*</span>
                     </p>
                 </div>

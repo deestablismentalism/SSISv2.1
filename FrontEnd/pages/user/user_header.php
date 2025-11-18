@@ -18,6 +18,9 @@
             
             <!-- Navigation Container -->
             <div class="nav-container-1" id="nav-container">
+                <div class="nav-logo-wrapper">
+                    <img src="../../assets/imgs/LS2ES.png" alt="LS2ES Logo">
+                </div>
                 <nav>
                     <ul class="nav-1">
                         <li class="nav-item">

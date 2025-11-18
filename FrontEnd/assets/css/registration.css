@@ -6,44 +6,20 @@
   font-family: "Poppins", sans-serif;
 }
 
-/* ===== Page Background ===== */
+/* ===== Page Background - Mobile First ===== */
 body {
   background: linear-gradient(135deg, #e8f0ff, #f8fbff);
+  background-image: url("../imgs/modal-bg.png");
+  background-size: cover;
+  background-attachment: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: url("../imgs/modal-bg.png");
+  padding: 1rem;
 }
 
-/* ===== Main Container ===== */
-.main {
-    /* background: white; */
-    /* display: flex
-; */
-    flex-direction: column;
-    align-items: center;
-    /* border-radius: 20px; */
-    /* overflow: hidden; */
-    /* box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); */
-    /* width: 90%; */
-    /* max-width: 950px; */
-    position: relative;
-    /* padding: 40px 50px 60px 50px; */
-    background: white;
-    border-radius: 24px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-    max-width: 1100px;
-    width: 100%;
-    display: grid
-;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    padding: 23px;
-    overflow: hidden;
-    height: 30em;
-
-}
+/* ===== Main Container - Removed (Not Used) ===== */
 
 /* ===== Header and Title ===== */
 .header h2 {
@@ -54,52 +30,71 @@ body {
   margin-bottom: 10px;
 }
 
+/* ===== Login Container - Mobile First ===== */
 .login-container {
     background: white;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 20px;
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: clamp(12px, 3vw, 20px);
     overflow: hidden;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 950px;
-    padding: 2em
+    width: 100%;
+    max-width: 100%;
+    padding: 1.5rem;
+    margin: 0 auto;
 }
 
-#school-logo {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #007bff;
+
+/* ===== Logo Section - Mobile First ===== */
+.ls2-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.5rem, 2vw, 1rem);
+    margin-bottom: 1rem;
+}
+
+.ls2-logo img {
+    width: clamp(69px, 31vw, 180px);
+    height: auto;
+    object-fit: contain;
+}
+
+/* ===== Page Title - Mobile First ===== */
+.page-title {
+    text-align: center;
+    margin-bottom: 1rem;
 }
 
 .page-title h3 {
-    font-size: 2.5em;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
     color: #243b75;
     font-weight: 800;
-    font-family: "PT Serif", bold;
-    text-align: center
+    font-family: "PT Serif", serif;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
 }
 
 p.subtitle {
     color: #6c7aa5;
-    margin-bottom: 15px;
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    margin-bottom: 1rem;
     text-align: center;
 }
 
 
-/* ===== Form Container ===== */
+/* ===== Form Container - Mobile First ===== */
 .container {
   width: 100%;
   display: flex;
   justify-content: center;
+  padding: 1rem 0;
 }
 
 form {
   width: 100%;
-  max-width: 450px;
+  max-width: 100%;
 }
 
 .form-info-section p {
@@ -122,24 +117,24 @@ form {
 
 .input-box input {
   width: 100%;
-  padding: 13px 18px;
-  border: 1px solid #ccc;
-  border-radius: 31px;
+  padding: clamp(10px, 2.5vw, 13px) clamp(14px, 3.5vw, 18px);
+  border: 2px solid #ccc;
+  border-radius: clamp(20px, 5vw, 31px);
   background: transparent;
   outline: none;
-  font-size: 1em;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
   transition: all 0.3s ease;
 }
 
 .input-box .details {
   position: absolute;
   top: 50%;
-  left: 16px;
+  left: clamp(12px, 3vw, 16px);
   color: #888;
   transform: translateY(-50%);
   background: white;
-  padding: 0 6px;
-  font-size: 1em;
+  padding: 0 clamp(4px, 1vw, 6px);
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
   pointer-events: none;
   transition: 0.3s ease;
 }
@@ -188,12 +183,13 @@ form {
   background: #007bff;
   color: white;
   border: none;
-  padding: 12px 24px;
-  border-radius: 31px;
-  font-size: 1em;
+  padding: clamp(10px, 2.5vw, 12px) clamp(20px, 4vw, 24px);
+  border-radius: clamp(20px, 5vw, 31px);
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+  font-weight: 600;
   cursor: pointer;
   transition: 0.3s ease;
-  width: 80%;
+  width: 100%;
   text-align: center;
 }
 
@@ -221,18 +217,21 @@ p a:hover {
 }
 
 
-/* ===== Right Image ===== */
+/* ===== Image Container - Mobile First ===== */
 #img-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 40px;
-    border-radius: 27px;
+    padding: 1rem;
+    order: -1; /* Show before form on mobile */
 }
 
 #image {
-    max-width: 400px;
+    width: 100%;
+    max-width: clamp(200px, 60vw, 400px);
     height: auto;
+    object-fit: contain;
 }
 
 /* ===== Terms and Conditions Section ===== */
@@ -245,7 +244,7 @@ p a:hover {
 }
 
 .terms-instruction {
-    font-size: 14px;
+    font-size: clamp(0.8125rem, 2.2vw, 0.875rem);
     color: #333;
     margin-bottom: 10px;
     font-weight: 500;
@@ -359,13 +358,13 @@ p a:hover {
 }
 
 .terms-label {
-    font-size: 14px;
+    font-size: clamp(0.8125rem, 2.2vw, 0.875rem);
     color: #666;
     line-height: 1.5;
     cursor: not-allowed;
     user-select: none;
     transition: color 0.3s ease;
-    flex: 1; /* Take remaining space */
+    flex: 1;
 }
 
 .terms-label.enabled {
@@ -523,75 +522,116 @@ p a:hover {
     background-color: #5a6268;
 }
 
-/* ===== Responsive Layout ===== */
-@media (max-width: 900px) {
-  body {
-    flex-direction: column;
-  }
+/* ===== Responsive Layout - Mobile First ===== */
 
-  .main {
-    width: 95%;
-    padding: 30px 25px;
-  }
-
-  #img-container {
-    display: none; /* Hide image on small screens */
-  }
-
-  .submit-btn {
-    width: 100%;
-  }
+/* Tablet - 600px and up */
+@media (min-width: 600px) {
+    body {
+        padding: 1.5rem;
+    }
+    
+    .login-container {
+        padding: 2rem;
+        max-width: 600px;
+    }
+    
+    #img-container {
+        padding: 1.5rem;
+    }
+    
+    .container {
+        padding: 1.5rem 0;
+    }
+    
+    form {
+        max-width: 500px;
+    }
+    
+    .submit-btn {
+        width: 85%;
+    }
 }
 
+/* Small Desktop - 900px and up */
+@media (min-width: 900px) {
+    body {
+        padding: 2rem;
+    }
+    
+    .login-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 950px;
+        padding: 2.5rem;
+        gap: 2rem;
+    }
+    
+    #img-container {
+        flex: 1;
+        order: 0; /* Reset order for desktop */
+        padding: 2rem;
+    }
+    
+    .container {
+        flex: 1;
+        padding: 0;
+    }
+    
+    form {
+        max-width: 450px;
+    }
+    
+    .submit-btn {
+        width: 80%;
+    }
+}
+
+/* Large Desktop - 1200px and up */
+@media (min-width: 1200px) {
+    .login-container {
+        max-width: 1100px;
+        padding: 3rem;
+    }
+    
+    #img-container {
+        padding: 2.5rem;
+    }
+}
+
+/* Terms Modal Responsive Styles */
 @media (max-width: 768px) {
     .terms-modal-content {
         width: 95%;
         margin: 5% auto;
+        max-height: 95vh;
+    }
+
+    .terms-modal-header {
+        padding: 1rem;
     }
 
     .terms-modal-header h2 {
-        font-size: 20px;
+        font-size: clamp(1.125rem, 4vw, 1.5rem);
     }
 
     .terms-modal-body {
-        padding: 20px;
-    }
-    
-    .terms-agreement {
-        align-items: flex-start;
-        gap: 8px;
-    }
-    
-    .terms-instruction {
-        font-size: 13px;
-    }
-    
-    .terms-label {
-        font-size: 13px;
+        padding: 1.25rem;
     }
 }
 
-@media (max-width: 480px) {
-    .terms-instruction {
-        font-size: 12px;
+/* Extra Small Devices */
+@media (max-width: 375px) {
+    body {
+        padding: 0.5rem;
     }
     
-    .terms-instruction .terms-link {
-        font-weight: 500;
+    .login-container {
+        padding: 1rem;
+        border-radius: 12px;
     }
     
-    .terms-agreement {
-        gap: 6px;
-    }
-    
-    .terms-agreement input[type="checkbox"] {
-        width: 18px;
-        height: 18px;
-        min-width: 18px;
-        min-height: 18px;
-    }
-    
-    .terms-label {
-        font-size: 12px;
+    .input-box {
+        margin-bottom: 20px;
     }
 }

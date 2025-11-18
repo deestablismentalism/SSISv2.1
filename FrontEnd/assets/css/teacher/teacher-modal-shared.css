@@ -1,0 +1,1302 @@
+/* =====================================================
+   TEACHER MODAL SHARED STYLES
+   Use this CSS in any teacher page that displays modals
+   Includes: Student info modals, grade modals, locker modals
+   ===================================================== */
+
+:root {
+  --accent-color: #00bcd4;
+  --hover-accent: #48cae4;   
+  --success: #44d07b;
+  --warning: #ffcc00;
+  --danger: #ff5f5f;
+  --font-main: "Poppins", "Segoe UI", sans-serif;
+  --modal-bg: rgba(0, 0, 0, 0.75);
+  --modal-content-bg: #ffffff;
+  --border-radius: 1rem;
+  --transition-speed: 0.3s;
+}
+
+/* ===== MODAL BASE STRUCTURE ===== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--modal-bg);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    overflow-y: auto;
+    padding: 2rem 0;
+    animation: fadeIn var(--transition-speed) ease;
+}
+
+.modal.show,
+.modal[style*="display: flex"],
+.modal[style*="display: block"] {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Modal Content Container */
+.modal-content {
+    background: var(--modal-content-bg);
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: slideUp var(--transition-speed) ease;
+    font-family: var(--font-main);
+}
+
+.modal-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: var(--hover-accent);
+}
+
+/* Modal Header */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 3px solid var(--accent-color);
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--hover-accent) 100%);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-header h2,
+.modal-header h1 {
+    margin: 0;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Close Button */
+.close,
+.modal-close,
+.close-modal {
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    line-height: 1;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 0.25rem 0.6rem;
+    border-radius: 8px;
+    font-weight: 300;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close:hover,
+.modal-close:hover,
+.close-modal:hover {
+    background: rgba(255, 255, 255, 0.35);
+    border-color: var(--danger);
+    transform: rotate(90deg) scale(1.1);
+    color: var(--danger);
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 2rem;
+    background: #ffffff;
+}
+
+/* ===== STUDENT INFORMATION MODAL ===== */
+.view-teacher-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    overflow: auto;
+}
+
+/* Student Info Section Titles */
+.modal h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin: 1.5rem 0 1rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modal h1:first-child {
+    margin-top: 0;
+}
+
+/* ===== VIEW HEADER SECTION ===== */
+.view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 3px solid var(--accent-color);
+    margin-bottom: 1rem;
+}
+
+.view-status-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.view-status-label {
+    font-weight: 700;
+    color: #666;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.view-status-value {
+    padding: 0.6rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid;
+    margin: 0;
+}
+
+/* Status Badge Variants for Teachers */
+.view-status-value.status-active {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    color: #1b5e20;
+    border-color: var(--success);
+}
+
+.view-status-value.status-retired {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    color: #b71c1c;
+    border-color: var(--danger);
+}
+
+.view-status-value.status-transferred-out {
+    background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%);
+    color: #f57f17;
+    border-color: var(--warning);
+}
+
+.view-status-value.status-inactive {
+    background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+    color: #424242;
+    border-color: #757575;
+}
+
+.view-status-value.status-unknown {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    color: #b71c1c;
+    border-color: var(--danger);
+}
+
+/* ===== VIEW BODY SECTION ===== */
+.view-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* ===== VIEW PROFILE SECTION ===== */
+.view-profile-section {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.03) 0%, rgba(72, 202, 228, 0.06) 100%);
+    border-radius: 1rem;
+    border: 2px solid var(--hover-accent);
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.08);
+    transition: all 0.3s ease;
+}
+
+.view-profile-section:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 4px 16px rgba(0, 188, 212, 0.15);
+    transform: translateY(-2px);
+}
+
+.view-profile-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.view-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 10px;
+    border: 2px solid #e8f4f8;
+    transition: all 0.3s ease;
+}
+
+.view-info-item:hover {
+    border-color: var(--hover-accent);
+    box-shadow: 0 3px 12px rgba(0, 188, 212, 0.12);
+    transform: translateY(-2px);
+}
+
+.view-info-label {
+    font-size: 0.8rem;
+    color: #666;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 0;
+}
+
+.view-info-value {
+    font-size: 1.05rem;
+    color: #333;
+    font-weight: 600;
+    margin: 0;
+    word-break: break-word;
+}
+
+/* ===== VIEW DETAILS SECTION ===== */
+.view-details-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.view-section {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.03) 0%, rgba(72, 202, 228, 0.06) 100%);
+    border-radius: 1rem;
+    border: 2px solid var(--hover-accent);
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.08);
+    transition: all 0.3s ease;
+}
+
+.view-section:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 4px 16px rgba(0, 188, 212, 0.15);
+    transform: translateY(-2px);
+}
+
+.view-section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+.view-section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--hover-accent) 0%, transparent 100%);
+}
+
+.view-section-content {
+    font-size: 1.15rem;
+    color: #333;
+    font-weight: 600;
+    margin: 1rem 0 0 0;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-color);
+}
+
+/* ===== TEACHER INFO HEADER ===== */
+.teacher-info-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+    padding: 0 0 1rem 0;
+    border-bottom: 2px solid #e8f4f8;
+}
+
+.teacher-status-badge {
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid;
+}
+
+.teacher-status-badge.active {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    color: #1b5e20;
+    border-color: var(--success);
+}
+
+.teacher-status-badge.retired {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    color: #b71c1c;
+    border-color: var(--danger);
+}
+
+.teacher-status-badge.transferred-out {
+    background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%);
+    color: #f57f17;
+    border-color: var(--warning);
+}
+
+.teacher-status-badge.inactive {
+    background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+    color: #424242;
+    border-color: #757575;
+}
+
+/* ===== TEACHER PROFILE SECTION WITH IMAGE ===== */
+.teacher-profile-section {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.03) 0%, rgba(72, 202, 228, 0.06) 100%);
+    border-radius: 1rem;
+    border: 2px solid #e8f4f8;
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.08);
+}
+
+.profile-picture-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.profile-picture {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--accent-color);
+    box-shadow: 0 4px 16px rgba(0, 188, 212, 0.3);
+    transition: all 0.3s ease;
+}
+
+.profile-picture:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 188, 212, 0.4);
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.detail-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.detail-label {
+    font-size: 0.8rem;
+    color: #666;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.detail-value {
+    font-size: 1.05rem;
+    color: #333;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* ===== TEACHER POSITION SECTION ===== */
+.teacher-position-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.03) 0%, rgba(72, 202, 228, 0.06) 100%);
+    border-radius: 1rem;
+    border: 2px solid #e8f4f8;
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.08);
+}
+
+.position-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    padding: 0.5rem 0;
+}
+
+/* ===== TEACHER CONTACT SECTION ===== */
+.teacher-contact-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.03) 0%, rgba(72, 202, 228, 0.06) 100%);
+    border-radius: 1rem;
+    border: 2px solid #e8f4f8;
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.08);
+}
+
+.contact-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+/* ===== TEACHER GOVERNMENT IDS ===== */
+.teacher-government-ids {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.03) 0%, rgba(72, 202, 228, 0.06) 100%);
+    border-radius: 1rem;
+    border: 2px solid #e8f4f8;
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.08);
+}
+
+/* ===== MODAL TABLES - Universal Styling ===== */
+
+/* All modal tables */
+.modal table,
+.modal-table,
+.view-info-table,
+.ids-table,
+.teacher-info-table,
+.student-info-table,
+.grade-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 1rem 0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.12);
+    background: white;
+    border: 1px solid var(--accent-color);
+    font-family: var(--font-main);
+}
+
+/* Vertical Table Layout (Label-Value pairs) */
+.modal table tbody tr td:first-child:not([colspan]),
+.modal-table tbody tr td:first-child:not([colspan]),
+.student-info-part {
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--hover-accent) 100%);
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    width: 35%;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    padding: 1rem 1.2rem;
+}
+
+/* Table Headers - Horizontal Layout */
+.modal table thead,
+.modal-table thead,
+.view-info-table thead,
+.ids-table thead,
+.teacher-info-table thead,
+.grade-table thead,
+.grades-header {
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--hover-accent) 100%);
+    position: relative;
+}
+
+.modal table thead::after,
+.modal-table thead::after,
+.view-info-table thead::after,
+.ids-table thead::after,
+.teacher-info-table thead::after,
+.grade-table thead::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
+}
+
+.modal table th,
+.modal-table th,
+.view-info-table th,
+.ids-table th,
+.teacher-info-table th,
+.grade-table th {
+    padding: 1rem 1.2rem;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    vertical-align: middle;
+}
+
+/* Table Body */
+.modal table tbody,
+.modal-table tbody,
+.view-info-table tbody,
+.ids-table tbody,
+.teacher-info-table tbody,
+.grade-table tbody {
+    background: white;
+}
+
+.modal table tbody tr,
+.modal-table tbody tr,
+.view-info-table tbody tr,
+.ids-table tbody tr,
+.teacher-info-table tbody tr,
+.grade-table tbody tr {
+    transition: all var(--transition-speed) ease;
+    position: relative;
+}
+
+/* Zebra Striping for better readability */
+.modal table tbody tr:nth-child(even),
+.modal-table tbody tr:nth-child(even),
+.view-info-table tbody tr:nth-child(even),
+.ids-table tbody tr:nth-child(even),
+.teacher-info-table tbody tr:nth-child(even),
+.grade-table tbody tr:nth-child(even) {
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.02) 0%, rgba(72, 202, 228, 0.04) 100%);
+}
+
+/* Hover Effect - makes it interactive and easy to read */
+.modal table tbody tr:hover,
+.modal-table tbody tr:hover,
+.view-info-table tbody tr:hover,
+.ids-table tbody tr:hover,
+.teacher-info-table tbody tr:hover,
+.grade-table tbody tr:hover {
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.08) 0%, rgba(72, 202, 228, 0.12) 100%);
+    transform: translateX(3px);
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.15);
+    cursor: pointer;
+}
+
+/* Ensure label column stays styled on hover for vertical tables */
+.modal table tbody tr:hover td:first-child:not([colspan]),
+.modal-table tbody tr:hover td:first-child:not([colspan]) {
+    background: linear-gradient(135deg, var(--hover-accent) 0%, var(--accent-color) 100%);
+}
+
+/* Table Cells */
+.modal table td,
+.modal-table td,
+.view-info-table td,
+.ids-table td,
+.teacher-info-table td,
+.grade-table td {
+    padding: 1rem 1.2rem;
+    font-size: 0.95rem;
+    color: #333;
+    font-weight: 500;
+    border-bottom: 1px solid #e8f4f8;
+    vertical-align: middle;
+}
+
+/* Remove border from last row */
+.modal table tbody tr:last-child td,
+.modal-table tbody tr:last-child td,
+.view-info-table tbody tr:last-child td,
+.ids-table tbody tr:last-child td,
+.teacher-info-table tbody tr:last-child td,
+.grade-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Empty state for table */
+.modal table tbody tr td.no-data,
+.modal-table tbody tr td.no-data,
+.view-info-table tbody tr td.no-data,
+.ids-table tbody tr td.no-data,
+.teacher-info-table tbody tr td.no-data,
+.grade-table tbody tr td.no-data {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(0, 188, 212, 0.03) 0%, rgba(72, 202, 228, 0.05) 100%);
+}
+
+/* ===== ERROR & SUCCESS MESSAGES ===== */
+.error-message,
+.success-message,
+.info-message {
+    padding: 1rem 1.5rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: slideDown var(--transition-speed) ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.error-message {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    color: #b71c1c;
+    border-left: 4px solid var(--danger);
+    box-shadow: 0 2px 8px rgba(255, 95, 95, 0.2);
+}
+
+.success-message {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    color: #1b5e20;
+    border-left: 4px solid var(--success);
+    box-shadow: 0 2px 8px rgba(68, 208, 123, 0.2);
+}
+
+.info-message {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    color: #0d47a1;
+    border-left: 4px solid var(--accent-color);
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.2);
+}
+
+/* ===== MODAL FORMS ===== */
+.modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 0.85rem;
+    border: 2px solid #dfe6e9;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all var(--transition-speed) ease;
+    background-color: white;
+    color: #333;
+    font-weight: 500;
+    font-family: var(--font-main);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.12);
+    background-color: #f0f9fc;
+}
+
+.form-group small {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+/* Form Actions (buttons) */
+.form-actions,
+.preview-actions,
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 2px solid #e8f4f8;
+}
+
+.submit-btn,
+.action-btn,
+.download-btn,
+.cancel-btn,
+.upload-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: var(--font-main);
+}
+
+.submit-btn,
+.action-btn,
+.download-btn,
+.upload-btn {
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--hover-accent) 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+}
+
+.submit-btn:hover,
+.action-btn:hover,
+.download-btn:hover,
+.upload-btn:hover {
+    background: linear-gradient(135deg, #00a8c0 0%, #3ab8d4 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 188, 212, 0.4);
+}
+
+.cancel-btn {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+/* Table row fade-in animation */
+@keyframes fadeInRow {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.view-info-table tbody tr,
+.ids-table tbody tr,
+.teacher-info-table tbody tr {
+    animation: fadeInRow 0.3s ease-in-out;
+}
+
+/* Staggered animation for multiple rows */
+.view-info-table tbody tr:nth-child(1),
+.ids-table tbody tr:nth-child(1),
+.teacher-info-table tbody tr:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.view-info-table tbody tr:nth-child(2),
+.ids-table tbody tr:nth-child(2),
+.teacher-info-table tbody tr:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.view-info-table tbody tr:nth-child(3),
+.ids-table tbody tr:nth-child(3),
+.teacher-info-table tbody tr:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+/* ===== TABLE WRAPPER WITH SCROLLBAR ===== */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.08);
+}
+
+.table-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--hover-accent);
+}
+
+/* ===== LOADING STATES ===== */
+.loading-container,
+.modal-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    gap: 1rem;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-container p,
+.modal-loading p {
+    color: #666;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* ===== EMPTY STATES ===== */
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #666;
+}
+
+.empty-state svg {
+    margin: 0 auto 1.5rem;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.4rem;
+    color: #333;
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 1rem;
+    color: #666;
+}
+
+/* ===== PREVIEW MODAL (for Locker files) ===== */
+.preview-modal .modal-content {
+    max-width: 1200px;
+    width: 95%;
+}
+
+.preview-content {
+    padding: 2rem;
+    background: #f8f9fa;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-content iframe,
+.preview-content img,
+.preview-content video {
+    max-width: 100%;
+    max-height: 70vh;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.preview-content .file-info {
+    text-align: center;
+    padding: 2rem;
+}
+
+.preview-content .file-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* ===== GRADE INPUT FIELDS ===== */
+.grade-input,
+.grade-table input[type="number"] {
+    width: 80px;
+    text-align: center;
+    padding: 0.5rem;
+    border: 2px solid #dfe6e9;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all var(--transition-speed) ease;
+}
+
+.grade-input:focus,
+.grade-table input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.12);
+    background-color: #f0f9fc;
+}
+
+.grade-input.error,
+.grade-table input[type="number"].error {
+    border-color: var(--danger);
+    background-color: rgba(255, 95, 95, 0.05);
+}
+
+.grade-input.success,
+.grade-table input[type="number"].success {
+    border-color: var(--success);
+    background-color: rgba(68, 208, 123, 0.05);
+}
+
+/* Remove spinner buttons from number inputs */
+.grade-table input[type="number"]::-webkit-inner-spin-button,
+.grade-table input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.grade-table input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* ===== BADGES & STATUS INDICATORS ===== */
+.badge,
+.status-badge {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-success {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    color: #1b5e20;
+    border: 1px solid var(--success);
+}
+
+.badge-warning {
+    background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%);
+    color: #f57f17;
+    border: 1px solid var(--warning);
+}
+
+.badge-danger {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    color: #b71c1c;
+    border: 1px solid var(--danger);
+}
+
+.badge-info {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    color: #0d47a1;
+    border: 1px solid var(--accent-color);
+}
+
+/* ===== DIVIDERS & SEPARATORS ===== */
+.modal-divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--accent-color) 50%, transparent 100%);
+    margin: 2rem 0;
+}
+
+.modal-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #e8f4f8;
+}
+
+.modal-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet View */
+@media (max-width: 1200px) {
+    .view-profile-info,
+    .contact-info-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    
+    .teacher-profile-section {
+        grid-template-columns: 180px 1fr;
+        gap: 1.5rem;
+    }
+    
+    .profile-picture {
+        width: 160px;
+        height: 160px;
+    }
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+    .modal {
+        padding: 1rem 0;
+    }
+    
+    .modal-content {
+        width: 95%;
+        max-width: none;
+        border-radius: 12px;
+    }
+    
+    .modal-header {
+        padding: 1rem 1.5rem;
+    }
+    
+    .modal-header h1,
+    .modal-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .modal-body,
+    .view-teacher-content {
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+    
+    .view-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .teacher-profile-section {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .profile-picture {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .view-profile-info,
+    .contact-info-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .view-info-item {
+        padding: 0.75rem;
+    }
+    
+    .view-section,
+    .view-profile-section {
+        padding: 1rem;
+    }
+    
+    .modal table th,
+    .modal table td,
+    .view-info-table th,
+    .ids-table th,
+    .teacher-info-table th,
+    .view-info-table td,
+    .ids-table td,
+    .teacher-info-table td,
+    .grade-table th,
+    .grade-table td {
+        padding: 0.75rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    
+    .form-actions,
+    .preview-actions {
+        flex-direction: column;
+    }
+    
+    .submit-btn,
+    .cancel-btn,
+    .action-btn {
+        width: 100%;
+    }
+}
+
+/* Small Mobile View */
+@media (max-width: 480px) {
+    .modal-content {
+        width: 100%;
+        border-radius: 0;
+        max-height: 100vh;
+    }
+    
+    .modal-header {
+        padding: 1rem;
+    }
+    
+    .modal-header h1,
+    .modal-header h2 {
+        font-size: 1rem;
+    }
+    
+    .modal-body,
+    .view-teacher-content {
+        padding: 1rem;
+    }
+    
+    .view-section-title,
+    .modal h1 {
+        font-size: 1rem;
+    }
+    
+    .profile-picture {
+        width: 120px;
+        height: 120px;
+    }
+    
+    /* Make tables scrollable on small screens */
+    .modal table,
+    .view-info-table,
+    .ids-table,
+    .teacher-info-table,
+    .grade-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .modal table th,
+    .modal table td,
+    .view-info-table th,
+    .ids-table th,
+    .teacher-info-table th,
+    .view-info-table td,
+    .ids-table td,
+    .teacher-info-table td,
+    .grade-table th,
+    .grade-table td {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.75rem;
+    }
+    
+    .grade-input {
+        width: 60px;
+        font-size: 0.85rem;
+        padding: 0.4rem;
+    }
+}
+
+/* =====================================================
+   USAGE INSTRUCTIONS
+   ===================================================== 
+   
+   To use this shared CSS in any teacher page:
+   
+   1. Add to your PHP page:
+      $pageCss = '<link rel="stylesheet" href="../../assets/css/teacher/teacher-modal-shared.css">';
+   
+   2. HTML Structure for modals:
+      <div class="modal" id="your-modal-id">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h2>Modal Title</h2>
+                  <span class="close">&times;</span>
+              </div>
+              <div class="modal-body">
+                  <!-- Your content here -->
+                  <table>
+                      <thead>
+                          <tr><th>Column 1</th><th>Column 2</th></tr>
+                      </thead>
+                      <tbody>
+                          <tr><td>Data 1</td><td>Data 2</td></tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+   
+   3. Available Components:
+      - Student info tables (vertical layout)
+      - Grade tables (horizontal layout)
+      - Forms with inputs
+      - Loading states with spinner
+      - Error/Success messages
+      - Action buttons
+      - File preview modals
+      - Status badges
+   
+   4. JavaScript to show modal:
+      const modal = document.getElementById('your-modal-id');
+      modal.style.display = 'flex'; // or 'block'
+   
+   ===================================================== */

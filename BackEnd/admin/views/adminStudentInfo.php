@@ -53,8 +53,7 @@ class adminStudentInfo {
             $completeAddress = $data['House_Number'] .' ' .$data['Subd_Name']
                     . '. ' .$data['Brgy_Name']. ', ' .$data['Municipality_Name'] . ', '
                     . $data['Province_Name'] . ' ' . $data['Region'];
-            echo '<table class="view-info-table student-info-table">';
-            echo '<tbody>';
+            echo '<table class="student-modal-table"><tbody>';
             echo $this->tableTemplate->returnVerticalTables([
                'LRN','Last Name','First Name','Middle Name','Suffix','Birthday','Age',
                  'Sex','Email','Religion','Native Language','Cultural Group',
@@ -63,8 +62,7 @@ class adminStudentInfo {
             [$lrn,$data['Last_Name'],$data['First_Name'],$middleName, $suffix
             ,$data['Birthday'],$data['Age'],$data['Sex'],$data['Student_Email'],$data['Religion'],$data['Native_Language'],
             $data['Has_Cultural'],$data['Has_Condition'],$data['Has_Tech'],$completeAddress], 'student-info');
-            echo '</tbody>';
-            echo '</table>';
+            echo '</tbody></table>';
         }
         catch(Throwable $t) {
             error_log("[".date('Y-m-d H:i:s')."]" .$t."\n",3, __DIR__ . '/../../errorLogs.txt');
@@ -77,8 +75,7 @@ class adminStudentInfo {
                 return;
             }
             $data = $this->parentInfo;
-            echo '<table class="view-info-table parent-info-table">';
-            echo '<tbody>';
+            echo '<table class="modal-table"></tbody>';
             foreach($data as $rows) {
                 echo $this->tableTemplate->returnVerticalTables(
                     ['Relasyon', 'Apleyido','Pangalan','Panggitna','Educational attainment','Numero ng telepono', 'Kabilang sa 4ps'],
@@ -87,8 +84,7 @@ class adminStudentInfo {
                     'parent-info'
                 );
             }
-            echo '</tbody>';
-            echo '</table>';
+            echo '</tbody></table>';
         }
         catch(Throwable $t) {
             error_log("[".date('Y-m-d H:i:s')."]" .$t."\n",3, __DIR__ . '/../../errorLogs.txt');

@@ -6,55 +6,71 @@
   font-family: "Poppins", sans-serif;
 }
 
-/* ===== Page Container ===== */
+/* ===== Page Container - Mobile First ===== */
 body {
   background: linear-gradient(135deg, #e8f0ff, #f8fbff);
+  background-image: url("../imgs/modal-bg.png");
+  background-size: cover;
+  background-attachment: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-image: url("../imgs/modal-bg.png");
+  min-height: 100vh;
+  padding: 1rem;
+  cursor: default;
 }
 
-/* ===== Main Login Box ===== */
+/* ===== Main Login Box - Mobile First ===== */
 .login-container {
   background: white;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 20px;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: clamp(12px, 3vw, 20px);
   overflow: hidden;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  width: 90%;
-  max-width: 950px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
-/* ===== Left Illustration ===== */
+/* ===== Left Illustration - Mobile First ===== */
 .login-illustration {
-  flex: 1;
-  /* background: linear-gradient(135deg, #cde2ff, #eaf2ff); */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 40px;
-  border-radius: 27px;
-  position: relative;
+  padding: 1.5rem 1rem;
+  order: -1; /* Show before form on mobile */
 }
 
-/* ===== School Header/Title ===== */
+.ls2-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 2vw, 1rem);
+  margin-bottom: 1rem;
+}
+
+.ls2-logo img {
+  width: clamp(60px, 15vw, 100px);
+  height: auto;
+  object-fit: contain;
+}
+
+/* ===== School Header/Title - Mobile First ===== */
 .img-header {
   background: linear-gradient(135deg, #007bff, #0056b3);
   color: white;
-  padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1rem, 3vw, 2rem);
-  border-radius: 12px;
+  padding: clamp(0.7rem, 2vw, 1.2rem) clamp(1rem, 3vw, 2rem);
+  border-radius: clamp(8px, 2vw, 12px);
   text-align: center;
-  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-size: clamp(0.9rem, 3vw, 1.4rem);
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: clamp(1rem, 3vw, 1.5rem);
   box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
   width: 100%;
-  max-width: 400px;
+  max-width: 100%;
   letter-spacing: 0.3px;
   line-height: 1.4;
   transition: all 0.3s ease;
@@ -67,14 +83,15 @@ body {
 
 .login-illustration img {
   width: 100%;
-  max-width: 400px;
+  max-width: clamp(180px, 50vw, 400px);
   height: auto;
+  object-fit: contain;
+  margin-top: 0.5rem;
 }
 
-/* ===== Right Form Section ===== */
+/* ===== Right Form Section - Mobile First ===== */
 .login-form {
-  flex: 1;
-  padding: 60px 50px;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -82,16 +99,19 @@ body {
 }
 
 .login-form h1 {
-  font-size: 2.5em;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
   color: #243b75;
   font-weight: 800;
-  font-family: "PT Serif", bold;
+  font-family: "PT Serif", serif;
   text-align: center;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
 }
 
 p.subtitle {
   color: #6c7aa5;
-  margin-bottom: 25px;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+  margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
   text-align: center;
 }
 
@@ -120,10 +140,10 @@ p.subtitle {
   border-color: #007bff;
 }
 
-/* ===== Floating Label Inputs ===== */
+/* ===== Floating Label Inputs - Mobile First ===== */
 .input-group {
   position: relative;
-  margin-bottom: 25px;
+  margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
 }
 
 .input-group.password-group {
@@ -132,24 +152,25 @@ p.subtitle {
 
 .input-group input {
   width: 100%;
-  padding: 14px 16px;
-  border: 1px solid #ccc;
-  border-radius: 31px;
+  padding: clamp(12px, 2.5vw, 14px) clamp(14px, 3vw, 16px);
+  border: 2px solid #ccc;
+  border-radius: clamp(20px, 5vw, 31px);
   background: transparent;
   outline: none;
-  font-size: 1em;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
   transition: all 0.3s ease;
+  cursor: text;
 }
 
 .input-group label {
   position: absolute;
   top: 50%;
-  left: 16px;
+  left: clamp(14px, 3vw, 16px);
   color: #888;
   transform: translateY(-50%);
   background: white;
-  padding: 0 6px;
-  font-size: 1em;
+  padding: 0 clamp(4px, 1vw, 6px);
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
   pointer-events: none;
   transition: 0.3s ease;
 }
@@ -220,24 +241,26 @@ p.subtitle {
 }
 
 
-/* ===== Buttons ===== */
+/* ===== Buttons - Mobile First ===== */
 .btn-primary {
-  width: 90%;
-  padding: 12px;
+  width: 100%;
+  padding: clamp(10px, 2.5vw, 12px);
   background: #007bff;
   color: white;
   border: none;
-  border-radius: 8px;
-  margin-top: 10px;
+  border-radius: clamp(20px, 5vw, 31px);
   cursor: pointer;
-  font-size: 1em;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+  font-weight: 600;
   transition: 0.3s;
   text-align: center;
-  border-radius: 31px;
+  margin: 0 auto;
+  display: grid;
 }
 
 .btn-primary:hover {
   background: #0056b3;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
 .btn-outline {
@@ -253,13 +276,17 @@ p.subtitle {
   transition: 0.3s;
 }
 
-p{
+p {
   text-align: center;
-  margin-top: 15px;
+  margin-top: clamp(0.875rem, 2vw, 1rem);
+  font-size: clamp(0.8125rem, 2.2vw, 0.9375rem);
+  line-height: 1.5;
 }
+
 a.register-link {
   color: #007bff;
   text-decoration: none;
+  cursor: pointer;
 }
 
 a.register-link:hover {
@@ -316,68 +343,123 @@ a.register-link:hover {
   text-decoration: none;
   display: flex;
   justify-content: center;
+  font-size: clamp(0.8125rem, 2.2vw, 0.875rem);
+  margin-bottom: clamp(0.75rem, 2vw, 1rem);
+  cursor: pointer;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
 }
 
 a {
   cursor: pointer;
 }
 
-body {
-  cursor: default;
+input[type="text"],
+input[type="password"] {
+  cursor: text;
 }
+/* ===== Responsive Layout - Mobile First ===== */
 
-input[type="text"], input[type="password"] {
-  cursor:text;
-}
-.forgot-password-link:hover, input[type="password"]:hover {
-  text-decoration: underline;
-}
-/* ===== Responsive Layout ===== */
-@media (max-width: 900px) {
+/* Small Mobile - Extra small devices */
+@media (max-width: 375px) {
+  body {
+    padding: 0.5rem;
+  }
+  
   .login-container {
-    flex-direction: column;
-    max-width: 500px;
+    border-radius: 12px;
   }
-
+  
   .login-illustration {
-    padding: 20px;
+    padding: 1rem 0.75rem;
   }
-
-  .img-header {
-    font-size: clamp(0.9rem, 4vw, 1.1rem);
-    padding: clamp(0.6rem, 2vw, 0.9rem) clamp(0.8rem, 3vw, 1.2rem);
-    margin-bottom: 15px;
-  }
-
-  .login-illustration img {
-    max-width: 250px;
-  }
-
+  
   .login-form {
-    padding: 30px;
-    text-align: center;
+    padding: 1rem;
   }
 }
 
-/* ===== Additional Responsive Breakpoints ===== */
-@media (max-width: 600px) {
+/* Tablet - 600px and up */
+@media (min-width: 600px) {
+  body {
+    padding: 1.5rem;
+  }
+  
+  .login-container {
+    max-width: 550px;
+  }
+  
+  .login-illustration {
+    padding: 2rem 1.5rem;
+  }
+  
+  .login-form {
+    padding: 2rem;
+  }
+  
   .img-header {
-    font-size: clamp(0.8rem, 4.5vw, 1rem);
-    padding: 0.7rem 1rem;
-    border-radius: 8px;
+    max-width: 400px;
+  }
+  
+  .btn-primary {
+    width: 90%;
   }
 }
 
+/* Small Desktop - 900px and up */
+@media (min-width: 900px) {
+  body {
+    padding: 2rem;
+  }
+  
+  .login-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 950px;
+  }
+  
+  .login-illustration {
+    flex: 1;
+    order: 0; /* Reset order for desktop */
+    padding: 2.5rem;
+    border-radius: 0;
+  }
+  
+  .login-form {
+    flex: 1;
+    padding: 3rem 2.5rem;
+  }
+  
+  .btn-primary {
+    width: 85%;
+  }
+}
+
+/* Large Desktop - 1200px and up */
 @media (min-width: 1200px) {
+  .login-container {
+    max-width: 1100px;
+  }
+  
+  .login-illustration {
+    padding: 3rem;
+  }
+  
+  .login-form {
+    padding: 3.75rem 3rem 4rem 0rem;
+  }
+  
   .img-header {
-    font-size: clamp(1.2rem, 2vw, 1.6rem);
-    padding: 1.3rem 2.5rem;
+    max-width: 450px;
   }
 }
 
+/* Extra Large Desktop - 1600px and up */
 @media (min-width: 1600px) {
-  .img-header {
-    font-size: clamp(1.4rem, 1.8vw, 1.8rem);
-    padding: 1.5rem 3rem;
+  .login-container {
+    max-width: 1200px;
   }
 }

@@ -42,5 +42,157 @@ class teacherDashboardController {
             ];
         }
     }
+
+    // API for dashboard charts
+    public function apiDashboardCharts(int $staffId): array {
+        try {
+            $studentsBioSex = $this->returnStudentsBiologicalSex($staffId);
+            $enrolleesGradeLevel = $this->returnEnrolleesGradeLevelDistribution();
+            $enrolleesBioSex = $this->returnEnrolleesBiologicalSex();
+
+            $result = [
+                'chart1' => $studentsBioSex,
+                'chart3' => $enrolleesGradeLevel,
+                'chart4' => $enrolleesBioSex
+            ];
+
+            $failed = [];
+            foreach($result as $chart) {
+                if($chart['success'] == false) {
+                    $failed[] = $chart['message'];
+                }
+            }
+
+            if(!empty($failed)) {
+                return [
+                    'httpcode' => 200,
+                    'success' => true,
+                    'message' => 'Some chart data fetch failed',
+                    'data' => $result,
+                    'failed' => $failed
+                ];
+            }
+
+            return [
+                'httpcode' => 200,
+                'success' => true,
+                'message' => 'Charts successfully fetched',
+                'data' => $result
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'httpcode' => 500,
+                'success' => false,
+                'message' => 'Database error: ' . $e->getMessage(),
+                'data' => []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'httpcode' => 400,
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+                'data' => []
+            ];
+        }
+    }
+
+    // Private helper methods for chart data
+    private function returnStudentsBiologicalSex(int $staffId): array {
+        try {
+            $data = $this->model->getStudentsBiologicalSexByTeacher($staffId);
+
+            if(!is_array($data) || !isset($data['Male']) || !isset($data['Female'])) {
+                return [
+                    'success' => false,
+                    'message' => 'Students biological sex data is empty',
+                    'data' => []
+                ];
+            }
+
+            return [
+                'success' => true,
+                'message' => 'Students biological sex successfully returned',
+                'data' => [
+                    ['label' => 'Male', 'value' => (int)$data['Male']],
+                    ['label' => 'Female', 'value' => (int)$data['Female']]
+                ]
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'success' => false,
+                'message' => 'Database error: ' . $e->getMessage(),
+                'data' => []
+            ];
+        }
+    }
+
+    private function returnEnrolleesGradeLevelDistribution(): array {
+        try {
+            $data = $this->model->getEnrolleesGradeLevelDistribution();
+
+            if(!is_array($data)) {
+                return [
+                    'success' => false,
+                    'message' => 'Enrollees grade level distribution is empty',
+                    'data' => []
+                ];
+            }
+
+            return [
+                'success' => true,
+                'message' => 'Enrollees grade level distribution successfully returned',
+                'data' => [
+                    ['label' => 'Kinder I', 'value' => (int)($data['Kinder1'] ?? 0)],
+                    ['label' => 'Kinder II', 'value' => (int)($data['Kinder2'] ?? 0)],
+                    ['label' => 'Grade 1', 'value' => (int)($data['Grade1'] ?? 0)],
+                    ['label' => 'Grade 2', 'value' => (int)($data['Grade2'] ?? 0)],
+                    ['label' => 'Grade 3', 'value' => (int)($data['Grade3'] ?? 0)],
+                    ['label' => 'Grade 4', 'value' => (int)($data['Grade4'] ?? 0)],
+                    ['label' => 'Grade 5', 'value' => (int)($data['Grade5'] ?? 0)],
+                    ['label' => 'Grade 6', 'value' => (int)($data['Grade6'] ?? 0)]
+                ]
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'success' => false,
+                'message' => 'Database error: ' . $e->getMessage(),
+                'data' => []
+            ];
+        }
+    }
+
+    private function returnEnrolleesBiologicalSex(): array {
+        try {
+            $data = $this->model->getEnrolleesBiologicalSex();
+
+            if(!is_array($data) || !isset($data['Male']) || !isset($data['Female'])) {
+                return [
+                    'success' => false,
+                    'message' => 'Enrollees biological sex data is empty',
+                    'data' => []
+                ];
+            }
+
+            return [
+                'success' => true,
+                'message' => 'Enrollees biological sex successfully returned',
+                'data' => [
+                    ['label' => 'Male', 'value' => (int)$data['Male']],
+                    ['label' => 'Female', 'value' => (int)$data['Female']]
+                ]
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'success' => false,
+                'message' => 'Database error: ' . $e->getMessage(),
+                'data' => []
+            ];
+        }
+    }
 }
 

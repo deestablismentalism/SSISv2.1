@@ -1,3 +1,30 @@
+:root {
+    --main-fonts:  "Poppins", "Segoe UI", sans-serif;
+    --title-fonts: "Barlow", sans-serif;
+    --button-fonts: 'Baloo-Thambi-2';
+    --link-fonts: 'Roboto', sans-serif;
+    --sidebar-width: 60px;
+    --sidebar-expanded-width: 280px; /* Changed from 20dvw to fixed pixels */
+    --title-font-size: 3em;
+    --main-color: #1c4a72;
+    --accent-color: #00bcd4;
+    --secondary-color: #F1BD22;
+    --wrapper-bg-color: #fffdfdf5;
+    --title-main-color: #3e9ec4;
+    --container-color: rgba(36, 186, 255, 0.28);
+    --button-color: ;
+    --button-hover-color: ;
+    --button-click: scale(.9);
+    --border-radius: 1rem;
+    --title-h1-font-size: 1.6rem;
+    --title-font-weight: 600;
+    --title-letter-spacing: 1px;
+    --card-border: rgba(255, 255, 255, 0.2);
+    --warning: #ffcc00;
+    --danger: #ff5f5f;
+    --success: #44d07b;
+}
+
 .teacher-advisory-content {
     margin: 1.5rem;
     font-family: var(--main-fonts);
@@ -7,43 +34,51 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: linear-gradient(135deg, #3e9ec4 0%, #2d7a9a 100%);
     min-height: 90px;
-    padding: 1.5rem 2rem;
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    margin-bottom: 1.5rem;
 }
 
 .advisory-header h1 {
+    font-family: var(--font-main);
+    color: var(--main-color);
     font-size: 2rem;
     font-weight: 700;
-    letter-spacing: 1px;
-    color: white;
-    font-family: var(--main-fonts);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    margin: 0;
+    margin-bottom: 2rem;
+    margin-top: 0;
+    position: relative;
+    padding-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #3e9ec4, #48cae4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.advisory-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 120px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+    border-radius: 2px;
 }
 
 .advisory-wrapper {
     padding: 2rem;
-    background: rgb(36 186 255 / 28%);
-    backdrop-filter: blur(10px);
-    border-radius: 1.5rem;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 }
+
 .students-wrapper {
     margin-bottom: 2rem;
 }
 
 .students-wrapper > h1 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    color: var(--main-color);
     font-weight: 600;
-    color: #2d7a9a;
-    margin-bottom: 1rem;
-    padding-left: 0.5rem;
-    border-left: 4px solid #3e9ec4;
+    padding-bottom: 0.8rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.5px;
 }
 
 .students-list-wrapper {
@@ -154,12 +189,18 @@
 }
 
 .subjects-wrapper > h1 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    color: var(--main-color);
     font-weight: 600;
-    color: #2d7a9a;
-    margin-bottom: 1rem;
-    padding-left: 0.5rem;
-    border-left: 4px solid #3e9ec4;
+    padding-bottom: 0.8rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.5px;
+}
+
+.subjects-wrapper > h1, 
+.students-wrapper > h1 {
+    margin-bottom: 1.5rem;
+    border-bottom: 4px solid var(--hover);
 }
 
 .subjects-list {
@@ -240,15 +281,29 @@
 }
 
 .advisory-name {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin: 0;
     text-transform: uppercase;
-    padding-left: 1rem;
-    color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    letter-spacing: 1px;
 }
+.advisory-name h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: white;
+    font-family: var(--main-fonts);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 0;
+}
+
+.advisory-name::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 120px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+    border-radius: 2px;
+}
+
 .view-student-button-wrapper {
     display: flex;
     justify-content: flex-end;

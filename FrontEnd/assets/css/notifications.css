@@ -172,6 +172,7 @@
     height: 3rem;
     animation: pulse 2s infinite;
     align-content: flex-start;
+    padding-top: 0.3rem;
   }
   
   .error-notification-prompt-wrap {
@@ -188,10 +189,9 @@
     font-size: 1.05rem;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 0.5rem;
-    text-align: center;
     width: 100%;
+    padding-left: .5rem;
   }
   
   .error-checkmark {
