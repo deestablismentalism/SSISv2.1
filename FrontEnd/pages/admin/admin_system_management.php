@@ -59,10 +59,19 @@ $view = new adminSystemManagementView();
                 <h2 class="section-title">Archived Information</h2>
                 <div class="archives">
                     <div class="student-archives">
-                        <a href="./admin_student_archives.php">View Student Archives</a>
+                        <a href="./admin_archive_students.php">View Student Archives</a>
                     </div>
                     <div class="teacher-archives">
-                        <a href="./admin_teacher_archives.php">View Teacher Archives</a>
+                        <a href="./admin_archive_teachers.php">View Teacher Archives</a>
+                    </div>
+                    <div class="subject-archives">
+                        <a href="./admin_archive_subjects.php"> View Subject Archives</a>
+                    </div>
+                    <div class="section-archives">
+                        <a href="./admin_archive_sections.php">View Section Archives</a>
+                    </div>
+                    <div class="yearly-records">
+                        <a href="./admin_yearly_records.php">View Yearly Records</a>
                     </div>
                 </div>
             </div>

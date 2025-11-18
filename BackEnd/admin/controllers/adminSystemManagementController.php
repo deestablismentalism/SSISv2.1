@@ -201,6 +201,37 @@ class adminSystemManagementController {
             ];
         }
     }
+    public function viewArchivedSubjects():array {
+        try {
+            $data = $this->adminSysModel->getArchivedSubjects();
+            if(empty($data)) {
+                return [
+                    'success'=> true,
+                    'message'=> 'No archived Teachers yet',
+                    'data'=> []
+                ];
+            }
+            return [
+                'success'=> true,
+                'message'=> 'Archived Teachers successfully fetched',
+                'data'=> $data
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was a server problem. Please wait for it to be fixed',
+                'data'=> []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'success'=> false,
+                'message'=> 'There was an unexpected problem',
+                'data'=> []
+            ];
+        }
+    }
     public function viewSchoolYearDetailsDate():array {
         try {
             $data = $this->adminSysModel->getSchoolYearDateFormat();

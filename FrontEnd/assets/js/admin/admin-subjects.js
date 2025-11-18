@@ -7,9 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const subjectsList = document.getElementById('subjects-list');
     const loadingState = document.getElementById('loading-state');
     const emptyState = document.getElementById('empty-state');
-
+    //INITIALIZE SUBJECTS LOAD
     loadSubjects();
-
     // Modal handler for adding subject
     addSubjectBtn.addEventListener('click', function() {
         modal.style.display = 'block';
@@ -20,36 +19,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 modal.style.display = 'none';
                 return;
             }
-            
             modalContent.innerHTML = data;
-
             const radioInput = document.querySelectorAll('input[name="subject"]');
             const selectContainer = document.getElementById('select-container');
             const checkboxContainer = document.getElementById('checkbox-container');
             const checkbox = document.getElementById("checkboxes");
             const initialRadioInput = document.querySelector('input[name="subject"][value="Yes"]');
-
             if (initialRadioInput) {
                 initialRadioInput.checked = true;
-            }
-            
+            }  
             const toggleBtn = document.querySelector('.toggleCheckBox');
             if (toggleBtn) {
                 toggleBtn.addEventListener('click', function () {
                     checkbox.classList.toggle('show');
                 });
             }
-            
             updateDisplay(modal, selectContainer, checkboxContainer);
-            
             radioInput.forEach(radio => {
                 radio.addEventListener('change', function () {
                     updateDisplay(modal, selectContainer, checkboxContainer);
                 });
             });
-            
             close(modal);
-            
             // Add cancel button event listener
             const cancelBtn = modalContent.querySelector('.btn-cancel');
             if (cancelBtn) {
@@ -57,32 +48,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.href = 'admin_subjects.php';
                 });
             }
-            
+            //ADD SUBJECT FORM HANDLER
             const form = document.getElementById('add-subject-form');
             let isSubmitting = false;
-            
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 if(isSubmitting) return;
                 isSubmitting = true;
-
                 const submitButton = form.querySelector('.submit-button');
                 submitButton.disabled = true;
                 submitButton.style.backgroundColor = 'gray';
-                
                 Loader.show();
-                
                 const formData = new FormData(form);
-                
                 try {
                     const result = await postAddSubject(formData);
-                    
                     Notification.show({
                         type: 'success',
                         title: 'Success',
                         message: result.message
                     });
-                    
                     setTimeout(() => {
                         Loader.hide();
                         modal.style.display = 'none';
@@ -104,13 +88,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-
     // Load subjects data
     async function loadSubjects() {
         loadingState.style.display = 'flex';
         subjectsList.style.display = 'none';
         emptyState.style.display = 'none';
-
         try {
             const response = await fetch('../../../BackEnd/api/admin/fetchSubjectsGrouped.php');
             const result = await response.json();
@@ -134,7 +116,6 @@ document.addEventListener('DOMContentLoaded', function() {
             loadingState.style.display = 'none';
         }
     }
-
     // Display subjects with expandable sections
     function displaySubjects(subjects) {
         subjectsList.style.display = 'block';
@@ -142,7 +123,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         subjectsList.innerHTML = subjects.map(subject => {
             const sectionsCount = subject.Section_Count || 0;
-            
             return `
                 <div class="subject-item" data-subject-id="${subject.Subject_Id}">
                     <div class="subject-header">
@@ -150,11 +130,17 @@ document.addEventListener('DOMContentLoaded', function() {
                             <span class="subject-name">${escapeHtml(subject.Subject_Name)}</span>
                             <span class="sections-count">${sectionsCount} section${sectionsCount !== 1 ? 's' : ''}</span>
                         </div>
-                        <button class="toggle-btn" aria-label="Toggle sections">
-                            <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </button>
+
+                        <div>
+                            <button class="archive-btn" data-subject="${subject.Subject_Id}">
+                                <img src="../../assets/imgs/box-archive-solid-full.svg" alt="archive" style="width:25px;height:25px;">
+                            </button>
+                            <button class="toggle-btn" aria-label="Toggle sections">
+                                <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                     <div class="subject-content">
                         <div class="loading-container">
@@ -165,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
         }).join('');
-
         // Attach toggle event listeners
         document.querySelectorAll('.subject-header').forEach(header => {
             header.addEventListener('click', async function() {
@@ -190,7 +175,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-
     // Load sections for a specific subject
     async function loadSectionsForSubject(subjectId, contentElement) {
         try {
@@ -207,7 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
             contentElement.innerHTML = '<div class="no-sections">Error loading sections</div>';
         }
     }
-
     // Display sections table with teacher assignment
     function displaySections(sections, contentElement) {
         const sectionsHtml = `
@@ -378,7 +361,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-
     // Open modal for batch teacher assignment
     async function openBatchAssignModal(sectionSubjectIds) {
         modal.style.display = 'block';
@@ -422,10 +404,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.href = 'admin_subjects.php';
                 });
             }
-            
             const form = document.getElementById('batch-assign-teacher-form');
             const submitButton = form.querySelector('.submit-button');
-            
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 Loader.show();
@@ -479,7 +459,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-
     function updateDisplay(modal, selectContainer, checkboxContainer) {
         const currentSelected = modal.querySelector('input[name="subject"]:checked');
 
@@ -524,7 +503,14 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
+    //ARCHIVE SUBJECTS 
+    subjectsList.addEventListener('click',async function(e){
+        const archiveBtn = e.target.closest('.archive-btn');
+        if(!archiveBtn) return;
 
+        const subjectId = archiveBtn.getAttribute('data-subject');
+        await archiveSubject(subjectId);
+    });
     // Helper function to escape HTML
     function escapeHtml(text) {
         if (!text) return '';
@@ -532,9 +518,75 @@ document.addEventListener('DOMContentLoaded', function() {
         div.textContent = text;
         return div.innerHTML;
     }
+    async function archiveSubject(subjectId) {
+        if(confirm('Are you sure you want to archive this subject?')) {
+            Loader.show();
+            const result = await postArchiveSubject(subjectId);
+            if(!result.success) {
+                Loader.hide();
+                Notification.show({
+                    type: 'error',
+                    title: 'Error',
+                    message: result.message
+                });
+            }
+            else {
+                Notification.show({
+                    type: 'success',
+                    title: 'Success',
+                    message: result.message
+                }); 
+                setTimeout(() => {
+                    Loader.hide();
+                    loadSubjects();
+                }, 1000);
+            }
+        }
+    }
 });
-
 // API Functions
+const TIME_OUT = 30000;
+async function postArchiveSubject(subjectId)  {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(()=> controller.abort(),TIME_OUT);
+    try {
+        const response = await fetch(`../../../BackEnd/api/admin/postArchiveSubject.php`,{
+            signal: controller.signal,
+            method: 'POST',
+            body: new URLSearchParams({ "subject-id": subjectId})
+        });
+        clearTimeout(timeoutId);
+        let data;
+        try {
+            data = await response.json();
+        }
+        catch{
+            throw new Error('Invalid response');
+        }
+        if(!response.ok) {
+            return {
+                success: false,
+                message: data.message || `HTTP ERROR: Request responded with status ${response.status}`,
+                data: null
+            };
+        }
+        return data;
+    }
+    catch(error) {
+        if(error.name === "AbortError") {
+            return {
+                success: false,
+                message: `Request timeout. Server took too long to response: took ${TIME_OUT/1000} seconds`,
+                data: null
+            };
+        }
+        return {
+            success: false,
+            message: error.message || `Something went wrong`,
+            data: null
+        };
+    }
+}
 async function fetchAllTeachers(subjectId) {
     const response = await fetch(`../../../BackEnd/api/admin/fetchAllTeachers.php?sec-sub-id=${subjectId}`);
 
@@ -555,7 +607,6 @@ async function fetchAllTeachers(subjectId) {
     
     return data;
 }
-
 async function fetchAddSubjectForm() {
     try {
         let response = await fetch(`../../../BackEnd/templates/admin/fetchAddSubjectForm.php`);
@@ -572,7 +623,6 @@ async function fetchAddSubjectForm() {
         return null;
     }
 }
-
 async function postAddSubject(formData) {
     const response = await fetch(`../../../BackEnd/api/admin/postAddSubjects.php`, {
         method: 'POST',

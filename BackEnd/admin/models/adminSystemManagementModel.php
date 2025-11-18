@@ -131,7 +131,7 @@ class adminSystemManagementModel {
                     FROM students AS s
                     LEFT JOIN grade_level AS g ON s.Grade_Level_Id = g.Grade_Level_Id
                     LEFT JOIN sections AS se ON s.Section_Id = se.Section_Id
-                    WHERE Is_Archived = 1";
+                    WHERE s.Is_Archived = 1";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -140,19 +140,6 @@ class adminSystemManagementModel {
         catch(PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to fetch all the students',0,$e);
-        }
-    }
-    public function getArchivedTeachers() : array {
-        try {
-            $sql = "SELECT Staff_Id, Staff_First_Name, Staff_Middle_Name, Staff_Last_Name, Staff_Contact_Number, Position FROM archive_teachers";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $result;
-        }
-        catch(PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
-            throw new DatabaseException('Failed to fetch all teachers',0,$e);
         }
     }
     //HELPERS
@@ -166,6 +153,19 @@ class adminSystemManagementModel {
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchColumn();
+            return $result;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseExcetpion("Failed to fetch this year's school year id",0,$e);
+        }
+    }
+    public function getArchivedSubjects() {
+        try {
+            $sql = "SELECT * FROM subjects WHERE Is_Archived = 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }
         catch(PDOException $e) {
@@ -191,6 +191,85 @@ class adminSystemManagementModel {
         catch(PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to insert/update school year details',0,$e);
+        }
+    }
+        public function getArchivedTeachers():array {
+        try {
+            $sql = "SELECT * FROM staffs WHERE Is_Archived = 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to insert to users',0,$e);
+        }
+    }
+    public function getArchivedAdvisers():array {
+        try {
+            $sql = "SELECT acs.* FROM archive_section_adivsers acs 
+                    JOIN school_year_details sy ON sy.School_Year_Details_ID = acs.School_Year_Details_Id 
+                    ORDER BY sy.end_year ASC";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to insert to users',0,$e);
+        }
+    }
+    public function getArchivedSubjectTeachers():array {
+        try {
+            $sql = "SELECT * FROM archive_section_subject_teachers ast
+                    JOIN school_year_details sy ON sy.School_Year_Details_ID = ast.School_Year_Details_Id 
+                    ORDER BY sy.end_year ASC";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to insert to users',0,$e);
+        }
+    }
+    public function deleteTeacher(int $staffId):bool {
+        try {
+            $sql = "DELETE FROM staffs WHERE Staff_Id = :staffId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':staffId'=>$staffId]);
+            return true;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to insert to users',0,$e);
+        }
+    }
+    public function deleteArchivedAdviser(int $staffId) {
+        try {
+            $sql = "DELETE FROM archive_section_advisers WHERE Staff_Id = :staffId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':staffId'=>$staffId]);
+            return true;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to insert to users',0,$e);
+        }
+    }
+    public function deleteArchivedSubjectTeacher(int $staffId) {
+        try {
+            $sql = "DELETE FROM archive_section_subject_teachers WHERE Staff_Id = :staffId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':staffId'=>$staffId]);
+            return true;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to insert to users',0,$e);
         }
     }
 }

@@ -321,7 +321,10 @@ body {
 }
 
 .student-archives,
-.teacher-archives {
+.teacher-archives,
+.subject-archives,
+.section-archives,
+.yearly-records {
   background: rgb(36 186 255 / 28%);
   backdrop-filter: blur(12px);
   border-radius: 20px;

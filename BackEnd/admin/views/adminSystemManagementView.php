@@ -214,4 +214,42 @@ class adminSystemManagementView {
             echo '</tbody></table></div>';
         }
     }
+    public function displayArchivedSubjects() {
+        try {
+            $data = $this->controller->viewArchivedSubjects();
+            if(!$data['success']) {
+                echo '<div class="error-message">'. htmlspecialchars($data['message']) .'</div>';
+                return;
+            }
+            if($data['success'] && empty($data['data'])) {
+                echo '<div class="error-message">'. htmlspecialchars($data['message']) .'</div>';
+                return;
+            }
+            else {
+                echo '<div class="table-teachers-container"><table class="table-subjects">';
+                echo $this->tableTemplate->returnHorizontalTitles([
+                    'Subject Name', 'Action'
+                ], 'archive-subjects-table-title');
+                echo '<tbody>';
+                foreach($data['data'] as $row)  {
+                    $subjectName =!empty($row['Subject_Name']) ?$row['Subject_Name'] : 'Subject name not found';
+                    $actionButtons = new safeHTML('
+                        <button id="view-teacher">
+                            <img class="view-icon" src="../../assets/imgs/eye-regular.svg" alt="View">
+                        </button>
+                        <button id="edit-teacher">
+                            <img class="edit-icon" src="../../assets/imgs/edit-yellow-green.svg" alt="Edit">
+                        </button>
+                    ');
+                    echo $this->tableTemplate->returnHorizontalRows(
+                        [ $subjectName,$actionButtons],'subjects-table-data');
+                }
+                echo '</tbody></table></div>';
+            }
+        }
+        catch(Throwable $t) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$t."\n",3, __DIR__ . '/../../errorLogs.txt');
+            echo '<div class="error-message"> There was a syntax problem. Please wait while we look into it</div>';
+        }
+    }
 }
