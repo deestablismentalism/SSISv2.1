@@ -132,41 +132,46 @@ class adminTeachersModel {
             throw new DatabaseException('Failed to insert to users',0,$e);
         }
     }
-    
     public function archiveStaff(int $staffId) : bool {
         try {
-            $this->conn->beginTransaction();
-            
-            // Insert staff data into archive_teachers table
-            $insertSql = "INSERT INTO archive_teachers 
-                         (Staff_Id, Staff_First_Name, Staff_Middle_Name, Staff_Last_Name, 
-                          Staff_Address_Id, Staff_Identifier_Id, Birth_Date, Staff_Email, 
-                          Staff_Contact_Number, Staff_Status, Staff_Type, Position, Timestamp)
-                         SELECT Staff_Id, Staff_First_Name, Staff_Middle_Name, Staff_Last_Name, 
-                                Staff_Address_Id, Staff_Identifier_Id, Birth_Date, Staff_Email, 
-                                Staff_Contact_Number, Staff_Status, Staff_Type, Position, Timestamp
-                         FROM staffs 
-                         WHERE Staff_Id = :id AND Staff_Type = 2";
-            $insertStmt = $this->conn->prepare($insertSql);
-            $insertStmt->execute([':id' => $staffId]);
-            
-            // Update staffs table to set Is_Archived = 1
-            $updateSql = "UPDATE staffs SET Is_Archived = 1 WHERE Staff_Id = :id AND Staff_Type = 2";
-            $updateStmt = $this->conn->prepare($updateSql);
-            $updateStmt->execute([':id' => $staffId]);
-            
-            if($updateStmt->rowCount() === 0) {
-                $this->conn->rollBack();
+            $sql = "UPDATE staffs SET Is_Archived = 1 WHERE Staff_Id = :id AND Staff_Type = 2";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':id' => $staffId]);
+            if($stmt->rowCount() === 0) {
                 return false;
             }
-            
-            $this->conn->commit();
             return true;
         }
         catch(PDOException $e) {
-            $this->conn->rollBack();
             error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to archive staff',0,$e);
+        }
+    }
+    public function restoreStaff(int $staffId) : bool {
+        try {
+            $sql = "UPDATE staffs SET Is_Archived = 0 WHERE Staff_Id = :id AND Staff_Type = 2";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':id' => $staffId]);
+            if($stmt->rowCount() === 0) {
+                return false;
+            }
+            return true;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to archive staff',0,$e);
+        }
+    }
+    public function deleteStaff(int $staffId):bool {
+        try {
+            $sql = "DELETE FROM staffs WHERE Staff_Id = :staffId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':staffId'=>$staffId]);
+            return true;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to delete staff',0,$e);
         }
     }
 }

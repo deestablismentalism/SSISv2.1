@@ -200,11 +200,11 @@ class adminSystemManagementView {
                 $contactNumber = $rows['Staff_Contact_Number'];
                 $position = !empty($rows['Position']) ? $rows['Position'] : 'No position set';
                 $actionButtons = new safeHTML('
-                <button id="view-teacher">
-                    <img class="view-icon" src="../../assets/imgs/eye-regular.svg" alt="View">
+                <button class="restore-teacher" data-teacher="'.$rows['Staff_Id'].'"> 
+                <img src="../../assets/imgs/arrow-rotate-right-solid-full.svg" alt="Restore Teacher">
                 </button>
-                <button id="edit-teacher">
-                    <img class="edit-icon" src="../../assets/imgs/edit-yellow-green.svg" alt="Edit">
+                <button class="delete-teacher" data-teacher="'.$rows['Staff_Id'].'"> 
+                <img src="../../assets/imgs/trash-solid.svg" alt="Delete Teacher Information">
                 </button>
                 ');
                 echo $this->tableTemplate->returnHorizontalRows([
@@ -234,11 +234,11 @@ class adminSystemManagementView {
                 foreach($data['data'] as $row)  {
                     $subjectName =!empty($row['Subject_Name']) ?$row['Subject_Name'] : 'Subject name not found';
                     $actionButtons = new safeHTML('
-                        <button id="view-teacher">
-                            <img class="view-icon" src="../../assets/imgs/eye-regular.svg" alt="View">
+                        <button class="restore-subject" data-subject="'.$row['Subject_Id'].'"> 
+                        <img src="../../assets/imgs/arrow-rotate-right-solid-full.svg" alt="Restore Subject">
                         </button>
-                        <button id="edit-teacher">
-                            <img class="edit-icon" src="../../assets/imgs/edit-yellow-green.svg" alt="Edit">
+                        <button class="delete-subject" data-subject="'.$row['Subject_Id'].'"> 
+                        <img src="../../assets/imgs/trash-solid.svg" alt="Delete Subject Information">
                         </button>
                     ');
                     echo $this->tableTemplate->returnHorizontalRows(

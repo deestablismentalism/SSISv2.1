@@ -236,18 +236,6 @@ class adminSystemManagementModel {
             throw new DatabaseException('Failed to insert to users',0,$e);
         }
     }
-    public function deleteTeacher(int $staffId):bool {
-        try {
-            $sql = "DELETE FROM staffs WHERE Staff_Id = :staffId";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->execute([':staffId'=>$staffId]);
-            return true;
-        }
-        catch(PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert to users',0,$e);
-        }
-    }
     public function deleteArchivedAdviser(int $staffId) {
         try {
             $sql = "DELETE FROM archive_section_advisers WHERE Staff_Id = :staffId";
