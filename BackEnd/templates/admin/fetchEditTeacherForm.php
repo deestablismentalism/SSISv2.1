@@ -12,7 +12,7 @@ $staffId = intval($_GET['staff_id']);
 $db = new Connect();
 $conn = $db->getConnection();
 
-$sql = "SELECT Position, Staff_Status FROM staffs WHERE Staff_Id = :staff_id";
+$sql = "SELECT Position, Staff_Status, Staff_Type FROM staffs WHERE Staff_Id = :staff_id";
 $stmt = $conn->prepare($sql);
 $stmt->bindParam(':staff_id', $staffId);
 $stmt->execute();
@@ -29,8 +29,13 @@ $statusMap = [
     2 => 'Retired',
     3 => 'Transferred Out'
 ];
+$staffTypeMap = [
+    1 => 'Admin',
+    2 => 'Teacher'
+];
 $currentStatus = $statusMap[$teacher['Staff_Status']] ?? 'Active';
 $currentPosition = $teacher['Position'];
+$currentStaffType = $staffTypeMap[$teacher['Staff_Type']] ?? 'Teacher';
 ?>
 
 <div class="modal-header">
@@ -39,6 +44,14 @@ $currentPosition = $teacher['Position'];
 </div>
 <form id="edit-teacher-form">
     <input type="hidden" name="staff_id" value="<?= htmlspecialchars($staffId) ?>">
+    
+    <div class="form-group">
+        <label for="staff_type">Staff Type</label>
+        <select id="staff_type" name="staff_type" required>
+            <option value="Admin" <?= $currentStaffType === 'Admin' ? 'selected' : '' ?>>Admin</option>
+            <option value="Teacher" <?= $currentStaffType === 'Teacher' ? 'selected' : '' ?>>Teacher</option>
+        </select>
+    </div>
     
     <div class="form-group">
         <label for="status">Status</label>

@@ -23,7 +23,7 @@ class adminTeachersView {
         else {
             echo '<div class="table-teachers-container"><table class="table-teachers">';
             echo $this->tableTemplate->returnHorizontalTitles([
-                'Full Name', 'Contact Number', 'Position', 'Action'
+                'Full Name', 'Contact Number', 'Position', 'Staff Type', 'Action'
             ], 'teachers-table-title');
 
             echo '<tbody>';
@@ -32,6 +32,7 @@ class adminTeachersView {
                 $fullName = $rows['Staff_Last_Name'] . ', ' . $rows['Staff_First_Name'] . ' ' . $middleName;
                 $contactNumber = $rows['Staff_Contact_Number'];
                 $position = !empty($rows['Position']) ? $rows['Position'] : 'No position set';
+                $staffType = $rows['Staff_Type'] == 1 ? 'Admin' : 'Teacher';
                 $actionButtons = new safeHTML('
                 <button id="view-teacher" class="view-teacher-btn" data-staff-id="'. $rows['Staff_Id'] . '">
                     <img class="view-icon" src="../../assets/imgs/eye-regular.svg" alt="View">
@@ -39,9 +40,12 @@ class adminTeachersView {
                 <button id="edit-teacher" class="edit-teacher-btn" data-staff-id="'. $rows['Staff_Id'] . '">
                     <img class="edit-icon" src="../../assets/imgs/edit-yellow-green.svg" alt="Edit">
                 </button>
+                <button id="archive-staff" class="archive-staff-btn" data-staff-id="'. $rows['Staff_Id'] . '">
+                    <img class="archive-icon" src="../../assets/imgs/box-archive-solid-full.svg" alt="Archive">
+                </button>
                 ');
                 echo $this->tableTemplate->returnHorizontalRows([
-                    $fullName, $contactNumber, $position, $actionButtons 
+                    $fullName, $contactNumber, $position, $staffType, $actionButtons 
                 ], 'teachers-data');
             }
             echo '</tbody></table></div>';

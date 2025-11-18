@@ -632,7 +632,7 @@ table.enrollments tr:hover td{
   margin: 1rem 0;
 }
 
-.accept-btn, .toFollow-btn, .reject-btn{
+.accept-btn, .resubmit-btn{
     padding: 0.7rem 1.2rem;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -654,27 +654,17 @@ table.enrollments tr:hover td{
     background-color: #218838;
 }
 
-.toFollow-btn {
+.resubmit-btn {
     background-color: #ffc107;
     color: #333333;
 }
 
-.toFollow-btn:hover {
+.resubmit-btn:hover {
     background-color: #e0a800;
 }
 
-.reject-btn {
-    background-color: #dc3545;
-    color: #ffffff;
-}
-
-.reject-btn:hover {
-    background-color: #c82333;
-}
-
 .modal-content > .accept-btn,
-.modal-content > .toFollow-btn,
-.modal-content > .reject-btn {
+.modal-content > .resubmit-btn {
     margin-top: 1.5rem;
 }
 @keyframes dots {
@@ -711,7 +701,7 @@ table.enrollments tr:hover td{
     border-bottom: 1px solid #e8e8e8;
   }
 
-  .accept-btn, .toFollow-btn, .reject-btn {
+  .accept-btn, .resubmit-btn {
     width: 100%;
     margin: 0.25rem 0;
   }

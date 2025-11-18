@@ -102,19 +102,19 @@ class adminEnrolleesController {
             return ['success'=> false,'message'=> 'There was an unexpected problem: ' .$e->getMessage(), 'data'=> []];        
         }
     }
-    private function returnPsaImageDir(int $enrolleeId):array {
+    private function returnReportCardData(int $enrolleeId): array {
         try {
-            $data = $this->enrolleesModel->getPsaImg($enrolleeId);
+            $data = $this->enrolleesModel->getEnrolleeReportCard($enrolleeId);
             if(is_null($data)) {
-                return ['success'=> true,'message'=> 'PSA image directory not found','data'=>$data];
+                return ['success' => true, 'message' => 'No report card submission found', 'data' => null];
             }
-            return ['success'=> true,'message'=>'PSA image directory succesfully fetched','data'=>$data];
+            return ['success' => true, 'message' => 'Report card submission found', 'data' => $data];
         }
         catch(DatabaseException $e) {
-            return ['success'=> false,'message'=> 'There was a problem on our side','error_code'=> $e->getCode(),'error_message'=> $e->getPrevious()?->getMessage(),'data'=> []];
+            return ['success' => false, 'message' => 'There was a problem on our side', 'error_code' => $e->getCode(), 'error_message' => $e->getPrevious()?->getMessage(), 'data' => []];
         }
         catch(Exception $e) {
-            return ['success'=> false,'message'=> 'There was an unexpected problem: ' .$e->getMessage(), 'data'=> []];        
+            return ['success' => false, 'message' => 'There was an unexpected problem: ' . $e->getMessage(), 'data' => []];
         }
     }
     //VIEW
@@ -129,7 +129,7 @@ class adminEnrolleesController {
             $disInfo = $this->returnEnrolleeDisablityInfo($enrolleeId);
             $parInfo = $this->returnEnrolleeParentInfo($enrolleeId);
             $address = $this->returnEnrolleeAddress($enrolleeId);
-            $psaDir = $this->returnPsaImageDir($enrolleeId);
+            $reportCard = $this->returnReportCardData($enrolleeId);
             $isAllFalse = !$perInfo['success'] && !$eduInfo['sucess'] && !$eduBg['success'] && !$disInfo['success'] && !$parInfo['success'] 
             && !$address['success'];
             if($isAllFalse) {
@@ -146,7 +146,7 @@ class adminEnrolleesController {
                 'disability_info'=>$disInfo,
                 'parent_info'=>$parInfo,
                 'address'=>$address,
-                'psa_dir'=>$psaDir
+                'report_card'=>$reportCard
             ];
         }
         catch(DatabaseException $e) {

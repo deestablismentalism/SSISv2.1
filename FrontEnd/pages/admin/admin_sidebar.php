@@ -58,9 +58,16 @@
                                     <span class="sub-nav"> View Subject Details</span>
                                 </li>
                             </ul>
+                        <!--
                         <div class="menu border-100sb">
                             <img src="../../assets/imgs/calendar.png" class="bi">
                             <span id="sections-spn" class="menu-title"> <a href="./admin_schedules.php" class="admin-nav-links"> Schedules</a></span>
+                        </div>
+                        -->
+                        <!--LOCKER-->
+                        <div class="menu border-100sb">
+                            <img src="../../assets/imgs/subjects-logo.png" class="bi">
+                            <span id="locker-spn" class="menu-title"> <a href="./admin_locker.php" class="admin-nav-links"> Locker</a></span>
                         </div>
                         <!--SYSTEM MANAGEMENT -->
                         <div class="menu border-100sb">
