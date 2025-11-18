@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-if (!isset($_POST['staff_id']) || !isset($_POST['status']) || !isset($_POST['position'])) {
+if (!isset($_POST['staff_id']) || !isset($_POST['status']) || !isset($_POST['position']) || !isset($_POST['staff_type'])) {
     echo json_encode([
         'success' => false,
         'message' => 'Missing required fields'
@@ -21,9 +21,10 @@ if (!isset($_POST['staff_id']) || !isset($_POST['status']) || !isset($_POST['pos
 $staffId = intval($_POST['staff_id']);
 $status = $_POST['status'];
 $position = $_POST['position'];
+$staffType = $_POST['staff_type'];
 
 $model = new adminEditInformation();
-$result = $model->editTeacherInformation($status, $position, $staffId);
+$result = $model->editTeacherInformation($status, $position, $staffType, $staffId);
 
 echo json_encode($result);
 ?>

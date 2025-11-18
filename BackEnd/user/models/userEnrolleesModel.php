@@ -72,7 +72,7 @@ class userEnrolleesModel {
                 INNER JOIN educational_background AS eb ON e.Educational_Background_Id = eb.Educational_Background_Id
                 INNER JOIN enrollee_address AS ea ON e.Enrollee_Address_Id = ea.Enrollee_Address_Id
                 INNER JOIN disabled_student AS ds ON e.Disabled_Student_Id = ds.Disabled_Student_Id
-                INNER JOIN Psa_directory AS pd ON e.Psa_Image_Id = pd.Psa_Image_Id 
+                LEFT JOIN Psa_directory AS pd ON e.Psa_Image_Id = pd.Psa_Image_Id 
                 WHERE e.Enrollee_Id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(':id', $enrolleeId,PDO::PARAM_INT);
@@ -113,10 +113,10 @@ class userEnrolleesModel {
     public function getPsaImg(int $enrolleeId) : ?string { //F 3.1.5
         try {
             $sql = " SELECT psa_directory.directory FROM enrollee 
-                INNER JOIN psa_directory ON enrollee.Psa_Image_Id = Psa_directory.Psa_Image_Id
+                LEFT JOIN psa_directory ON enrollee.Psa_Image_Id = Psa_directory.Psa_Image_Id
                 WHERE Enrollee_Id = :id";
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute(['id' => $id]);
+            $stmt->execute(['id' => $enrolleeId]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
             return isset($result['directory']) ? (string)$result['directory'] : null;
@@ -128,7 +128,8 @@ class userEnrolleesModel {
     }
     public function getUserEnrollees(int $userId) : array{ //F 3.1.6
         try {
-            $sql = "SELECT * FROM enrollee WHERE User_Id = :id";
+            $sql = "SELECT * FROM enrollee WHERE User_Id = :id AND School_Year_Details_Id 
+            IN(SELECT School_Year_Details_Id FROM school_year_details WHERE Is_Expired = 0)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id', $userId, PDO::PARAM_INT );
             $stmt->execute();
@@ -286,7 +287,7 @@ class userEnrolleesModel {
         try {
             $sql = "SELECT pd.filename, pd.directory 
                     FROM enrollee e
-                    JOIN Psa_directory pd ON e.Psa_Image_Id = pd.Psa_Image_Id
+                    LEFT JOIN Psa_directory pd ON e.Psa_Image_Id = pd.Psa_Image_Id
                     WHERE e.Enrollee_Id = :enrolleeId";
             
             $stmt = $this->conn->prepare($sql);
@@ -304,12 +305,22 @@ class userEnrolleesModel {
     public function setResubmitStatus(int $enrolleeId) : bool { //F 3.2.1
         $result = true;
         try {
+            // Update transaction status to 3 (Resubmitted)
             $sql = "UPDATE enrollment_transactions SET Transaction_Status = 3 WHERE Enrollee_ID = :enrolleeId";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(':enrolleeId', $enrolleeId, PDO::PARAM_INT);
             if(!$stmt->execute()) {
                 $result = false;
             }
+            
+            // Reset enrollee back to Pending status (3) so it returns to teacher's queue
+            $sql2 = "UPDATE enrollee SET Enrollment_Status = 3 WHERE Enrollee_ID = :enrolleeId";
+            $stmt2 = $this->conn->prepare($sql2);
+            $stmt2->bindValue(':enrolleeId', $enrolleeId, PDO::PARAM_INT);
+            if(!$stmt2->execute()) {
+                $result = false;
+            }
+            
             return $result;
             }
         catch (PDOException $e) {

@@ -16,6 +16,6 @@
 <?php $view->displayDisabledInfo(); ?>
 <h1>V. Impormasyon ng mga Magulang </h1>
 <?php $view->displayParentInfo(); ?>          
-<!-- 📄 PSA Image Section -->
-<h1>VI. PSA Birth Certificate</h1>
-<?php $view->displayPsaImg(); ?>
+<!-- 📄 Report Card Section -->
+<h1>VI. Report Card</h1>
+<?php $view->displayReportCard(); ?>

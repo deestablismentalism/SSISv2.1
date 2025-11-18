@@ -10,17 +10,17 @@ class adminTeachersModel {
         $db = new Connect();
         $this->conn = $db->getConnection();
     }
-    //Fetching all teachers
+    //Fetching all teachers and admins
     public function selectAllTeachers() : array {
         try {
-            $sql = "SELECT Staff_Id, Staff_First_Name, Staff_Middle_Name, Staff_Last_Name, Staff_Contact_Number, Position FROM staffs WHERE Staff_Type = 2";
+            $sql = "SELECT Staff_Id, Staff_First_Name, Staff_Middle_Name, Staff_Last_Name, Staff_Contact_Number, Position, Staff_Type FROM staffs WHERE Staff_Type IN (1, 2) AND Is_Archived = 0 ORDER BY Staff_Type, Staff_Last_Name";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }
         catch(PDOException $e) {
-            throw new DatabaseException('Failed to fetch all teachers',0,$e);
+            throw new DatabaseException('Failed to fetch all staff',0,$e);
         }
     }
     public function checkCurrentSubjectTeacherOfSectionSubject(int $sectionSubjectsId) : ?int {
@@ -130,6 +130,43 @@ class adminTeachersModel {
             $this->conn->rollBack();
             error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to insert to users',0,$e);
+        }
+    }
+    
+    public function archiveStaff(int $staffId) : bool {
+        try {
+            $this->conn->beginTransaction();
+            
+            // Insert staff data into archive_teachers table
+            $insertSql = "INSERT INTO archive_teachers 
+                         (Staff_Id, Staff_First_Name, Staff_Middle_Name, Staff_Last_Name, 
+                          Staff_Address_Id, Staff_Identifier_Id, Birth_Date, Staff_Email, 
+                          Staff_Contact_Number, Staff_Status, Staff_Type, Position, Timestamp)
+                         SELECT Staff_Id, Staff_First_Name, Staff_Middle_Name, Staff_Last_Name, 
+                                Staff_Address_Id, Staff_Identifier_Id, Birth_Date, Staff_Email, 
+                                Staff_Contact_Number, Staff_Status, Staff_Type, Position, Timestamp
+                         FROM staffs 
+                         WHERE Staff_Id = :id AND Staff_Type = 2";
+            $insertStmt = $this->conn->prepare($insertSql);
+            $insertStmt->execute([':id' => $staffId]);
+            
+            // Update staffs table to set Is_Archived = 1
+            $updateSql = "UPDATE staffs SET Is_Archived = 1 WHERE Staff_Id = :id AND Staff_Type = 2";
+            $updateStmt = $this->conn->prepare($updateSql);
+            $updateStmt->execute([':id' => $staffId]);
+            
+            if($updateStmt->rowCount() === 0) {
+                $this->conn->rollBack();
+                return false;
+            }
+            
+            $this->conn->commit();
+            return true;
+        }
+        catch(PDOException $e) {
+            $this->conn->rollBack();
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to archive staff',0,$e);
         }
     }
 }

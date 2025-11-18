@@ -1,0 +1,237 @@
+4-Day MVP: Hybrid Report Card Verification System (PHP + JS + Python OCR)
+
+OBJECTIVE:
+Build a minimal but functional enrollment document verifier using PHP + JS + Python OCR that can automatically detect most wrong/mismatched report card uploads and only send flagged submissions to teachers for manual review.
+
+This is an MVP focusing on speed and core function, not perfect OCR, not beautiful UI, and not complete features. Only what is needed to work.
+
+🚀 SCOPE LIMITED TO 4 DAYS — WHAT MUST BE BUILT
+
+Build ONLY the following:
+
+1. PHP Upload Handler (CORE)
+
+Accept form submission
+
+Save uploaded report card image
+
+Call Python script for OCR
+
+Compare OCR results with submitted LRN and name
+
+Decide:
+
+Auto-approve
+
+Flag for review
+
+Save result in DB
+
+Keep code simple. No frameworks.
+
+2. Python OCR Script (CORE)
+
+Use Tesseract ONLY.
+
+Must do:
+
+Read the uploaded image
+
+Extract:
+
+LRN (12 digits)
+
+Grade-like numbers (75–100)
+
+Basic keywords (“Quarter”, “Grade”, “Filipino”, etc.)
+
+Perform simple quality checks:
+
+Word count
+
+Number of grades detected
+
+Return JSON like:
+
+{
+  "lrn": "900000000144",
+  "grades_found": 8,
+  "word_count": 120,
+  "flags": []
+}
+
+
+If suspicious:
+
+{
+  "flags": ["no_grades","low_text"]
+}
+
+
+NO complex extraction, no table detection, no advanced AI.
+
+3. Basic PHP Auto-Approval Logic (CORE)
+
+Auto-approve ONLY if:
+
+OCR finds LRN
+
+LRN matches the submitted LRN
+
+At least 5 grade-like numbers detected
+
+Word count ≥ 50
+
+No critical flags from Python
+
+Otherwise → set status = “flagged_for_review”.
+
+4. Simple Teacher Review Dashboard (MVP)
+
+A single minimal HTML/PHP page:
+
+List all submissions
+
+Show:
+
+Uploaded report card (image)
+
+Submitted form data
+
+OCR results
+
+Flags
+
+Buttons:
+
+Approve
+
+Reject
+
+Request re-upload
+
+No fancy styling, just functional.
+
+🟥 WHAT MUST NOT BE BUILT (OUT OF SCOPE)
+
+To fit the 4-day deadline, DO NOT build:
+
+❌ advanced ML document detection
+❌ subject row parsing
+❌ fancy UI (just simple HTML tables)
+❌ rotation correction
+❌ blur detection
+❌ QR validation
+❌ name fuzzy matching
+❌ multi-image pages
+❌ field-level accuracy scoring
+❌ user accounts / roles (optional admin login only)
+❌ file format conversions
+❌ mobile optimization
+
+ONLY build enough to have a working pipeline.
+
+🟩 MINIMUM DATABASE DESIGN
+
+Create ONLY the essential fields:
+
+submissions table:
+
+id
+
+student_name
+
+student_lrn
+
+report_card_path
+
+ocr_json (text)
+
+status (“approved”, “flagged”, “pending_review”, “reupload_needed”)
+
+created_at
+
+updated_at
+
+No need for normalized tables or relations for MVP.
+
+🟦 WORKFLOW (WHAT THE CODE MUST IMPLEMENT)
+
+Parent submits form + report card
+
+PHP saves image
+
+PHP runs Python OCR script
+
+Python extracts minimal info
+
+Python outputs JSON
+
+PHP reads JSON
+
+PHP applies simple logic:
+
+If LRN matches AND grades found ≥5 → auto-approve
+
+Else → flag for review
+
+Teacher dashboard shows flagged submissions
+
+Teacher manually approves/rejects
+
+This is all that needs to work.
+
+🛠️ REQUIRED OUTPUTS FROM THE AI (KEEP THEM SIMPLE)
+
+AI must generate:
+
+✔️ validate_card.py
+
+Tesseract OCR
+
+Basic regex extraction
+
+Word count
+
+Grades count
+
+Minimal flags
+
+✔️ PHP upload handler
+
+Save file
+
+Call Python
+
+Parse JSON
+
+Apply approval logic
+
+Insert into DB
+
+✔️ Simple admin dashboard
+
+Table of submissions
+
+Basic detail page
+
+Approve/Reject/Request re-upload
+
+✔️ Minimal CSS
+
+ONLY enough to not look broken.
+
+✔️ Instructions:
+
+How to install Tesseract
+
+How to run Python script from PHP
+
+Folder structure
+
+⚡ FINAL INSTRUCTION TO THE AI
+
+Generate ONLY the features stated above, nothing more.
+Everything must be achievable in 4 days by one developer.
+Keep the system minimal, functional, and simple.
+Focus on working code, not polished code.

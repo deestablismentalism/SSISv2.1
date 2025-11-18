@@ -20,6 +20,28 @@
                             <img src="../../assets/imgs/student.svg" class="bi">
                             <span id="students-spn" class="menu-title"> <a href="./admin_all_students.php" class="admin-nav-links">Students </a></span> 
                         </div>    
+                        <!--TEACHERS-->
+                        <div class="menu border-100sb" id="teachers">
+                            <img src="../../assets/imgs/teachers.svg" class="bi">
+                            <span id="teachers-spn" class="menu-title"> <a href="./admin_all_teachers.php" class="allTeachers">Teachers</a></span>
+                        </div> 
+                        <!--ENROLLS-->
+                        <div class="menu border-100sb" id="enrolls">
+                            <img src="../../assets/imgs/enrolls.svg" class="bi">
+                            <span id="enrolls-spn" class="menu-title">Enrolls</span>
+                            <button class="enrolls-btn dropdown"><img src="../../assets/imgs/chevron-down.svg" class ="bi-chevron-down"></button>
+                        </div>
+                            <ul class="enrolls-ul drop-content">
+                                <li>
+                                    <a href="./admin_all_enrollees.php" class="enrolled"> Processed Enrollments</a>
+                                </li>
+                                <li>
+                                    <a href="admin_unprocessed_enrollments.php" class="unprocessed"> Unprocessed Enrollments </a>
+                                </li>
+                                <li>
+                                    <a href="../staff/staff_pending_enrollments.php" class="pending">Pending</a>
+                                </li>
+                            </ul>
                         <!--GRADE LEVELS-->
                         <div class="menu border-100sb">
                             <img src="../../assets/imgs/sections-logo.png" class="bi">
@@ -57,29 +79,12 @@
                             <img src="../../assets/imgs/subjects-logo.png" class="bi">
                             <span id="announcements-spn" class="menu-title"> <a href="./admin_announcements.php" class="admin-nav-links"> Announcements</a></span>
                         </div>
+                        <!--LOCKER-->
+                        <div class="menu border-100sb">
+                            <img src="../../assets/imgs/subjects-logo.png" class="bi">
+                            <span id="locker-spn" class="menu-title"> <a href="./admin_locker.php" class="admin-nav-links"> Locker</a></span>
+                        </div>
                     </nav>
-                    <!--TEACHERS-->
-                    <div class="menu border-100sb" id="teachers">
-                        <img src="../../assets/imgs/teachers.svg" class="bi">
-                        <span id="teachers-spn" class="menu-title"> <a href="./admin_all_teachers.php" class="allTeachers">Teachers</a></span>
-                    </div> 
-                    <!--ENROLLS-->
-                    <div class="menu border-100sb" id="enrolls">
-                        <img src="../../assets/imgs/enrolls.svg" class="bi">
-                        <span id="enrolls-spn" class="menu-title">Enrolls</span>
-                        <button class="enrolls-btn dropdown"><img src="../../assets/imgs/chevron-down.svg" class ="bi-chevron-down"></button>
-                    </div>
-                        <ul class="enrolls-ul drop-content">
-                            <li>
-                                <a href="./admin_all_enrollees.php" class="enrolled"> Processed Enrollments</a>
-                            </li>
-                            <li>
-                                <a href="admin_unprocessed_enrollments.php" class="unprocessed"> Unprocessed Enrollments </a>
-                            </li>
-                            <li>
-                                <a href="../staff/staff_pending_enrollments.php" class="pending">Pending</a>
-                            </li>
-                        </ul>
                 </div>
             </div>
         </div>  

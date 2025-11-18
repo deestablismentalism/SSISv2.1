@@ -7,6 +7,7 @@ if (!isset($_SESSION['User']['User-Id']) || !isset($_SESSION['User']['Registrati
 require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
 $extraCss1 = isset($pageCss2) ? $pageCss2 : '';
 $extraCss2 = isset($pageCss3) ? $pageCss3 : '';
+$extraCss3 = isset($pageCss4) ? $pageCss4 : '';
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,6 +22,7 @@ $extraCss2 = isset($pageCss3) ? $pageCss3 : '';
         if(isset($pageCss)) echo $pageCss;
         echo $extraCss1;
         echo $extraCss2;
+        echo $extraCss3;
     ?>
 </head>
 <body>
@@ -30,5 +32,8 @@ $extraCss2 = isset($pageCss3) ? $pageCss3 : '';
     </div>
 </body>
 <script src="../../assets/js/user/user-base-design.js" defer></script>
-<?php if(isset($pageJs)) echo $pageJs; ?>
+<?php 
+    if(isset($pageJs)) echo $pageJs;
+    if(isset($pageJs2)) echo $pageJs2;
+?>
 </html>

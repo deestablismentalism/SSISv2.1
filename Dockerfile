@@ -13,6 +13,10 @@ RUN apk add --no-cache \
     freetype-dev \
     oniguruma-dev \
     libxml2-dev \
+    python3 \
+    py3-pip \
+    tesseract-ocr \
+    tesseract-ocr-data-eng \
     && docker-php-ext-configure gd \
         --with-freetype \
         --with-jpeg \
@@ -25,6 +29,9 @@ RUN apk add --no-cache \
         xml \
         simplexml \
         fileinfo
+
+# Install Python dependencies for OCR
+RUN pip3 install --no-cache-dir pytesseract pillow --break-system-packages
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

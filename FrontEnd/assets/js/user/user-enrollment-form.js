@@ -1,4 +1,12 @@
 import {ValidationUtils,capitalizeFirstLetter,generateOptions, getRegions, getProvinces, getCities, getBarangays, preventCharactersByRegex, limitCharacters} from "../utils.js";
+
+// Report Card Validation State
+let reportCardValidationStatus = null;
+let isValidatingReportCard = false;
+
+// Form submission state
+let isSubmittingForm = false;
+
 document.addEventListener('DOMContentLoaded',function(){
     // |=================|
     // |===== ORDER =====|
@@ -35,8 +43,9 @@ document.addEventListener('DOMContentLoaded',function(){
     const language = document.getElementById("language");
     const religion = document.getElementById("religion");
     //=== STUDENT IF DISABLED (FORM 3RD PART) ===
-    const disability = document.getElementById("boolsn");
-    const assistiveTech = document.getElementById("atdevice");
+    // Old fields - kept for backwards compatibility but may not be in use
+    const disability = document.getElementById("boolsn"); // Old field
+    const assistiveTech = document.getElementById("atdevice"); // Old field
     //=== STUDENT ADDRESS (FORM 4TH PART) ===
     const regions = document.getElementById("region");
     const provinces = document.getElementById("province");
@@ -45,18 +54,14 @@ document.addEventListener('DOMContentLoaded',function(){
     const subdivsion = document.getElementById("subdivision");
     const houseNumber = document.getElementById("house-number");
     //===STUDENT PARENTS INFORMATION (FORM 5TH PART) ===
-    const fatherLname = document.getElementById("Father-Last-Name");
-    const fatherFname = document.getElementById("Father-First-Name");
-    const fatherMname = document.getElementById("Father-Middle-Name");
-    const motherLname = document.getElementById("Mother-Last-Name");
-    const motherFname = document.getElementById("Mother-First-Name");
     const motherMname = document.getElementById("Mother-Middle-Name");
     const guardianLname = document.getElementById("Guardian-Last-Name");
     const guardianFname = document.getElementById("Guardian-First-Name");
     const guardianMname = document.getElementById("Guardian-Middle-Name");
-    const fatherCPnum = document.getElementById("F-number");
-    const motherCPnum = document.getElementById("M-number");
     const guardianCPnum = document.getElementById("G-number");
+    //===REPORT CARD INPUTS===
+    const reportCardFront = document.getElementById("report-card-front");
+    const reportCardBack = document.getElementById("report-card-back");
     //===FORM && FORM BUTTON ===
     const form = document.getElementById('enrollment-form');
     const submitButton = form.querySelector('button[type="submit"]');
@@ -141,16 +146,16 @@ document.addEventListener('DOMContentLoaded',function(){
                 city: { code: '', text: '' },
                 barangay: { code: '', text: '' }
             };
-            if(regions.value && regions.selectedIndex !== -1) {
+            if(regions.value && regions.selectedIndex > 0) {
                 addressData.region.code = regions.value;
                 addressData.region.text = regions.options[regions.selectedIndex].text;
             }            
-            if(provinces.value && provinces.selectedIndex !== -1) {
+            if(provinces.value && provinces.selectedIndex > 0) {
                 addressData.province.code = provinces.value;
                 addressData.province.text = provinces.options[provinces.selectedIndex].text;
             }
             if(cityOrMunicipality.value) {
-                if (cityOrMunicipality.tagName === "SELECT" && cityOrMunicipality.selectedIndex !== -1) {
+                if (cityOrMunicipality.tagName === "SELECT" && cityOrMunicipality.selectedIndex > 0) {
                     addressData.city.code = cityOrMunicipality.value;
                     addressData.city.text = cityOrMunicipality.options[cityOrMunicipality.selectedIndex].text;
                 } else if (cityOrMunicipality.tagName === "INPUT") {
@@ -159,7 +164,7 @@ document.addEventListener('DOMContentLoaded',function(){
                 }
             }
             if(barangay.value) {
-                if (barangay.tagName === "SELECT" && barangay.selectedIndex !== -1) {
+                if (barangay.tagName === "SELECT" && barangay.selectedIndex > 0) {
                     addressData.barangay.code = barangay.value;
                     addressData.barangay.text = barangay.options[barangay.selectedIndex].text;
                 } else if (barangay.tagName === "INPUT") {
@@ -560,32 +565,64 @@ document.addEventListener('DOMContentLoaded',function(){
     }
     function validateDisabilityInfo() {
         let isValid = true;
-        if(disability.disabled && assistiveTech.disabled) return isValid;
-        const disabiltiyFields = [
-            {element: disability, error: "em-boolsn" },
-            {element: assistiveTech, error: "em-atdevice" }
-        ];
-        disabiltiyFields.forEach(({element, error})=>{
-            if(element.disabled) return;
-            if(!ValidationUtils.validateEmpty(element, error)) {
+        
+        // Check if disability question is answered
+        const hasDisabilityRadios = document.querySelectorAll('input[name="has-disability"]');
+        const hasDisabilityChecked = Array.from(hasDisabilityRadios).some(radio => radio.checked);
+        
+        if (!hasDisabilityChecked) {
+            isValid = false;
+            // Could add error display here if needed
+        }
+        
+        // If they have disability, check subsequent questions
+        const hasDisabilityYesRadio = document.getElementById('has-disability-yes');
+        if (hasDisabilityYesRadio && hasDisabilityYesRadio.checked) {
+            // Check if can-read-write is answered
+            const canReadWriteRadios = document.querySelectorAll('input[name="can-read-write"]');
+            const canReadWriteChecked = Array.from(canReadWriteRadios).some(radio => radio.checked);
+            
+            if (!canReadWriteChecked) {
                 isValid = false;
             }
-        });
+            
+            // If they can read/write, validate the disability details
+            const canReadWriteYesRadio = document.getElementById('can-read-write-yes');
+            if (canReadWriteYesRadio && canReadWriteYesRadio.checked) {
+                const disabilityDescInput = document.getElementById('disability-description');
+                const assistiveTechInput = document.getElementById('assistive-technology');
+                
+                if (disabilityDescInput && !ValidationUtils.validateEmpty(disabilityDescInput, 'em-disability-desc')) {
+                    isValid = false;
+                }
+                
+                if (assistiveTechInput && !ValidationUtils.validateEmpty(assistiveTechInput, 'em-assistive-tech')) {
+                    isValid = false;
+                }
+            }
+        }
+        
         ValidationUtils.validationState.disabledInfo = isValid;
         return isValid;
     }
     // === ADDRESS VALIDATION ===
     function validateAddressInfo() {
         let isValid = true;
-        const addressFields = [
+        // Required address fields
+        const requiredAddressFields = [
             { element: regions, error: "em-region", label: "Region" },
             { element: provinces, error: "em-province", label: "Province" },
             { element: cityOrMunicipality, error: "em-city", label: "City/Municipality" },
-            { element: barangay, error: "em-barangay", label: "Barangay" },
-            { element: subdivsion, error: "em-subdivision", label: "Subdivision/Street" },
-            { element: houseNumber, error: "em-house-number", label: "House Number" }
+            { element: barangay, error: "em-barangay", label: "Barangay" }
         ];
-        addressFields.forEach(({ element, error, label }) => {
+        // Optional address fields (subdivision, house number)
+        const optionalAddressFields = [
+            { element: subdivsion, error: "em-subdivision" },
+            { element: houseNumber, error: "em-house-number" }
+        ];
+        
+        // Validate required fields
+        requiredAddressFields.forEach(({ element, error, label }) => {
             if (!element) return;
             if (element.tagName === "SELECT") {
                 if (!element.value) {
@@ -602,14 +639,27 @@ document.addEventListener('DOMContentLoaded',function(){
                 } else {
                     ValidationUtils.clearError(error, element);
                 }
-                if (element === houseNumber && !ValidationUtils.isEmpty(element)) {
-                    if (isNaN(element.value)) {
-                        ValidationUtils.errorMessages(error, ValidationUtils.notNumber, element);
-                        isValid = false;
-                    }
-                }
             }
         });
+        
+        // Validate optional fields (only if filled)
+        optionalAddressFields.forEach(({ element, error }) => {
+            if (!element) return;
+            // Clear any existing errors for optional fields
+            if (!ValidationUtils.isEmpty(element)) {
+                // If house number is filled, validate it's numeric
+                if (element === houseNumber && isNaN(element.value)) {
+                    ValidationUtils.errorMessages(error, ValidationUtils.notNumber, element);
+                    isValid = false;
+                } else {
+                    ValidationUtils.clearError(error, element);
+                }
+            } else {
+                // Clear errors for empty optional fields
+                ValidationUtils.clearError(error, element);
+            }
+        });
+        
         ValidationUtils.validationState.addressInfo = isValid;
         return isValid;
     }
@@ -637,22 +687,25 @@ document.addEventListener('DOMContentLoaded',function(){
     }
     function validateParentInfo() {
         let isValid = true;
-        const allInfo = [
-            {element: fatherLname, error: "em-father-last-name"},
-            {element: fatherFname, error: "em-father-first-name"},
-            {element: motherLname, error: "em-mother-last-name"},
-            {element: motherFname, error: "em-mother-first-name"},
+        // Required parent info fields (middle name is optional)
+        const requiredInfo = [
             {element: guardianLname, error: "em-guardian-last-name"},
             {element: guardianFname, error: "em-guardian-first-name"}
         ];
-        allInfo.forEach(({element, error}) => {
+        requiredInfo.forEach(({element, error}) => {
             if (!ValidationUtils.validateEmpty(element, error)) {
                 isValid = false;
             }
         });
-        const phoneInfo = [
-            {element: fatherCPnum, error: "em-f-number"},
-            {element: motherCPnum, error: "em-m-number"},   
+        
+        // Optional field - Guardian Middle Name (clear error if empty)
+        if (guardianMname) {
+            if (ValidationUtils.isEmpty(guardianMname)) {
+                ValidationUtils.clearError("em-guardian-middle-name", guardianMname);
+            }
+        }
+        
+        const phoneInfo = [ 
             {element: guardianCPnum, error: "em-g-number"}
         ];
         phoneInfo.forEach(({element, error}) => {
@@ -820,6 +873,166 @@ document.addEventListener('DOMContentLoaded',function(){
         }
     }
     // === DISABLED STUDENT INIT ===
+    // DISABILITY MODAL - Shows on page load
+    const disabilityModal = document.getElementById('disability-modal');
+    const disabilityModalContinueBtn = document.getElementById('disability-modal-continue');
+    const hasDisabilityYes = document.getElementById('has-disability-yes');
+    const hasDisabilityNo = document.getElementById('has-disability-no');
+    const canReadWriteSection = document.querySelector('.can-read-write');
+    const canReadWriteYes = document.getElementById('can-read-write-yes');
+    const canReadWriteNo = document.getElementById('can-read-write-no');
+    const disabilityDetailsSection = document.querySelector('.disability-details');
+    const disabilityDescInput = document.getElementById('disability-description');
+    const assistiveTechInput = document.getElementById('assistive-technology');
+    const disabilityPopup = document.getElementById('disability-template-popup');
+    const confirmPopupBtn = document.getElementById('confirm-disability-popup');
+
+    // Show modal on page load
+    if (disabilityModal) {
+        disabilityModal.style.display = 'flex';
+    }
+
+    // Track modal completion state
+    let canProceedFromModal = false;
+
+    // Function to check if continue button should be enabled
+    function checkModalContinueState() {
+        let canEnable = false;
+
+        if (hasDisabilityNo && hasDisabilityNo.checked) {
+            // No disability - can proceed
+            canEnable = true;
+        } else if (hasDisabilityYes && hasDisabilityYes.checked) {
+            // Has disability - check if can read/write is answered
+            if (canReadWriteYes && canReadWriteYes.checked) {
+                // Can read/write - check if details are filled
+                if (disabilityDescInput && assistiveTechInput) {
+                    const hasDesc = disabilityDescInput.value.trim().length > 0;
+                    const hasTech = assistiveTechInput.value.trim().length > 0;
+                    canEnable = hasDesc && hasTech;
+                }
+            } else if (canReadWriteNo && canReadWriteNo.checked) {
+                // Cannot read/write - popup will handle redirect
+                canEnable = false;
+            }
+        }
+
+        if (disabilityModalContinueBtn) {
+            disabilityModalContinueBtn.disabled = !canEnable;
+        }
+    }
+
+    // Handle disability question
+    const hasDisabilityRadios = document.querySelectorAll('input[name="has-disability"]');
+    hasDisabilityRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (hasDisabilityYes.checked) {
+                // Show can read/write section
+                canReadWriteSection.style.display = 'flex';
+                // Reset can read/write selection
+                canReadWriteYes.checked = false;
+                canReadWriteNo.checked = false;
+                // Hide details section
+                disabilityDetailsSection.style.display = 'none';
+            } else {
+                // Hide everything if No disability
+                canReadWriteSection.style.display = 'none';
+                disabilityDetailsSection.style.display = 'none';
+                // Reset all fields
+                canReadWriteYes.checked = false;
+                canReadWriteNo.checked = false;
+                if (disabilityDescInput) disabilityDescInput.value = '';
+                if (assistiveTechInput) assistiveTechInput.value = '';
+            }
+            checkModalContinueState();
+        });
+    });
+
+    // Handle can read/write question
+    const canReadWriteRadios = document.querySelectorAll('input[name="can-read-write"]');
+    canReadWriteRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (canReadWriteNo.checked) {
+                // Show popup
+                disabilityPopup.style.display = 'flex';
+                // Hide details section
+                disabilityDetailsSection.style.display = 'none';
+            } else if (canReadWriteYes.checked) {
+                // Show details section
+                disabilityDetailsSection.style.display = 'flex';
+            }
+            checkModalContinueState();
+        });
+    });
+
+    // Popup confirm button - redirect to user_enrollees.php
+    if (confirmPopupBtn) {
+        confirmPopupBtn.addEventListener('click', function() {
+            // Redirect to parent page
+            window.location.href = './user_enrollees.php';
+        });
+    }
+
+    // Close popup when clicking outside
+    if (disabilityPopup) {
+        disabilityPopup.addEventListener('click', function(e) {
+            if (e.target === disabilityPopup) {
+                disabilityPopup.style.display = 'none';
+                // Reset can read/write selection
+                canReadWriteYes.checked = false;
+                canReadWriteNo.checked = false;
+                checkModalContinueState();
+            }
+        });
+    }
+
+    // Validation for disability description
+    if (disabilityDescInput) {
+        disabilityDescInput.addEventListener('input', function() {
+            validateDisabilities(this, 'em-disability-desc');
+            checkModalContinueState();
+        });
+    }
+
+    // Validation for assistive technology
+    if (assistiveTechInput) {
+        assistiveTechInput.addEventListener('input', function() {
+            validateDisabilities(this, 'em-assistive-tech');
+            checkModalContinueState();
+        });
+    }
+
+    // Continue button - close modal and allow form access
+    if (disabilityModalContinueBtn) {
+        disabilityModalContinueBtn.addEventListener('click', function() {
+            // Populate hidden fields for backend
+            const snHidden = document.getElementById('sn-hidden');
+            const boolsnHidden = document.getElementById('boolsn-hidden');
+            const atHidden = document.getElementById('at-hidden');
+            const atdeviceHidden = document.getElementById('atdevice-hidden');
+            
+            if (hasDisabilityNo.checked) {
+                // No disability
+                if (snHidden) snHidden.value = '0';
+                if (boolsnHidden) boolsnHidden.value = '';
+                if (atHidden) atHidden.value = '0';
+                if (atdeviceHidden) atdeviceHidden.value = '';
+            } else if (hasDisabilityYes.checked && canReadWriteYes.checked) {
+                // Has disability and can read/write
+                if (snHidden) snHidden.value = '1';
+                if (boolsnHidden) boolsnHidden.value = disabilityDescInput ? disabilityDescInput.value : '';
+                if (atHidden) atHidden.value = '1';
+                if (atdeviceHidden) atdeviceHidden.value = assistiveTechInput ? assistiveTechInput.value : '';
+            }
+            
+            canProceedFromModal = true;
+            if (disabilityModal) {
+                disabilityModal.style.display = 'none';
+            }
+        });
+    }
+
+    // === OLD DISABLED STUDENT INIT (KEEPING FOR BACKWARDS COMPATIBILITY) ===
     const isDisabled = document.getElementById('is-disabled');
     if(isDisabled) isDisabled.checked = true;
     const hasAssistiveTech = document.getElementById('has-assistive-tech');
@@ -936,7 +1149,7 @@ document.addEventListener('DOMContentLoaded',function(){
         });
     });
 
-    const nameFields = [lname, fname, mname, fatherLname, fatherFname, fatherMname, motherLname, motherFname, motherMname, guardianLname, guardianFname, guardianMname];
+    const nameFields = [lname, fname, mname, guardianLname, guardianFname, guardianMname];
     nameFields.forEach(field => {
         if (field) {
             preventCharactersByRegex(field, nonNameRegex, (element, rejectedChars) => {
@@ -946,7 +1159,7 @@ document.addEventListener('DOMContentLoaded',function(){
     });
 
     const numericFields = [psaNumber, lrn, startYear, endYear, lastYear, lschoolId, fschoolId, 
-                          fatherCPnum, motherCPnum, guardianCPnum, houseNumber];
+                        guardianCPnum, houseNumber];
     numericFields.forEach(field => {
         if (field) {
             preventCharactersByRegex(field, nonNumericRegex, (element, rejectedChars) => {
@@ -965,14 +1178,17 @@ document.addEventListener('DOMContentLoaded',function(){
         }
     });
 
-    const phoneNumbers = [fatherCPnum, motherCPnum, guardianCPnum];
+    const phoneNumbers = [guardianCPnum];
     phoneNumbers.forEach(field => {
         if (field) {
             limitCharacters(field, numLimitPhone);
         }
     });
 
-    // === DISABLITY EVENTS ===
+    // === DISABLITY EVENTS (OLD - COMMENTED OUT FOR NEW SYSTEM) ===
+    // Note: Old disability fields (boolsn, atdevice, sn, at) have been replaced
+    // with new nested conditional flow (has-disability -> can-read-write -> details)
+    /*
     function toggleField(radioChecked, field, savedValue,errorElement) {
         if (!radioChecked) {
             savedValue = field.value;
@@ -1011,9 +1227,11 @@ document.addEventListener('DOMContentLoaded',function(){
     assistiveTech.addEventListener('input',function(){
         validateDisabilities(this,'em-atdevice');
     })
+    */
     // === ADDRESS EVENTS ===
     if (regions) {
         regions.addEventListener("change", async function() {
+            if (isSubmittingForm) return;
             await getProvinceOptions();
             document.getElementById("region-name").value = regions.options[regions.selectedIndex].text;
             if (regionCode == "") {
@@ -1022,6 +1240,7 @@ document.addEventListener('DOMContentLoaded',function(){
             validateAddress("em-region",this);
         });
         provinces.addEventListener("change", async function(){
+            if (isSubmittingForm) return;
             await getCityOptions();
             document.getElementById("province-name").value = provinces.options[provinces.selectedIndex].text;
             if (provinceCode == "") {
@@ -1030,6 +1249,7 @@ document.addEventListener('DOMContentLoaded',function(){
             validateAddress("em-province",this);
         });
         cityOrMunicipality.addEventListener("change", async function() {
+            if (isSubmittingForm) return;
             // Check if city is a text input (manually entered) or a select dropdown
             if (this.tagName === "INPUT") {
                 // City is manually entered, replace barangay with text input
@@ -1052,6 +1272,7 @@ document.addEventListener('DOMContentLoaded',function(){
         
         // Also handle input event for manually entered city (when it's already a text input)
         cityOrMunicipality.addEventListener("input", async function() {
+            if (isSubmittingForm) return;
             if (this.tagName === "INPUT" && this.value.trim() !== "") {
                 document.getElementById("city-municipality-name").value = this.value;
                 const barangayElement = document.getElementById("barangay");
@@ -1062,6 +1283,7 @@ document.addEventListener('DOMContentLoaded',function(){
         });
         
         barangay.addEventListener("change", function() {
+            if (isSubmittingForm) return;
             if (this.tagName === "SELECT") {
                 document.getElementById("barangay-name").value = barangay.options[barangay.selectedIndex].text;
             } else {
@@ -1072,10 +1294,6 @@ document.addEventListener('DOMContentLoaded',function(){
     }
     // === PARENT INFO EVENTS ===
     const parentNameFields = [
-        {element: fatherLname, error: "em-father-last-name"},
-        {element: fatherFname, error: "em-father-first-name"},
-        {element: motherLname, error: "em-mother-last-name"},
-        {element: motherFname, error: "em-mother-first-name"},
         {element: guardianLname, error: "em-guardian-last-name"},
         {element: guardianFname, error: "em-guardian-first-name"}
     ];
@@ -1087,8 +1305,6 @@ document.addEventListener('DOMContentLoaded',function(){
         }
     });
     const phoneFields = [
-        {element: fatherCPnum, error: "em-f-number"},
-        {element: motherCPnum, error: "em-m-number"},   
         {element: guardianCPnum, error: "em-g-number"}
     ];
     phoneFields.forEach(({element, error}) => {
@@ -1109,16 +1325,101 @@ document.addEventListener('DOMContentLoaded',function(){
     }
     lrn.value = localStorage.getItem('lrn');
     psaNumber.value = localStorage.getItem('psa');
+    
+    // |=====================================|
+    // |===== REPORT CARD VALIDATION ========|
+    // |=====================================|
+    
+    /**
+     * Validate report card images via backend API
+     */
+    async function validateReportCard() {
+        if (!reportCardFront.files[0] || !reportCardBack.files[0]) {
+            return {
+                success: false,
+                status: 'missing_files',
+                message: 'Both report card images are required'
+            };
+        }
+        
+        if (isValidatingReportCard) {
+            return {
+                success: false,
+                status: 'validating',
+                message: 'Validation already in progress'
+            };
+        }
+        
+        isValidatingReportCard = true;
+        
+        try {
+            const validationData = new FormData();
+            validationData.append('student_name', `${fname.value} ${mname.value ? mname.value + ' ' : ''}${lname.value}`);
+            validationData.append('student_lrn', lrn.value || '000000000000');
+            validationData.append('report-card-front', reportCardFront.files[0]);
+            validationData.append('report-card-back', reportCardBack.files[0]);
+            
+            const response = await fetch('../../../BackEnd/api/user/validateReportCard.php', {
+                method: 'POST',
+                body: validationData
+            });
+            
+            const result = await response.json();
+            reportCardValidationStatus = result.data?.status || null;
+            
+            return {
+                success: result.success,
+                status: result.data?.status || 'unknown',
+                message: result.message || 'Validation complete',
+                data: result.data || {},
+                flagReason: result.data?.flag_reason || null
+            };
+        }
+        catch (error) {
+            console.error('Report card validation error:', error);
+            return {
+                success: false,
+                status: 'error',
+                message: 'Network error during validation'
+            };
+        }
+        finally {
+            isValidatingReportCard = false;
+        }
+    }
+    
+    /**
+     * Handle report card file changes - reset validation status
+     */
+    function handleReportCardChange() {
+        reportCardValidationStatus = null;
+        
+        if (reportCardFront.files[0] && reportCardBack.files[0]) {
+            console.log('Both report card images selected'); 
+        }
+    }
+    
+    // Add file change listeners
+    if (reportCardFront) {
+        reportCardFront.addEventListener('change', handleReportCardChange);
+    }
+    if (reportCardBack) {
+        reportCardBack.addEventListener('change', handleReportCardChange);
+    }
     // |============================|
     // |===== FORM SUBMISSION ======|
     // |============================|
     let isSubmitting = false;
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
+        
+        if(isSubmitting) return;
+        
+        isSubmittingForm = true;
+        
         const validateAllFields = () => {
             const allInputs = form.querySelectorAll(':is(input:not([type="radio"]), select, textarea):not(:disabled):not([data-optional="true"])');
             console.log(allInputs);
-            // Clear existing error states
             allInputs.forEach(input => {
                 const errorContainer = input.parentElement.querySelector('.error-msg') || 
                                     input.closest('div').querySelector('.error-msg') || 
@@ -1130,7 +1431,6 @@ document.addEventListener('DOMContentLoaded',function(){
                     }
                 }
             });
-            // Trigger validation events
             const events = ['blur', 'change', 'input'];
             allInputs.forEach(input => {
                 if (!input.disabled) {
@@ -1139,13 +1439,11 @@ document.addEventListener('DOMContentLoaded',function(){
                     });
                 }
             });
-            // Call validation functions
             const studentInfoValid = validateStudentInfo();
             const parentInfoValid = validateParentInfo();
             const previousSchoolValid = validatePreviousSchoolInfo();
             const disabledInfo = validateDisabilityInfo();
             const addressInfoValid = validateAddressInfo();
-            // Check for visible errors
             const errorMessages = document.querySelectorAll('.error-msg.show');   
             if (errorMessages.length > 0) {
                 const firstError = errorMessages[0];
@@ -1158,10 +1456,13 @@ document.addEventListener('DOMContentLoaded',function(){
             }
             return studentInfoValid && parentInfoValid && previousSchoolValid && addressInfoValid && disabledInfo;
         };
+        
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+        
         const areFieldsValid = validateAllFields();
         const isFormValid = ValidationUtils.isFormValid();
         if (!areFieldsValid || !isFormValid) {
-            const errorMessage = document.getElementById('error-message');
             if (errorMessage) {
                 errorMessage.style.display = 'block';
                 errorMessage.innerHTML = !areFieldsValid ? 
@@ -1171,8 +1472,56 @@ document.addEventListener('DOMContentLoaded',function(){
                     errorMessage.style.display = 'none';
                 }, 5000);
             }
+            isSubmittingForm = false;
             return;
         }
+        
+        // VALIDATE REPORT CARD WITH NOTIFICATION MODAL
+        errorMessage.style.display = 'block';
+        errorMessage.style.backgroundColor = '#2196F3';
+        errorMessage.innerHTML = 'Validating report card... Please wait.';
+        
+        const reportCardValidation = await validateReportCard();
+        errorMessage.style.display = 'none';
+        
+        // Show notification modal based on validation result
+        if (reportCardValidation.status === 'rejected') {
+            Notification.show({
+                type: 'error',
+                title: 'Report Card Rejected',
+                message: reportCardValidation.flagReason || reportCardValidation.message || 'Your report card images were rejected. Please re-upload valid images and try again.'
+            });
+            isSubmittingForm = false;
+            return;
+        }
+        
+        if (!reportCardValidation.success) {
+            Notification.show({
+                type: 'error',
+                title: 'Validation Failed',
+                message: reportCardValidation.message || 'Failed to validate report card. Please check your images and try again.'
+            });
+            isSubmittingForm = false;
+            return;
+        }
+        
+        if (reportCardValidation.status === 'flagged_for_review') {
+            Notification.show({
+                type: 'success',
+                title: 'Report Card Accepted',
+                message: 'Your report card has been accepted and will be manually reviewed. Submitting enrollment form...'
+            });
+        } else {
+            Notification.show({
+                type: 'success',
+                title: 'Report Card Verified',
+                message: 'Your report card has been verified successfully. Submitting enrollment form...'
+            });
+        }
+        
+        // Wait briefly for user to see notification before proceeding
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
         // Process address values
         try {
             const addressData = await changeAddressValues();
@@ -1181,52 +1530,54 @@ document.addEventListener('DOMContentLoaded',function(){
             }
         } catch (error) {
             console.error('Error processing address data:', error);
-            const errorMessage = document.getElementById('error-message');
-            if (errorMessage) {
-                errorMessage.style.display = 'block';
-                errorMessage.innerHTML = 'Error processing address information. Please try again.';
-                setTimeout(() => {
-                    errorMessage.style.display = 'none';
-                }, 5000);
-            }
+            Notification.show({
+                type: 'error',
+                title: 'Address Error',
+                message: 'Error processing address information. Please try again.'
+            });
+            isSubmittingForm = false;
             return;
         }
+        
         const formData = new FormData(form);
-        // Show loading state
-        const successMessage = document.getElementById('success-message');
-        const errorMessage = document.getElementById('error-message');
+        
         submitButton.disabled = true;
         submitButton.style.backgroundColor = 'gray';
-        if(isSubmitting) return;
         isSubmitting = true;
+        
         const result = await postEnrollmentForm(formData);
+        
         if(!result.success) {
-            errorMessage.style.display = 'block';
-            errorMessage.innerHTML = result.message;
-            setTimeout(() => {
-                errorMessage.style.display = 'none';
-            }, 5000);
+            Notification.show({
+                type: 'error',
+                title: 'Enrollment Failed',
+                message: result.message || 'Failed to submit enrollment form. Please try again.'
+            });
             isSubmitting = false;
+            isSubmittingForm = false;
             submitButton.disabled = false;
             submitButton.style.backgroundColor = "#0FFCF6";
         }
         else {
-            successMessage.style.display = 'block';
-            successMessage.innerHTML = result.message;
+            Notification.show({
+                type: 'success',
+                title: 'Enrollment Successful',
+                message: result.message || 'Your enrollment has been submitted successfully!'
+            });
             let lrnValue = localStorage.getItem('lrn');
             let psaValue = localStorage.getItem('psa');
             const currentLRN = parseInt(lrnValue);
             const currentPSA = parseInt(psaValue);
-            //incerment if submission is successful
             localStorage.setItem('lrn', currentLRN + 1);
             localStorage.setItem('psa', currentPSA + 1);
+            isSubmittingForm = false;
             setTimeout(() => {
                 window.location.href = './user_enrollees.php';
-            }, 2000);
+            }, 2500);
         }
     });
 });
-const TIME_OUT = 10000;
+const TIME_OUT = 60000;
 async function postEnrollmentForm(formData) {
     const controller = new AbortController();
     const timeoutId = setTimeout(()=> controller.abort(),TIME_OUT);

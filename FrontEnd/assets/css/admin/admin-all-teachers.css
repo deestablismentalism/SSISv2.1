@@ -650,8 +650,7 @@ body {
 }
 
 /* ===== Action Buttons ===== */
-.view-icon,
-.edit-icon {
+.table-teachers td button {
   border: none;
   cursor: pointer;
   margin-right: 4.5px;
@@ -660,6 +659,25 @@ body {
   padding: 6px;
   width: 31px;
   background: transparent;
+}
+
+.table-teachers td button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.1);
+}
+
+.view-teacher-btn, .edit-teacher-btn, .archive-staff-btn {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.view-icon,
+.edit-icon,
+.archive-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .view-status-label {

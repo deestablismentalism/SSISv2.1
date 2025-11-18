@@ -4,12 +4,15 @@ require_once __DIR__ . '/../../staff/models/staffEnrollmentTransactionsModel.php
 require_once __DIR__ . '/../../admin/models/adminEnrolleesModel.php';
 require_once __DIR__ . '/../../admin/models/adminStudentsModel.php';
 require_once __DIR__ . '/../../staff/models/staffEnrolleesModel.php';
+require_once __DIR__ . '/../../common/sendEnrollmentStatus.php';
+require_once __DIR__ . '/../../core/dbconnection.php';
 
 class staffEnrollmentController {
     protected $transactionsModel;
     protected $adminStudentModel;
     protected $adminEnrolleeModel;
     protected $staffEnrolleeModel;
+    protected $smsService;
     private const BOOL_FALSE = 0;
     private const BOOL_TRUE = 1;
     public function __construct() { 
@@ -17,180 +20,230 @@ class staffEnrollmentController {
         $this->adminStudentModel = new adminStudentsModel();
         $this->adminEnrolleeModel = new adminEnrolleesModel();
         $this->staffEnrolleeModel = new staffEnrolleesModel();
+        $this->smsService = new SendEnrollmentStatus();
     }
     //API
-    public function apiPostUpdateEnrolleeStatus(int $staffId,int $staffType, int $status,int $enrolleeId,?string $remarks) : array {
+    public function apiPostUpdateEnrolleeStatus(int $staffId, int $status, int $enrolleeId, ?string $remarks) : array {
         try {
             if(empty($enrolleeId)) {
                 return [
-                    'httpcode'=> 500,
+                    'httpcode'=> 400,
                     'success'=> false,
                     'message'=> 'Enrollee ID is invalid',
                     'data'=> []
                 ];
             }
-            if(!in_array($status, [1,2,4])) {
-                return [
-                    'httpcode'=> 500,
-                    'success'=> false,
-                    'message'=> 'Invalid Enrollee status provided',
-                    'data'=> []
-                ];
-            }
-            if(!in_array($staffType, [1,2]) || !isset($staffId)) {
+            // Updated: Only accept status 1 (enroll) or 5 (request resubmission)
+            if(!in_array($status, [1, 5])) {
                 return [
                     'httpcode'=> 400,
                     'success'=> false,
-                    'message'=> 'User is non-Staff or Unknown. Cannot save changes',
+                    'message'=> 'Invalid enrollment action provided',
                     'data'=> []
                 ];
             }
-            $statusCode = [
-                1 => 'E',
-                2 => 'D',
-                4 => 'F'
-            ][$status];
-            //RANDOM NUMBER CHARACTERS
-            $rand = '';
-            for($i = 0;$i<8;$i++) $rand .= random_int(0,9);
-            $time = time();
-            $transactionCode = $statusCode . "-" . $rand . "-" . $time;
-            if($staffType === 1) {
-                $adminUpdate = $this->executeAdminUpdate($enrolleeId, $transactionCode, $status, $staffId, $remarks);
-                if(!$adminUpdate['success']) {
-                    return [
-                        'httpcode'=> 400,
-                        'success'=> false,
-                        'message'=> $adminUpdate['message'],
-                        'data'=> []
-                    ];
-                }
+            if(!isset($staffId)) {
                 return [
-                    'httpcode'=> 200,
-                    'success'=> true,
-                    'message'=> $adminUpdate['message'],
+                    'httpcode'=> 401,
+                    'success'=> false,
+                    'message'=> 'Staff ID not found. Cannot save changes',
                     'data'=> []
                 ];
+            }
+
+            $transactionCode = $this->generateTransactionCode($status);
+            $remarks = $remarks ?? '';
+
+            // NEW WORKFLOW: Teacher has 2 options only
+            if($status === 1) {
+                // ENROLL: Direct path to student table
+                $result = $this->processEnrollment($enrolleeId, $transactionCode, $staffId, $remarks);
+                return $result;
+            }
+            else if($status === 5) {
+                // REQUEST RESUBMISSION: Flag for user to edit and resubmit
+                $result = $this->processResubmissionRequest($enrolleeId, $transactionCode, $staffId, $remarks);
+                return $result;
             }
             else {
-                $teacherUpdate = $this->executeTeacherUpdate($enrolleeId,$transactionCode,$status,$staffId,$remarks);
-                if(!$teacherUpdate['success']) {
-                    return [
-                        'httpcode'=> 400,
-                        'success'=> false,
-                        'message'=> $teacherUpdate['message'],
-                        'data'=> []
-                    ];
-                }
                 return [
-                    'httpcode'=> 200,
-                    'success'=> true,
-                    'message'=> $teacherUpdate['message'],
+                    'httpcode'=> 400,
+                    'success'=> false,
+                    'message'=> 'Invalid status code',
                     'data'=> []
                 ];
             }
         }
         catch(DatabaseException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] DB Error: ".$e->getMessage()."\n", 3, __DIR__ . '/../../errorLogs.txt');
             return [
                 'httpcode'=> 500,
                 'success'=> false,
-                'message'=> 'There was a problem on our side: '.$e->getMessage(),
+                'message'=> 'Database error occurred',
                 'error_code'=> $e->getCode(),
-                'error_message'=> $e->getPrevious->getMessage(),
                 'data'=> []
             ];
         }
         catch(Exception $e) {
+            error_log("[".date('Y-m-d H:i:s')."] Error: ".$e->getMessage()."\n", 3, __DIR__ . '/../../errorLogs.txt');
             return [
-                'httpcode'=> 400,
+                'httpcode'=> 500,
                 'success'=> false,
-                'message'=> 'There was an unexpected problem: '.$e->getMessage(),
+                'message'=> 'An unexpected error occurred',
                 'data'=> []
             ];
         }
     }
     //HELPERS
-    private function executeTeacherUpdate(int $enrolleeId, string $transactionCode, int $status, int $staffId,?string $remarks) : array {
-        try {
-            if(!$this->adminEnrolleeModel->setIsHandledStatus($enrolleeId,self::BOOL_TRUE)
-                || !$this->transactionsModel->insertEnrolleeTransaction($enrolleeId, $transactionCode, $status, $staffId, $remarks, self::BOOL_FALSE)) {
-                return ['success'=> false,'message'=> 'Inserting enrollee transaction failed. Please try to reload if changes have been made'];
-            }
-            return ['success'=> true,'message'=> 'Teacher successfully updated changes'];
+    private function generateTransactionCode(int $status): string {
+        $statusCode = [
+            1 => 'E',  // Enroll
+            5 => 'R'   // Resubmission Request
+        ][$status] ?? 'U'; // Unknown fallback
+        
+        $rand = '';
+        for($i = 0; $i < 8; $i++) {
+            $rand .= random_int(0, 9);
         }
-        catch(DatabaseException $e) {
+        $time = time();
+        
+        return $statusCode . "-" . $rand . "-" . $time;
+    }
+
+    private function processEnrollment(int $enrolleeId, string $transactionCode, int $staffId, string $remarks): array {
+        $conn = null;
+        try {
+            // Get database connection for transaction management
+            $db = new Connect();
+            $conn = $db->getConnection();
+            $conn->beginTransaction();
+
+            // 1. Update enrollee status to enrolled
+            if(!$this->adminEnrolleeModel->updateEnrollee($enrolleeId, 1)) {
+                $conn->rollBack();
+                return [
+                    'httpcode'=> 500,
+                    'success'=> false,
+                    'message'=> 'Failed to update enrollee status'
+                ];
+            }
+
+            // 2. Set Is_Handled flag
+            if(!$this->adminEnrolleeModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE)) {
+                $conn->rollBack();
+                return [
+                    'httpcode'=> 500,
+                    'success'=> false,
+                    'message'=> 'Failed to set handled status'
+                ];
+            }
+
+            // 3. Insert transaction record with Is_Approved=1 (finalized)
+            if(!$this->transactionsModel->insertEnrolleeTransaction($enrolleeId, $transactionCode, 1, $staffId, $remarks, self::BOOL_TRUE)) {
+                $conn->rollBack();
+                return [
+                    'httpcode'=> 500,
+                    'success'=> false,
+                    'message'=> 'Failed to create transaction record'
+                ];
+            }
+
+            // 4. Insert enrollee to students table
+            if(!$this->adminStudentModel->insertEnrolleeToStudent($enrolleeId)) {
+                $conn->rollBack();
+                return [
+                    'httpcode'=> 500,
+                    'success'=> false,
+                    'message'=> 'Failed to insert student record'
+                ];
+            }
+
+            $conn->commit();
+
+            // 5. Send SMS notification
+            $smsResult = $this->sendEnrollmentStatusSMS($enrolleeId, 'Enrolled');
+
             return [
-                'httpcode'=> 500,
-                'success'=> false,
-                'message'=> 'There was a problem on our side: '. $e->getMessage(),
-                'error_code'=> $e->getCode(),
-                'error_message'=> $e->getPrevious()?->getMessage(),
+                'httpcode'=> 201,
+                'success'=> true,
+                'message'=> 'Student successfully enrolled. ' . $smsResult,
                 'data'=> []
             ];
         }
         catch(Exception $e) {
-            return [
-                'httpcode'=> 500,
-                'success'=> false,
-                'message'=> 'There was an unexpected problem: '.$e->getMessage(),
-                'error_code'=> $e->getCode(),
-                'error_message'=> $e->getPrevious()?->getMessage()
-            ];
+            if($conn) {
+                $conn->rollBack();
+            }
+            error_log("[".date('Y-m-d H:i:s')."] Enrollment Error: ".$e->getMessage()."\n", 3, __DIR__ . '/../../errorLogs.txt');
+            throw $e;
         }
     }
-    private function executeAdminUpdate(int $enrolleeId, string $transactionCode, int $status, int $staffId, ?string $remarks) : array {
+
+    private function processResubmissionRequest(int $enrolleeId, string $transactionCode, int $staffId, string $remarks): array {
         try {
-            if($status === 1) {
-                if(!$this->adminEnrolleeModel->updateEnrollee($enrolleeId,$status) || !$this->adminEnrolleeModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE)
-                    || !$this->transactionsModel->updateIsApprovedToTrue($enrolleeId,self::BOOL_TRUE)) {
-                    return ['success'=> false,'message'=> "Failed to update Enrollee's statuses",'data'=>[]];
-                }
-                if(!$this->transactionsModel->insertEnrolleeTransaction($enrolleeId,$transactionCode,$status, $staffId, $remarks, self::BOOL_TRUE)) {
-                    return ['success'=> false,'message'=> 'Inserting enrollee transaction failed'];
-                }
-                if(!$this->adminStudentModel->insertEnrolleeToStudent($enrolleeId)) {
-                    return ['success'=> false,'message'=> 'Enrollee insert to student failed'];
-                }
-                return ['success'=> true,'message'=> 'Admin successfully enrolled and inserted Enrollee to student','data'=>[]];
+            // 1. Set enrollee to Follow-up status (4) to remove from pending queue
+            // Enrollee will return to pending (3) when parent resubmits
+            if(!$this->adminEnrolleeModel->updateEnrollee($enrolleeId, 4)) {
+                return [
+                    'httpcode'=> 500,
+                    'success'=> false,
+                    'message'=> 'Failed to update enrollee status'
+                ];
             }
-            else if($status === 2){
-                if(!$this->enrolleesModel->updateEnrollee($enrolleeId,$enrollmentStatus) || !$this->adminEnrolleeModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE)
-                    || !$this->transactionsModel->updateIsApprovedToTrue($enrolleeId,self::BOOL_TRUE)) {
-                    return ['success'=> false,'message'=> "Failed to update Enrollee's statuses",'data'=>[]];
-                }
-                if(!$this->transactionsModel->insertEnrolleeTransaction($enrolleeId,$transactionCode,$status, $staffId, $remarks, self::BOOL_TRUE)) {
-                    return ['success'=> false,'message'=> 'Inserting enrollee transaction failed'];
-                }
-                return ['success'=> true,'message'=> 'Admin successfully denied the Enrollee. Cannot change it again.','data'=>[]];
+            
+            // 2. Insert transaction with Transaction_Status=1 (allow resubmit), Is_Approved=0
+            if(!$this->transactionsModel->insertEnrolleeTransactionWithStatus($enrolleeId, $transactionCode, 3, $staffId, $remarks, self::BOOL_FALSE, 1)) {
+                return [
+                    'httpcode'=> 500,
+                    'success'=> false,
+                    'message'=> 'Failed to create resubmission transaction'
+                ];
             }
-            else if($status === 4) {
-                if(!$this->adminEnrolleeModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE)
-                    || !$this->transactionsModel->insertEnrolleeTransaction($enrolleeId,$transactionCode,$status, $staffId, $remarks, self::BOOL_FALSE)) {
-                    return ['success'=> false,'message'=> 'Inserting enrollee transaction failed'];
-                }
-                return ['success'=> false,'message'=>'Admin successfully followed up the Enrollee.','data'=>[]];
-            }
-            else {
-                return ['success'=> false ,'message'=> 'Failed to start Admin update operations'];
-            }
-        }
-        catch(DatabaseException $e) {
+
+            // 3. Send SMS notification
+            $smsResult = $this->sendResubmissionRequestSMS($enrolleeId, $remarks);
+
             return [
-                'httpcode'=> 500,
-                'success'=> false,
-                'message'=> 'There was a problem on our side: '.$e->getMessage(),
-                'error_code'=> $e->getCode(),
-                'error_message'=> $e->getPrevious()?->getMessage(),
+                'httpcode'=> 200,
+                'success'=> true,
+                'message'=> 'Resubmission requested. User can now edit their enrollment form. ' . $smsResult,
                 'data'=> []
             ];
         }
         catch(Exception $e) {
-            return [
-                'success'=> false,
-                'message'=> 'There was an unexpected problem: '.$e->getMessage(),
-            ];
+            error_log("[".date('Y-m-d H:i:s')."] Resubmission Error: ".$e->getMessage()."\n", 3, __DIR__ . '/../../errorLogs.txt');
+            throw $e;
         }
     }
+
+    private function sendEnrollmentStatusSMS(int $enrolleeId, string $enrollmentStatus): string {
+        try {
+            $smsData = $this->adminEnrolleeModel->getEnrolleeDetailsForSMS($enrolleeId);
+            $smsData['Enrollment_Status'] = $enrollmentStatus;
+            $this->smsService->sendEnrollmentStatus($smsData);
+            return "SMS sent successfully.";
+        }
+        catch(Exception $e) {
+            error_log("[".date('Y-m-d H:i:s')."] SMS Error: ".$e->getMessage()."\n", 3, __DIR__ . '/../../errorLogs.txt');
+            return "SMS failed to send: " . $e->getMessage();
+        }
+    }
+
+    private function sendResubmissionRequestSMS(int $enrolleeId, string $remarks): string {
+        try {
+            $smsData = $this->adminEnrolleeModel->getEnrolleeDetailsForSMS($enrolleeId);
+            $smsData['Enrollment_Status'] = 'Resubmission';
+            $smsData['Remarks'] = $remarks;
+            // Note: Ensure SendEnrollmentStatus class handles 'Resubmission' status
+            $this->smsService->sendEnrollmentStatus($smsData);
+            return "SMS sent successfully.";
+        }
+        catch(Exception $e) {
+            error_log("[".date('Y-m-d H:i:s')."] SMS Error: ".$e->getMessage()."\n", 3, __DIR__ . '/../../errorLogs.txt');
+            return "SMS failed to send: " . $e->getMessage();
+        }
+    }
+
     //VIEW
     public function viewPendingEnrollees(): array {
         try {
