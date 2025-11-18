@@ -1,12 +1,13 @@
 <?php
 ob_start();
-$pageTitle = 'Teacher Archives';
-$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-teacher-archives.css">';
+$pageTitle = 'Subject Archives';
+$pageCss = '<link rel="stylesheet" href="../../assets/css/admin/admin-subject-archives.css">';
+$pageJs = '<script src="../../assets/js/admin/admin-subject-archives.js" defer></script>';
 require_once __DIR__ . '/../../../BackEnd/admin/views/adminSystemManagementView.php';
 $view = new adminSystemManagementView();
 ?>
-<div class="teacher-archive-content">
-    <div class="teacher-archive-table-container">
+<div class="subject-archive-content">
+    <div class="subject-archive-table-container">
         <a href="./admin_system_management.php"><img src="../../assets/imgs/arrow-left-solid.svg">
         <p>Back to System Management</p></a> 
         <?php $view->displayArchivedSubjects(); ?>

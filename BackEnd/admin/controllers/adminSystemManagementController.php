@@ -207,13 +207,13 @@ class adminSystemManagementController {
             if(empty($data)) {
                 return [
                     'success'=> true,
-                    'message'=> 'No archived Teachers yet',
+                    'message'=> 'No archived subjects yet',
                     'data'=> []
                 ];
             }
             return [
                 'success'=> true,
-                'message'=> 'Archived Teachers successfully fetched',
+                'message'=> 'Archived subjects successfully fetched',
                 'data'=> $data
             ];
         }
