@@ -61,9 +61,6 @@ $view = new adminSystemManagementView();
                     <div class="student-archives">
                         <a href="./admin_student_archives.php">View Student Archives</a>
                     </div>
-                    <div class="teacher-archives">
-                        <a href="./admin_teacher_archives.php">View Teacher Archives</a>
-                    </div>
                 </div>
             </div>
 

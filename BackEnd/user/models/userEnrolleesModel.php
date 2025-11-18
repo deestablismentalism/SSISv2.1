@@ -128,7 +128,8 @@ class userEnrolleesModel {
     }
     public function getUserEnrollees(int $userId) : array{ //F 3.1.6
         try {
-            $sql = "SELECT * FROM enrollee WHERE User_Id = :id";
+            $sql = "SELECT * FROM enrollee WHERE User_Id = :id AND School_Year_Details_Id 
+            IN(SELECT School_Year_Details_Id FROM school_year_details WHERE Is_Expired = 0)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id', $userId, PDO::PARAM_INT );
             $stmt->execute();
