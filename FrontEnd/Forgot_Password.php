@@ -17,7 +17,7 @@ session_start();
     <div class="forgot-password-container">
         <div class="forgot-password-card">
             <div class="logo-section">
-                <img src="./assets/imgs/graduation-cap.png" alt="SSIS Logo" class="logo">
+                <img src="./assets/imgs/logo.png" alt="LS2ES Logo">
                 <h1>Forgot Password</h1>
                 <p class="subtitle">Enter your phone number to reset your password</p>
             </div>

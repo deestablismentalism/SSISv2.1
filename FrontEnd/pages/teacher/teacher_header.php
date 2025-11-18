@@ -1,8 +1,6 @@
 <div class="header-wrapper">
             <div class="header">
-                <p class="header-title">
-                    Welcome to South II Student Information System
-                </p>
+                <img src="../../assets/imgs/LS2ES.png" alt="Lausent South II Elementary School" class="header-logo">
             </div>
             <div class="account">
                 <div class="account-settings-wrapper">

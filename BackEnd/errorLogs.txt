@@ -551,3 +551,17 @@ Stack trace:
 [2025-11-13 18:47:35] SMS sent to 09946956168 for Enrollee ID: 107 - Status: Denied
 [2025-11-13 18:49:28] SMS sent to 09682298263 for Enrollee ID: 91 - Status: Enrolled
 [2025-11-14 04:04:25]SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ssis-test_database.archive_students' doesn't exist
+[2025-11-17 08:15:24] TypeError: htmlspecialchars(): Argument #1 ($string) must be of type string, null given in /var/www/html/BackEnd/core/tableDataTemplate.php:11
+Stack trace:
+#0 /var/www/html/BackEnd/core/tableDataTemplate.php(11): htmlspecialchars(NULL)
+#1 /var/www/html/BackEnd/admin/views/adminEnrolleeInfo.php(80): TableCreator->returnVerticalTables(Array, Array, 'personal-info')
+#2 /var/www/html/BackEnd/templates/staff/fetchEnrolleeInfo.php(8): adminEnrolleeInfo->displayEnrolleePersonalInfo()
+#3 {main}
+[2025-11-17 08:24:17] TypeError: htmlspecialchars(): Argument #1 ($string) must be of type string, null given in /var/www/html/BackEnd/core/tableDataTemplate.php:11
+Stack trace:
+#0 /var/www/html/BackEnd/core/tableDataTemplate.php(11): htmlspecialchars(NULL)
+#1 /var/www/html/BackEnd/admin/views/adminEnrolleeInfo.php(80): TableCreator->returnVerticalTables(Array, Array, 'personal-info')
+#2 /var/www/html/BackEnd/templates/staff/fetchEnrolleeInfo.php(8): adminEnrolleeInfo->displayEnrolleePersonalInfo()
+#3 {main}
+[2025-11-17 08:25:50]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Psa_Number' in 'SELECT'
+[2025-11-17 20:51:39]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Psa_Number' in 'SELECT'

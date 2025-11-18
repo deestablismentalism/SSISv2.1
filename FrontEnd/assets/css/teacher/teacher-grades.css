@@ -235,7 +235,7 @@ body {
     background-color: white;
     padding: 20px; /* Base for 1440px */
     border-radius: 5px;
-    width: 500px; /* Base for 1440px */
+    width: 900px; /* Base for 1440px */
     max-width: 90%;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     animation: fadeIn 0.3s ease-out;
@@ -362,6 +362,17 @@ body {
     font-size: 1rem;
     transition: var(--transition);
     background: rgba(255, 255, 255, 0.95);
+}
+
+/* Remove spinner buttons */
+.grade-table input[type="number"]::-webkit-outer-spin-button,
+.grade-table input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.grade-table input[type="number"] {
+    -moz-appearance: textfield;
 }
 
 .grade-table input[type="number"]:hover {

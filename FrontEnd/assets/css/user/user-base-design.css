@@ -186,45 +186,16 @@ p {
     filter: brightness(0) invert(1);
 }
 
-/*-- FIRST NAVIGATION CONTAINER DESIGN--*/
-/* .nav-list {
-    display: flex;
-    gap: 1rem;
-}
-.nav-item a {
-    cursor: pointer;
-    padding: 1rem;
-}
-.nav-item {
-    list-style: none;
-}
-.nav-item a:hover {
-    background-color: #CDA434;
-}
-.nav-item a:is(:link, :visited, :active).active {
-    background-color: #CDA434;
-}
-.nav-link-text {
-    display: inline-block;
-    background: linear-gradient(to bottom right, #191970, #3d1970, #611970);
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-   
-}
-.nav-item span {
-    font-family: var(--link-fonts);
-    font-size: 1rem;
-    font-weight: 600;
-} */
-/* END OF FIRST NAVIGATION CONTAINER DESIGNS */
+
 
 /* --NAVIGATION CONTAINER 1-- */
 .nav-container-1 {
     border-radius: 12px;
     flex: 1;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     margin: 0 1rem;
+    align-items: center;
 }
 
 .nav-1 {
@@ -287,6 +258,21 @@ p {
 .nav-1 .nav-item a.active::after {
     transform: scaleX(1);
     background: white;
+}
+
+.nav-logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-logo-wrapper img {
+    height: 43px;
+    width: auto;
+    border-radius: 12px;
+    margin: 1.5rem;
+    align-items: center;
+    max-width: 100%;
 }
 /*--END OF NAV1 DESIGNS--*/
 
@@ -601,6 +587,7 @@ p {
         transition: left 0.3s ease;
         z-index: 999;
         overflow-y: auto;
+        align-items: center;
     }
     
     .nav-container-1.active {
@@ -874,7 +861,7 @@ p {
     
     .nav-1 .nav-item a {
         font-size: 15px;
-        padding: 9px 16px;
+        padding: 8px 20px;
     }
     
     .user-profile-pic {

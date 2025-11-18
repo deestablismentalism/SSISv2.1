@@ -23,7 +23,7 @@ if(!isset($_SESSION['Staff']) || $_SESSION['Staff']['Staff-Type'] !== 2) {
     <link rel="stylesheet" href="../../assets/css/loader.css">
     <link rel="stylesheet" href="../../assets/css/notifications.css">
     <link rel="icon" href="../../../favicon.ico">
-    <?php if(isset($pageCss)) {echo $pageCss;} else { echo '';} ?>
+    <?php if(isset($pageCss)) { echo $pageCss; } ?>
 </head>
 <body>
    <?php

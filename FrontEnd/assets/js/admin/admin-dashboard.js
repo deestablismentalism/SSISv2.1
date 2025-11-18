@@ -374,7 +374,8 @@ function barGraph(data, title) {
     
     // Fill in all grade levels with 0 if not present
     const labels = allGradeLevels;
-    const values = allGradeLevels.map(level => dataMap[level] || 0);
+    const values = allGradeLevels.map(level => parseInt(dataMap[level]) || 0);
+    const total = values.reduce((sum, val) => sum + parseInt(val), 0);
     
     new Chart(ctx, {
         type: 'bar',
@@ -400,6 +401,21 @@ function barGraph(data, title) {
                     font: {
                         size: 16
                     }
+                },
+                datalabels: {
+                    color: '#ffffff',
+                    font: {
+                        weight: 'bold',
+                        size: 11
+                    },
+                    anchor: 'center',
+                    align: 'center',
+                    formatter: (value, context) => {
+                        const numValue = parseInt(value);
+                        if (numValue === 0 || total === 0) return '';
+                        const percentage = ((numValue / total) * 100).toFixed(1);
+                        return `${numValue} (${percentage}%)`;
+                    }
                 }
             },
             scales: {
@@ -415,7 +431,8 @@ function barGraph(data, title) {
                     }
                 }
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 }
 function BiologicalSexPieGraph(data, title) {
@@ -525,7 +542,8 @@ function StudentGradeLevelDistribution(data, title) {
     
     // Fill in all grade levels with 0 if not present
     const labels = allGradeLevels;
-    const values = allGradeLevels.map(level => dataMap[level] || 0);
+    const values = allGradeLevels.map(level => parseInt(dataMap[level]) || 0);
+    const total = values.reduce((sum, val) => sum + parseInt(val), 0);
     
     new Chart(ctx, {
         type: 'bar',
@@ -551,6 +569,21 @@ function StudentGradeLevelDistribution(data, title) {
                     font: {
                         size: 16
                     }
+                },
+                datalabels: {
+                    color: '#ffffff',
+                    font: {
+                        weight: 'bold',
+                        size: 11
+                    },
+                    anchor: 'center',
+                    align: 'center',
+                    formatter: (value, context) => {
+                        const numValue = parseInt(value);
+                        if (numValue === 0 || total === 0) return '';
+                        const percentage = ((numValue / total) * 100).toFixed(1);
+                        return `${numValue} (${percentage}%)`;
+                    }
                 }
             },
             scales: {
@@ -566,7 +599,8 @@ function StudentGradeLevelDistribution(data, title) {
                     }
                 }
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 }
 function StudentBiologicalSexPieGraph(data, title) {
@@ -666,7 +700,9 @@ let Enrollmentchart = null
 function EnrolleeByDaybarGraph(data, title) {
     const ctx = title.getContext('2d');
     const labels = data.map(item=> item.label);
-    const values = data.map(item=> item.value);
+    const values = data.map(item=> parseInt(item.value));
+    const total = values.reduce((sum, val) => sum + parseInt(val), 0);
+    
     if (Enrollmentchart) {
         Enrollmentchart.destroy();
     }
@@ -692,8 +728,29 @@ function EnrolleeByDaybarGraph(data, title) {
                     font: {
                         size: 20
                     }
+                },
+                datalabels: {
+                    color: '#ffff',
+                    padding: 4,
+                    backgroundColor: '#ffce56ff',
+                    borderWidth: 1.5,
+                    borderColor: '#ffffff',
+                    borderRadius: 4,
+                    font: {
+                        weight: 'bold',
+                        size: 12
+                    },
+                    anchor: 'end',
+                    align: 'top',
+                    formatter: (value, context) => {
+                        const numValue = parseInt(value);
+                        if (numValue === 0 || total === 0) return '';
+                        const percentage = ((numValue / total) * 100).toFixed(1);
+                        return `${numValue} (${percentage}%)`;
+                    }
                 }
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 }

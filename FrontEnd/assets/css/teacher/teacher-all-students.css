@@ -192,55 +192,9 @@ border: none;
   height: 100%;
   object-fit: contain;
 }
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-}
-.modal-container {
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    position: absolute;
-}
-.modal-content {
-  background-color: white;
-  padding: 20px; /* Base for 1440px */
-  border-radius: 5px;
-  width: 500px; /* Base for 1440px */
-  max-width: 90%;
-  top: 70px;
-}
-/* Simple fade-in animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-/* Optional close button */
-.modal-close {
-  background: #ff4d4d;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
-  float: right;
-}
-.modal-close:hover {
-  background: #d93636;
-}
+
+/* ===== MODAL STYLES ===== */
+/* Modal styles are now in teacher-modal-shared.css */
 /*====================================*/
 /*  ALL STUDENTS RESPONSIVE DESIGN    */
 /*====================================*/
@@ -300,11 +254,6 @@ border: none;
     padding: 6px;
     width: 42px;
   }
-  .modal-content {
-    padding: 28px;
-    border-radius: 7px;
-    width: 680px;
-  }
 }
 /* 1920px - Full HD */
 @media (min-width: 1920px) and (max-width: 2499px) {
@@ -361,11 +310,6 @@ border: none;
     border-radius: 10px;
     padding: 5px;
     width: 36px;
-  }
-  .modal-content {
-    padding: 24px;
-    border-radius: 6px;
-    width: 600px;
   }
 }
 /* 1440px - Default (already set above, this is just for clarity) */
@@ -430,11 +374,6 @@ border: none;
     border-radius: 6px;
     padding: 3px;
     width: 31px;
-  } 
-  .modal-content {
-    padding: 15px;
-    border-radius: 4px;
-    width: 410px;
   }
 }
 /*====================================*/
