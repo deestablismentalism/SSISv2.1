@@ -198,6 +198,22 @@ async function fetchViewTeacherInfo(staffId) {
     return data;
 }
 
+async function fetchEditTeacherForm(staffId) {
+    const response = await fetch(`../../../BackEnd/templates/admin/fetchEditTeacherForm.php?staff_id=${staffId}`);
+    
+    if (!response.ok) {
+        throw new Error('Failed to load edit teacher form');
+    }
+    
+    let data;
+    try {
+        data = await response.text();
+    } catch {
+        throw new Error('Invalid response');
+    }
+    return data;
+}
+
 async function archiveStaff(staffId) {
     try {
         const formData = new FormData();
@@ -293,20 +309,4 @@ async function postEditTeacherInfo(formData) {
             data: null
         };
     }
-}
-
-async function fetchViewTeacherInfo(staffId) {
-    const response = await fetch(`../../../BackEnd/templates/admin/fetchViewTeacherInfoModal.php?staff_id=${staffId}`);
-    
-    if (!response.ok) {
-        throw new Error('Failed to load teacher information');
-    }
-    
-    let data;
-    try {
-        data = await response.text();
-    } catch {
-        throw new Error('Invalid response');
-    }
-    return data;
 }

@@ -597,3 +597,11 @@ Stack trace:
 [2025-11-18 06:28:12]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
 [2025-11-18 06:28:23]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
 [2025-11-18 06:29:06]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
+[2025-11-18 07:09:42]Error: Call to undefined method adminTeacherController::apiArchiveStaff() in /var/www/html/BackEnd/api/admin/postArchiveStaff.php:16
+Stack trace:
+#0 {main}
+[2025-11-18 07:10:15]Error: Call to undefined method adminTeacherController::apiArchiveStaff() in /var/www/html/BackEnd/api/admin/postArchiveStaff.php:16
+Stack trace:
+#0 {main}
+[2025-11-18 07:56:47]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
+[2025-11-18 07:59:26]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
