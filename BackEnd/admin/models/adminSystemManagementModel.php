@@ -193,7 +193,20 @@ class adminSystemManagementModel {
             throw new DatabaseException('Failed to insert/update school year details',0,$e);
         }
     }
-        public function getArchivedTeachers():array {
+    public function getArchivedSections() {
+        try {
+            $sql = "SELECT * FROM sections WHERE Is_Archived = 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$e->getMessage() ."\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseExcetpion("Failed to fetch this year's school year id",0,$e);
+        }
+    }
+    public function getArchivedTeachers():array {
         try {
             $sql = "SELECT * FROM staffs WHERE Is_Archived = 1";
             $stmt = $this->conn->prepare($sql);
@@ -236,6 +249,7 @@ class adminSystemManagementModel {
             throw new DatabaseException('Failed to insert to users',0,$e);
         }
     }
+
     public function deleteArchivedAdviser(int $staffId) {
         try {
             $sql = "DELETE FROM archive_section_advisers WHERE Staff_Id = :staffId";
