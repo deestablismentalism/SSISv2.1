@@ -1,5 +1,24 @@
 import {close,loadingText,modalHeader} from '../utils.js';
-document.addEventListener('DOMContentLoaded', function() {
+
+// Ensure Notification is available
+function waitForNotification() {
+    return new Promise((resolve) => {
+        if (typeof Notification !== 'undefined' && Notification.container) {
+            resolve();
+        } else {
+            const checkInterval = setInterval(() => {
+                if (typeof Notification !== 'undefined' && Notification.container) {
+                    clearInterval(checkInterval);
+                    resolve();
+                }
+            }, 50);
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+    // Wait for Notification to be ready
+    await waitForNotification();
      // Style status cells
     const rows = document.querySelectorAll('.denied-followup-row');
     rows.forEach(row => {
@@ -148,11 +167,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }[action];
             const result = await postUpdateEnrollee(status,enrolleeId);
             if(!result.success) {
-                Notification.show({
-                    type: result.success ? "error" : "error",
-                    title: result.success ? "Error" : "Error",
-                    message: result.message
-                });
+                if (typeof Notification !== 'undefined' && Notification.show) {
+                    Notification.show({
+                        type:  "error",
+                        title: "Error",
+                        message: result.message
+                    });
+                } else {
+                    console.error('Notification system not available:', result.message);
+                    alert(result.message);
+                }
                 bgColor = {
                     1 : '#4CAF50',
                     2 : '#F44336',
@@ -163,11 +187,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.style.backgroundColor = bgColor;
             }
             else {
-                Notification.show({
-                    type: result.success ? "success" : "error",
-                    title: result.success ? "Success" : "Error",
-                    message: result.message
-                });
+                if (typeof Notification !== 'undefined' && Notification.show) {
+                    Notification.show({
+                        type: result.success ? "success" : "error",
+                        title: result.success ? "Success" : "Error",
+                        message: result.message
+                    });
+                } else {
+                    console.error('Notification system not available:', result.message);
+                    alert(result.message);
+                }
                 window.location.reload();
             }
         }
@@ -180,11 +209,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }[action];
             const result = await postUpdateEnrollmentTransaction(transactionStatus,transactionId,enrolleeId,status);
             if(!result.success) {
-                Notification.show({
-                    type: result.success ? "success" : "error",
-                    title: result.success ? "Success" : "Error",
-                    message: result.message
-                });
+                if (typeof Notification !== 'undefined' && Notification.show) {
+                    Notification.show({
+                        type: "error",
+                        title: "Error",
+                        message: result.message
+                    });
+                } else {
+                    console.error('Notification system not available:', result.message);
+                    alert(result.message);
+                }
                 bgColor = {
                     1 : '#AF714C',
                     2: '#4C69AF'
@@ -194,12 +228,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.style.backgroundColor = bgColor;
             }
             else {
-                Notification.show({
-                    type: result.success ? "success" : "error",
-                    title: result.success ? "Success" : "Error",
-                    message: result.message
-                });
-                window.location.reload();
+                if (typeof Notification !== 'undefined' && Notification.show) {
+                    Notification.show({
+                        type: result.success ? "success" : "error",
+                        title: result.success ? "Success" : "Error",
+                        message: result.message
+                    });
+                } else {
+                    console.error('Notification system not available:', result.message);
+                    alert(result.message);
+                }
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             }
         }
     });
@@ -256,7 +297,7 @@ async function postUpdateEnrollmentTransaction(transactionNumber,transactionId,e
     }
 }
 async function postUpdateEnrollee(status, enrolleeId) {
-    const TIME_OUT = 10000;
+    const TIME_OUT = 30000;
     try {
         const  controller = new AbortController();
         const timeoutId = setTimeout(()=>{controller.abort()},TIME_OUT);
@@ -293,7 +334,7 @@ async function postUpdateEnrollee(status, enrolleeId) {
            return {
                 success: false,
                 message: `Request timeout: Server took too long to respond`,
-                data: nul
+                data: null
            }
         }
         return {
@@ -304,7 +345,7 @@ async function postUpdateEnrollee(status, enrolleeId) {
     }
 }
 async function fetchEnrolleeRemarks(enrolleeId) {
-    const TIME_OUT = 10000;
+    const TIME_OUT = 30000;
     try {
         const controller = new AbortController();
         const timeoutId = setTimeout(()=> controller.abort(), TIME_OUT);
@@ -345,7 +386,7 @@ async function fetchEnrolleeRemarks(enrolleeId) {
     }
 }
 async function fetchEnrolleeInfo(enrolleeId) {
-    const TIME_OUT = 10000;
+    const TIME_OUT = 30000;
     try {
         const controller = new AbortController();
         const timeoutId = setTimeout(()=>controller.abort(),TIME_OUT);

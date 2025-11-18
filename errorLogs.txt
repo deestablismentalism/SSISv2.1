@@ -1,2 +1,7 @@
 [2025-10-24 15:49:06] SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ssis-test_database.psa_directory' doesn't exist
 [2025-10-24 15:49:07]SQLSTATE[42S02]: Base table or view not found: 1146 Table 'ssis-test_database.psa_directory' doesn't exist
+[2025-11-15 13:54:26]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'flag_reason' in 'INSERT INTO'
+[2025-11-15 13:54:33]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'flag_reason' in 'INSERT INTO'
+[2025-11-15 13:54:38]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'flag_reason' in 'INSERT INTO'
+[2025-11-16 18:18:14]SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+[2025-11-16 18:40:37]SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens

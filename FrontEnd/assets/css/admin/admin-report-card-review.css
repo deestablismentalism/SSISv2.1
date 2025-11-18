@@ -1,0 +1,207 @@
+.report-card-review-content {
+    width: 100%;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    background-image: url("../../imgs/paper.jpg");
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+.header-left h2 {
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+#reviewTitle {
+    background: #2196F3;
+}
+
+.table {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+table.report-card-submissions {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.submissions-titles {
+    background: #f5f5f5;
+    font-weight: bold;
+}
+
+.submissions-titles th {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+}
+
+.submissions-row td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.submissions-row:hover {
+    background: #f9f9f9;
+}
+
+.view-submission {
+    padding: 6px 12px;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.view-submission:hover {
+    background: #1976D2;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 8px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+}
+
+.submission-details {
+    margin-top: 20px;
+}
+
+.submission-details h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.detail-row {
+    margin-bottom: 10px;
+    padding: 8px;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+
+.report-card-image {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.report-card-image img {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.ocr-results {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+.ocr-results div {
+    margin-bottom: 8px;
+}
+
+.action-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.approve-btn, .reject-btn, .reupload-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.approve-btn {
+    background: #4CAF50;
+    color: white;
+}
+
+.approve-btn:hover {
+    background: #45a049;
+}
+
+.reject-btn {
+    background: #F44336;
+    color: white;
+}
+
+.reject-btn:hover {
+    background: #da190b;
+}
+
+.reupload-btn {
+    background: #FF9800;
+    color: white;
+}
+
+.reupload-btn:hover {
+    background: #e68900;
+}
+
+.error-message {
+    padding: 15px;
+    background: #ffebee;
+    color: #c62828;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.no-data {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-size: 1.1rem;
+}
+

@@ -33,14 +33,14 @@ class adminUnprocessedEnrollmentsController {
                 if(!$this->studentsModel->insertEnrolleeToStudent($enrolleeId)) {
                     return ['httpcode'=> 500,'success'=> false,'message'=> 'Failed to insert enrollee to student'];
                 }
-                $this->sendEnrollmentStatusSMS($enrolleeId, 'Enrolled');
-                return ['httpcode'=> 200,'success'=> true,'message'=> 'Successfully enrolled Enrollee and inserted to student','data'=>[]];
+                return ['httpcode'=> 200,'success'=> true,
+                'message'=> 'Successfully enrolled Enrollee and inserted to student. '.$this->sendEnrollmentStatusSMS($enrolleeId, 'Enrolled'),'data'=>[]];
             }
             else if($enrollmentStatus === 2){
                 if(!$this->enrolleesModel->updateEnrollee($enrolleeId,$enrollmentStatus) || !$this->transactionsModel->updateIsApprovedToTrue($enrolleeId,self::BOOL_TRUE)) {
-                    return ['httpcode'=> 500,'success'=> false,'message'=> "Failed to update Enrollee's statuses",'data'=>[]];
+                    return ['httpcode'=> 500,'success'=> false,
+                    'message'=> "Failed to update Enrollee's statuses. ".$this->sendEnrollmentStatusSMS($enrolleeId, 'Denied'),'data'=>[]];
                 }
-                $this->sendEnrollmentStatusSMS($enrolleeId, 'Denied');
                 return ['httpcode'=> 200,'success'=> true,'message'=> 'Enrollee was updated and denied','data'=>[]];
             }
             else if($enrollmentStatus === 4){
@@ -50,8 +50,8 @@ class adminUnprocessedEnrollmentsController {
                 if(!$this->transactionsModel->updateTransactionToFollowUp($enrolleeId,$enrollmentStatus)) {
                     return ['httpcode'=> 500,'success'=> false,'message'=>'Failed to flag Enrollee for follow up','data'=>[]];
                 }
-                $this->sendEnrollmentStatusSMS($enrolleeId, 'Follow-Up');
-                return ['httpcode'=> 200,'success'=> true,'message'=>'Successfully followed up enrollee','data'=>[]];
+                return ['httpcode'=> 200,'success'=> true,
+                'message'=>'Successfully followed up enrollee. '.$this->sendEnrollmentStatusSMS($enrolleeId, 'Follow-Up'),'data'=>[]];
             }
             else {
                 return ['httpcode'=> 200,'success'=> false,'message'=> 'Update operation did not continue','data'=>[]];
@@ -96,7 +96,8 @@ class adminUnprocessedEnrollmentsController {
             if(!$this->enrolleesModel->updateEnrollee($enrolleeId,$enrollmentStatus)) {
                 return ['httpcode'=> 400,'success'=> false,'message'=>"Enrollee's enrollment status was not updated",'data'=>[]];
             }
-            return ['httpcode'=> 200,'success'=> true,'message'=>"Enrollment transaction and enrollee's enrollment status was successfully updated",'data'=>[]];
+            return ['httpcode'=> 200,'success'=> true,'message'=>"Enrollment transaction and 
+            enrollee's enrollment status was successfully updated. ".$this->sendEnrollmentStatusSMS($enrolleeId,"Follow-Up"),'data'=>[]];
         }
         catch(DatabaseException $e) {
             return [
@@ -154,25 +155,25 @@ class adminUnprocessedEnrollmentsController {
         }
     }
     //HELPERS
-    private function sendEnrollmentStatusSMS(int $enrolleeId, string $enrollmentStatus): void {
+    private function sendEnrollmentStatusSMS(int $enrolleeId, string $enrollmentStatus): string {
         try {
             $smsData = $this->enrolleesModel->getEnrolleeDetailsForSMS($enrolleeId);
-            
             if(empty($smsData) || empty($smsData['Recipient_Contact_Number'])) {
                 error_log("[".date('Y-m-d H:i:s')."] Missing SMS data for Enrollee ID: $enrolleeId\n", 3, __DIR__ . '/../../errorLogs.txt');
-                return;
+                return 'Failed to send notification text due to missing SMS data';
             }
-            
             $smsData['Enrollment_Status'] = $enrollmentStatus;
             $this->smsService->sendEnrollmentStatus($smsData);
-            
             error_log("[".date('Y-m-d H:i:s')."] SMS sent to {$smsData['Recipient_Contact_Number']} for Enrollee ID: $enrolleeId - Status: $enrollmentStatus\n", 3, __DIR__ . '/../../errorLogs.txt');
+            return 'Notification text successfully sent to user';
         }
         catch(SMSFailureException $e) {
             error_log("[".date('Y-m-d H:i:s')."] SMS failed for Enrollee ID: $enrolleeId - " . $e->getMessage() . "\n", 3, __DIR__ . '/../../errorLogs.txt');
+            return 'Failed to send notification text due to a problem on our side';
         }
         catch(Exception $e) {
             error_log("[".date('Y-m-d H:i:s')."] SMS error for Enrollee ID: $enrolleeId - " . $e->getMessage() . "\n", 3, __DIR__ . '/../../errorLogs.txt');
+            return 'Failed to send notification text due to an unexpected error';
         }
     }
     //VIEW

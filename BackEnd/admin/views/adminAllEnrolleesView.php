@@ -75,7 +75,8 @@ class adminAllEnrolleesView {
                 $transactionStatus = ($rows['Is_Approved'] === 0) ? 'Unprocessed' : 'Finalized';
                 $statusClass = 'status-' . $this->stringEquivalent((int)$rows['Enrollment_Status']);
                 $givenStatus = new safeHTML('<span class="status-cell '.$statusClass.'">'.strtoupper($this->stringEquivalent((int)$rows['Enrollment_Status'])).'</span>');
-                $button = new safeHTML('<button class="view-enrollee">View Details</button>');
+                $enrolleeId = (int)$rows['Enrollee_Id'];
+                $button = new safeHTML('<button class="view-enrollee" data-id="'.$enrolleeId.'">View Details</button>');
                 
                 echo $this->tableTemplate->returnHorizontalRows([
                     $studentFull, $transactionCode, $staffFullName, $handledAt, $givenStatus, $transactionStatus, $button

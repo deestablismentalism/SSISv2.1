@@ -164,8 +164,7 @@ class adminSystemManagementView {
                         <td>' .htmlspecialchars($rows['Birthday']) .' </td>
                         <td> <span class="status status' .  $statusText . '">'  . $statusText . '</span></td>
                         <td> 
-                            <button class="view-student" data-enrollee="'.$rows['Enrollee_Id'].'" data-student="'.$rows['Student_Id'].'"> <img src="../../assets/imgs/eye-white.svg" alt="View Student Information"></button> 
-                            <button class="edit-student" data-enrollee="'.$rows['Enrollee_Id'].'" data-student="'.$rows['Student_Id'].'"> <img src="../../assets/imgs/edit-yellow-green.svg" alt="Edit Student Information"></button>
+                            <button class="restore-student" data-enrollee="'.$rows['Enrollee_Id'].'" data-student="'.$rows['Student_Id'].'"> <img src="../../assets/imgs/arrow-rotate-right-solid-full.svg" alt="Restore Student"></button>
                             <button class="delete-student" data-enrollee="'.$rows['Enrollee_Id'].'" data-student="'.$rows['Student_Id'].'"> <img src="../../assets/imgs/trash-solid.svg" alt="Delete Student Information"></button>
                         </td>
                     </tr>';

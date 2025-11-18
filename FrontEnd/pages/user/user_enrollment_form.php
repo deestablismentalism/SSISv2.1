@@ -5,7 +5,9 @@ $pageTitle = 'SSIS-Enrollment Form';
 $pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form.css" media="all">';
 $pageCss2 = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form-errors.css" media="all">';
 $pageCss3 = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form-mq.css" media="all">';
+$pageCss4 = '<link rel="stylesheet" href="../../assets/css/notifications.css" media="all">';
 $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.js" defer></script>';
+$pageJs2 = '<script src="../../assets/js/notifications.js" defer></script>';
 require_once __DIR__ .'/../../../BackEnd/common/getGradeLevels.php';
 require_once __DIR__ . '/../../../BackEnd/common/isAcademicYearSet.php';
 $set = new isAcademicYearSet();
@@ -15,8 +17,100 @@ $view = new getGradeLevels();
     <div class="content-title">
         <p>Learner's Enrollment Form</p>
     </div>
+
+    
+    <!-- DISABILITY MODAL - Shows on page load -->
+    <div id="disability-modal" class="disability-modal-overlay">
+        <div class="disability-modal-content">
+            <div class="disability-modal-header">
+                <h2>PARA SA MGA MAG-AARAL NA MAY KAPANSANAN</h2>
+            </div>
+            <div class="disability-modal-body">
+                <!-- Step 1: Has Disability -->
+                <div class="has-disability">
+                    <p class="dfont">Mayroon bang kapansanan ang mag-aaral? <span class="required">*</span></p>
+                    <div>
+                        <div class="radio-option">
+                            <input type="radio" name="has-disability" id="has-disability-yes" value="Yes" class="radio" required>
+                            <label for="has-disability-yes">Mayroon</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="has-disability" id="has-disability-no" value="No" class="radio" required>
+                            <label for="has-disability-no">Wala</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Can Read/Write (appears if Yes to disability) -->
+                <div class="can-read-write" style="display: none;">
+                    <p class="dfont">Nakakabasa at nakakasulat ba ang mag-aaral? <span class="required">*</span></p>
+                    <div>
+                        <div class="radio-option">
+                            <input type="radio" name="can-read-write" id="can-read-write-yes" value="Yes" class="radio">
+                            <label for="can-read-write-yes">Oo</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="can-read-write" id="can-read-write-no" value="No" class="radio">
+                            <label for="can-read-write-no">Hindi</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Disability Details (appears if Yes to read/write) -->
+                <div class="disability-details" style="display: none;">
+                    <div class="disability-description">
+                        <div class="error-msg">
+                            <span class="em-disability-desc"></span>
+                        </div>
+                        <p class="dfont">Ano ang kapansanan ng mag-aaral? <span class="required">*</span></p>
+                        <input type="text" name="disability-description" id="disability-description" class="textbox" placeholder="Halimbawa: Visual Impairment, Hearing Impairment, Physical Disability, etc.">
+                    </div>
+                    <div class="assistive-tech">
+                        <div class="error-msg">
+                            <span class="em-assistive-tech"></span>
+                        </div>
+                        <p class="dfont">Gumagamit ba ng assistive technology? (Isulat "N/A" kung wala) <span class="required">*</span></p>
+                        <input type="text" name="assistive-technology" id="assistive-technology" class="textbox" placeholder="Halimbawa: Braille, Wheelchair, Hearing Aid, o N/A">
+                    </div>
+                </div>
+            </div>
+            <div class="disability-modal-footer">
+                <button type="button" class="disability-modal-btn" id="disability-modal-continue" disabled>Magpatuloy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Modal for Template (appears if No to read/write) -->
+    <div id="disability-template-popup" class="popup-overlay" style="display: none;">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h2>Paalala para sa mga Magulang/Tagapagalaga</h2>
+            </div>
+            <div class="popup-body">
+                <p><strong>Sa mga magulang o tagapagalaga ng mga mag-aaral na may kapansanan at hindi nakakabasa o nakakasulat:</strong></p>
+                <p>Mangyaring makipag-ugnayan sa aming tanggapan upang matulungan kayo sa proseso ng enrollment. Mayroon kaming espesyal na tulong at gabay para sa inyong sitwasyon.</p>
+                <p><strong>Mga Contact Details:</strong></p>
+                <ul>
+                    <li>Telepono: [School Contact Number]</li>
+                    <li>Email: [School Email]</li>
+                    <li>Oras ng Tanggapan: Lunes - Biyernes, 8:00 AM - 5:00 PM</li>
+                </ul>
+                <p>Salamat sa inyong pag-unawa.</p>
+            </div>
+            <div class="popup-footer">
+                <button type="button" class="popup-btn" id="confirm-disability-popup">Naiintindihan Ko</button>
+            </div>
+        </div>
+    </div>
+
     <div class="content-wrapper">
-        <form id="enrollment-form" class="form-main" method="POST" enctype="multipart/form-data">
+        <form id="enrollment-form" class="form-main" enctype="multipart/form-data">
+            <!-- Hidden fields for disability data mapping -->
+            <input type="hidden" name="sn" id="sn-hidden" value="0">
+            <input type="hidden" name="boolsn" id="boolsn-hidden" value="">
+            <input type="hidden" name="at" id="at-hidden" value="0">
+            <input type="hidden" name="atdevice" id="atdevice-hidden" value="">
+            
             <!--ANTAS AT IMPORMASYON NG PAARALAN-->
             <div class="previous-school border-75">
                 <div class="previous-school-title">
@@ -220,7 +314,7 @@ $view = new getGradeLevels();
                             <div class="error-msg">
                                 <span class="em-age"></span>
                             </div>
-                            <p class="dfont">Edad <span class="required">*</span></p><br class="responsive-text-break">
+                            <p class="dfont">Edad <span class="required">*</span></p>
                             <input type="text" name="age" id="age" class="textbox" readonly>
                         </div>
                         <div class="gender-group-wrapper">
@@ -285,55 +379,6 @@ $view = new getGradeLevels();
                             <p class="dfont">Email Address</p>
                             <input type="email" name="email" id="email" class="textbox" placeholder="sampleemail@gmail.com" data-optional="true">
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--PARA SA MGA MAG-AARAL NA MAY KAPANSANAN-->
-            <div class="student-disability border-75">
-                <div class="student-disability-title">
-                    <span class="title">PARA SA MGA MAG-AARAL NA MAY KAPANSANAN</span>
-                </div>
-                <div class="student-disability-wrapper">
-                    <div class="special-needs">
-                        <p class="dfont">Ang mag-aaral ba ay nangangailangan ng espesyal na tulong sa pag-aaral? (e.g ADHD) <span class="required">*</span></p>
-                        <div>
-                            <div class="radio-option">
-                                <input type="radio" name="sn" id="is-disabled" class="radio" value="1">
-                                <label for="is-disabled">Mayroon</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" name="sn" id="not-disabled" class="radio" value="0">
-                                <label for="not-disabled">Wala</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="truespecialneeds">
-                        <div class="error-msg">
-                            <span class="em-boolsn"></span>
-                        </div>
-                        <p class="dfont">Kung MAYROON, isulat kung ano ang natatanging kalagayan ng bata:</p>
-                        <input type="text" name="boolsn" id="boolsn" class="textbox" placeholder="Blind, Deaf, ADHD, etc.">
-                    </div>
-                    <div class="assisttech">
-                        <p class="dfont">May nagagamit bang "assistive technology devices" (e.g Braille)<span class="required">*</span></p>
-                        <div>
-                            <div class="radio-option">
-                                <input type="radio" name="at" id="has-assistive-tech" class="radio" value="1">
-                                <label for="has-assistive-tech">Oo</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" name="at" id="no-assistive-tech" class="radio" value="0">
-                                <label for="no-assistive-tech">Hindi</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="trueassisttech">
-                        <div class="error-msg">
-                            <span class="em-atdevice"></span>
-                        </div>
-                        <p class="dfont">Kung MAYROON, isulat kung ano ito</p>
-                        <input type="text" name="atdevice" id="atdevice" class="textbox" placeholder="Wheelchairs">
                     </div>
                 </div>
             </div>
@@ -403,142 +448,64 @@ $view = new getGradeLevels();
             <!--IMPORMASYON NG MAGULANG/TAGAPAGALAGA-->
             <div class="parents-guardian-information border-75">
                 <div class="parents-guardian-information-title">
-                    <span class="title">IMPORMASYON NG MAGULANG/TAGAPAGALAGA</span>
+                    <span class="title">IMPORMASYON NG TAGAPAGALAGA</span>
                 </div>
                 <!-- Nagdagdag ako ng seperate names dito dabid (Kinit)-->
                 <div class="parents-guardian-information-wrapper">
-                    <div class="father">
-                        <div class="Father-Last-Name">
-                            <div class="error-msg">
-                                <span class="em-father-last-name"></span>
-                            </div>
-                            <h3>AMA</h3>
-                            <p class="dfont">Apilyedo<span class="required">*</span></p>
-                            <input type="text" class="textbox" name="Father-Last-Name" id="Father-Last-Name" placeholder="Dela Cruz">
-                        </div><br>
-                        <div class="Father-Middle-Name">
-                            <div class="error-msg">
-                                <span class="em-father-middle-name"></span>
-                            </div>
-                            <p class="dfont">Gitnang Pangalan</p>
-                            <input type="text" class="textbox" name="Father-Middle-Name" id="Father-Middle-Name" placeholder="De Vera" data-optional="true">
-                        </div><br>
+                    <!-- Nagdagdag ako ng seperate names dito dabid (Kinit)-->
+                    <div class="G-fullname">
                         <div class="error-msg">
-                            <span class="em-father-first-name"></span>
+                            <span class="em-guardian-last-name"></span>
                         </div>
-                        <div class="Father-First-Name">
-                            <p class="dfont">Pangalan <span class="required">*</span></p>
-                            <input type="text" class="textbox" name="Father-First-Name" id="Father-First-Name" placeholder="Rey">
-                        </div><br>
-                        <div class="F-highest-education">
-                            <label for="F-highest-education">Pinakamataas na antas na natapos sa pag-aaral <span class="required">*</span> </label><br>
-                            <select name="F-highest-education" id="F-highest-education" class="select">
-                                <option value="Hindi Nakapag-aral">Hindi Nakapag-aral</option>
-                                <option value="Hindi Nakapag-aral pero marunong magbasa at magsulat">Hindi Nakapag-aral pero marunong magbasa at magsulat</option>
-                                <option value="Nakatuntong ng Elementarya">Nakatuntong ng Elementarya</option>
-                                <option value="Nakapagtapos ng Elementarya">Nakapagtapos ng Elementarya</option>
-                                <option value="Nakatuntong ng Sekundarya">Nakatuntong ng Sekundarya</option>
-                                <option value="Nakapagtapos ng Sekundarya">Nakapagtapos ng Sekundarya</option>
-                                <option value="Nakapag-aral Pagkatapos ng Sekundarya o ng Teknikal /Bokasyonal">Nakapag-aral Pagkatapos ng Sekundarya o ng Teknikal/Bokasyonal</option>
-                            </select>
-                        </div>
-                        <div class="F-number">
-                            <div class="error-msg">
-                                <span class="em-f-number"></span>
-                            </div>
-                            <p class="dfont">Numero sa telepono (cellphone/ telephone/) <span class="required">*</span></p>
-                            <input type="text" name="F-Number" id="F-number" class="textbox" placeholder="09123456789">
-                        </div>
+                        <p class="dfont">Apilyedo <span class="required">*</span></p>
+                        <input type="text" class="textbox" name="Guardian-Last-Name" id="Guardian-Last-Name" placeholder="Dela Cruz">
                     </div>
-
-                    <!-- Nagdagdag ako ng seperate names dito dabid (Kinit)-->
-                    <div class="mother">
-                        <div class="M-fullname">
-                            <h3>INA</h3>
-                            <div class="error-msg">
-                                <span class="em-mother-last-name"></span>
-                            </div>
-                            <p class="dfont">Apilyedo <span class="required">*</span></p>
-                            <input type="text" class="textbox" name="Mother-Last-Name" id="Mother-Last-Name" placeholder="Dela Cruz">
-                        </div><br>
-                        <div class="Mother-Middle-Name">
-                            <div class="error-msg">
-                                <span class="em-mother-middle-name"></span>
-                            </div>
-                            <p class="dfont">Gitnang Pangalan </p>
-                            <input type="text" class="textbox" name="Mother-Middle-Name" id="Mother-Middle-Name" placeholder="Jimenez" data-optional="true">
-                        </div><br>
-                        <div class="Mother-First-Name">
-                            <div class="error-msg">
-                                <span class="em-mother-first-name"></span>
-                            </div>
-                            <p class="dfont">Pangalan <span class="required">*</span></p>
-                            <input type="text" class="textbox" name="Mother-First-Name" id="Mother-First-Name" placeholder="Maria">
-                        </div><br>
-                        <div class="M-highest-education">
-                            <label for="M-highest-education">Pinakamataas na antas na natapos sa pag-aaral <span class="required">*</span></label><br>
-                            <select name="M-highest-education" id="M-highest-education" class="select">
-                                <option value="Hindi Nakapag-aral">Hindi Nakapag-aral</option>
-                                <option value="Hindi Nakapag-aral pero marunong magbasa at magsulat">Hindi Nakapag-aral pero marunong magbasa at magsulat</option>
-                                <option value="Nakatuntong ng Elementarya">Nakatuntong ng Elementarya</option>
-                                <option value="Nakapagtapos ng Elementarya">Nakapagtapos ng Elementarya</option>
-                                <option value="Nakatuntong ng Sekundarya">Nakatuntong ng Sekundarya</option>
-                                <option value="Nakapagtapos ng Sekundarya">Nakapagtapos ng Sekundarya</option>
-                                <option value="Nakapag-aral Pagkatapos ng Sekundarya o ng Teknikal /Bokasyonal">Nakapag-aral Pagkatapos ng Sekundarya o ng Teknikal/Bokasyonal</option>
-                            </select>
+                    <div class="Guardian-Middle-Name">
+                        <div class="error-msg">
+                            <span class="em-guardian-middle-name"></span>
                         </div>
-                        <div class="M-number">
-                            <div class="error-msg">
-                                <span class="em-m-number"></span>
-                            </div>
-                            <p class="dfont">Numero sa telepono (cellphone/ telephone/)<span class="required">*</span></p>
-                            <input type="text" name="M-Number" id="M-number" class="textbox" placeholder="09123456789">
-                        </div>
+                        <p class="dfont">Gitnang Pangalan</p>
+                        <input type="text" class="textbox" name="Guardian-Middle-Name" id="Guardian-Middle-Name" placeholder="Jimenez">
                     </div>
-                    <!-- Nagdagdag ako ng seperate names dito dabid (Kinit)-->
-                    <div class="guardian">
-                        <div class="G-fullname">
-                            <h3>TAGAPAGALAGA</h3>
-                            <div class="error-msg">
-                                <span class="em-guardian-last-name"></span>
-                            </div>
-                            <p class="dfont">Apilyedo <span class="required">*</span></p>
-                                <input type="text" class="textbox" name="Guardian-Last-Name" id="Guardian-Last-Name" placeholder="Dela Cruz">
-                        </div><br>
-                        <div class="Guardian-Middle-Name">
-                            <div class="error-msg">
-                                <span class="em-guardian-middle-name"></span>
-                            </div>
-                            <p class="dfont">Gitnang Pangalan</p>
-                            <input type="text" class="textbox" name="Guardian-Middle-Name" id="Guardian-Middle-Name" placeholder="Jimenez" data-optional="true">
-                        </div><br>
-                        <div class="Guardian-First-Name">
-                            <div class="error-msg">
-                                <span class="em-guardian-first-name"></span>
-                            </div>
-                            <p class="dfont">Pangalan <span class="required">*</span></p>
-                            <input type="text" class="textbox" name="Guardian-First-Name" id="Guardian-First-Name" placeholder="Maria">
-                        </div><br>
-                        <div class="G-highest-education">
-                            <label for="G-highest-education">Pinakamataas na antas na natapos sa pag-aaral <span class="required">*</span></label><br>
-                            <select name="G-highest-education" id="G-highest-education" class="select">
-                                <option value="Hindi Nakapag-aral">Hindi Nakapag-aral</option>
-                                <option value="Hindi Nakapag-aral pero marunong magbasa at magsulat">Hindi Nakapag-aral pero marunong magbasa at magsulat</option>
-                                <option value="Nakatuntong ng Elementarya">Nakatuntong ng Elementarya</option>
-                                <option value="Nakapagtapos ng Elementarya">Nakapagtapos ng Elementarya</option>
-                                <option value="Nakatuntong ng Sekundarya">Nakatuntong ng Sekundarya</option>
-                                <option value="Nakapagtapos ng Sekundarya">Nakapagtapos ng Sekundarya</option>
-                                <option value="Nakapag-aral Pagkatapos ng Sekundarya o ng Teknikal /Bokasyonal">Nakapag-aral Pagkatapos ng Sekundarya o ng Teknikal/Bokasyonal</option>
-                            </select>
+                    <div class="Guardian-First-Name">
+                        <div class="error-msg">
+                            <span class="em-guardian-first-name"></span>
                         </div>
-                        <div class="G-number">
-                            <div class="error-msg">
-                                <span class="em-g-number"></span>
-                            </div>
-                            <p class="dfont">Numero sa telepono (cellphone/ telephone/) <span class="required">*</span></p>
-                            <input type="text" name="G-Number" id="G-number" class="textbox" placeholder="09123456789">
-                        </div>
+                        <p class="dfont">Pangalan <span class="required">*</span></p>
+                        <input type="text" class="textbox" name="Guardian-First-Name" id="Guardian-First-Name" placeholder="Maria">
                     </div>
+                    <div class="G-highest-education">
+                        <label for="G-highest-education">Pinakamataas na antas na natapos sa pag-aaral <span class="required">*</span></label><br>
+                        <select name="G-highest-education" id="G-highest-education" class="select">
+                            <option value="Hindi Nakapag-aral">Hindi Nakapag-aral</option>
+                            <option value="Hindi Nakapag-aral pero marunong magbasa at magsulat">Hindi Nakapag-aral pero marunong magbasa at magsulat</option>
+                            <option value="Nakatuntong ng Elementarya">Nakatuntong ng Elementarya</option>
+                            <option value="Nakapagtapos ng Elementarya">Nakapagtapos ng Elementarya</option>
+                            <option value="Nakatuntong ng Sekundarya">Nakatuntong ng Sekundarya</option>
+                            <option value="Nakapagtapos ng Sekundarya">Nakapagtapos ng Sekundarya</option>
+                            <option value="Nakapag-aral Pagkatapos ng Sekundarya o ng Teknikal /Bokasyonal">Nakapag-aral Pagkatapos ng Sekundarya o ng Teknikal/Bokasyonal</option>
+                        </select>
+                    </div>
+                    <div class="G-Relationship">
+                        <label for="G-Relationship">Relasyon sa Mag-aaral <span class="required">*</span></label><br>
+                        <select name="G-Relationship" id="G-Relationship" class="select">
+                            <option value="Magulang">Magulang</option>
+                            <option value="Lola">Lola</option>
+                            <option value="Lolo">Lolo</option>
+                            <option value="Tiya">Tiya</option>
+                            <option value="Kapatid">Kapatid</option>
+                            <option value="Ninang">Ninang</option>
+                            <option value="Ninong">Ninong</option>
+                            <option value="Iba pa">Iba pa</option>
+                        </select>
+                    </div>
+                    <div class="G-number">
+                        <div class="error-msg">
+                            <span class="em-g-number"></span>
+                        </div>
+                        <p class="dfont">Numero sa telepono (cellphone/ telephone/) <span class="required">*</span></p>
+                        <input type="text" name="G-Number" id="G-number" class="textbox" placeholder="09123456789">
+                    </div> 
                 </div>
             </div>
             <!--4PS, IMAGES AND SUBMIT BUTTON-->            
@@ -557,8 +524,11 @@ $view = new getGradeLevels();
                     </div>
                 </div>
                 <div class="image-confirm">
-                    <p class="dfont">Ipasa ang malinaw na larawan ng mga Dokumento gaya ng <b>PSA BIRTH CERTIFICATE at REPORT CARD <span class="required">*</span></b></p>
-                    <input type="file" name="psa-image" value="Insert Image (Di pa nagana)"> 
+                    <p class="dfont">Ipasa ang malinaw na larawan ng <b>REPORT CARD <span class="required">*</span></b></p>
+                    <label for="report-card-front" style="display: block; margin-bottom: 8px;">Front Side <span class="required">*</span></label>
+                    <input type="file" id="report-card-front" name="report-card-front" accept="image/jpeg,image/jpg,image/png" required style="margin-bottom: 15px;"> 
+                    <label for="report-card-back" style="display: block; margin-bottom: 8px;">Back Side <span class="required">*</span></label>
+                    <input type="file" id="report-card-back" name="report-card-back" accept="image/jpeg,image/jpg,image/png" required> 
                 </div>
                 <?php if($set->isSet()): ?>
                     <button type="submit" class="submit-button" >Submit</button>

@@ -169,19 +169,19 @@ class adminEnrolleesModel {
             throw new DatabaseException('Failed to count enrollee', 0,$e);
         }
     }
-    public function getPsaImg($id) : ?string {
+    public function getEnrolleeReportCard(int $enrolleeId): ?array {
         try {
-            $sql = " SELECT Psa_directory.directory FROM enrollee 
-                INNER JOIN Psa_directory ON enrollee.Psa_Image_Id = Psa_directory.Psa_Image_Id
-                WHERE Enrollee_Id = :id";
+            $sql = "SELECT rcs.* FROM enrollee AS e
+                    LEFT JOIN report_card_submissions AS rcs ON e.Report_Card_Id = rcs.Report_Card_Id
+                    WHERE e.Enrollee_Id = :id AND rcs.Report_Card_Id IS NOT NULL";
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute(['id' => $id]);
+            $stmt->execute([':id' => $enrolleeId]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            return (string)$result['directory'] ?: null;
+            return $result ?: null;
         }
         catch(PDOException $e) {
-            throw new DatabaseException('Failed to fetch PSA directory', 0 ,$e);
+            throw new DatabaseException('Failed to fetch report card submission', 0, $e);
         }
     }
     public function getAllPartialEnrollees() : array{
@@ -282,9 +282,6 @@ class adminEnrolleesModel {
             $sql = "UPDATE enrollee SET Enrollment_Status = :status WHERE Enrollee_Id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([':id'=>$enrolleeId,':status'=>$status]);
-            if($stmt->rowCount() === 0) {
-                return false;
-            }
             return true;
         }
         catch(PDOException $e) {

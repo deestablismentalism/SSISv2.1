@@ -96,16 +96,20 @@ class teacherStudentInformationModel {
         try {
             $sql = "SELECT  s.*,
                             CASE s.Student_Status
+                            WHEN 0 THEN 'Waiting'
                             WHEN 1 THEN 'Active'
                             WHEN 2 THEN 'Inactive'
                             WHEN 3 THEN 'Dropped'
+                            WHEN 4 THEN 'Transferred'
+                            WHEN 5 THEN 'Graduated'
                             ELSE 'Unknown'
                             END AS Status,
                             g.Grade_Level,
                             se.Section_Name
                     FROM students AS s
                     LEFT JOIN grade_level AS g ON s.Grade_Level_Id = g.Grade_Level_Id
-                    LEFT JOIN sections AS se ON s.Section_Id = se.Section_Id";
+                    LEFT JOIN sections AS se ON s.Section_Id = se.Section_Id
+                    WHERE s.Is_Archived = 0";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

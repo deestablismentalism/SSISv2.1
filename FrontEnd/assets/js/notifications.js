@@ -3,15 +3,27 @@ const Notification = {
     init() {
         this.container = document.createElement("div");
         this.container.id = "global-notifications";
-        this.container.style.position = "absolute";
+        this.container.style.position = "fixed";
         this.container.style.top = "50%";
-        this.container.style.right = "50%";
-        this.container.style.zIndex = "9999";
-        this.container.style.transform = "translate(50%, -50%)";
+        this.container.style.left = "50%";
+        this.container.style.transform = "translate(-50%, -50%)";
+        this.container.style.zIndex = "99999";
+        this.container.style.display = "flex";
+        this.container.style.flexDirection = "column";
+        this.container.style.gap = "10px";
+        this.container.style.pointerEvents = "none";
         document.body.appendChild(this.container);
+        console.log('Notification system initialized');
     },
 
     show({ type = "notification", title = "", message = "" }) {
+        console.log('Notification.show called:', { type, title, message });
+        
+        if (!this.container) {
+            console.error('Notification container not initialized!');
+            this.init();
+        }
+        
         let icon = "";
         let headingClass = "";
         let svgClass = "";
@@ -58,6 +70,7 @@ const Notification = {
             </div>`;
 
         const notification = wrapper.firstElementChild;
+        notification.style.pointerEvents = "auto";
         
         // Add event listeners for both buttons
         notification.querySelector(".notification-button-secondary")
@@ -66,7 +79,11 @@ const Notification = {
             .addEventListener("click", () => notification.remove());
 
         this.container.appendChild(notification);
+        console.log('Notification displayed successfully');
     }
 };
 
-document.addEventListener("DOMContentLoaded", () => Notification.init());
+document.addEventListener("DOMContentLoaded", () => {
+    console.log('DOMContentLoaded - initializing Notification');
+    Notification.init();
+});

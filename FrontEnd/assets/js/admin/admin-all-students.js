@@ -9,9 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function getStatusTextFromNumber(n) {
         const numericValue = parseInt(n);
         switch(numericValue) {
-            case 1: return '1';
-            case 2: return '2';
-            case 3: return '3';
+            case 0: return 'Waiting';
+            case 1: return 'Active';
+            case 2: return 'Inactive';
+            case 3: return 'Dropped';
+            case 4: return 'Transferred';
+            case 5: return 'Graduated';
             default: return String(n);
         }
     }
@@ -255,7 +258,7 @@ function editStudentDetails(studentId) {
 }
 
 async function deleteAndArchiveStudent(studentId) {
-    if (confirm('Are you sure you want to delete this student? This action cannot be undone.')) {
+    if (confirm('Are you sure you want to archive this student?')) {
         Loader.show();
         const result = await deleteAndArchive(studentId);
         if(!result.success) {
@@ -281,7 +284,7 @@ async function deleteAndArchive(studentId) {
     const controller = new AbortController();
     const timeoutId = setTimeout(()=> controller.abort(),TIME_OUT);
     try {
-        const response = await fetch(`../../../BackEnd/api/admin/postDeleteAndArchiveStudent.php`,{
+        const response = await fetch(`../../../BackEnd/api/admin/postArchiveStudent.php`,{
             signal: controller.signal,
             method: 'POST',
             headers: {

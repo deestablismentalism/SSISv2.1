@@ -9,29 +9,48 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Get all view buttons
-    const viewButtons = document.querySelectorAll('.view-button');
+    // Get modal elements
     const modal = document.getElementById('enrolleeModal');
     const modalContent = document.querySelector('.modal-content');
     
-    // Add click event to each button
-    viewButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const enrolleeId = this.getAttribute('data-id');
-            // Fetch enrollee details via AJAX
+    // Event delegation for view enrollee buttons
+    document.addEventListener('click', async function(e) {
+        if (e.target.classList.contains('view-enrollee')) {
+            const enrolleeId = e.target.getAttribute('data-id');
+            
+            if (!enrolleeId) {
+                console.error('No enrollee ID found');
+                return;
+            }
+            
+            // Show modal with loading state
             modal.style.display = 'block';
-            modalContent.innerHTML = '<p>Loading enrollee details...</p>';
-            fetch(`../../../BackEnd/admin/adminEnrolleeInfoView.php?id=${enrolleeId}`)
-                .then(response => response.text())
-                .then(data => {
-                    modalContent.innerHTML = data;
-                })
-                .catch(error => console.error('Error:', error));
-        });
-    });
-    
-    // Close modal when X is clicked
-    document.addEventListener('click', function(e) {
+            modalContent.innerHTML = '<div class="loading-container"><p>Loading enrollee details...</p></div>';
+            
+            try {
+                const response = await fetch(`../../../BackEnd/templates/admin/fetchEnrolleeInfo.php?id=${encodeURIComponent(enrolleeId)}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.text();
+                modalContent.innerHTML = `
+                    <span class="close">&times;</span>
+                    <div class="enrollee-details">
+                        ${data}
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error fetching enrollee details:', error);
+                modalContent.innerHTML = `
+                    <span class="close">&times;</span>
+                    <div class="error-message">Failed to load enrollee details. Please try again.</div>
+                `;
+            }
+        }
+        
+        // Close modal when X is clicked
         if (e.target.classList.contains('close')) {
             modal.style.display = 'none';
         }

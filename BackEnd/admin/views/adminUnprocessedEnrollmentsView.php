@@ -15,6 +15,7 @@ class adminUnhandledEnrollmentsView {
     private const UNPROCESSED = 0;
     private const FOR_RESUBMISSION = 1;
     private const FOR_CONSULTATION = 2;
+    private const HAS_RESUBMITTED = 3;
 
     public function __construct() {
         $this->tableTemplate = new tableCreator();
@@ -41,7 +42,7 @@ class adminUnhandledEnrollmentsView {
     //Generates a dynamic action button based on transaction status
     private function generateTransactionButton(int $status, int $enrolleeId, ?string $contactNumber = null): safeHTML|string {
         switch ($status) {
-            case self::FOR_RESUBMISSION:
+            case self::HAS_RESUBMITTED:
                 return new safeHTML(
                     '<button id="'.$enrolleeId.'" data-enrollee="'.$enrolleeId.'" class="view-resubmission">View Resubmission</button>'
                 );
