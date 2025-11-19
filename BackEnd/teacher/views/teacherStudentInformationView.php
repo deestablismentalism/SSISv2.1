@@ -28,10 +28,11 @@ class teacherStudentInformationView {
                 $lastName = $data['Last_Name'];
                 $hasMiddleInitial = !empty($data['Middle_Name']) ? $data['Middle_Name'] : '';
                 $hasSuffix = !empty($data['Suffix']) ? ', ' . $data['Suffix'] : '';
+                $lrn = !empty($data['LRN']) ? $data['LRN'] : 'No LRN yet';
                 $fullName = $lastName . ', ' . $firstName . ' ' . $hasMiddleInitial . $hasSuffix;
                 //echo associative table
                 echo $this->tableTemplate->returnVerticalTables(['Buong Pangalan','Petsa ng Kapanganakan','Edad','LRN','Kasarian','Baitang','Section'],
-                [$fullName,$data['Birthday'],$data['Age'],$data['LRN'],
+                [$fullName,$data['Birthday'],$data['Age'],$lrn,
                 $data['Sex'],$data['Grade_Level'], $data['Section_Name']
                 ], 'student-info-part');
 

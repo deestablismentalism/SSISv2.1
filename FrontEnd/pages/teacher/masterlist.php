@@ -61,17 +61,17 @@ try {
     $higherIndex = max($maleCount, $femaleCount);
 
     foreach($sectionMale as $male) {
-        $firstName = htmlspecialchars($male['Student_First_Name']);
-        $lastName = htmlspecialchars($male['Student_Last_Name']);
-        $middleName = (!empty($male['Student_Middle_Name'])) ? htmlspecialchars($male['Student_Middle_Name']) : '';
+        $firstName = htmlspecialchars($male['First_Name']);
+        $lastName = htmlspecialchars($male['Last_Name']);
+        $middleName = (!empty($male['Middle_Name'])) ? htmlspecialchars($male['Middle_Name']) : '';
         $fullName = $lastName . ', ' . $firstName . ' ' . $middleName;
 
         $rows['male'][] = $fullName;
     }
     foreach($sectionFemale as $female) {
-        $firstName = htmlspecialchars($female['Student_First_Name']);
-        $lastName = htmlspecialchars($female['Student_Last_Name']);
-        $middleName = (!empty($female['Student_Middle_Name'])) ? htmlspecialchars($female['Student_Middle_Name']) : '';
+        $firstName = htmlspecialchars($female['First_Name']);
+        $lastName = htmlspecialchars($female['Last_Name']);
+        $middleName = (!empty($female['Middle_Name'])) ? htmlspecialchars($female['Middle_Name']) : '';
         $fullName = $lastName . ', ' . $firstName . ' ' . $middleName;
 
         $rows['female'][]   = $fullName;

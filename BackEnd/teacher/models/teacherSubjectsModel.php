@@ -33,7 +33,7 @@ class teacherSubjectsModel {
     }
     public function getSectionSubjects(int $sectionId) : array {
         try {
-            $sql = "SELECT su.Subject_Name, s.Section_Name, ss.*, ssc.* FROM section_subjects AS ss
+            $sql = "SELECT su.Subject_Name, s.Section_Name, ss.* FROM section_subjects AS ss
                 LEFT JOIN sections AS s ON ss.Section_Id = s.Section_Id
                 JOIN subjects AS su ON ss.Subject_Id = su.Subject_Id WHERE ss.Section_Id = :id";
             $stmt = $this->conn->prepare($sql);
