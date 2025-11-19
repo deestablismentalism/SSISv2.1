@@ -3,7 +3,8 @@ import{close,loadingText,modalHeader} from '../utils.js';
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('student-view-modal');
     const modalContent = document.getElementById('student-modal-content');
-    
+    const params = new URLSearchParams(window.location.search);
+    const advisoryId = params.get('adv_id');
     // Use event delegation for dynamically added buttons
     document.addEventListener('click', async function(e) {
         if (e.target.classList.contains('view-student-button')) {
@@ -16,7 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
             modalContent.innerHTML = loadingText;
             
             try {
-                const response = await fetch(`../../../BackEnd/templates/teacher/fetchStudentInformationModal.php?student_id=` + encodeURIComponent(studentId));
+                const response = await 
+                fetch(`../../../BackEnd/templates/teacher/fetchStudentInformationModal.php?student_id=${encodeURIComponent(studentId)}&adv_id=${advisoryId}`);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP error: ${response.status}`);

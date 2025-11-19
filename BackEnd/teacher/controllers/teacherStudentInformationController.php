@@ -41,9 +41,9 @@ class teacherStudentInformationController {
             ];
         }
     }
-    public function viewStudentGrades(int $studentId):array {
+    public function viewStudentGrades(int $studentId,int $sectionId):array {
         try {
-            $data = $this->studentsModel->getStudentGrades($studentId);
+            $data = $this->studentsModel->getStudentGrades($studentId,$sectionId);
             if(empty($data)) {
                 return [
                     'success'=> true,

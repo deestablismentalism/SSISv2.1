@@ -7,10 +7,12 @@ class teacherStudentInformationView {
     protected $tableTemplate;
     protected $controller;
     protected $studentId;
+    protected $sectionId;
     public function __construct() {
         $this->controller = new teacherStudentInformationController();
         $this->tableTemplate = new TableCreator();
         $this->studentId = isset($_GET['student_id']) ? (int)$_GET['student_id'] : null;
+        $this->sectionId = isset($_GET['adv_id']) ? (int)$_GET['adv_id'] : null;
     }
     public function displayStudentInformation() {
         try {
@@ -49,8 +51,11 @@ class teacherStudentInformationView {
         try {
             if(is_null($this->studentId)) {
                 throw new IdNotFoundException('Student ID not recognized');
+            }
+            if(is_null($this->sectionId)) {
+                throw new IdNotFoundException('Section ID not recognized');
             } 
-            $grades = $this->controller->viewStudentGrades($this->studentId);
+            $grades = $this->controller->viewStudentGrades($this->studentId,$this->sectionId);
             if(!$grades['success']) {
                 echo '<div class="error-message">'.htmlspecialchars($studentInfo['message']).'</div>';
                 return;
