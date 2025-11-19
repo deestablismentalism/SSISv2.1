@@ -130,7 +130,7 @@ class adminEnrolleesController {
             $parInfo = $this->returnEnrolleeParentInfo($enrolleeId);
             $address = $this->returnEnrolleeAddress($enrolleeId);
             $reportCard = $this->returnReportCardData($enrolleeId);
-            $isAllFalse = !$perInfo['success'] && !$eduInfo['sucess'] && !$eduBg['success'] && !$disInfo['success'] && !$parInfo['success'] 
+            $isAllFalse = !$perInfo['success'] && !$eduInfo['success'] && !$eduBg['success'] && !$disInfo['success'] && !$parInfo['success'] 
             && !$address['success'];
             if($isAllFalse) {
                 return [

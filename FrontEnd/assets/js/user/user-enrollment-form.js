@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded',function(){
     const enrollingGradeLevel = document.getElementById("grades-tbe");
     const lastGradeLevel = document.getElementById("last-grade");
     // === STUDENT INFORMATION(FORM 2ND PART) ===
-    const psaNumber = document.getElementById("PSA-number");
     const lrn = document.getElementById("LRN");
     const lname = document.getElementById("lname");
     const mname = document.getElementById("mname");
@@ -77,8 +76,7 @@ document.addEventListener('DOMContentLoaded',function(){
     maxDate.setFullYear(today.getFullYear() - 3);
     // === REGEX ===
     const lrnRegex = /^([0-9]){12}$/;
-    const bCertRegex = /^([0-9]){13}$/;
-    const yearRegex = /^(1[0-9]{3}|2[0-9]{3}|3[0-9]{3})$/;
+    const yearRegex = /^(1[0-9]{3}|2[0-9]{3}|3[0-9]{3})$/
     const idRegex = /^([0-9]){6}$/;
     const charRegex = /^[A-Za-z0-9\s.,'-]{3,100}$/;
     const onlyDigits = /^[0-9]+$/;
@@ -88,7 +86,6 @@ document.addEventListener('DOMContentLoaded',function(){
     const nonNameRegex = /[^\p{L}\s'\-\.]/gu; 
 
     const numLimitLRN = 12;
-    const numLimitPSA = 13;
     const numLimitSchoolID = 6;
     const numLimitPhone = 11;
 
@@ -379,10 +376,13 @@ document.addEventListener('DOMContentLoaded',function(){
         return true;
     }
     function validateSchoolId(element, errorElement) {
+        // Allow empty values - field is now optional
         if (ValidationUtils.isEmpty(element)) {
-            return ValidationUtils.errorMessages(errorElement, ValidationUtils.emptyError, element);
+            ValidationUtils.clearError(errorElement, element);
+            return true;
         }
-        else if(!idRegex.test(element.value)) {
+        // If filled, validate format
+        if(!idRegex.test(element.value)) {
             return ValidationUtils.errorMessages(errorElement, "Not a valid school Id", element);
         }
         else if(!onlyDigits.test(element.value)) {
@@ -479,23 +479,6 @@ document.addEventListener('DOMContentLoaded',function(){
             return false;
         }
     }
-    function validatePSA() {
-        const value = psaNumber.value.trim();
-        if (!value) {
-            return ValidationUtils.errorMessages("em-PSA-number", ValidationUtils.emptyError, psaNumber);
-        }
-        if (!/^\d*$/.test(value)) {
-            return ValidationUtils.errorMessages("em-PSA-number", ValidationUtils.notNumber, psaNumber);
-        }
-        if (!bCertRegex.test(value)) {
-            return ValidationUtils.errorMessages("em-PSA-number", 
-                value.length > 13 ? "Only 13 digits are allowed" : "Enter a valid birth certificate number", 
-                psaNumber
-            );
-        }
-        ValidationUtils.clearError("em-PSA-number", psaNumber);
-        return true;
-    }
     function validateLRN() {
         const value = lrn.value.trim();
         if (lrn.disabled) {
@@ -540,9 +523,7 @@ document.addEventListener('DOMContentLoaded',function(){
                 isValid = false;
             }
         });
-        if (!validatePSA()) {
-            isValid = false;
-        }
+        
         if (!lrn.disabled && !validateLRN()) {
             isValid = false;
         }
@@ -1126,10 +1107,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if (birthDate) {
         birthDate.addEventListener('change', getAge);
     }
-    if (psaNumber) {
-        checkIfNumericInput(psaNumber);
-        psaNumber.addEventListener('input', validatePSA);
-    }
+    
     if (lrn) {
         checkIfNumericInput(lrn);
         lrn.addEventListener('input', validateLRN);
@@ -1158,7 +1136,7 @@ document.addEventListener('DOMContentLoaded',function(){
         }
     });
 
-    const numericFields = [psaNumber, lrn, startYear, endYear, lastYear, lschoolId, fschoolId, 
+    const numericFields = [lrn, startYear, endYear, lastYear, lschoolId, fschoolId, 
                         guardianCPnum, houseNumber];
     numericFields.forEach(field => {
         if (field) {
@@ -1169,7 +1147,6 @@ document.addEventListener('DOMContentLoaded',function(){
     });
 
     limitCharacters(lrn, numLimitLRN);
-    limitCharacters(psaNumber, numLimitPSA);
 
     const schoolIdFields = [lschoolId, fschoolId];
     schoolIdFields.forEach(field => {
@@ -1320,11 +1297,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if (!localStorage.getItem('lrn')) {
         localStorage.setItem('lrn', 900000000145);
     }
-    if (!localStorage.getItem('psa')) {
-        localStorage.setItem('psa', 1000000000375);
-    }
     lrn.value = localStorage.getItem('lrn');
-    psaNumber.value = localStorage.getItem('psa');
     
     // |=====================================|
     // |===== REPORT CARD VALIDATION ========|
@@ -1565,11 +1538,8 @@ document.addEventListener('DOMContentLoaded',function(){
                 message: result.message || 'Your enrollment has been submitted successfully!'
             });
             let lrnValue = localStorage.getItem('lrn');
-            let psaValue = localStorage.getItem('psa');
             const currentLRN = parseInt(lrnValue);
-            const currentPSA = parseInt(psaValue);
             localStorage.setItem('lrn', currentLRN + 1);
-            localStorage.setItem('psa', currentPSA + 1);
             isSubmittingForm = false;
             setTimeout(() => {
                 window.location.href = './user_enrollees.php';

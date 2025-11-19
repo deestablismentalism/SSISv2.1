@@ -62,11 +62,11 @@ try {
     $Last_Year_Attended = isset($_POST['last-year']) ? (int)$_POST['last-year'] : null;
     
     $Last_School_Attended = $_POST['lschool'] ?? '';
-    $School_Id = isset($_POST['lschoolID']) ? (int)$_POST['lschoolID'] : 0;
+    $School_Id = isset($_POST['lschoolID']) && $_POST['lschoolID'] !== '' ? (int)$_POST['lschoolID'] : null;
     $School_Address = $_POST['lschoolAddress'] ?? '';
     $School_Type = $_POST['school-type'] ?? 'Public';
     $Initial_School_Choice = $_POST['fschool'] ?? '';
-    $Initial_School_Id = isset($_POST['fschoolID']) ? (int)$_POST['fschoolID'] : 0;
+    $Initial_School_Id = isset($_POST['fschoolID']) && $_POST['fschoolID'] !== '' ? (int)$_POST['fschoolID'] : null;
     $Initial_School_Address = $_POST['fschoolAddress'] ?? '';
     
     $Student_First_Name = $_POST['fname'] ?? '';
@@ -74,7 +74,6 @@ try {
     $Student_Last_Name = $_POST['lname'] ?? '';
     $Student_Extension = $_POST['extension'] ?? null;
     $Learner_Reference_Number = isset($_POST['LRN']) && $_POST['LRN'] !== '' ? (int)$_POST['LRN'] : null;
-    $Psa_Number = isset($_POST['PSA-number']) ? (int)$_POST['PSA-number'] : 0;
     $Birth_Date = $_POST['bday'] ?? '';
     $Age = isset($_POST['age']) ? (int)$_POST['age'] : 0;
     $Sex = $_POST['gender'] ?? 'Female';
@@ -141,8 +140,8 @@ try {
         $Father_First_Name, $Father_Last_Name, $Father_Middle_Name, $Father_Educational_Attainment, $Father_Contact_Number, $FIf_4Ps,
         $Mother_First_Name, $Mother_Last_Name, $Mother_Middle_Name, $Mother_Educational_Attainment, $Mother_Contact_Number, $MIf_4Ps,
         $Guardian_First_Name, $Guardian_Last_Name, $Guardian_Middle_Name, $Guardian_Educational_Attainment, $Guardian_Contact_Number, $GIf_4Ps,
-        $Student_First_Name, $Student_Last_Name, $Student_Middle_Name, $Student_Extension, $Learner_Reference_Number, $Psa_Number, $Birth_Date, $Age, $Sex, $Religion,
-        $Native_Language, $If_Cultural, $Cultural_Group, $Student_Email, $Enrollment_Status, $image);
+        $Student_First_Name, $Student_Last_Name, $Student_Middle_Name, $Student_Extension, $Learner_Reference_Number, $Birth_Date, $Age, $Sex, $Religion,
+        $Native_Language, $If_Cultural, $Cultural_Group, $Student_Email, $Enrollment_Status, null, null);
     
     // Log result
     error_log("[ADMIN ENROLLMENT] Result: " . json_encode($response) . "\n", 3, __DIR__ . '/../../adminEnrollmentLog.txt');
