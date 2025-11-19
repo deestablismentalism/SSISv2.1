@@ -647,3 +647,16 @@ Stack trace:
 #1 /var/www/html/BackEnd/admin/views/adminEnrolleeInfo.php(112): TableCreator->returnVerticalTables(Array, Array, 'educational-inf...')
 #2 /var/www/html/BackEnd/templates/staff/fetchEnrolleeInfo.php(11): adminEnrolleeInfo->displayEnrolleeEducationalInfo()
 #3 {main}
+[2025-11-18 04:43:20]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Psa_Number' in 'SELECT'
+[2025-11-18 04:43:27]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Psa_Number' in 'SELECT'
+[2025-11-18 04:43:36]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Psa_Number' in 'SELECT'
+[2025-11-18 04:43:47]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Psa_Number' in 'SELECT'
+[2025-11-18 04:43:51]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Psa_Number' in 'SELECT'
+[2025-11-18 12:49:25]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
+[2025-11-18 04:49:50]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
+[2025-11-19 12:41:04]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
+[2025-11-19 12:50:36]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
+[2025-11-19 20:58:30]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
+[2025-11-19 20:58:51]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
+[2025-11-19 12:59:19]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
+[2025-11-19 13:17:52]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous

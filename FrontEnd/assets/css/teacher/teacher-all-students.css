@@ -16,7 +16,7 @@
 }
 
 .teacher-all-students-content {
-  padding: 2rem; /* Base padding for 1440px */
+  padding: 1.7rem; /* Base padding for 1440px */
   transition: margin-left 0.3s ease;
   background-image: url("../../imgs/paper.jpg");
 }
@@ -125,7 +125,7 @@
 }
 .students th {
     padding: 1rem; /* Base for 1440px */
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.4px;
     background: rgb(97 206 255);
     text-transform: uppercase;

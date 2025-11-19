@@ -14,8 +14,11 @@ ob_start();
 ?>
     <div class="admin-all-teachers-content">
         <div class="admin-all-teachers-title-wrapper">
-             <h1 class="all-teachers-title">All Teachers </h1> 
-             <button class="btn btn-primary register" id="register-teacher-btn">Register a New Teacher</button>
+             <h1 class="all-teachers-title">All Teachers </h1>
+             <div class="button-group">
+                 <button class="btn btn-primary register" id="register-admin-btn">Register Admin</button>
+                 <button class="btn btn-primary register" id="register-teacher-btn">Register Teacher</button>
+             </div>
         </div>
         <?php
             require_once __DIR__ . '/../../../BackEnd/admin/views/adminTeachersView.php';

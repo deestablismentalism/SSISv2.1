@@ -155,12 +155,12 @@ body {
 .data-title {
     font-size: 1.5rem;
     font-weight: 600;
-    margin: var(--base-padding);
-    margin-bottom: 1rem;
+    margin: 1.5rem 0rem 1rem 0rem;
     text-transform: uppercase;
-    border-left: 5px solid #18ce13;
+    border-left: 5px solid var(--success);
     padding-left: 0.8rem;
-    color: var(--text-color);
+    text-shadow: #00e8fc82 1px 1.5px;
+    color: var(--title-main-color);
 }
 
 .card-container {

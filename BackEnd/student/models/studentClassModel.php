@@ -38,14 +38,22 @@ class studentClassModel {
     }
     public function getThisStudentsSimpleDetails(int $studentId):array {
         try {
-            $sql = "SELECT LRN, First_Name,Last_Name,Middle_Name FROM students WHERE Student_Id = :studentId";
+            $sql = "SELECT s.LRN, s.First_Name, s.Last_Name, s.Middle_Name, 
+                    gl.Grade_Level,
+                    CONCAT(COALESCE(st.Staff_First_Name, ''), ' ', COALESCE(st.Staff_Last_Name, '')) AS Adviser_Name
+                    FROM students s
+                    LEFT JOIN grade_level gl ON s.Grade_Level_Id = gl.Grade_Level_Id
+                    LEFT JOIN sections sec ON s.Section_Id = sec.Section_Id
+                    LEFT JOIN section_advisers sa ON sec.Section_Id = sa.Section_Id
+                    LEFT JOIN staffs st ON sa.Staff_Id = st.Staff_Id
+                    WHERE s.Student_Id = :studentId";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([':studentId'=>$studentId]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result;
         }
         catch(PDOException $e) {
-            error_log("[".date('Y-m-d')."]". $e->getMessage()."\n",3,__DIR__ . '/../../errorLogs.txt');
+            error_log("[".date('Y-m-d')."]".$e->getMessage()."\n",3,__DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException("Failed to fetch this Student's LRN",0,$e);
         }
     }

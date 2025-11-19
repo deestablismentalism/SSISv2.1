@@ -381,27 +381,12 @@ p {
 /*--END OF TRANSITIONS--*/
 /*----END OF SIDEBAR DESIGNS----*/
 /*--HEADER DESIGNS--*/
-.header-title{
-    padding: .2em;
-    font-family: var(--title-fonts); 
-    padding-left: 1em;
-    color: white;
-    font-weight: 900;
-    background-clip: text;
-    font-size: 1.8rem; /* Base size for 1440px */
-    position: relative;
-}
-.header-title::before {
-    content: '';
-    bottom: 0.8rem;
-    left: 0.9rem;
-    position: absolute;
-    background-image: url('../../imgs/graduation-cap.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 1.5rem;
-    height: 1.5rem;
-    transform: rotate(-45deg);
+.header-logo {
+    height: 3.5rem;
+    align-items: center;
+    width: auto;
+    padding: 0.5rem 0.1rem;
+    display: grid;
 }
 .header-wrapper {
     display:flex;
@@ -715,8 +700,8 @@ p {
         height: 3.5rem;
     }
     
-    .header-title {
-        font-size: 2rem;
+    .header-logo {
+        height: 4rem;
     }
     
     .account-settings-btn-content-wrapper {
@@ -733,8 +718,8 @@ p {
 
 /* Desktop (1024px - 1439px) */
 @media screen and (max-width: 1439px) {
-    .header-title {
-        font-size: 1.6rem;
+    .header-logo {
+        height: 3rem;
     }
     
     .account-settings-btn-content-wrapper {
@@ -777,8 +762,8 @@ p {
         padding: 0.6rem 0.8rem;
     }
     
-    .header-title {
-        font-size: 1.2rem;
+    .header-logo {
+        height: 2.8rem;
     }
     
     .account {
@@ -828,16 +813,8 @@ p {
         height: auto;
     }
     
-    .header-title {
-        font-size: 1rem;
-        text-align: center;
-        width: 100%;
-    }
-    
-    .header-title::before {
-        width: 1.2rem;
-        height: 1.2rem;
-        bottom: 0.8rem;
+    .header-logo {
+        height: 2.5rem;
     }
     
     .account {
@@ -974,15 +951,8 @@ p {
         padding: 0.6rem;
     }
     
-    .header-title {
-        font-size: 0.8rem;
-    }
-    
-    .header-title::before {
-        width: 1rem;
-        height: 1rem;
-        bottom: 0.6rem;
-        left: 0.5rem;
+    .header-logo {
+        height: 2rem;
     }
     
     .admin-profile-pic {
@@ -1077,16 +1047,8 @@ p {
         padding: 0.5rem;
     }
     
-    .header-title {
-        font-size: 0.7rem;
-        letter-spacing: 0.3px;
-    }
-    
-    .header-title::before {
-        width: 0.9rem;
-        height: 0.9rem;
-        bottom: 0.5rem;
-        left: 0.3rem;
+    .header-logo {
+        height: 1.8rem;
     }
     
     .admin-profile-pic {
@@ -1210,8 +1172,8 @@ p {
         padding: 0.5rem 0.8rem;
     }
     
-    .header-title {
-        font-size: 0.9rem;
+    .header-logo {
+        height: 2.2rem;
     }
     
     .admin-name-wrapper {

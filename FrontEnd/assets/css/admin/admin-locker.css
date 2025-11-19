@@ -1,7 +1,19 @@
+:root {
+  --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.2);
+  --text-color: #f5f5f5;
+  --accent-color: #00b4d8;
+  --hover-accent: #48cae4;
+  --border-radius: 1rem;
+  --transition: all 0.3s ease;
+  --font-main: "Poppins", "Segoe UI", sans-serif;
+}
+
 .locker-container {
     padding: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
+    font-family: var(--main-fonts);
+    background-image: url(../../imgs/paper.jpg);
     font-family: var(--main-fonts);
 }
 
@@ -31,22 +43,22 @@
 }
 
 .upload-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: #E1A23C;
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
     color: white;
-    border: none;
+    text-decoration: none;
     border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
 }
 
 .upload-btn:hover {
-    background: #d18e2a;
+  background: var(--hover-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
 }
 
 .search-container {
@@ -57,14 +69,23 @@
 .search-input {
     width: 100%;
     padding: 0.75rem 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    border: 1px solid var(--accent-color);
+    border-radius: 1rem;
     font-size: 1rem;
+    background: rgb(36 186 255 / 15%);
+    transition: all 0.5s ease;
 }
 
-.search-input:focus {
-    outline: none;
-    border-color: #E1A23C;
+.search-input:hover {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 1rem;
+    font-size: 1rem;
+    background: #c7f6ff78;
+    backdrop-filter: drop-shadow(8px 1px 1px var(--accent-color));
+    box-shadow: #00b4d8ba 0px 1px 3px;
+
 }
 
 /* Modal Styles */

@@ -1,10 +1,63 @@
 import{close, modalHeader, loadingText} from '../utils.js';
 document.addEventListener('DOMContentLoaded',function() {
-    const registerButton = document.getElementById('register-teacher-btn');
+    const registerTeacherButton = document.getElementById('register-teacher-btn');
+    const registerAdminButton = document.getElementById('register-admin-btn');
     const modal = document.getElementById('all-teachers-modal');
     const modalContent = document.getElementById('all-teachers-modal-content');
     
-    registerButton.addEventListener('click', async function() {
+    // Register Admin Button Handler
+    registerAdminButton.addEventListener('click', async function() {
+        modal.style.display = 'block';
+        modalContent.innerHTML = loadingText;
+
+        try {
+            const data = await fetchRegisterAdminForm();
+            modalContent.innerHTML = modalHeader() + data;
+            close(modal);
+
+            const form = document.getElementById('admin-registration-form');
+            const button = modal.querySelector("button[type=submit]");
+
+            form.addEventListener('submit',async function(e){
+                e.preventDefault();
+                button.disabled = true;
+                button.style.backgroundColor = 'gray';
+
+                const formData = new FormData(form);
+
+                const result = await postRegisterAdmin(formData);
+
+                if(!result.success) {
+                    Notification.show({
+                        type: result.success ? "success" : "error",
+                        title: result.success ? "Success" : "Error",
+                        message: result.message
+                    });
+                }
+                else {
+                    Notification.show({
+                        type: result.success ? "success" : "error",
+                        title: result.success ? "Success" : "Error",
+                        message: result.message
+                    });
+                    setTimeout(()=>{
+                        window.location.reload();
+                    },1000);
+                }
+            })
+        }
+        catch(err) {
+            Notification.show({
+                type: "error",
+                title: "Error",
+                message: `Error: ${err.message}`
+            });
+        }
+        
+    });
+
+    // Register Teacher Button Handler
+    registerTeacherButton.addEventListener('click', async function() {
         modal.style.display = 'block';
         modalContent.innerHTML = loadingText;
 
@@ -169,6 +222,19 @@ document.addEventListener('DOMContentLoaded',function() {
     });
 });
 
+async function fetchRegisterAdminForm() {
+    const response = await fetch(`../../../BackEnd/templates/admin/fetchRegisterAdminForm.php`);
+
+    let data;
+    try {
+        data = await response.text();
+    }
+    catch {
+        throw new Error('Invalid response');
+    }
+    return data;
+}
+
 async function fetchRegisterTeacherForm() {
     const response = await fetch(`../../../BackEnd/templates/admin/fetchRegisterTeacherForm.php`);
 
@@ -240,6 +306,38 @@ async function archiveStaff(staffId) {
         }
         return data;
     } catch(error) {
+        return {
+            success: false,
+            message: error.message || `There was an unexpected error`,
+            data: null
+        };
+    }
+}
+
+async function postRegisterAdmin(formData) {
+    try {
+        const response = await fetch(`../../../BackEnd/api/admin/postAdminRegistration.php`, {
+            method: 'POST',
+            body: formData
+        });
+
+        let data;
+        try {
+            data = await response.json();
+        }
+        catch {
+            throw new Error('Invalid json response');
+        }
+        if(!response.ok) {
+            return {
+                success: false,
+                message: data.message || `HTTP error: ${response.status}`,
+                data: null
+            };
+        }
+        return data;
+    }
+    catch(error) {
         return {
             success: false,
             message: error.message || `There was an unexpected error`,

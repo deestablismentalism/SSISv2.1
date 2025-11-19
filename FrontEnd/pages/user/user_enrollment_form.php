@@ -1,13 +1,35 @@
 <?php
 ob_start();
 
+// Initialize translation configuration
+$translationEnabled = false;
+$supportedLanguages = ['en' => 'English', 'tl' => 'Filipino (Tagalog)'];
+$currentLanguage = 'en';
+
+$baseDir = dirname(dirname(dirname(__DIR__)));
+$vendorPath = $baseDir . '/vendor/autoload.php';
+$translationConfigPath = $baseDir . '/app/Translation/TranslationConfig.php';
+
+if (file_exists($vendorPath) && file_exists($translationConfigPath)) {
+    require_once $vendorPath;
+    require_once $translationConfigPath;
+    
+    $config = \app\Translation\TranslationConfig::getInstance();
+    $supportedLanguages = $config->getSupportedLanguages();
+    $currentLanguage = $_SESSION['preferred_language'] ?? $config->getDefaultLanguage();
+    $translationEnabled = true;
+}
+
 $pageTitle = 'SSIS-Enrollment Form';
 $pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form.css" media="all">';
 $pageCss2 = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form-errors.css" media="all">';
 $pageCss3 = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form-mq.css" media="all">';
-$pageCss4 = '<link rel="stylesheet" href="../../assets/css/notifications.css" media="all">';
+$pageCss4 = '<link rel="stylesheet" href="../../assets/css/notifications.css" media="all">
+<link rel="stylesheet" href="../../assets/css/language-switcher.css">';
 $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.js" defer></script>';
-$pageJs2 = '<script src="../../assets/js/notifications.js" defer></script>';
+$pageJs2 = '<script src="../../assets/js/notifications.js" defer></script>
+<script src="../../assets/js/translation.js"></script>
+<script src="../../assets/js/language-switcher-toggle.js"></script>';
 require_once __DIR__ .'/../../../BackEnd/common/getGradeLevels.php';
 require_once __DIR__ . '/../../../BackEnd/common/isAcademicYearSet.php';
 $set = new isAcademicYearSet();
@@ -15,7 +37,7 @@ $view = new getGradeLevels();
 ?>
 <div class="enrollment-form-content">
     <div class="content-title">
-        <p>Learner's Enrollment Form</p>
+        <p data-translate="Form ng Pag-enrol ng Mag-aaral">Learner's Enrollment Form</p>
     </div>
 
     
@@ -23,35 +45,35 @@ $view = new getGradeLevels();
     <div id="disability-modal" class="disability-modal-overlay">
         <div class="disability-modal-content">
             <div class="disability-modal-header">
-                <h2>PARA SA MGA MAG-AARAL NA MAY KAPANSANAN</h2>
+                <h2 data-translate="PARA SA MGA MAG-AARAL NA MAY KAPANSANAN">FOR LEARNERS WITH DISABILITIES</h2>
             </div>
             <div class="disability-modal-body">
                 <!-- Step 1: Has Disability -->
                 <div class="has-disability">
-                    <p class="dfont">Mayroon bang kapansanan ang mag-aaral? <span class="required">*</span></p>
+                    <p class="dfont" data-translate="Mayroon bang kapansanan ang mag-aaral?">Does the learner have a disability? <span class="required">*</span></p>
                     <div>
                         <div class="radio-option">
                             <input type="radio" name="has-disability" id="has-disability-yes" value="Yes" class="radio" required>
-                            <label for="has-disability-yes">Mayroon</label>
+                            <label for="has-disability-yes" data-translate="Mayroon">Yes</label>
                         </div>
                         <div class="radio-option">
                             <input type="radio" name="has-disability" id="has-disability-no" value="No" class="radio" required>
-                            <label for="has-disability-no">Wala</label>
+                            <label for="has-disability-no" data-translate="Wala">No</label>
                         </div>
                     </div>
                 </div>
 
                 <!-- Step 2: Can Read/Write (appears if Yes to disability) -->
                 <div class="can-read-write" style="display: none;">
-                    <p class="dfont">Nakakabasa at nakakasulat ba ang mag-aaral? <span class="required">*</span></p>
+                    <p class="dfont" data-translate="Nakakabasa at nakakasulat ba ang mag-aaral?">Can the learner read and write? <span class="required">*</span></p>
                     <div>
                         <div class="radio-option">
                             <input type="radio" name="can-read-write" id="can-read-write-yes" value="Yes" class="radio">
-                            <label for="can-read-write-yes">Oo</label>
+                            <label for="can-read-write-yes" data-translate="Oo">Yes</label>
                         </div>
                         <div class="radio-option">
                             <input type="radio" name="can-read-write" id="can-read-write-no" value="No" class="radio">
-                            <label for="can-read-write-no">Hindi</label>
+                            <label for="can-read-write-no" data-translate="Hindi">No</label>
                         </div>
                     </div>
                 </div>
@@ -62,20 +84,20 @@ $view = new getGradeLevels();
                         <div class="error-msg">
                             <span class="em-disability-desc"></span>
                         </div>
-                        <p class="dfont">Ano ang kapansanan ng mag-aaral? <span class="required">*</span></p>
-                        <input type="text" name="disability-description" id="disability-description" class="textbox" placeholder="Halimbawa: Visual Impairment, Hearing Impairment, Physical Disability, etc.">
+                        <p class="dfont" data-translate="Ano ang kapansanan ng mag-aaral?">What is the learner's disability? <span class="required">*</span></p>
+                        <input type="text" name="disability-description" id="disability-description" class="textbox" placeholder="Example: Visual Impairment, Hearing Impairment, Physical Disability, etc." data-translate-placeholder="Halimbawa: Visual Impairment, Hearing Impairment, Physical Disability, etc.">
                     </div>
                     <div class="assistive-tech">
                         <div class="error-msg">
                             <span class="em-assistive-tech"></span>
                         </div>
-                        <p class="dfont">Gumagamit ba ng assistive technology? (Isulat "N/A" kung wala) <span class="required">*</span></p>
-                        <input type="text" name="assistive-technology" id="assistive-technology" class="textbox" placeholder="Halimbawa: Braille, Wheelchair, Hearing Aid, o N/A">
+                        <p class="dfont" data-translate="Gumagamit ba ng assistive technology? (Isulat 'N/A' kung hindi)">Does the learner uses assistive technology? (Write 'N/A' if not) <span class="required">*</span></p>
+                        <input type="text" name="assistive-technology" id="assistive-technology" class="textbox" placeholder="Example: Braille, Wheelchair, Hearing Aid, or N/A" data-translate-placeholder="Halimbawa: Braille, Wheelchair, Hearing Aid, o N/A">
                     </div>
                 </div>
             </div>
             <div class="disability-modal-footer">
-                <button type="button" class="disability-modal-btn" id="disability-modal-continue" disabled>Magpatuloy</button>
+                <button type="button" class="disability-modal-btn" id="disability-modal-continue" disabled data-translate="Magpatuloy">Continue</button>
             </div>
         </div>
     </div>
@@ -84,21 +106,21 @@ $view = new getGradeLevels();
     <div id="disability-template-popup" class="popup-overlay" style="display: none;">
         <div class="popup-content">
             <div class="popup-header">
-                <h2>Paalala para sa mga Magulang/Tagapagalaga</h2>
+                <h2 data-translate="Paalala para sa mga Magulang/Tagapagalaga">Notice to Parents/Guardians</h2>
             </div>
             <div class="popup-body">
-                <p><strong>Sa mga magulang o tagapagalaga ng mga mag-aaral na may kapansanan at hindi nakakabasa o nakakasulat:</strong></p>
-                <p>Mangyaring makipag-ugnayan sa aming tanggapan upang matulungan kayo sa proseso ng enrollment. Mayroon kaming espesyal na tulong at gabay para sa inyong sitwasyon.</p>
-                <p><strong>Mga Contact Details:</strong></p>
+                <p><strong data-translate="Sa mga magulang o tagapagalaga ng mga mag-aaral na may kapansanan at hindi nakakabasa o nakakasulat:">For parents or guardians of learners with disabilities who cannot read or write:</strong></p>
+                <p data-translate="Mangyaring makipag-ugnayan sa aming tanggapan upang matulungan kayo sa proseso ng enrollment. Mayroon kaming espesyal na tulong at gabay para sa inyong sitwasyon.">Please contact our office for assistance with the enrollment process. We have special support and guidance for your situation.</p>
+                <p><strong data-translate="Mga Contact Details:">Contact Details:</strong></p>
                 <ul>
-                    <li>Telepono: [School Contact Number]</li>
-                    <li>Email: [School Email]</li>
-                    <li>Oras ng Tanggapan: Lunes - Biyernes, 8:00 AM - 5:00 PM</li>
+                    <li data-translate="Telepono: [School Contact Number]">Phone: [School Contact Number]</li>
+                    <li data-translate="Email: [School Email]">Email: [School Email]</li>
+                    <li data-translate="Oras ng Tanggapan: Lunes - Biyernes, 8:00 AM - 5:00 PM">Office Hours: Monday - Friday, 8:00 AM - 5:00 PM</li>
                 </ul>
-                <p>Salamat sa inyong pag-unawa.</p>
+                <p data-translate="Salamat sa inyong pag-unawa.">Thank you for your understanding.</p>
             </div>
             <div class="popup-footer">
-                <button type="button" class="popup-btn" id="confirm-disability-popup">Naiintindihan Ko</button>
+                <button type="button" class="popup-btn" id="confirm-disability-popup" data-translate="Naiintindihan Ko">I Understand</button>
             </div>
         </div>
     </div>
@@ -114,11 +136,11 @@ $view = new getGradeLevels();
             <!--ANTAS AT IMPORMASYON NG PAARALAN-->
             <div class="previous-school border-75">
                 <div class="previous-school-title">
-                    <span class="title">ANTAS NG IMPORMASYON NG PAARALAN</span>
+                    <span class="title" data-translate="ANTAS NG IMPORMASYON NG PAARALAN">GRADE LEVEL AND SCHOOL INFORMATION</span>
                 </div>
                 <div class="previous-school-row-1">
                 <div class="school-year">
-                        <p class="dfont-acad-year">Taong Panuruan <span class="required">*</span></p>
+                        <p class="dfont-acad-year"><span data-translate="Taong Panuruan">School Year</span> <span class="required">*</span></p>
                         <!--ERROR MESSAGES DIVS FOR WRONG INPUTS -DAVID -->
                         <div class="error-msg">
                             <span class="em-start-year"> Error Message here.</span>
@@ -132,19 +154,19 @@ $view = new getGradeLevels();
                         </div>
                     </div>
                     <div class="learner-radio">
-                        <p class="dfont">I-check lamang naaangkop <span class="required">*</span></p>
+                        <p class="dfont"><span data-translate="I-check lamang naaangkop">Check only what applies</span> <span class="required">*</span></p>
                         <div class="lrn-radio-buttons-selections">
                             <div class="radio-option">
                                 <input type="radio" id="no-lrn" name="bool-LRN" value="0" class="radio">
-                                <label for="no-lrn">Walang LRN</label>
+                                <label for="no-lrn" data-translate="Walang LRN">Without LRN/Forgot LRN</label>
                             </div>
                             <div class="radio-option">
                                 <input type="radio" id="with-lrn" name="bool-LRN" value="1" class="radio">
-                                <label for="with-lrn">Mayroong LRN</label>
+                                <label for="with-lrn" data-translate="Mayroong LRN">With LRN</label>
                             </div>
                             <div class="radio-option">
                                 <input type="radio" id="returning" name="bool-LRN" value="0" class="radio">
-                                <label for="returning">Returning (Balik Aral)</label>
+                                <label for="returning" data-translate="Returning (Balik Aral)">Returning (Back to School)</label>
                             </div>
                         </div>
                     </div>
@@ -156,9 +178,9 @@ $view = new getGradeLevels();
                             <div class="error-msg">
                                 <span class="em-enrolling-grade-level"> Error Message Here. </span>
                             </div>
-                            <p class="dfont">Baitang na nais ipatala <span class="required">*</span></p>
+                            <p class="dfont"><span data-translate="Baitang na nais ipatala">Grade level to enroll in</span> <span class="required">*</span></p>
                             <select name="grades-tbe" id="grades-tbe" class="select">
-                                <option value=""> Select a grade level </option>
+                                <option value="" data-translate="Pumili ng baitang"> Select a grade level </option>
                                 <?php
                                     $view->createSelectValues();
                                 ?>
@@ -168,9 +190,9 @@ $view = new getGradeLevels();
                             <div class="error-msg">
                                 <span class="em-last-grade-level"> Error Message Here. </span>
                             </div>
-                            <p class="dfont">Huling baitang na natapos <span class="required">*</span></p>
+                            <p class="dfont"><span data-translate="Huling baitang na natapos">Last grade level completed</span> <span class="required">*</span></p>
                             <select name="last-grade" id="last-grade" class="select">
-                                <option value=""> Select a grade level </option>
+                                <option value="" data-translate="Pumili ng baitang"> Select a grade level </option>
                                 <?php 
                                     $view->createSelectValues();
                                 ?>
@@ -180,7 +202,7 @@ $view = new getGradeLevels();
                             <div class="error-msg">
                                 <span class="em-last-year-finished"> Error Message Here. </span>
                             </div>
-                            <p class="dfont">Huling natapos na taon <span class="required">*</span></p>
+                            <p class="dfont"><span data-translate="Huling natapos na taon">Last school year completed</span> <span class="required">*</span></p>
                             <input type="number" name="last-year" id="last-year" class="textbox">
                         </div>
                     </div>
@@ -190,14 +212,14 @@ $view = new getGradeLevels();
                                 <div class="error-msg">
                                     <span class="em-lschool"> Error Message Here. </span>
                                 </div>
-                                <p class="dfont">Huling paaralang pinasukan <span class="required">*</span></p>
+                                <p class="dfont"><span data-translate="Huling paaralang pinasukan">Last school attended</span> <span class="required">*</span></p>
                                 <input type="text" name="lschool" id="lschool" class="textbox" placeholder="South II Elementary School">
                             </div>
                                 <div class="lschoolID">
                                     <div class="error-msg">
                                         <span class="em-lschoolID"> Error Message Here. </span>
                                     </div>
-                                <p class="dfont">ID ng paaralan</p>
+                                <p class="dfont"><span data-translate="ID ng paaralan">School ID</span></p>
                                 <input type="number" name="lschoolID" id="lschoolID" class="textbox">
                             </div>
                         </div>
@@ -205,18 +227,18 @@ $view = new getGradeLevels();
                             <div class="error-msg">
                                 <span class="em-lschoolAddress"> Error Message Here.</span>
                             </div>
-                            <p class="dfont">Address ng paaralan <span class="required">*</span></p>
+                            <p class="dfont" data-translate="Address ng paaralan">School address <span class="required">*</span></p>
                             <input type="text" name="lschoolAddress" id="lschoolAddress" class="textbox"> 
                         </div> 
-                        <p class="dfont">Anong klase ng paaralan</p>
+                        <p class="dfont"><span data-translate="Anong klase ng paaralan">What type of school</span></p>
                         <div> 
                             <div class="radio-option">
                                 <input type="radio" name="school-type" id="private" class="radio" value="Private">
-                                <label for="private">Pribado</label>
+                                <label for="private" data-translate="Pribado">Private</label>
                             </div>
                             <div class="radio-option">
                                 <input type="radio" name="school-type" id="public" class="radio" value="Public">
-                                <label for="public">Pampubliko</label>
+                                <label for="public" data-translate="Pampubliko">Public</label>
                             </div>
                         </div>
                     </div>
@@ -226,7 +248,7 @@ $view = new getGradeLevels();
                                 <div class="error-msg">
                                     <span class="em-fschool"> Error Message Here. </span>
                                 </div>
-                                <p class="dfont">Nais na paaralan <span class="required">*</span></p>
+                                <p class="dfont"><span data-translate="Nais na paaralan">Preferred school</span> <span class="required">*</span></p>
                                 <input type="text" name="fschool" id="fschool" class="textbox" placeholder="South II Elementary School">
                             </div>
                             <div class="fschoolID">
@@ -241,7 +263,7 @@ $view = new getGradeLevels();
                             <div class="error-msg">
                                 <span class="em-fschoolAddress"> Error Message Here. </span>
                             </div>
-                            <p class="dfont">Address ng paaralan <span class="required">*</span></p>
+                            <p class="dfont" data-translate="Address ng paaralan">School address <span class="required">*</span></p>
                         <input type="text" name="fschoolAddress" id="fschoolAddress" class="textbox">
                         </div>
                     </div>
@@ -250,7 +272,7 @@ $view = new getGradeLevels();
             <!--IMPORMASYON NG STUDYANTE-->
             <div class="student-information border-75">
                 <div class="student-information-title">
-                    <span class="title">IMPORMASYON NG ESTUDYANTE</span>
+                    <span class="title" data-translate="IMPORMASYON NG ESTUDYANTE">STUDENT INFORMATION</span>
                 </div>
                 <!--ROW 1-->
                 <div class="student-info-row-1">
@@ -269,28 +291,28 @@ $view = new getGradeLevels();
                             <div class="error-msg">
                                 <span class="em-lname"></span>
                             </div>
-                            <p class="dfont">Apelyido <span class="required">*</span></p>
+                            <p class="dfont"><span data-translate="Apelyido">Last Name</span> <span class="required">*</span></p>
                             <input type="text" name="lname" id="lname" class="textbox" placeholder="Dela Cruz">
                         </div>
                         <div class="fname">
                             <div class="error-msg">
                                 <span class="em-fname"></span>
                             </div>
-                            <p class="dfont">Pangalan <span class="required">*</span></p>
+                            <p class="dfont"><span data-translate="Pangalan">First Name</span> <span class="required">*</span></p>
                             <input type="text" name="fname" id="fname" class="textbox" placeholder="John Mark">
                         </div>
                         <div class="mname">
                             <div class="error-msg">
                                 <span class="em-mname"></span>
                             </div>
-                            <p class="dfont">Gitnang Pangalan</p>
+                            <p class="dfont" data-translate="Gitnang Pangalan">Middle Name</p>
                             <input type="text" name="mname" id="mname" class="textbox" placeholder="Jimenez" data-optional="true">
                         </div>
                         <div class="extension">
                             <div class="error-msg">
                                 <span class="em-extension"></span>
                             </div>
-                            <p class="dfont">Extensyon(Jr., Sr.)</p>
+                            <p class="dfont" data-translate="Extensyon(Jr., Sr.)">Extension (Jr., Sr.)</p>
                             <input type="text" name="extension" id="extension" class="textbox" placeholder="III" data-optional="true">
                         </div>
                     </div>
@@ -300,41 +322,41 @@ $view = new getGradeLevels();
                             <div class="error-msg">
                                 <span class="em-bday"></span>
                             </div>
-                            <p class="dfont">Petsa ng Kapanganakan <span class="required">*</span></p>
+                            <p class="dfont"><span data-translate="Petsa ng Kapanganakan">Date of Birth</span> <span class="required">*</span></p>
                             <input type="date" name="bday" id="bday" class="textbox">
                         </div>
                         <div class="age">
                             <div class="error-msg">
                                 <span class="em-age"></span>
                             </div>
-                            <p class="dfont">Edad <span class="required">*</span></p>
+                            <p class="dfont"><span data-translate="Edad">Age</span> <span class="required">*</span></p>
                             <input type="text" name="age" id="age" class="textbox" readonly>
                         </div>
                         <div class="gender-group-wrapper">
                             <div class="gender">
-                                <p class="dfont">Kasarian <span class="required">*</span></p>
+                                <p class="dfont"><span data-translate="Kasarian">Gender</span> <span class="required">*</span></p>
                                 <div> 
                                     <div class="radio-option">
                                         <input type="radio" name="gender" id="male" class="radio" value="Male">
-                                        <label for="male">Lalake</label>
+                                        <label for="male" data-translate="Lalake">Male</label>
                                     </div>
                                     <div class="radio-option">
                                         <input type="radio" name="gender" id="female" class="radio" value="Female">
-                                        <label for="female">Babae</label>
+                                        <label for="female" data-translate="Babae">Female</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="community">
-                                <p class="dfont">Nabibilang sa katutubong grupo/ <br class="responsive-text-break">
-                                            Komunidad ng Katutubong Kultural <span class="required">*</span></p>
+                                <p class="dfont"><span data-translate="Nabibilang sa katutubong grupo/ Komunidad ng Katutubong Kultural">Belongs to indigenous group/ <br class="responsive-text-break">
+                                            Indigenous Cultural Community</span> <span class="required">*</span></p>
                                 <div>
                                     <div class="radio-option">
                                         <input type="radio" name="group" id="is-ethnic" class="radio" value="1">
-                                        <label for="is-ethnic">Oo</label>
+                                        <label for="is-ethnic" data-translate="Oo">Yes</label>
                                     </div>
                                     <div class="radio-option">
                                         <input type="radio" name="group" id="not-ethnic" class="radio" value="0">
-                                        <label for="not-ethnic">Hindi</label>
+                                        <label for="not-ethnic" data-translate="Hindi">No</label>
                                     </div>
                                 </div>
                             </div>
@@ -343,7 +365,7 @@ $view = new getGradeLevels();
                             <div class="error-msg">
                                 <span class="em-community"></span>
                             </div>
-                            <p class="dfont">Kung oo, saang grupo nabilang</p>
+                            <p class="dfont" data-translate="Kung oo, saang grupo nabilang">If yes, which group</p>
                             <input type="text" name="community" id="community" class="textbox" placeholder="sama-badjau">
                         </div>
                     </div>
@@ -354,7 +376,7 @@ $view = new getGradeLevels();
                                 <div class="error-msg">
                                     <span class="em-language"></span>
                                 </div>
-                                <p class="dfont">Kinagisnang wika <span class="required">*</span></p>
+                                <p class="dfont"><span data-translate="Kinagisnang wika">Mother tongue/Native language</span> <span class="required">*</span></p>
                                 <input type="text" name="language" id="language" class="textbox" placeholder="Tagalog">
                             </div>
                         </div>
@@ -362,7 +384,7 @@ $view = new getGradeLevels();
                             <div class="error-msg">
                                 <span class="em-religion"></span>
                             </div>
-                            <p class="dfont">Relihiyon <span class="required">*</span></p>
+                            <p class="dfont"><span data-translate="Relihiyon">Religion</span> <span class="required">*</span></p>
                             <input type="text" name="religion" id="religion" class="textbox" placeholder="Catholic">
                         </div>
                         <div class="email">
@@ -378,14 +400,14 @@ $view = new getGradeLevels();
             <!--TIRAHAN-->
             <div class="address border-75">
                 <div class="address-title">
-                    <span class="title">TIRAHAN</span>
+                    <span class="title" data-translate="TIRAHAN">ADDRESS</span>
                 </div>
                 <div class="address-wrapper">
                     <div class="region">
                         <div class="error-msg">
                             <span class="em-region"></span>
                         </div>
-                        <p class="dfont">Rehiyon <span class="required">*</span></p>
+                        <p class="dfont"><span data-translate="Rehiyon">Region</span> <span class="required">*</span></p>
                         <input type="hidden" name="region-name" id="region-name">
                         <select name="region" id="region" class="textbox" >
                             
@@ -395,7 +417,7 @@ $view = new getGradeLevels();
                         <div class="error-msg">
                             <span class="em-province"></span>
                         </div>
-                        <p class="dfont">Probinsya/lalawigan <span class="required">*</span></p>
+                        <p class="dfont"><span data-translate="Probinsya/lalawigan">Province</span> <span class="required">*</span></p>
                         <input type="hidden" name="province-name" id="province-name">
                         <select name="province" id="province" class="textbox">
                             
@@ -405,7 +427,7 @@ $view = new getGradeLevels();
                         <div class="error-msg">
                             <span class="em-city"></span>
                         </div>
-                        <p class="dfont">Lungsod/Munisipalidad <span class="required">*</span></p>
+                        <p class="dfont"><span data-translate="Lungsod/Munisipalidad">City/Municipality</span> <span class="required">*</span></p>
                         <input type="hidden" name="city-municipality-name" id="city-municipality-name">
                         <select name="city-municipality" id="city-municipality" class="textbox">
                             
@@ -415,7 +437,7 @@ $view = new getGradeLevels();
                         <div class="error-msg">
                             <span class="em-barangay"></span>
                         </div>
-                        <p class="dfont">Barangay <span class="required">*</span></p>
+                        <p class="dfont"><span data-translate="Barangay">Barangay</span> <span class="required">*</span></p>
                         <input type="hidden" name="barangay-name" id="barangay-name">
                         <select name="barangay" id="barangay" class="textbox">
                             
@@ -441,7 +463,7 @@ $view = new getGradeLevels();
             <!--IMPORMASYON NG MAGULANG/TAGAPAGALAGA-->
             <div class="parents-guardian-information border-75">
                 <div class="parents-guardian-information-title">
-                    <span class="title">IMPORMASYON NG TAGAPAGALAGA</span>
+                    <span class="title" data-translate="IMPORMASYON NG TAGAPAGALAGA">PARENT/GUARDIAN INFORMATION</span>
                 </div>
                 <!-- Nagdagdag ako ng seperate names dito dabid (Kinit)-->
                 <div class="parents-guardian-information-wrapper">
@@ -450,53 +472,53 @@ $view = new getGradeLevels();
                         <div class="error-msg">
                             <span class="em-guardian-last-name"></span>
                         </div>
-                        <p class="dfont">Apilyedo <span class="required">*</span></p>
+                        <p class="dfont"><span data-translate="Apilyedo">Last Name</span> <span class="required">*</span></p>
                         <input type="text" class="textbox" name="Guardian-Last-Name" id="Guardian-Last-Name" placeholder="Dela Cruz">
                     </div>
                     <div class="Guardian-Middle-Name">
                         <div class="error-msg">
                             <span class="em-guardian-middle-name"></span>
                         </div>
-                        <p class="dfont">Gitnang Pangalan</p>
+                        <p class="dfont" data-translate="Gitnang Pangalan">Middle Name</p>
                         <input type="text" class="textbox" name="Guardian-Middle-Name" id="Guardian-Middle-Name" placeholder="Jimenez">
                     </div>
                     <div class="Guardian-First-Name">
                         <div class="error-msg">
                             <span class="em-guardian-first-name"></span>
                         </div>
-                        <p class="dfont">Pangalan <span class="required">*</span></p>
+                        <p class="dfont" data-translate="Pangalan">First Name <span class="required">*</span></p>
                         <input type="text" class="textbox" name="Guardian-First-Name" id="Guardian-First-Name" placeholder="Maria">
                     </div>
                     <div class="G-highest-education">
-                        <label for="G-highest-education">Pinakamataas na antas na natapos sa pag-aaral <span class="required">*</span></label><br>
+                        <label for="G-highest-education"><span data-translate="Pinakamataas na antas na natapos sa pag-aaral">Highest educational attainment</span> <span class="required">*</span></label><br>
                         <select name="G-highest-education" id="G-highest-education" class="select">
-                            <option value="Hindi Nakapag-aral">Hindi Nakapag-aral</option>
-                            <option value="Hindi Nakapag-aral pero marunong magbasa at magsulat">Hindi Nakapag-aral pero marunong magbasa at magsulat</option>
-                            <option value="Nakatuntong ng Elementarya">Nakatuntong ng Elementarya</option>
-                            <option value="Nakapagtapos ng Elementarya">Nakapagtapos ng Elementarya</option>
-                            <option value="Nakatuntong ng Sekundarya">Nakatuntong ng Sekundarya</option>
-                            <option value="Nakapagtapos ng Sekundarya">Nakapagtapos ng Sekundarya</option>
-                            <option value="Nakapag-aral Pagkatapos ng Sekundarya o ng Teknikal /Bokasyonal">Nakapag-aral Pagkatapos ng Sekundarya o ng Teknikal/Bokasyonal</option>
+                            <option value="Hindi Nakapag-aral" data-translate="Hindi Nakapag-aral">No formal education</option>
+                            <option value="Hindi Nakapag-aral pero marunong magbasa at magsulat" data-translate="Hindi Nakapag-aral pero marunong magbasa at magsulat">No formal education but can read and write</option>
+                            <option value="Nakatuntong ng Elementarya" data-translate="Nakatuntong ng Elementarya">Elementary level</option>
+                            <option value="Nakapagtapos ng Elementarya" data-translate="Nakapagtapos ng Elementarya">Elementary graduate</option>
+                            <option value="Nakatuntong ng Sekundarya" data-translate="Nakatuntong ng Sekundarya">High school level</option>
+                            <option value="Nakapagtapos ng Sekundarya" data-translate="Nakapagtapos ng Sekundarya">High school graduate</option>
+                            <option value="Nakapag-aral Pagkatapos ng Sekundarya o ng Teknikal /Bokasyonal" data-translate="Nakapag-aral Pagkatapos ng Sekundarya o ng Teknikal/Bokasyonal">Post-secondary or Technical/Vocational</option>
                         </select>
                     </div>
                     <div class="G-Relationship">
-                        <label for="G-Relationship">Relasyon sa Mag-aaral <span class="required">*</span></label><br>
+                        <label for="G-Relationship"><span data-translate="Relasyon sa Mag-aaral">Relationship to learner</span> <span class="required">*</span></label><br>
                         <select name="G-Relationship" id="G-Relationship" class="select">
-                            <option value="Magulang">Magulang</option>
-                            <option value="Lola">Lola</option>
-                            <option value="Lolo">Lolo</option>
-                            <option value="Tiya">Tiya</option>
-                            <option value="Kapatid">Kapatid</option>
-                            <option value="Ninang">Ninang</option>
-                            <option value="Ninong">Ninong</option>
-                            <option value="Iba pa">Iba pa</option>
+                            <option value="Magulang" data-translate="Magulang">Parent</option>
+                            <option value="Lola" data-translate="Lola">Grandmother</option>
+                            <option value="Lolo" data-translate="Lolo">Grandfather</option>
+                            <option value="Tiya" data-translate="Tiya">Aunt</option>
+                            <option value="Kapatid" data-translate="Kapatid">Sibling</option>
+                            <option value="Ninang" data-translate="Ninang">Godmother</option>
+                            <option value="Ninong" data-translate="Ninong">Godfather</option>
+                            <option value="Iba pa" data-translate="Iba pa">Others</option>
                         </select>
                     </div>
                     <div class="G-number">
                         <div class="error-msg">
                             <span class="em-g-number"></span>
                         </div>
-                        <p class="dfont">Numero sa telepono (cellphone/ telephone/) <span class="required">*</span></p>
+                        <p class="dfont"><span data-translate="Numero sa telepono (cellphone/ telephone/)">Contact Number (cellphone/telephone)</span> <span class="required">*</span></p>
                         <input type="text" name="G-Number" id="G-number" class="textbox" placeholder="09123456789">
                     </div> 
                 </div>
@@ -504,15 +526,15 @@ $view = new getGradeLevels();
             <!--4PS, IMAGES AND SUBMIT BUTTON-->            
             <div class="confirmation border-75">
                 <div class="fourPS">
-                    <p class="dfont">Kabilang ba ang inyong pamilya sa 4Ps ng DSWD? <span class="required">*</span></p>
+                    <p class="dfont"><span data-translate="Kabilang ba ang inyong pamilya sa 4Ps ng DSWD?">Is your family a 4Ps beneficiary of DSWD?</span> <span class="required">*</span></p>
                     <div>
                         <div class="radio-option">
                             <input type="radio" name="fourPS" id="is-4ps" class="radio" value="yes">
-                            <label for="is-4ps">Oo</label>
+                            <label for="is-4ps" data-translate="Oo">Yes</label>
                         </div>
                         <div class="radio-option">
                             <input type="radio" name="fourPS" id="not-4ps" class="radio" value="no">
-                            <label for="not-4ps">Hinde</label>
+                            <label for="not-4ps" data-translate="Hinde">No</label>
                         </div>
                     </div>
                 </div>
@@ -520,19 +542,98 @@ $view = new getGradeLevels();
                     <p class="dfont" id="report-card-label">Ipasa ang malinaw na larawan ng <b>REPORT CARD <span class="required" id="report-card-required">*</span></b></p>
                     <p class="dfont" id="kinder1-exemption-message" style="display: none; color: #2196F3; font-weight: bold;">Kinder 1 students are not required to submit report cards.</p>
                     <div id="report-card-inputs">
-                        <label for="report-card-front" style="display: block; margin-bottom: 8px;">Front Side <span class="required">*</span></label>
-                        <input type="file" id="report-card-front" name="report-card-front" accept="image/jpeg,image/jpg,image/png" required style="margin-bottom: 15px;"> 
-                        <label for="report-card-back" style="display: block; margin-bottom: 8px;">Back Side <span class="required">*</span></label>
-                        <input type="file" id="report-card-back" name="report-card-back" accept="image/jpeg,image/jpg,image/png" required>
+                        <!-- Front Side Upload -->
+                        <div class="report-card-upload-container">
+                            <label class="report-card-label">
+                                Front Side <span class="required">*</span>
+                            </label>
+                            <div class="report-card-dropzone" id="dropzone-front" data-side="front">
+                                <input type="file" id="report-card-front" name="report-card-front" accept="image/jpeg,image/jpg,image/png" required hidden>
+                                <div class="dropzone-content">
+                                    <svg class="upload-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="17 8 12 3 7 8"></polyline>
+                                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                                    </svg>
+                                    <p class="dropzone-text">Drag & drop or <span class="browse-text">browse</span></p>
+                                    <p class="dropzone-hint">JPG, JPEG, PNG • Max 5MB</p>
+                                </div>
+                                <div class="preview-container" style="display: none;">
+                                    <img class="preview-image" alt="Front side preview">
+                                    <div class="preview-overlay">
+                                        <button type="button" class="remove-image-btn" data-side="front">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="file-info">
+                                        <span class="file-name"></span>
+                                        <span class="file-size"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Back Side Upload -->
+                        <div class="report-card-upload-container">
+                            <label class="report-card-label">
+                                Back Side <span class="required">*</span>
+                            </label>
+                            <div class="report-card-dropzone" id="dropzone-back" data-side="back">
+                                <input type="file" id="report-card-back" name="report-card-back" accept="image/jpeg,image/jpg,image/png" required hidden>
+                                <div class="dropzone-content">
+                                    <svg class="upload-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="17 8 12 3 7 8"></polyline>
+                                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                                    </svg>
+                                    <p class="dropzone-text">Drag & drop or <span class="browse-text">browse</span></p>
+                                    <p class="dropzone-hint">JPG, JPEG, PNG • Max 5MB</p>
+                                </div>
+                                <div class="preview-container" style="display: none;">
+                                    <img class="preview-image" alt="Back side preview">
+                                    <div class="preview-overlay">
+                                        <button type="button" class="remove-image-btn" data-side="back">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="file-info">
+                                        <span class="file-name"></span>
+                                        <span class="file-size"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <?php if($set->isSet()): ?>
-                    <button type="submit" class="submit-button" >Submit</button>
+                    <button type="submit" class="submit-button" data-translate="Isumite">Submit</button>
                 <?php else: ?>
-                    <button class="submit-button" style="opacity:0.5; background-color: gray; pointer-events:none;" disabled>Submit</button>
+                    <button class="submit-button" disabled data-translate="Isumite">Submit</button>
                 <?php endif; ?>
             </div>
         </form>
+    </div>
+    
+    <!-- Language Switcher - Bottom Right -->
+    <div class="language-switcher-wrapper" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+      <button type="button" class="language-icon-button" id="language-toggle-btn" aria-label="Toggle Language Switcher">
+        <img src="../../assets/imgs/globe-icon.svg" alt="Language" class="language-icon">
+      </button>
+      <div class="language-switcher-container" id="language-switcher-dropdown">
+        <select id="language-switcher" class="language-switcher-select" aria-label="Select Language">
+          <?php foreach ($supportedLanguages as $code => $name): ?>
+            <option value="<?= htmlspecialchars($code) ?>" <?= $code === $currentLanguage ? 'selected' : '' ?>>
+              <?= htmlspecialchars($name) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
     </div>
 </div>
 <div class="error-message" id="error-message"></div>

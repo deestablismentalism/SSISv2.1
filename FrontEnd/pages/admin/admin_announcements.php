@@ -72,6 +72,7 @@ ob_start();
             <div class="form-group">
                 <label for="announcement-text">Text/Explanation <span class="required">*</span></label>
                 <textarea id="announcement-text" name="text" rows="5" required placeholder="Enter announcement details..."></textarea>
+                <small id="word-counter" style="display: block; margin-top: 5px; color: #666;">0 / 20 words</small>
             </div>
 
             <div class="form-group">

@@ -80,17 +80,18 @@ class adminTeachersModel {
             throw new DatabaseException('Failed to insert teacher to section subject',0,$e);
         }
     }
-    private function insertToStaff(string $fName, string $mName, string $lName, string $email, string $cpNumber) : ?int {
+    private function insertToStaff(string $fName, string $mName, string $lName, string $email, string $cpNumber, int $staffType = 2) : ?int {
         try {
             $sql = "INSERT INTO 
-            staffs(Staff_First_Name, Staff_Middle_Name, Staff_Last_Name, Staff_Email, Staff_Contact_Number)
-            VALUES(:fname, :mname, :lname, :email, :cpnumber)";
+            staffs(Staff_First_Name, Staff_Middle_Name, Staff_Last_Name, Staff_Email, Staff_Contact_Number, Staff_Type)
+            VALUES(:fname, :mname, :lname, :email, :cpnumber, :staffType)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':fname', $fName);
             $stmt->bindParam(':mname', $mName);
             $stmt->bindParam(':lname', $lName);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':cpnumber', $cpNumber);
+            $stmt->bindParam(':staffType', $staffType);
             $result = $stmt->execute();
 
             return (int)$this->conn->lastInsertId();
@@ -101,7 +102,7 @@ class adminTeachersModel {
             }
             else {
             error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
-            throw new DatabaseException('Failed to insert teacher',0,$e);
+            throw new DatabaseException('Failed to insert staff',0,$e);
             }
         }
 
@@ -111,7 +112,7 @@ class adminTeachersModel {
         $insert = true;
         try {
             $this->conn->beginTransaction();
-            $staffId = $this->insertToStaff($fname, $mname, $lname, $email, $cpNumber);
+            $staffId = $this->insertToStaff($fname, $mname, $lname, $email, $cpNumber, 2);
             $type = 2;
 
             $sql = "INSERT INTO users(Password, User_Type, Staff_Id) VALUES(:password, :userType, :staffId)";
@@ -130,6 +131,32 @@ class adminTeachersModel {
             $this->conn->rollBack();
             error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to insert to users',0,$e);
+        }
+    }
+    public function insertToStaffAndUserAsAdmin(string $fname, string $mname, string $lname, string $email, 
+    string $cpNumber, string $password) : bool{
+        $insert = true;
+        try {
+            $this->conn->beginTransaction();
+            $staffId = $this->insertToStaff($fname, $mname, $lname, $email, $cpNumber, 1);
+            $type = 1;
+
+            $sql = "INSERT INTO users(Password, User_Type, Staff_Id) VALUES(:password, :userType, :staffId)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':password', $password);
+            $stmt->bindParam(':userType', $type);
+            $stmt->bindParam(':staffId', $staffId);
+            $result = $stmt->execute();
+            if(!$result) {
+                $insert = false;
+            }
+            $this->conn->commit();
+            return $insert;
+        }
+        catch(PDOException $e) {
+            $this->conn->rollBack();
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to insert admin to users',0,$e);
         }
     }
     public function archiveStaff(int $staffId) : bool {

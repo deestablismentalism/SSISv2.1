@@ -1403,6 +1403,174 @@ document.addEventListener('DOMContentLoaded',function(){
         }
     }
     
+    // |====================================|
+    // |===== REPORT CARD UX HANDLERS ======|
+    // |====================================|
+    
+    /**
+     * Initialize enhanced report card upload functionality
+     */
+    function initializeReportCardUploads() {
+        const dropzones = document.querySelectorAll('.report-card-dropzone');
+        
+        dropzones.forEach(dropzone => {
+            const side = dropzone.dataset.side;
+            const input = dropzone.querySelector(`input[type="file"]`);
+            const dropzoneContent = dropzone.querySelector('.dropzone-content');
+            const previewContainer = dropzone.querySelector('.preview-container');
+            const previewImage = dropzone.querySelector('.preview-image');
+            const removeBtn = dropzone.querySelector('.remove-image-btn');
+            const fileNameSpan = dropzone.querySelector('.file-name');
+            const fileSizeSpan = dropzone.querySelector('.file-size');
+            
+            // Click to browse
+            dropzone.addEventListener('click', (e) => {
+                if (!e.target.closest('.remove-image-btn')) {
+                    input.click();
+                }
+            });
+            
+            // Drag and drop events
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropzone.classList.add('drag-over');
+            });
+            
+            dropzone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropzone.classList.remove('drag-over');
+            });
+            
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropzone.classList.remove('drag-over');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFileSelection(files[0], input, dropzone, side);
+                }
+            });
+            
+            // File input change
+            input.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileSelection(e.target.files[0], input, dropzone, side);
+                }
+            });
+            
+            // Remove button
+            if (removeBtn) {
+                removeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    removeFile(input, dropzone, side);
+                });
+            }
+        });
+    }
+    
+    /**
+     * Handle file selection with validation
+     */
+    function handleFileSelection(file, input, dropzone, side) {
+        // Validate file type
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        if (!validTypes.includes(file.type)) {
+            Notification.show({
+                type: 'error',
+                title: 'Invalid File Type',
+                message: 'Please upload only JPG, JPEG, or PNG images.'
+            });
+            return;
+        }
+        
+        // Validate file size (5MB max)
+        const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+        if (file.size > maxSize) {
+            Notification.show({
+                type: 'error',
+                title: 'File Too Large',
+                message: `File size must be less than 5MB. Current size: ${formatFileSize(file.size)}`
+            });
+            return;
+        }
+        
+        // Create a new FileList with the selected file
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        input.files = dataTransfer.files;
+        
+        // Show preview
+        showPreview(file, dropzone, side);
+        
+        // Reset validation status
+        handleReportCardChange();
+    }
+    
+    /**
+     * Display image preview
+     */
+    function showPreview(file, dropzone, side) {
+        const dropzoneContent = dropzone.querySelector('.dropzone-content');
+        const previewContainer = dropzone.querySelector('.preview-container');
+        const previewImage = dropzone.querySelector('.preview-image');
+        const fileNameSpan = dropzone.querySelector('.file-name');
+        const fileSizeSpan = dropzone.querySelector('.file-size');
+        
+        // Read and display image
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImage.src = e.target.result;
+            fileNameSpan.textContent = file.name;
+            fileSizeSpan.textContent = formatFileSize(file.size);
+            
+            // Toggle visibility
+            dropzoneContent.style.display = 'none';
+            previewContainer.style.display = 'flex';
+            dropzone.classList.add('has-file');
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    /**
+     * Remove selected file
+     */
+    function removeFile(input, dropzone, side) {
+        const dropzoneContent = dropzone.querySelector('.dropzone-content');
+        const previewContainer = dropzone.querySelector('.preview-container');
+        const previewImage = dropzone.querySelector('.preview-image');
+        
+        // Clear input
+        input.value = '';
+        
+        // Clear preview
+        previewImage.src = '';
+        
+        // Toggle visibility
+        previewContainer.style.display = 'none';
+        dropzoneContent.style.display = 'flex';
+        dropzone.classList.remove('has-file');
+        
+        // Reset validation status
+        handleReportCardChange();
+    }
+    
+    /**
+     * Format file size for display
+     */
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+    }
+    
+    // Initialize report card uploads when DOM is ready
+    initializeReportCardUploads();
+    
     // Add file change listeners
     if (reportCardFront) {
         reportCardFront.addEventListener('change', handleReportCardChange);
@@ -1554,7 +1722,6 @@ document.addEventListener('DOMContentLoaded',function(){
         const formData = new FormData(form);
         
         submitButton.disabled = true;
-        submitButton.style.backgroundColor = 'gray';
         isSubmitting = true;
         
         const result = await postEnrollmentForm(formData);
@@ -1568,7 +1735,6 @@ document.addEventListener('DOMContentLoaded',function(){
             isSubmitting = false;
             isSubmittingForm = false;
             submitButton.disabled = false;
-            submitButton.style.backgroundColor = "#0FFCF6";
         }
         else {
             Notification.show({

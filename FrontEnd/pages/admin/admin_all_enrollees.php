@@ -18,6 +18,8 @@ $view = new adminAllEnrolleesView();
                         ?>
                     </span>
                 </div>
+            </div>
+            <div class="header-right">
                 <div class="filter-group">
                     <select id="status-filter" class="filter-select">
                         <option value="">All Statuses</option>
@@ -32,8 +34,6 @@ $view = new adminAllEnrolleesView();
                         <option value="user">User Created</option>
                     </select>
                 </div>
-            </div>
-            <div class="header-right">
                 <input type="text" id="search" class="search-box" placeholder="Search by name, LRN, grade level, or status...">
             </div>
         </div>

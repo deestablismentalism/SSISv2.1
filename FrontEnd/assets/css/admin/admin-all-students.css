@@ -53,6 +53,7 @@ body {
   font-size: 1.8rem; /* Base for 1440px */
   font-weight: 700;
   letter-spacing: 1px;
+  color: white;
 }
 
 .add-student-btn {
@@ -232,6 +233,7 @@ border: none;
   object-fit: contain;
 }
 
+/* ===== Modal Styles ===== */
 .modal {
   display: none;
   position: fixed;
@@ -239,44 +241,171 @@ border: none;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
   justify-content: center;
   align-items: center;
+  z-index: 1000;
+  animation: fadeInBackground 0.3s ease;
+}
+
+.modal.active {
+  display: flex;
 }
 
 .modal-content {
-  background-color: white;
-  padding: 20px; /* Base for 1440px */
-  border-radius: 5px;
-  width: 500px; /* Base for 1440px */
-  max-width: 90%;
+  background: white;
+  backdrop-filter: blur(12px);
+  padding: 2rem;
+  border-radius: 20px;
+  width: 60%;
+  max-width: 900px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--glass-border);
+  animation: slideUp 0.4s ease;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
 }
 
-/* Simple fade-in animation */
-@keyframes fadeIn {
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: rgba(62, 158, 196, 0.5);
+  border-radius: 20px;
+}
+
+/* Modal content elements */
+.modal-content .close {
+  color: #1a1a1a;
+  float: right;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition);
+  line-height: 1;
+  padding: 0.5rem;
+  margin: -1rem -1rem 0 0;
+}
+
+.modal-content .close:hover,
+.modal-content .close:focus {
+  color: var(--danger);
+  transform: scale(1.2);
+}
+
+.modal-content h1 {
+  color: #1a1a1a;
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  border-bottom: 2px solid rgba(0, 188, 212, 0.3);
+  padding-bottom: 0.5rem;
+}
+
+.modal-content table {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  border-collapse: collapse;
+}
+
+.modal-content table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.modal-content table td:first-child {
+  font-weight: 600;
+  color: #1a1a1a;
+  width: 40%;
+}
+
+.modal-content table td:last-child {
+  color: #2c3e50;
+}
+
+.modal-content .loading-container {
+  text-align: center;
+  padding: 3rem;
+  color: #1a1a1a;
+  font-size: 1.1rem;
+}
+
+.modal-content .error-message {
+  background: rgba(255, 95, 95, 0.2);
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  border: 1px solid rgba(255, 95, 95, 0.5);
+}
+
+.modal-content .img-container {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.modal-content .img-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Animations */
+@keyframes fadeInBackground {
   from {
     opacity: 0;
-    transform: scale(0.95);
   }
   to {
     opacity: 1;
-    transform: scale(1);
   }
 }
 
-/* Optional close button */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Close button */
 .modal-close {
-  background: #ff4d4d;
+  background: linear-gradient(135deg, var(--danger), #ff7b7b);
   color: white;
   border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
+  border-radius: 10px;
+  padding: 0.6rem 1.2rem;
   cursor: pointer;
   float: right;
+  font-family: var(--font-main);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(255, 95, 95, 0.3);
 }
 
 .modal-close:hover {
-  background: #d93636;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 95, 95, 0.5);
+  background: linear-gradient(135deg, #ff7b7b, var(--danger));
+}
+
+.modal-close:active {
+  transform: scale(0.95);
 }
 
 /*====================================*/
@@ -298,6 +427,7 @@ border: none;
   .table-title h2 {
     font-size: 2.4rem;
     letter-spacing: 1.3px;
+    color: white;
   }
   
   .add-student-btn {
@@ -352,9 +482,9 @@ border: none;
   }
   
   .modal-content {
-    padding: 28px;
-    border-radius: 7px;
-    width: 680px;
+    padding: 2.8rem;
+    border-radius: 26px;
+    width: 65%;
   }
 }
 
@@ -427,9 +557,9 @@ border: none;
   }
   
   .modal-content {
-    padding: 24px;
-    border-radius: 6px;
-    width: 600px;
+    padding: 2.4rem;
+    border-radius: 23px;
+    width: 62%;
   }
 }
 
@@ -510,9 +640,9 @@ border: none;
   }
   
   .modal-content {
-    padding: 15px;
-    border-radius: 4px;
-    width: 410px;
+    padding: 1.8rem;
+    border-radius: 18px;
+    width: 65%;
   }
 }
 
@@ -562,5 +692,11 @@ border: none;
   .students td {
     padding: 0.6rem;
     font-size: 0.85rem;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 1.2rem;
+    border-radius: 12px;
   }
 }

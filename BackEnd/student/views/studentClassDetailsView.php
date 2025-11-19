@@ -53,9 +53,13 @@ class studentClassDetailsView {
             $lastName = $data['data']['Last_Name'] ?? 'No Last name';
             $middleName = $data['data']['Middle_Name'] ?? '';
             $studentName = $lastName . ', '.$firstName. ' '. $middleName;
+            $gradeLevel = $data['data']['Grade_Level'] ?? 'Not Assigned';
+            $adviserName = !empty(trim($data['data']['Adviser_Name'] ?? '')) ? trim($data['data']['Adviser_Name']) : 'No Adviser Assigned';
 
-            echo '<span> Student Name: '.$studentName.'</span><br>';
-            echo '<span> Learner Referenece Number: '.$lrn.'</span>';
+            echo '<p class="student-info-item"><span class="info-label">Student Name:</span> <span class="info-value">'.$studentName.'</span></p>';
+            echo '<p class="student-info-item"><span class="info-label">LRN:</span> <span class="info-value">'.$lrn.'</span></p>';
+            echo '<p class="student-info-item"><span class="info-label">Grade Level:</span> <span class="info-value">'.htmlspecialchars($gradeLevel).'</span></p>';
+            echo '<p class="student-info-item"><span class="info-label">Adviser:</span> <span class="info-value">'.htmlspecialchars($adviserName).'</span></p>';
         }
         catch(IdNotFoundException $e) {
             echo '<span>'.$e->getMessage().'</span>';
