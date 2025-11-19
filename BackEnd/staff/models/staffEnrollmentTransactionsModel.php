@@ -8,14 +8,14 @@ class staffEnrollmentTransactionsModel {
         $db = new Connect();
         $this->conn = $db->getConnection();
     }
-    private function getActiveSchoolYear() : ?array {
+    private function getActiveSchoolYear(PDO $conn) : ?array {
         try {
             $sql = "SELECT School_Year_Details_Id, start_year, end_year 
                     FROM school_year_details 
                     WHERE Is_Expired = 0 
                     ORDER BY School_Year_Details_Id DESC 
                     LIMIT 1";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             
@@ -27,19 +27,18 @@ class staffEnrollmentTransactionsModel {
         }
     }
     // function to insert any enrollment transaction
-    public function insertEnrolleeTransaction(int $enrolleeId,string $transactionCode , 
+    public function insertEnrolleeTransaction(PDO $conn,int $enrolleeId,string $transactionCode , 
     int $enrollmentStatus,int $staffId,string $remarks,int $isApproved):bool{ // F 4.3.1
         try {
-            $this->conn->beginTransaction();
             // Get active school year details
-            $schoolYear = $this->getActiveSchoolYear();
+            $schoolYear = $this->getActiveSchoolYear($conn);
             $schoolYearId = $schoolYear ? (int)$schoolYear['School_Year_Details_Id'] : null;
             if(is_null($schoolYearId)) {
                 throw new DatabaseException("Cannot insert. Active year level not found");
             }
             $sql ="INSERT INTO enrollment_transactions(Enrollee_Id,Transaction_Code, Enrollment_Status, Staff_Id, Remarks, Is_Approved,School_Year_Details_Id)
                     VALUES (:enrollee_id, :transaction_code, :enrollment_status, :staff_Id,:remarks, :isApproved,:syId)";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->bindParam(':enrollee_id', $enrolleeId, PDO::PARAM_INT);
             $stmt->bindParam(':transaction_code', $transactionCode);
             $stmt->bindParam(':staff_Id', $staffId, PDO::PARAM_INT);
@@ -48,34 +47,25 @@ class staffEnrollmentTransactionsModel {
             $stmt->bindParam(':isApproved', $isApproved);
             $stmt->bindParam(':syId', $schoolYearId, PDO::PARAM_INT);
             $stmt->execute();
-            
             if($stmt->rowCount() === 0) {
-                $this->conn->rollBack();
                 return false;
             }
-            $this->conn->commit();
             return true;
         }
         catch(PDOException $e) {
-            $this->conn->rollBack();
             error_log("[".date('Y-m-d H:i:s')."]".$e->getMessage()."\n",3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to insert enrollee transaction',431,$e);
         }
     }
-
     // New function to insert transaction WITH Transaction_Status for resubmission
-    public function insertEnrolleeTransactionWithStatus(int $enrolleeId, string $transactionCode, 
+    public function insertEnrolleeTransactionWithStatus(PDO $conn,int $enrolleeId, string $transactionCode, 
         int $enrollmentStatus, int $staffId, string $remarks, int $isApproved, int $transactionStatus): bool {
         try {
-            $this->conn->beginTransaction();
-            
-            $schoolYear = $this->getActiveSchoolYear();
+            $schoolYear = $this->getActiveSchoolYear($conn);
             $schoolYearId = $schoolYear ? (int)$schoolYear['School_Year_Details_Id'] : null;
-            
             if(is_null($schoolYearId)) {
                 throw new DatabaseException("Cannot insert. Active year level not found");
             }
-            
             $sql = "INSERT INTO enrollment_transactions(
                         Enrollee_Id, Transaction_Code, Enrollment_Status, Staff_Id, 
                         Remarks, Is_Approved, Transaction_Status, School_Year_Details_Id
@@ -83,8 +73,7 @@ class staffEnrollmentTransactionsModel {
                         :enrollee_id, :transaction_code, :enrollment_status, :staff_Id,
                         :remarks, :isApproved, :transactionStatus, :syId
                     )";
-            
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->bindParam(':enrollee_id', $enrolleeId, PDO::PARAM_INT);
             $stmt->bindParam(':transaction_code', $transactionCode);
             $stmt->bindParam(':staff_Id', $staffId, PDO::PARAM_INT);
@@ -94,17 +83,12 @@ class staffEnrollmentTransactionsModel {
             $stmt->bindParam(':transactionStatus', $transactionStatus, PDO::PARAM_INT);
             $stmt->bindParam(':syId', $schoolYearId, PDO::PARAM_INT);
             $stmt->execute();
-            
             if($stmt->rowCount() === 0) {
-                $this->conn->rollBack();
                 return false;
             }
-            
-            $this->conn->commit();
             return true;
         }
         catch(PDOException $e) {
-            $this->conn->rollBack();
             error_log("[".date('Y-m-d H:i:s')."] ".$e->getMessage()."\n", 3, __DIR__ . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to insert transaction with status', 0, $e);
         }

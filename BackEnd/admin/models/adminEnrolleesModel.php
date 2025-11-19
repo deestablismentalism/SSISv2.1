@@ -277,10 +277,10 @@ class adminEnrolleesModel {
     }
     //HELPERS
     //OPERATIONS
-    public function updateEnrollee(int $enrolleeId,int $status):bool{ 
+    public function updateEnrollee(PDO $conn,int $enrolleeId,int $status):bool{ 
         try {
             $sql = "UPDATE enrollee SET Enrollment_Status = :status WHERE Enrollee_Id = :id";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->execute([':id'=>$enrolleeId,':status'=>$status]);
             return true;
         }
@@ -289,10 +289,10 @@ class adminEnrolleesModel {
             throw new DatabaseException('Failed to update enrollee status', 0,$e);
         }
     }
-        public function setIsHandledStatus($id, $status):bool { //F 1.3.2
+    public function setIsHandledStatus(PDO $conn,$id, $status):bool { //F 1.3.2
         try {
             $sql = "UPDATE enrollee SET Is_Handled = :status WHERE Enrollee_Id = :id";
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $result = $stmt->execute([':id'=>$id,':status'=>$status]);
             if($stmt->rowCount() === 0) {
                 return false;
