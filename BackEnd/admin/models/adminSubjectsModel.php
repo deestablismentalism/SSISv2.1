@@ -159,6 +159,7 @@ class adminSubjectsModel {
                     INNER JOIN grade_level AS g ON g.Grade_Level_Id = se.Grade_Level_Id 
                     INNER JOIN subjects AS s ON ss.Subject_Id = s.Subject_Id
                     LEFT JOIN staffs AS st ON ss.Staff_Id = st.Staff_Id
+                    WHERE s.Is_Archived = 0
                     ORDER BY g.Grade_Level_Id, se.Section_Name, s.Subject_Name";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
@@ -180,6 +181,7 @@ class adminSubjectsModel {
                     COUNT(DISTINCT ss.Section_Subjects_Id) as Section_Count
                     FROM subjects AS s
                     INNER JOIN section_subjects AS ss ON s.Subject_Id = ss.Subject_Id
+                    WHERE s.Is_Archived = 0
                     GROUP BY s.Subject_Id, s.Subject_Name
                     ORDER BY s.Subject_Name";
             $stmt = $this->conn->prepare($sql);
@@ -215,6 +217,19 @@ class adminSubjectsModel {
             $stmt->bindParam(':subjectId', $subjectId);
             $stmt->execute();
             
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch sections by subject',0,$e);
+        }
+    }
+    public function getArchivedSubjects():array{
+        try {
+            $sql = "SELECT * FROM subjects WHERE Is_Archived =1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }
@@ -262,6 +277,48 @@ class adminSubjectsModel {
         catch(PDOException $e) {
             error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
             throw new DatabaseException('Failed to associate teacher with subject',0,$e);        
+        }
+    }
+    public function archiveSubject(int $subjectId):bool {
+        try {
+            $sql = "UPDATE subjects SET Is_Archived = 1 WHERE Subject_Id = :subjectId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':subjectId'=>$subjectId]);
+            if($stmt->rowCount()===0) {
+                return false;
+            }
+            return true;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to archive subject',0,$e);        
+        }
+    }
+    public function restoreSubject(int $subjectId):bool {
+        try {
+            $sql = "UPDATE subjects SET Is_Archived = 0 WHERE Subject_Id = :subjectId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':subjectId'=>$subjectId]);
+            if($stmt->rowCount()===0) {
+                return false;
+            }
+            return true;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to archive subject',0,$e);        
+        }
+    }
+    public function deleteSubject(int $subjecId):bool {
+        try {
+            $sql = "DELETE FROM subjects WHERE Subject_Id = :subjectId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':subjectId'=>$subjectId]);
+            return true;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to archive subject',0,$e);        
         }
     }
 }

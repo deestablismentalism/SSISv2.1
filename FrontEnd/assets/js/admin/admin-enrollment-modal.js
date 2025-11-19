@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const enrollingGradeLevel = document.getElementById("admin-grades-tbe");
     const lastGradeLevel = document.getElementById("admin-last-grade");
     
-    const psaNumber = document.getElementById("admin-PSA-number");
     const lrn = document.getElementById("admin-LRN");
     const lname = document.getElementById("admin-lname");
     const fname = document.getElementById("admin-fname");
@@ -113,14 +112,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Regex patterns
     const lrnRegex = /^([0-9]){12}$/;
-    const bCertRegex = /^([0-9]){13}$/;
     const yearRegex = /^(1[0-9]{3}|2[0-9]{3}|3[0-9]{3})$/;
     const idRegex = /^([0-9]){6}$/;
     const nonAlphaRegex = /[^A-Za-z\s]/g;
     const nonNumericRegex = /[^0-9]/g;
     
     const numLimitLRN = 12;
-    const numLimitPSA = 13;
     const numLimitSchoolID = 6;
     const numLimitPhone = 11;
     
@@ -264,18 +261,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Validation functions (same logic as user form)
-    function validatePSA() {
-        const value = psaNumber.value.trim();
-        if (!value) return ValidationUtils.errorMessages("em-PSA-number", ValidationUtils.emptyError, psaNumber);
-        if (!/^\d*$/.test(value)) return ValidationUtils.errorMessages("em-PSA-number", ValidationUtils.notNumber, psaNumber);
-        if (!bCertRegex.test(value)) {
-            return ValidationUtils.errorMessages("em-PSA-number", 
-                value.length > 13 ? "Only 13 digits are allowed" : "Enter a valid birth certificate number", psaNumber);
-        }
-        ValidationUtils.clearError("em-PSA-number", psaNumber);
-        return true;
-    }
-    
     function validateLRN() {
         const value = lrn.value.trim();
         if (lrn.disabled) {
@@ -398,14 +383,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        const numericFields = [psaNumber, lrn, startYear, endYear, lastYear, lschoolId, fschoolId, 
+        const numericFields = [lrn, startYear, endYear, lastYear, lschoolId, fschoolId, 
                               fatherCPnum, motherCPnum, guardianCPnum, houseNumber];
         numericFields.forEach(field => {
             if (field) preventCharactersByRegex(field, nonNumericRegex);
         });
         
         limitCharacters(lrn, numLimitLRN);
-        limitCharacters(psaNumber, numLimitPSA);
         limitCharacters(lschoolId, numLimitSchoolID);
         limitCharacters(fschoolId, numLimitSchoolID);
         limitCharacters(fatherCPnum, numLimitPhone);
@@ -417,7 +401,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupEventListeners() {
         // Birth date and age
         if (birthDate) birthDate.addEventListener('change', getAge);
-        if (psaNumber) psaNumber.addEventListener('input', validatePSA);
         if (lrn) lrn.addEventListener('input', validateLRN);
         
         // Phone validation

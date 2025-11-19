@@ -179,6 +179,50 @@ class adminTeacherController {
             ];
         }
     }
+
+    public function apiArchiveStaff(?int $staffId) : array {
+        try {
+            if(empty($staffId)) {
+                return [
+                    'httpcode'=> 400,
+                    'success'=> false,
+                    'message'=> 'No staff ID provided',
+                    'data'=> []
+                ];
+            }
+            $result = $this->teacherModel->archiveStaff($staffId);
+            if(!$result) {
+                return [
+                    'httpcode'=> 404,
+                    'success'=> false,
+                    'message'=> 'Staff member not found or already archived',
+                    'data'=> []
+                ];
+            }
+            return [
+                'httpcode'=> 200,
+                'success'=> true,
+                'message'=> 'Staff member successfully archived',
+                'data'=> []
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'httpcode'=> 500,
+                'success'=> false,
+                'message'=> 'There was a problem on our side: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'httpcode'=> 500,
+                'success'=> false,
+                'message'=> 'There was an unexpected problem: ' . $e->getMessage(),
+                'data'=> []
+            ];
+        }
+    }
     //HELPERS
     //VIEW
     public function viewAllTeachers() : array {

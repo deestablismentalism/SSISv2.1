@@ -60,7 +60,7 @@ class teacherAdvisoryView {
         else {
             echo '<div class="advisory-header">';
             echo '<div class="advisory-name-wrapper"><h1 class="advisory-name">'.$this->returnSectionName().'</h1></div>';
-            echo '<div class="advisory-button-wrapper"> <a href="masterlist.php?section='.$this->id.'">Generate Master list </a> </div>';
+            echo '<div class="advisory-button-wrapper"> <a href="masterlist.php?section='.$this->id.'" target="_blank">Generate Master list </a> </div>';
             echo '</div>';
             echo '<div class="students-wrapper">
                 <h1> Students List </h1>

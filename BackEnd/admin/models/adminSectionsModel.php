@@ -215,7 +215,7 @@ class adminSectionsModel {
                     FROM sections s
                     LEFT JOIN students st ON s.Section_Id = st.Section_Id
                     LEFT JOIN section_subjects ss ON s.Section_Id = ss.Section_Id
-                    WHERE s.Section_Id = :id";
+                    WHERE s.Section_Id = :id AND s.Is_Archived = 0";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
@@ -297,6 +297,7 @@ class adminSectionsModel {
             LEFT JOIN students st ON s.Section_Id = st.Section_Id
             LEFT JOIN section_advisers sa ON s.Section_Id = sa.Section_Id
             LEFT JOIN staffs staff ON sa.Staff_Id = staff.Staff_Id
+            WHERE s.Is_Archived = 0
             GROUP BY gl.Grade_Level_Id, gl.Grade_Level, s.Section_Id, s.Section_Name, sa.Staff_Id, staff.Staff_First_Name, staff.Staff_Last_Name, staff.Staff_Middle_Name
             ORDER BY gl.Grade_Level_Id, s.Section_Name";
             $stmt = $this->conn->prepare($sql);
@@ -423,6 +424,49 @@ class adminSectionsModel {
         }
         catch(PDOException $e) {
             throw new DatabaseException('Failed to check the subject teacher', 0, $e);
+        }
+    }
+    public function archiveSection(int $sectionId):bool {
+        try {
+            $sql = "UPDATE sections SET Is_Archived = 1 WHERE Section_Id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':id'=>$sectionId]);
+            if($stmt->rowCount()===0) {
+                return false;
+            }
+            return true;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to archive the subject', 0, $e);
+        }
+    }
+    public function restoreSection(int $sectionId):bool {
+        try {
+            $sql = "UPDATE sections SET Is_Archived = 0 WHERE Section_Id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':id'=>$sectionId]);
+            if($stmt->rowCount()===0) {
+                return false;
+            }
+            return true;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to restore the subject', 0, $e);
+        }
+    }
+    public function deleteSection(int $sectionId):bool {
+        try {
+            $sql = "DELETE FROM sections WHERE Section_Id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':id'=>$sectionId]);
+            if($stmt->rowCount()===0) {
+                return false;
+            }
+            return true;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $e->getMessage() . "\n",3, __DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to delete the subject', 0, $e);
         }
     }
 }

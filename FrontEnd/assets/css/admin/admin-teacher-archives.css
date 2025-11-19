@@ -102,7 +102,6 @@ body {
   scrollbar-width: thin;
   scrollbar-color: rgba(62, 158, 196, 0.5) transparent;
 }
-
 /* Custom scrollbar styling */
 .teacher-archive-table-container::-webkit-scrollbar {
   width: 8px;
@@ -112,19 +111,16 @@ body {
 .teacher-archive-table-container::-webkit-scrollbar-track {
   background: transparent;
 }
-
 .teacher-archive-table-container::-webkit-scrollbar-thumb {
   background-color: rgba(62, 158, 196, 0.5);
   border-radius: 20px;
 }
-
 /* Make table header stick while scrolling */
 .teacher-archive-table thead {
   position: sticky;
   top: 0;
   z-index: 10;
 }
-
 .teacher-archive-table {
   width: 100%;
   border-collapse: collapse;
@@ -139,7 +135,7 @@ body {
   text-align: left;
 }
 
-.teacher-archive-table th {
+.table-teachers th {
   padding: 1rem; /* Base for 1440px */
   font-weight: 600;
   letter-spacing: 0.4px;
@@ -149,7 +145,7 @@ body {
   color: #1a1a1a;
 }
 
-.teacher-archive-table td {
+.table-teachers td {
   padding: 1rem; /* Base for 1440px */
   border-top: 1px solid rgba(63, 166, 210, 0.897);
   vertical-align: middle;
@@ -207,7 +203,7 @@ body {
 }
 
 /* ===== Action Buttons ===== */
-.teacher-archive-table td button {
+.table-teachers td button {
   border: none;
   cursor: pointer;
   margin-right: 4.5px;

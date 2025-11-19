@@ -261,7 +261,8 @@ body {
   border-bottom: none;
 }
 
-.view-btn {
+.view-btn,
+.archive-section {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -272,12 +273,14 @@ body {
   text-decoration: none;
 }
 
-.view-btn:hover {
+.view-btn:hover,
+.archive-section:hover {
   background: rgba(0, 180, 216, 0.4);
   transform: scale(1.1);
 }
 
-.view-btn img {
+.view-btn img,
+.archive-section img {
   width: 18px;
   height: 18px;
   filter: brightness(0) invert(1);

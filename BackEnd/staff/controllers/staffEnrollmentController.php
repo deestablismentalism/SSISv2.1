@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__ . '/../../Exceptions/IdNotFoundException.php';
 require_once __DIR__ . '/../../staff/models/staffEnrollmentTransactionsModel.php';
 require_once __DIR__ . '/../../admin/models/adminEnrolleesModel.php';
 require_once __DIR__ . '/../../admin/models/adminStudentsModel.php';
@@ -16,11 +17,20 @@ class staffEnrollmentController {
     private const BOOL_FALSE = 0;
     private const BOOL_TRUE = 1;
     public function __construct() { 
-        $this->transactionsModel = new staffEnrollmentTransactionsModel();
-        $this->adminStudentModel = new adminStudentsModel();
-        $this->adminEnrolleeModel = new adminEnrolleesModel();
-        $this->staffEnrolleeModel = new staffEnrolleesModel();
-        $this->smsService = new SendEnrollmentStatus();
+        $this->init();
+    }
+    private function init():void {
+        try {
+            $this->transactionsModel = new staffEnrollmentTransactionsModel();
+            $this->adminStudentModel = new adminStudentsModel();
+            $this->adminEnrolleeModel = new adminEnrolleesModel();
+            $this->staffEnrolleeModel = new staffEnrolleesModel();
+            $this->smsService = new SendEnrollmentStatus();
+        }
+        catch(DatabaseConnectionException $e) {
+            header("Location: ../../../FrontEnd/pages/errorPage/500.php?from=staff/staff_pending_enrollments.php");
+            die();
+        }
     }
     //API
     public function apiPostUpdateEnrolleeStatus(int $staffId, int $status, int $enrolleeId, ?string $remarks) : array {
@@ -50,10 +60,8 @@ class staffEnrollmentController {
                     'data'=> []
                 ];
             }
-
             $transactionCode = $this->generateTransactionCode($status);
             $remarks = $remarks ?? '';
-
             // NEW WORKFLOW: Teacher has 2 options only
             if($status === 1) {
                 // ENROLL: Direct path to student table
@@ -79,7 +87,7 @@ class staffEnrollmentController {
             return [
                 'httpcode'=> 500,
                 'success'=> false,
-                'message'=> 'Database error occurred',
+                'message'=> 'Database error occurred: '.$e->getMessage(),
                 'error_code'=> $e->getCode(),
                 'data'=> []
             ];
@@ -100,7 +108,6 @@ class staffEnrollmentController {
             1 => 'E',  // Enroll
             5 => 'R'   // Resubmission Request
         ][$status] ?? 'U'; // Unknown fallback
-        
         $rand = '';
         for($i = 0; $i < 8; $i++) {
             $rand .= random_int(0, 9);
@@ -109,17 +116,14 @@ class staffEnrollmentController {
         
         return $statusCode . "-" . $rand . "-" . $time;
     }
-
     private function processEnrollment(int $enrolleeId, string $transactionCode, int $staffId, string $remarks): array {
         $conn = null;
         try {
             // Get database connection for transaction management
-            $db = new Connect();
-            $conn = $db->getConnection();
+            $conn = (new Connect())->getConnection();
             $conn->beginTransaction();
-
             // 1. Update enrollee status to enrolled
-            if(!$this->adminEnrolleeModel->updateEnrollee($enrolleeId, 1)) {
+            if(!$this->adminEnrolleeModel->updateEnrollee($conn,$enrolleeId, 1)) {
                 $conn->rollBack();
                 return [
                     'httpcode'=> 500,
@@ -127,9 +131,8 @@ class staffEnrollmentController {
                     'message'=> 'Failed to update enrollee status'
                 ];
             }
-
             // 2. Set Is_Handled flag
-            if(!$this->adminEnrolleeModel->setIsHandledStatus($enrolleeId, self::BOOL_TRUE)) {
+            if(!$this->adminEnrolleeModel->setIsHandledStatus($conn,$enrolleeId, self::BOOL_TRUE)) {
                 $conn->rollBack();
                 return [
                     'httpcode'=> 500,
@@ -137,9 +140,8 @@ class staffEnrollmentController {
                     'message'=> 'Failed to set handled status'
                 ];
             }
-
             // 3. Insert transaction record with Is_Approved=1 (finalized)
-            if(!$this->transactionsModel->insertEnrolleeTransaction($enrolleeId, $transactionCode, 1, $staffId, $remarks, self::BOOL_TRUE)) {
+            if(!$this->transactionsModel->insertEnrolleeTransaction($conn,$enrolleeId, $transactionCode, 1, $staffId, $remarks, self::BOOL_TRUE)) {
                 $conn->rollBack();
                 return [
                     'httpcode'=> 500,
@@ -147,9 +149,10 @@ class staffEnrollmentController {
                     'message'=> 'Failed to create transaction record'
                 ];
             }
-
-            // 4. Insert enrollee to students table
-            if(!$this->adminStudentModel->insertEnrolleeToStudent($enrolleeId)) {
+            //  4. GET THIS TEACHER'S SECTION ID
+            $sectionId = $this->staffEnrolleeModel->getThisTeacherSectionAdvisoryId($conn,$staffId);
+            // 5. Insert enrollee to students table with the teacher advisory section
+            if(!$this->adminStudentModel->insertEnrolleeToStudent($conn,$enrolleeId,$sectionId)) {
                 $conn->rollBack();
                 return [
                     'httpcode'=> 500,
@@ -157,9 +160,7 @@ class staffEnrollmentController {
                     'message'=> 'Failed to insert student record'
                 ];
             }
-
             $conn->commit();
-
             // 5. Send SMS notification
             $smsResult = $this->sendEnrollmentStatusSMS($enrolleeId, 'Enrolled');
 
@@ -178,19 +179,20 @@ class staffEnrollmentController {
             throw $e;
         }
     }
-
     private function processResubmissionRequest(int $enrolleeId, string $transactionCode, int $staffId, string $remarks): array {
         try {
+            $conn = (new Connect())->getConnection();
+            $conn->beginTransaction();
             // 1. Set enrollee to Follow-up status (4) to remove from pending queue
             // Enrollee will return to pending (3) when parent resubmits
-            if(!$this->adminEnrolleeModel->updateEnrollee($enrolleeId, 4)) {
+            if(!$this->adminEnrolleeModel->updateEnrollee($conn,$enrolleeId, 4)) {
+                $conn->rollBack();
                 return [
                     'httpcode'=> 500,
                     'success'=> false,
                     'message'=> 'Failed to update enrollee status'
                 ];
             }
-            
             // 2. Insert transaction with Transaction_Status=1 (allow resubmit), Is_Approved=0
             if(!$this->transactionsModel->insertEnrolleeTransactionWithStatus($enrolleeId, $transactionCode, 3, $staffId, $remarks, self::BOOL_FALSE, 1)) {
                 return [
@@ -199,10 +201,8 @@ class staffEnrollmentController {
                     'message'=> 'Failed to create resubmission transaction'
                 ];
             }
-
             // 3. Send SMS notification
             $smsResult = $this->sendResubmissionRequestSMS($enrolleeId, $remarks);
-
             return [
                 'httpcode'=> 200,
                 'success'=> true,
@@ -228,7 +228,6 @@ class staffEnrollmentController {
             return "SMS failed to send: " . $e->getMessage();
         }
     }
-
     private function sendResubmissionRequestSMS(int $enrolleeId, string $remarks): string {
         try {
             $smsData = $this->adminEnrolleeModel->getEnrolleeDetailsForSMS($enrolleeId);
@@ -243,15 +242,17 @@ class staffEnrollmentController {
             return "SMS failed to send: " . $e->getMessage();
         }
     }
-
     //VIEW
-    public function viewPendingEnrollees(): array {
+    public function viewPendingEnrollees(?int $staffId): array {
         try {
-            $data = $this->staffEnrolleeModel->getPendingEnrollees();
+            if(is_null($staffId)) {
+                throw new IdNotFoundException('Unauthorized access! Your Staff ID is not found.');
+            }
+            $data = $this->staffEnrolleeModel->getPendingEnrolleesByTeacherAdvisoryLevel($staffId);
             if(empty($data)) {
                 return [
                     'success'=> false,
-                    'message'=> 'Pending enrollees are empty',
+                    'message'=> 'Pending enrollees are empty. Please double check if you are an adviser of a section',
                     'data'=> []
                 ];
             }

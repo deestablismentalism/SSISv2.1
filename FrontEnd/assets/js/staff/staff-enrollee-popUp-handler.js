@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded',async function (){
         }
     });
 });
-const TIME_OUT = 20000;
+const TIME_OUT = 30000;
 async function fetchEnrolleeInfo(enrolleeId) {
     try {
         const controller = new AbortController();
@@ -142,7 +142,7 @@ async function fetchEnrolleeInfo(enrolleeId) {
         if(error.name === "AbortError") {
             return {
                 success: false,
-                message: `Request timeout: Server took too long to response`,
+                message: `Request timeout. Server took too long to respond: took ${TIME_OUT/1000} seconds`,
                 data: null
             };
         }

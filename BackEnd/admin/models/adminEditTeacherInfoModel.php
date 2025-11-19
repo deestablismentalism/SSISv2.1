@@ -10,7 +10,7 @@
             $this->conn = $db->getConnection();
         }
 
-        public function editTeacherInformation($statusInput, $Position, $Staff_Id) {
+        public function editTeacherInformation($statusInput, $Position, $staffTypeInput, $Staff_Id) {
             $Status = null;
             switch ($statusInput) {
                 case 'Active':
@@ -29,13 +29,30 @@
                     ]; 
             }
 
+            $StaffType = null;
+            switch ($staffTypeInput) {
+                case 'Admin':
+                    $StaffType = 1;
+                    break;
+                case 'Teacher':
+                    $StaffType = 2;
+                    break;
+                default:
+                    return [
+                        'success' => false,
+                        'message' => 'Invalid staff type provided.',
+                    ];
+            }
+
             $sql_update_information = "UPDATE staffs SET
                                     Staff_Status = :Status,
-                                    Position = :Position
+                                    Position = :Position,
+                                    Staff_Type = :StaffType
                                     WHERE Staff_Id = :Staff_Id";
             $update_information = $this->conn->prepare($sql_update_information);
             $update_information->bindParam(':Status', $Status);
             $update_information->bindParam(':Position', $Position);
+            $update_information->bindParam(':StaffType', $StaffType);
             $update_information->bindParam(':Staff_Id', $Staff_Id);
 
             try {

@@ -219,6 +219,7 @@ $view = new getGradeLevels();
                                     <div class="error-msg">
                                         <span class="em-lschoolID"> Error Message Here. </span>
                                     </div>
+                                <p class="dfont">ID ng paaralan</p>
                                 <p class="dfont"><span data-translate="ID ng paaralan">School ID</span> <span class="required">*</span></p>
                                 <input type="number" name="lschoolID" id="lschoolID" class="textbox">
                             </div>
@@ -230,6 +231,7 @@ $view = new getGradeLevels();
                             <p class="dfont" data-translate="Address ng paaralan">School address <span class="required">*</span></p>
                             <input type="text" name="lschoolAddress" id="lschoolAddress" class="textbox"> 
                         </div> 
+                        <p class="dfont">Anong klase ng paaralan</p>
                         <p class="dfont"><span data-translate="Anong klase ng paaralan">What type of school</span> <span class="required">*</span></p>
                         <div> 
                             <div class="radio-option">
@@ -255,6 +257,7 @@ $view = new getGradeLevels();
                                 <div class="error-msg">
                                     <span class="em-fschoolID"> Error Message Here. </span>
                                 </div>
+                                <p class="dfont">ID ng paaralan</p>
                                 <p class="dfont"><span data-translate="ID ng paaralan">School ID</span> <span class="required">*</span></p>
                                 <input type="number" name="fschoolID" id="fschoolID" class="textbox">
                             </div>
@@ -276,8 +279,14 @@ $view = new getGradeLevels();
                 </div>
                 <!--ROW 1-->
                 <div class="student-info-row-1">
-                    <div class="PSA-number">
+                    <div class="LRN">
                         <div class="error-msg">
+                            <span class="em-LRN"></span>
+                        </div>
+                        <p class="dfont">Learner's Reference Number (LRN) kung mayroon <span class="required">*</span></p>
+                        <input type="number" name="LRN" id="LRN" class="textbox">
+                    </div>
+                </div>
                             <span class="em-PSA-number"></span>
                         </div>
                             <p class="dfont"><span data-translate="Numero na nakalagay sa Sertipiko ng Kapanganakan (Birth Certificate) mula sa PSA (kung may dala na kopya)">PSA Birth Certificate Number (if available)</span> <span class="required">*</span></p>
@@ -454,6 +463,7 @@ $view = new getGradeLevels();
                         <div class="error-msg">
                             <span class="em-subdivision"></span>
                         </div>
+                        <p class="dfont">Subdivision/ baryo/ purok/ sitio</p>
                         <p class="dfont"><span data-translate="Subdivision/ baryo/ purok/ sitio">Subdivision/Village/Purok/Sitio</span> <span class="required">*</span></p>
                         <input type="text" name="subdivision" id="subdivision" class="textbox" placeholder="Talipan">
                     </div>
@@ -461,6 +471,7 @@ $view = new getGradeLevels();
                         <div class="error-msg">
                             <span class="em-house-number"></span>
                         </div>
+                        <p class="dfont">Numero ng Bahay at kalye</p>
                         <p class="dfont"><span data-translate="Numero ng Bahay at kalye">House Number and Street</span> <span class="required">*</span></p>
                         <input type="text" name="house-number" id="house-number" class="textbox" placeholder="32">
                     </div>

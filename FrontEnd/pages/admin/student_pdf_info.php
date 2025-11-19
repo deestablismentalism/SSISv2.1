@@ -58,8 +58,6 @@ try {
     $rowHeight = 5;
     //VALUES
     $pdf->SetFont('Arial','',13);
-    //PSA
-    infoRow($pdf,'PSA Number',$student['Psa_Number'],$titleWidth,$valueWidth,$rowHeight);
     //BIRTHDAY  
     infoRow($pdf,'Birth Date',$student['Readable_Birthday'],$titleWidth,$valueWidth,$rowHeight);
     //AGE

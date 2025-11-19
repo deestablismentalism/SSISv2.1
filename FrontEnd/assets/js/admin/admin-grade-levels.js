@@ -87,7 +87,13 @@ document.addEventListener('DOMContentLoaded', function() {
             close(modal);
         })
     });
-
+    //ARCHIVING SECITON
+    gradeLevelsList.addEventListener('click', async function(e){
+        const btn =  e.target.closest('.archive-section');
+        if(!btn) return;
+        const sectionId = btn.getAttribute('data-section');
+        await arhiveSection(sectionId);
+    });
     // Load grade levels data
     async function loadGradeLevels() {
         loadingState.style.display = 'flex';
@@ -153,6 +159,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                             <a href="./admin_view_section.php?section_id=${section.Section_Id}" class="view-btn">
                                                 <img src="../../assets/imgs/eye-regular.svg" alt="View">
                                             </a>
+                                            <button class="archive-section" data-section="${section.Section_Id}">
+                                                <img src="../../assets/imgs/box-archive-solid-full.svg" alt="archive">
+                                            </button>
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -215,4 +224,70 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial load
     loadGradeLevels();
 });
+async function arhiveSection(sectionId) {
+    if (confirm('Are you sure you want to archive this section?')) {
+        Loader.show();
+        const result = await postArchiveSection(sectionId);
+        if(!result.success) {
+            Notification.show({
+                type: 'error',
+                title: 'error',
+                message: result.message
+            });
+            Loader.hide();
+        }
+        else {
+            Notification.show({
+                type: 'success',
+                title: 'success',
+                message: result.message
+            });
+            setTimeout(()=>window.location.reload(), 1000);
+        }
+    }
+}
+const TIME_OUT = 30000;
+async function postArchiveSection(sectionId) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(()=>controller.abort,TIME_OUT);
+    try {
+        const response = await fetch(`../../../BackEnd/api/admin/postArchiveSection.php`,{
+            signal: controller.signal,
+            method: 'POST',
+            body: new URLSearchParams({'section-id' : sectionId})
+        });
+        clearTimeout(timeoutId);
+        let data;
+        try {
+            data = await response.json();
+        }
+        catch{
+            throw new Error('Invalid response');
+        }
+        if(!response.ok) {
+            return {
+                success: false,
+                message: data.message || `HTTP ERROR. Request returned with response${response.status}`,
+                data: null
+            };
+        }
+        return data;
+    }
+    catch(error) {
+        if(error.name === "AbortError") {
+            return {
+                success: false,
+                message: `Request timeout. Server took too long to respond: Took ${TIME_OUT/1000} seconds`,
+                data: null
+            }
+        }
+        else {
+            return {
+                success: false,
+                message: error.message || `Something went wrong`,
+                data: null
+            }
+        }
+    }
+}
 

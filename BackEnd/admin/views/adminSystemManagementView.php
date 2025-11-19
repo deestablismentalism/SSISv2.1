@@ -200,11 +200,11 @@ class adminSystemManagementView {
                 $contactNumber = $rows['Staff_Contact_Number'];
                 $position = !empty($rows['Position']) ? $rows['Position'] : 'No position set';
                 $actionButtons = new safeHTML('
-                <button id="view-teacher">
-                    <img class="view-icon" src="../../assets/imgs/eye-regular.svg" alt="View">
+                <button class="restore-teacher" data-teacher="'.$rows['Staff_Id'].'"> 
+                <img src="../../assets/imgs/arrow-rotate-right-solid-full.svg" alt="Restore Teacher">
                 </button>
-                <button id="edit-teacher">
-                    <img class="edit-icon" src="../../assets/imgs/edit-yellow-green.svg" alt="Edit">
+                <button class="delete-teacher" data-teacher="'.$rows['Staff_Id'].'"> 
+                <img src="../../assets/imgs/trash-solid.svg" alt="Delete Teacher Information">
                 </button>
                 ');
                 echo $this->tableTemplate->returnHorizontalRows([
@@ -212,6 +212,82 @@ class adminSystemManagementView {
                 ], 'teachers-data');
             }
             echo '</tbody></table></div>';
+        }
+    }
+    public function displayArchivedSubjects() {
+        try {
+            $data = $this->controller->viewArchivedSubjects();
+            if(!$data['success']) {
+                echo '<div class="error-message">'. htmlspecialchars($data['message']) .'</div>';
+                return;
+            }
+            if($data['success'] && empty($data['data'])) {
+                echo '<div class="error-message">'. htmlspecialchars($data['message']) .'</div>';
+                return;
+            }
+            else {
+                echo '<div class="table-subjects-container"><table class="table-subjects">';
+                echo $this->tableTemplate->returnHorizontalTitles([
+                    'Subject Name', 'Action'
+                ], 'archive-subjects-table-title');
+                echo '<tbody>';
+                foreach($data['data'] as $row)  {
+                    $subjectName =!empty($row['Subject_Name']) ?$row['Subject_Name'] : 'Subject name not found';
+                    $actionButtons = new safeHTML('
+                        <button class="restore-subject" data-subject="'.$row['Subject_Id'].'"> 
+                        <img src="../../assets/imgs/arrow-rotate-right-solid-full.svg" alt="Restore Subject">
+                        </button>
+                        <button class="delete-subject" data-subject="'.$row['Subject_Id'].'"> 
+                        <img src="../../assets/imgs/trash-solid.svg" alt="Delete Subject Information">
+                        </button>
+                    ');
+                    echo $this->tableTemplate->returnHorizontalRows(
+                        [ $subjectName,$actionButtons],'subjects-table-data');
+                }
+                echo '</tbody></table></div>';
+            }
+        }
+        catch(Throwable $t) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$t."\n",3, __DIR__ . '/../../errorLogs.txt');
+            echo '<div class="error-message"> There was a syntax problem. Please wait while we look into it</div>';
+        }
+    }
+    public function displayArchivedSections() {
+        try {
+            $data = $this->controller->viewArchivedSections();
+            if(!$data['success']) {
+                echo '<div class="error-message">'. htmlspecialchars($data['message']) .'</div>';
+                return;
+            }
+            if($data['success'] && empty($data['data'])) {
+                echo '<div class="error-message">'. htmlspecialchars($data['message']) .'</div>';
+                return;
+            }
+            else {
+                echo '<div class="table-sections-container"><table class="table-section">';
+                echo $this->tableTemplate->returnHorizontalTitles([
+                    'Section Name', 'Action'
+                ], 'archive-sections-table-title');
+                echo '<tbody>';
+                foreach($data['data'] as $row)  {
+                    $sectionName =!empty($row['Section_Name']) ?$row['Section_Name'] : 'Section name not found';
+                    $actionButtons = new safeHTML('
+                        <button class="restore-section" data-section="'.$row['Section_Id'].'"> 
+                        <img src="../../assets/imgs/arrow-rotate-right-solid-full.svg" alt="Restore Section">
+                        </button>
+                        <button class="delete-section" data-section="'.$row['Section_Id'].'"> 
+                        <img src="../../assets/imgs/trash-solid.svg" alt="Delete Section Information">
+                        </button>
+                    ');
+                    echo $this->tableTemplate->returnHorizontalRows(
+                        [ $sectionName,$actionButtons],'sections-table-data');
+                }
+                echo '</tbody></table></div>';
+            }
+        }
+        catch(Throwable $t) {
+            error_log("[".date('Y-m-d H:i:s')."]" .$t."\n",3, __DIR__ . '/../../errorLogs.txt');
+            echo '<div class="error-message"> There was a syntax problem. Please wait while we look into it</div>';
         }
     }
 }

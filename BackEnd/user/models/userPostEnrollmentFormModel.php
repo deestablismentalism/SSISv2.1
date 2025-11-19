@@ -38,19 +38,19 @@ class userPostEnrollmentFormModel {
             throw new DatabaseException('Failed to insert educational background',328,$e);
         }
     }
-    private function educational_background(string $Last_School_Attended, int $School_Id, string $School_Address, string $School_Type, string $Initial_School_Choice, 
-        int $Initial_School_Id, string $Initial_School_Address) : int { //F 3.2.9
+    private function educational_background(string $Last_School_Attended, ?int $School_Id, string $School_Address, string $School_Type, string $Initial_School_Choice, 
+        ?int $Initial_School_Id, string $Initial_School_Address) : int { //F 3.2.9
         try {
             $sql = "INSERT INTO educational_background (Last_School_Attended, School_Id, School_Address, School_Type, Initial_School_Choice, 
                                 Initial_School_Id, Initial_School_Address)
                     VALUES (:Last_School_Attended, :School_Id, :School_Address, :School_Type, :Initial_School_Choice,:Initial_School_Id, :Initial_School_Address)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':Last_School_Attended', $Last_School_Attended);
-            $stmt->bindParam(':School_Id', $School_Id);
+            $stmt->bindValue(':School_Id', $School_Id, $School_Id === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
             $stmt->bindParam(':School_Address', $School_Address);
             $stmt->bindParam(':School_Type', $School_Type);
             $stmt->bindParam(':Initial_School_Choice', $Initial_School_Choice);
-            $stmt->bindParam(':Initial_School_Id', $Initial_School_Id);
+            $stmt->bindValue(':Initial_School_Id', $Initial_School_Id, $Initial_School_Id === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
             $stmt->bindParam(':Initial_School_Address', $Initial_School_Address);
             if (!$stmt->execute()) {
                 throw new PDOException('Failed to execute educational background insert');

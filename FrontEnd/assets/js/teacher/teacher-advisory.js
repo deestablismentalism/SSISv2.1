@@ -41,23 +41,100 @@ document.addEventListener('DOMContentLoaded', function() {
     if (studentsWrapper) {
         const table = studentsWrapper.querySelector('.students-list');
         if (table) {
-            // Create search input
-            const searchContainer = document.createElement('div');
-            searchContainer.style.cssText = 'margin-bottom: 1rem; position: relative;';
-            searchContainer.innerHTML = `
+            // Create search and sort controls container
+            const controlsContainer = document.createElement('div');
+            controlsContainer.style.cssText = 'margin-bottom: 1rem; display: flex; gap: 0.75rem; align-items: center;';
+            controlsContainer.innerHTML = `
                 <input type="text" id="student-search" placeholder="Search students by name..." 
-                    style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #3e9ec4; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color 0.3s;">
+                    style="flex: 1; padding: 0.75rem 1rem; border: 2px solid #3e9ec4; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color 0.3s;">
+                <button id="sort-students-btn" data-sort="asc" 
+                    style="padding: 0.75rem 1.5rem; background: #3e9ec4; color: white; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.3s; white-space: nowrap; display: flex; align-items: center; gap: 0.5rem;">
+                    <span>Sort A-Z</span>
+                    <span style="font-size: 1.1rem;">↓</span>
+                </button>
             `;
-            studentsWrapper.insertBefore(searchContainer, table);
+            studentsWrapper.insertBefore(controlsContainer, table);
             
             const searchInput = document.getElementById('student-search');
+            const sortButton = document.getElementById('sort-students-btn');
+            const tbody = table.querySelector('tbody');
             const rows = table.querySelectorAll('tbody tr');
             
+            // Sort functionality
+            sortButton.addEventListener('click', function() {
+                const currentSort = this.getAttribute('data-sort');
+                const newSort = currentSort === 'asc' ? 'desc' : 'asc';
+                
+                // Get all rows as array
+                const rowsArray = Array.from(tbody.querySelectorAll('tr'));
+                
+                // Sort rows by student name
+                rowsArray.sort((rowA, rowB) => {
+                    const nameA = rowA.querySelector('td:first-child')?.textContent.trim() || '';
+                    const nameB = rowB.querySelector('td:first-child')?.textContent.trim() || '';
+                    
+                    // Extract name without numbering (remove "1. ", "2. " etc.)
+                    const cleanNameA = nameA.replace(/^\d+\.\s*/, '').toLowerCase();
+                    const cleanNameB = nameB.replace(/^\d+\.\s*/, '').toLowerCase();
+                    
+                    if (newSort === 'asc') {
+                        return cleanNameA.localeCompare(cleanNameB);
+                    } else {
+                        return cleanNameB.localeCompare(cleanNameA);
+                    }
+                });
+                
+                // Re-append sorted rows and update numbering
+                rowsArray.forEach((row, index) => {
+                    tbody.appendChild(row);
+                    
+                    // Update numbering only in the span element
+                    const nameCell = row.querySelector('td:first-child');
+                    if (nameCell) {
+                        const numberSpan = nameCell.querySelector('span');
+                        if (numberSpan) {
+                            numberSpan.textContent = `${index + 1}. `;
+                        }
+                    }
+                });
+                
+                // Update button state
+                this.setAttribute('data-sort', newSort);
+                const buttonText = this.querySelector('span:first-child');
+                const buttonIcon = this.querySelector('span:last-child');
+                
+                if (newSort === 'asc') {
+                    buttonText.textContent = 'Sort A-Z';
+                    buttonIcon.textContent = '↓';
+                    this.style.background = '#3e9ec4';
+                } else {
+                    buttonText.textContent = 'Sort Z-A';
+                    buttonIcon.textContent = '↑';
+                    this.style.background = '#2d7a9a';
+                }
+            });
+            
+            // Hover effect for sort button
+            sortButton.addEventListener('mouseenter', function() {
+                this.style.background = '#2d7a9a';
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 4px 12px rgba(62, 158, 196, 0.3)';
+            });
+            
+            sortButton.addEventListener('mouseleave', function() {
+                const currentSort = this.getAttribute('data-sort');
+                this.style.background = currentSort === 'asc' ? '#3e9ec4' : '#2d7a9a';
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            });
+            
+            // Search functionality
             searchInput.addEventListener('input', function() {
                 const searchTerm = this.value.toLowerCase().trim();
                 let visibleCount = 0;
                 
-                rows.forEach(row => {
+                const allRows = tbody.querySelectorAll('tr');
+                allRows.forEach(row => {
                     const nameCell = row.querySelector('td:first-child');
                     if (nameCell) {
                         const name = nameCell.textContent.toLowerCase();

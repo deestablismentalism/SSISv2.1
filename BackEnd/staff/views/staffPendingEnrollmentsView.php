@@ -7,13 +7,15 @@ require_once __DIR__ . '/../../core/safeHTML.php';
 class staffPendingEnrollmentsView {
     protected $controller;
     private $tableTemplate;
+    private $staffId;
     public function __construct(){
         $this->controller = new staffEnrollmentController();
         $this->tableTemplate = new TableCreator();
+        $this->staffId = isset($_SESSION['Staff']['Staff-Id']) ? (int)$_SESSION['Staff']['Staff-Id']  : null;
     }
     public function displayPendingEnrollees():void {
         try {
-            $data = $this->controller->viewPendingEnrollees();
+            $data = $this->controller->viewPendingEnrollees($this->staffId);
             if(!$data['success']) {
                 echo '<div class="error-message">'.htmlspecialchars($data['message']).'</div>';
             }
@@ -60,6 +62,13 @@ class staffPendingEnrollmentsView {
                 }
                 echo '</tbody></table>';
             }
+        }
+        catch(IdNotFoundException $e) {
+            echo '<div class="error-message">'.htmlspecialchars($e->getMessage()).'</div>';
+        }
+        catch(Throwable $t) {
+            error_log("[".date('Y-m-d H:i:s')."] " . $t . "\n",3, __DIR__ . '/../../errorLogs.txt');
+            echo '<div class="error-message"> There was a syntax problem. Please wait while we look into it</div>';
         }
         catch(Exception $e) {
             echo '<div class="error-message">'.htmlspecialchars($e->getMessage()).'</div>';

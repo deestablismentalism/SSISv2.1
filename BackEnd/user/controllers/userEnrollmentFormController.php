@@ -16,7 +16,7 @@ class userEnrollmentFormController {
     }
     //API
     public function apiPostAddEnrollee(?int $uId,int $schoolYStart,int $schoolYEnd,int $hasLRN, int $enrollGLevel,?int $lastGLevel,?int $lastYAttended, 
-    string $lastSAttended,int $sId,string $sAddress,string $sType, string $initalSChoice, int $initialSId,string $initialSAddrress
+    string $lastSAttended,?int $sId,string $sAddress,string $sType, string $initalSChoice, ?int $initialSId,string $initialSAddrress
     ,int $hasSpecialCondition,int $hasAssistiveTech,?string $specialCondition,?string $assistiveTech,
     ?int $hNumber,?string $subdName,?string $bName,?string $bCode,?string $mName,?string $mCode,?string $pName,?string $pCode,?string $rName,?string $rCode,
     string $gFName,string $gLName,?string $gMName,string $gParentType,string $gEduAttainment,string $gCpNum, int $gIs4Ps,

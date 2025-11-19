@@ -126,7 +126,7 @@ ob_start();
                                <input type="text" name="lschool" id="admin-lschool" class="form-input">
                            </div>
                            <div class="form-group">
-                               <label>ID ng paaralan <span class="required">*</span></label>
+                               <label>ID ng paaralan</label>
                                <div class="error-msg"><span class="em-lschoolID"></span></div>
                                <input type="number" name="lschoolID" id="admin-lschoolID" class="form-input">
                            </div>
@@ -156,7 +156,7 @@ ob_start();
                                <input type="text" name="fschool" id="admin-fschool" class="form-input">
                            </div>
                            <div class="form-group">
-                               <label>ID ng paaralan <span class="required">*</span></label>
+                               <label>ID ng paaralan</label>
                                <div class="error-msg"><span class="em-fschoolID"></span></div>
                                <input type="number" name="fschoolID" id="admin-fschoolID" class="form-input">
                            </div>
@@ -173,12 +173,7 @@ ob_start();
                        <h3 class="section-title">IMPORMASYON NG ESTUDYANTE</h3>
                        <div class="form-row">
                            <div class="form-group">
-                               <label>PSA Birth Certificate Number <span class="required">*</span></label>
-                               <div class="error-msg"><span class="em-PSA-number"></span></div>
-                               <input type="number" name="PSA-number" id="admin-PSA-number" class="form-input">
-                           </div>
-                           <div class="form-group">
-                               <label>Learner's Reference Number (LRN) <span class="required">*</span></label>
+                               <label>Learner Reference Number (LRN) <span class="required">*</span></label>
                                <div class="error-msg"><span class="em-LRN"></span></div>
                                <input type="number" name="LRN" id="admin-LRN" class="form-input">
                            </div>
@@ -452,10 +447,6 @@ ob_start();
                                    <label for="admin-not-4ps">Hindi</label>
                                </div>
                            </div>
-                       </div>
-                       <div class="form-group">
-                           <label>PSA Birth Certificate Image <span class="required">*</span></label>
-                           <input type="file" name="psa-image" id="admin-psa-image" accept="image/*">
                        </div>
                    </div>
 

@@ -134,6 +134,38 @@ document.addEventListener('DOMContentLoaded',function() {
                 modal.style.display = 'none';
             }
         }
+        
+        // Archive button handler
+        if (e.target.classList.contains('archive-staff-btn') || e.target.closest('.archive-staff-btn')) {
+            const button = e.target.classList.contains('archive-staff-btn') ? e.target : e.target.closest('.archive-staff-btn');
+            const staffId = button.dataset.staffId;
+            
+            if (!staffId) return;
+            
+            if (confirm('Are you sure you want to archive this staff member?')) {
+                try {
+                    const result = await archiveStaff(staffId);
+                    
+                    Notification.show({
+                        type: result.success ? "success" : "error",
+                        title: result.success ? "Success" : "Error",
+                        message: result.message
+                    });
+                    
+                    if (result.success) {
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    }
+                } catch(err) {
+                    Notification.show({
+                        type: "error",
+                        title: "Error",
+                        message: `Error: ${err.message}`
+                    });
+                }
+            }
+        }
     });
 });
 
@@ -150,11 +182,11 @@ async function fetchRegisterTeacherForm() {
     return data;
 }
 
-async function fetchEditTeacherForm(staffId) {
-    const response = await fetch(`../../../BackEnd/templates/admin/fetchEditTeacherForm.php?staff_id=${staffId}`);
+async function fetchViewTeacherInfo(staffId) {
+    const response = await fetch(`../../../BackEnd/templates/admin/fetchViewTeacherInfoModal.php?staff_id=${staffId}`);
     
     if (!response.ok) {
-        throw new Error('Failed to load edit form');
+        throw new Error('Failed to load teacher information');
     }
     
     let data;
@@ -164,6 +196,56 @@ async function fetchEditTeacherForm(staffId) {
         throw new Error('Invalid response');
     }
     return data;
+}
+
+async function fetchEditTeacherForm(staffId) {
+    const response = await fetch(`../../../BackEnd/templates/admin/fetchEditTeacherForm.php?staff_id=${staffId}`);
+    
+    if (!response.ok) {
+        throw new Error('Failed to load edit teacher form');
+    }
+    
+    let data;
+    try {
+        data = await response.text();
+    } catch {
+        throw new Error('Invalid response');
+    }
+    return data;
+}
+
+async function archiveStaff(staffId) {
+    try {
+        const formData = new FormData();
+        formData.append('id', staffId);
+        
+        const response = await fetch(`../../../BackEnd/api/admin/postArchiveStaff.php`, {
+            method: 'POST',
+            body: formData
+        });
+
+        let data;
+        try {
+            data = await response.json();
+        } catch {
+            throw new Error('Invalid json response');
+        }
+        
+        if (!response.ok) {
+            return {
+                success: false,
+                message: data.message || `HTTP error: ${response.status}`,
+                data: null
+            };
+        }
+        return data;
+    } catch(error) {
+        return {
+            success: false,
+            message: error.message || `There was an unexpected error`,
+            data: null
+        };
+    }
 }
 
 async function postRegisterTeacher(formData) {
@@ -227,20 +309,4 @@ async function postEditTeacherInfo(formData) {
             data: null
         };
     }
-}
-
-async function fetchViewTeacherInfo(staffId) {
-    const response = await fetch(`../../../BackEnd/templates/admin/fetchViewTeacherInfoModal.php?staff_id=${staffId}`);
-    
-    if (!response.ok) {
-        throw new Error('Failed to load teacher information');
-    }
-    
-    let data;
-    try {
-        data = await response.text();
-    } catch {
-        throw new Error('Invalid response');
-    }
-    return data;
 }
