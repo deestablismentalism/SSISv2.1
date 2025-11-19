@@ -30,6 +30,7 @@
     max-width: 1400px;
     margin: 0 auto;
     font-family: var(--main-fonts);
+    background-image: url(../../imgs/paper.jpg);
 }
 
 .announcements-header {
@@ -54,24 +55,22 @@
 }
 
 .add-announcement-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--accent-color);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    padding: 0.6rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
     transition: all 0.3s ease;
-    box-shadow: 0 0 12px rgba(0, 188, 212, 0.4);
+    box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
+    display: flex;
 }
 
 .add-announcement-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 18px var(--hover-glow);
+  background: linear-gradient(135deg, var(--hover-accent), var(--accent-color));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
 }
 
 .loading-container {
@@ -331,16 +330,19 @@
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 2rem;
-    border-bottom: 3px solid var(--accent-color);
+    border-bottom: 3px solid var(--container-color);
+    background: none !important;
+    border-radius: 0px !important;
+    box-shadow: none !important;
 }
 
 .modal-header h2 {
     margin: 0;
-    color: white;
     font-size: 1.75rem;
     font-weight: 700;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     letter-spacing: 0.5px;
+    color: var(--hover-accent);
 }
 
 .close,

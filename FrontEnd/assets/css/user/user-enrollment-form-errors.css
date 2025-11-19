@@ -1,10 +1,101 @@
-/* ANTAS NG IMPORMASYON*/
-.error-msg{ 
+/* ERROR MESSAGE BUBBLE STYLES */
+.error-msg { 
+    position: relative;
     font-size: 0.8em;
     visibility: hidden;
-    min-height: 1.2em;
- }
- .error-msg.show {
+    opacity: 0;
+    min-height: 0;
+    transition: all 0.3s ease;
+}
+
+.error-msg.show {
     visibility: visible;
- }
+    opacity: 1;
+    min-height: auto;
+    margin-bottom: 8px;
+}
+
+.error-msg span {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+    color: #ffffff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9em;
+    box-shadow: 0 4px 12px rgba(255, 68, 68, 0.3);
+    position: relative;
+    animation: errorPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Error bubble arrow pointing down to input */
+.error-msg span::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 20px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #cc0000;
+}
+
+/* Pop animation */
+@keyframes errorPop {
+    0% {
+        transform: scale(0.8) translateY(-10px);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Shake animation for emphasis */
+.error-msg.show span {
+    animation: errorPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), errorShake 0.5s 0.4s ease;
+}
+
+@keyframes errorShake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+    20%, 40%, 60%, 80% { transform: translateX(3px); }
+}
+
+/* Pulse glow effect */
+.error-msg.show span {
+    animation: errorPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), 
+               errorGlow 2s infinite ease-in-out;
+}
+
+@keyframes errorGlow {
+    0%, 100% {
+        box-shadow: 0 4px 12px rgba(255, 68, 68, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(255, 68, 68, 0.5), 
+                    0 0 30px rgba(255, 68, 68, 0.2);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .error-msg span {
+        font-size: 0.85em;
+        padding: 6px 12px;
+    }
+    
+    .error-msg span::after {
+        left: 15px;
+        border-left-width: 6px;
+        border-right-width: 6px;
+        border-top-width: 6px;
+        bottom: -5px;
+    }
+}
 

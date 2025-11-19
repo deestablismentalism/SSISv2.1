@@ -1,8 +1,6 @@
 <div class="header-wrapper">
     <div class="header">
-        <p class="header-title">
-            Welcome to South II Student Information System
-        </p>
+        <img src="../../assets/imgs/ls2es.png" alt="LS2ES Logo" class="header-logo">
         <!-- end of header -->
         </div>
             <div class="account">

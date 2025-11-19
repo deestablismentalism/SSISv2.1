@@ -50,12 +50,15 @@ body {
   justify-content: center;
   gap: clamp(0.5rem, 2vw, 1rem);
   margin-bottom: 1rem;
+  width: 100%;
 }
 
 .ls2-logo img {
   width: clamp(60px, 15vw, 100px);
   height: auto;
   object-fit: contain;
+  margin: 0 auto;
+  display: block;
 }
 
 /* ===== School Header/Title - Mobile First ===== */

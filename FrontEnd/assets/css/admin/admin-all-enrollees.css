@@ -29,16 +29,11 @@ body {
   margin: 0;
   padding: 0;
 }
-
 .admin-all-enrollees-content {
-  padding: 2rem;
-  max-width: 1600px;
-  margin: 0 auto;
-  font-family: var(--font-main);
-  min-height: 100vh;
-  background-image: url("../../imgs/paper.jpg");
-  background-size: cover;
-  background-attachment: fixed;
+    padding: 2rem;
+    background-image: url(../../imgs/paper.jpg);
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 /* ===== Page Title ===== */
@@ -98,11 +93,6 @@ body {
   background: linear-gradient(90deg, var(--accent-color), #48cae4);
 }
 
-.admin-all-enrollees-header:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
-}
-
 .header-left {
   display: flex;
   align-items: center;
@@ -111,12 +101,73 @@ body {
   min-width: 250px;
 }
 
+/* ===== Filter Group Styles ===== */
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.filter-select {
+  padding: 0.7rem 2.5rem 0.7rem 1rem;
+  border: 2px solid var(--accent-color);
+  border-radius: 12px;
+  background: rgb(36 186 255 / 15%);
+  color: #1a1a1a;
+  font-family: var(--font-main);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231a1a1a' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 12px;
+  min-width: 160px;
+  box-shadow: 0 2px 8px rgba(0, 188, 212, 0.15);
+}
+
+.filter-select:hover {
+  background: #c7f6ff78;
+  border-color: var(--hover-accent);
+  box-shadow: 0 4px 12px rgba(0, 188, 212, 0.25);
+  transform: translateY(-1px);
+}
+
+.filter-select:focus {
+  background: #c7f6ff;
+  border-color: var(--hover-accent);
+  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2), 0 4px 12px rgba(0, 188, 212, 0.3);
+}
+
+.filter-select option {
+  background: white;
+  color: #1a1a1a;
+  padding: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.filter-select option:hover {
+  background: linear-gradient(135deg, rgba(0, 188, 212, 0.1), rgba(72, 202, 228, 0.1));
+}
+
+.filter-select option:checked {
+  background: linear-gradient(135deg, var(--accent-color), #48cae4);
+  color: white;
+  font-weight: 600;
+}
+
 .count-display {
   font-size: 1.4rem;
   font-weight: 600;
   letter-spacing: 0.5px;
   margin: 0;
-  color: #1a1a1a;
+  color: var(--main-color);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -139,29 +190,30 @@ body {
 }
 
 .search-box {
-  padding: 0.85rem 1.5rem;
-  border: 2px solid rgba(0, 188, 212, 0.3);
-  border-radius: 12px;
-  font-family: var(--font-main);
-  font-size: 1rem;
-  transition: var(--transition);
-  background: rgba(255, 255, 255, 0.9);
-  color: #1a1a1a;
-  font-weight: 500;
-  min-width: 350px;
-  outline: none;
+    width: 70%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 1rem;
+    font-size: 1rem;
+    background: rgb(36 186 255 / 15%);
+    transition: all 0.5s ease;
 }
 
-.search-box:focus {
-  border-color: var(--accent-color);
-  background: white;
-  box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.1);
-  transform: translateY(-2px);
+.search-box input {
+  color: black;
 }
 
 .search-box:hover {
-  border-color: #48cae4;
+    width: 70%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 1rem;
+    font-size: 1rem;
+    background: #c7f6ff78;
+    backdrop-filter: drop-shadow(8px 1px 1px var(--accent-color));
+    box-shadow: #00b4d8ba 0px 1px 3px;
 }
+
 
 .search-box::placeholder {
   color: rgba(0, 0, 0, 0.4);
@@ -192,7 +244,6 @@ body {
 }
 
 .all-enrollees-table:hover {
-  transform: translateY(-2px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
 }
 
@@ -402,7 +453,6 @@ body {
 }
 
 .modal-content {
-  background: rgb(36 186 255 / 95%);
   backdrop-filter: blur(12px);
   padding: 2rem;
   border-radius: 20px;
@@ -582,6 +632,17 @@ body {
     gap: 1.4rem;
   }
   
+  .filter-group {
+    gap: 1rem;
+  }
+  
+  .filter-select {
+    padding: 1rem 3rem 1rem 1.4rem;
+    font-size: 1.15rem;
+    min-width: 200px;
+    border-radius: 14px;
+  }
+  
   .count-display {
     font-size: 1.8rem;
     letter-spacing: 0.7px;
@@ -666,6 +727,17 @@ body {
   
   .header-left {
     gap: 1.2rem;
+  }
+  
+  .filter-group {
+    gap: 0.9rem;
+  }
+  
+  .filter-select {
+    padding: 0.9rem 2.8rem 0.9rem 1.3rem;
+    font-size: 1.05rem;
+    min-width: 180px;
+    border-radius: 13px;
   }
   
   .count-display {
@@ -759,6 +831,17 @@ body {
     gap: 0.9rem;
   }
   
+  .filter-group {
+    gap: 0.7rem;
+  }
+  
+  .filter-select {
+    padding: 0.65rem 2.3rem 0.65rem 1rem;
+    font-size: 0.9rem;
+    min-width: 140px;
+    border-radius: 10px;
+  }
+  
   .count-display {
     font-size: 1.25rem;
     letter-spacing: 0.4px;
@@ -847,6 +930,18 @@ body {
   .header-right {
     justify-content: space-between;
   }
+  
+  .filter-group {
+    gap: 0.6rem;
+    width: 100%;
+  }
+  
+  .filter-select {
+    padding: 0.6rem 2.2rem 0.6rem 0.9rem;
+    font-size: 0.85rem;
+    min-width: 130px;
+    flex: 1;
+  }
 
   .count-display {
     font-size: 1.15rem;
@@ -924,6 +1019,19 @@ body {
   .count-display {
     font-size: 1.05rem;
   }
+  
+  .filter-group {
+    gap: 0.5rem;
+    width: 100%;
+  }
+  
+  .filter-select {
+    padding: 0.55rem 2rem 0.55rem 0.8rem;
+    font-size: 0.8rem;
+    min-width: 120px;
+    flex: 1;
+    border-radius: 8px;
+  }
 
   .count-number {
     font-size: 1.2rem;
@@ -991,6 +1099,19 @@ body {
     align-items: flex-start;
     gap: 0.3rem;
   }
+  
+  .filter-group {
+    gap: 0.4rem;
+    width: 100%;
+    flex-direction: column;
+  }
+  
+  .filter-select {
+    padding: 0.5rem 1.8rem 0.5rem 0.7rem;
+    font-size: 0.75rem;
+    min-width: 100%;
+    border-radius: 8px;
+  }
 
   .count-number {
     font-size: 1.1rem;
@@ -1050,6 +1171,11 @@ body {
 
   .count-display {
     font-size: 0.9rem;
+  }
+  
+  .filter-select {
+    padding: 0.45rem 1.6rem 0.45rem 0.6rem;
+    font-size: 0.7rem;
   }
 
   .count-number {

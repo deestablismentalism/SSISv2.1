@@ -24,25 +24,27 @@
                 <nav>
                     <ul class="nav-1">
                         <li class="nav-item">
-                            <a href="./user_enrollees.php" class="nav-link">
+                            <a href="./user_enrollees.php" class="nav-link" data-translate="Home">
                                 Home
                             </a>
                         </li>
                         <li class="nav-item">
                             <?php if($isSet): ?>
-                            <a href="./user_enrollment_form.php" class="nav-link">
+                            <a href="./user_enrollment_form.php" class="nav-link" data-translate="Enrollment Form">
                                 Enrollment Form
                             </a>
                             <?php else: ?>
                             <a href="#" class="nav-link disabled" 
                                 style="pointer-events: none; color: gray; opacity: 0.6; cursor: not-allowed;"
+                                data-translate="Enrollment Form"
+                                data-translate-title="Enrollment is not available until an academic year is set."
                                 title="Enrollment is not available until an academic year is set.">
                                 Enrollment Form
                             </a>
                             <?php endif; ?>
                         </li>
                         <li class="nav-item">                                
-                            <a href="./user_all_students.php" class="nav-link">
+                            <a href="./user_all_students.php" class="nav-link" data-translate="Students List">
                                 Students List
                             </a>
                         </li>

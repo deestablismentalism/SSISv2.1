@@ -27,7 +27,7 @@ require_once __DIR__ . '/../../../BackEnd/common/UserTypeView.php';
         <div class="sidebar">
             <div class="sidebar-title-container">
                 <div class="sidebar-title">
-                    <span class="SSIS">SSIS</span>
+                    <img src="../../assets/imgs/ls2es.png" alt="LS2ES Logo" class="sidebar-logo">
                 </div>  
             </div>
             <div class="user-name">

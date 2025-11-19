@@ -88,7 +88,7 @@
             </div>
         </div>
         <div class="copyright">
-            © 2025 St. Lucena South II Elementary School. All Rights Reserved.
+            © 2025 Lucena South II Elementary School. All Rights Reserved.
         </div>
     </footer>
 </body>

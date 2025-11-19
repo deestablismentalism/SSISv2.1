@@ -5,6 +5,7 @@
 
 :root {
   --main-color: #05137e;
+  --hover-accent: #48cae4;
   --accent-color: #4f91ff;
   --background-glass: rgba(255, 255, 255, 0.1);
   --text-color: #ffffff;
@@ -127,13 +128,15 @@ body {
     height: 3rem;
     background: #ffb811;
     margin: -27px -27px 0px -31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
 }
 
-.sidebar-title .SSIS {
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: white;
-  letter-spacing: 2px;
+.sidebar-title .sidebar-logo {
+  height: 2.5rem;
+  width: auto;
 }
 
 .user-name {
@@ -155,18 +158,22 @@ body {
 }
 
 #back-button {
-  background: var(--accent-color);
-  border: none;
-  padding: 0.7rem 1.2rem;
-  border-radius: 10px;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.3s ease;
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, var(--title-main-color), var(--hover-accent));
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(62, 158, 196, 0.3);
 }
 
 #back-button:hover {
-  background: #2a68ff;
-  transform: scale(1.05);
+  background: linear-gradient(135deg, var(--hover-accent), var(--accent-color));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(62, 158, 196, 0.5);
 }
 
 /* === MAIN CONTENT === */

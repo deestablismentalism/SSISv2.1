@@ -13,9 +13,41 @@ document.addEventListener('DOMContentLoaded', function() {
     const removeImageBtn = document.getElementById('remove-image-btn');
     const removeImageFlag = document.getElementById('remove-image-flag');
     const modalTitle = document.getElementById('modal-title');
+    const announcementText = document.getElementById('announcement-text');
+    const wordCounter = document.getElementById('word-counter');
 
     let allAnnouncements = [];
     let isEditMode = false;
+    const MAX_WORDS = 20;
+
+    // Word counter and limiter
+    announcementText.addEventListener('input', function() {
+        const text = this.value.trim();
+        const words = text.length > 0 ? text.split(/\s+/).filter(word => word.length > 0) : [];
+        const wordCount = words.length;
+        
+        // Update counter
+        wordCounter.textContent = `${wordCount} / ${MAX_WORDS} words`;
+        
+        // Change color based on limit
+        if (wordCount > MAX_WORDS) {
+            wordCounter.style.color = '#d32f2f';
+            wordCounter.style.fontWeight = 'bold';
+        } else if (wordCount >= MAX_WORDS - 3) {
+            wordCounter.style.color = '#ff9800';
+            wordCounter.style.fontWeight = 'normal';
+        } else {
+            wordCounter.style.color = '#666';
+            wordCounter.style.fontWeight = 'normal';
+        }
+        
+        // Enforce limit by truncating
+        if (wordCount > MAX_WORDS) {
+            const limitedWords = words.slice(0, MAX_WORDS).join(' ');
+            this.value = limitedWords;
+            wordCounter.textContent = `${MAX_WORDS} / ${MAX_WORDS} words`;
+        }
+    });
 
     // Open modal for adding
     addBtn.addEventListener('click', () => {
@@ -25,6 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
         imagePreviewContainer.style.display = 'none';
         removeImageFlag.value = 'false';
         document.getElementById('announcement-id').value = '';
+        wordCounter.textContent = '0 / 20 words';
+        wordCounter.style.color = '#666';
         modal.style.display = 'block';
     });
 
@@ -235,6 +269,19 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('announcement-text').value = announcement.Text;
         document.getElementById('announcement-date').value = announcement.Date_Publication;
         removeImageFlag.value = 'false';
+        
+        // Update word counter for existing text
+        const text = announcement.Text.trim();
+        const words = text.length > 0 ? text.split(/\s+/).filter(word => word.length > 0) : [];
+        const wordCount = words.length;
+        wordCounter.textContent = `${wordCount} / ${MAX_WORDS} words`;
+        if (wordCount > MAX_WORDS) {
+            wordCounter.style.color = '#d32f2f';
+        } else if (wordCount >= MAX_WORDS - 3) {
+            wordCounter.style.color = '#ff9800';
+        } else {
+            wordCounter.style.color = '#666';
+        }
 
         if (announcement.Image_Path) {
             imagePreview.src = `../../../${announcement.Image_Path}`;
