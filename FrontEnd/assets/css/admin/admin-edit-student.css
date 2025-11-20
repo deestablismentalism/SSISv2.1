@@ -1,12 +1,44 @@
+:root {
+    --main-fonts:  "Poppins", "Segoe UI", sans-serif;
+    --title-fonts: "Barlow", sans-serif;
+    --button-fonts: 'Baloo-Thambi-2';
+    --link-fonts: 'Roboto', sans-serif;
+    --sidebar-width: 60px;
+    --sidebar-expanded-width: 280px; /* Changed from 20dvw to fixed pixels */
+    --title-font-size: 3em;
+    --main-color: #1c4a72;
+    --accent-color: #00bcd4;
+    --secondary-color: #F1BD22;
+    --wrapper-bg-color: #fffdfdf5;
+    --title-main-color: #3e9ec4;
+    --container-color: rgba(36, 186, 255, 0.28);
+    --button-color: ;
+    --button-hover-color: ;
+    --button-click: scale(.9);
+    --border-radius: 1rem;
+    --title-h1-font-size: 1.6rem;
+    --title-font-weight: 600;
+    --title-letter-spacing: 1px;
+    --card-border: rgba(255, 255, 255, 0.2);
+    --warning: #ffcc00;
+    --danger: #ff5f5f;
+    --success: #44d07b;
+    --hover-glow: rgba(255, 255, 255, 0.3);
+    --hover-accent: #48cae4;
+    --transition: all 0.3s ease;
+}
+
 .content {
     font-family: 'Barlow', sans-serif;
+    background-image: url("../../imgs/paper.jpg");
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .page-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
 }
 
 .title {
@@ -26,25 +58,39 @@
     font-weight: 700;
     letter-spacing: 1px;
     color: white;
-    width: 41.7em;
+    width: 43em;
 }
 
 .back-button {
-    padding: 0.5rem 1rem;
-    background-color: #f2f2f2;
-    color: #333;
-    text-decoration: none;
-    border-radius: 4px;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--font-main);
     font-size: 0.9rem;
-    transition: background-color 0.3s;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, var(--accent-color), #48cae4);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
 }
 
 .back-button:hover {
-    background-color: #e0e0e0;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 188, 212, 0.5);
+  background: linear-gradient(135deg, #48cae4, var(--accent-color));
 }
+
+.back-button:active {
+  transform: scale(0.95);
+}
+
 .back-button img {
     width: 1rem;
     height: 1rem;
+    color: white;
 }
 .alert {
     padding: 1rem;

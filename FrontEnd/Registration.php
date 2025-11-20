@@ -36,11 +36,11 @@ $currentLanguage = $_SESSION['preferred_language'] ?? $config->getDefaultLanguag
 
 <body>
     <!-- Language Switcher - Top Right -->
-    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
-      <div class="language-switcher-container">
-        <label for="language-switcher" class="language-switcher-label">
-          <img src="./assets/imgs/globe-icon.svg" alt="Language" class="language-icon" style="width: 20px; height: 20px;">
-        </label>
+    <div class="language-switcher-wrapper" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+      <button class="language-icon-button" id="language-toggle-btn" aria-label="Toggle Language Switcher">
+        <img src="./assets/imgs/globe-icon.svg" alt="Language" class="language-icon">
+      </button>
+      <div class="language-switcher-container" id="language-switcher-dropdown">
         <select id="language-switcher" class="language-switcher-select" aria-label="Select Language">
           <?php foreach ($supportedLanguages as $code => $name): ?>
             <option value="<?= htmlspecialchars($code) ?>" <?= $code === $currentLanguage ? 'selected' : '' ?>>

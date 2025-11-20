@@ -139,6 +139,22 @@ p {
 .sidebar a:hover {
     color: #E1A23C;
 }
+
+/* Active state for current page menu item */
+.sidebar .menu.active {
+    background: linear-gradient(90deg, rgba(62, 158, 196, 0.25), rgba(36, 186, 255, 0.15));
+    border-left: 4px solid #24baff;
+}
+
+.sidebar .menu.active a {
+    color: #24baff;
+    font-weight: 600;
+}
+
+.sidebar .menu.active img {
+    filter: brightness(0) saturate(100%) invert(65%) sepia(89%) saturate(1534%) hue-rotate(167deg) brightness(103%) contrast(101%);
+}
+
 .sidebar ul {
     list-style: none;
 }
@@ -316,6 +332,16 @@ p {
     max-height: 0;
     opacity: 0;
     pointer-events: none;
+}
+
+/* Active state in collapsed sidebar */
+.sidebar:not(.active) .menu.active {
+    background: linear-gradient(90deg, rgba(62, 158, 196, 0.3), rgba(36, 186, 255, 0.2));
+    border-left: 4px solid #24baff;
+}
+
+.sidebar:not(.active) .menu.active img {
+    filter: brightness(0) saturate(100%) invert(65%) sepia(89%) saturate(1534%) hue-rotate(167deg) brightness(103%) contrast(101%);
 }
 
 .sidebar:not(.active) .menu-btn {
@@ -1446,6 +1472,44 @@ p {
     .subjects-ul.show {
         padding: 0.85em 1.5em .35em 1.5em;
         font-size: 0.9rem;
+    }
+    
+    /* Active state for 1024-1440px */
+    .sidebar .menu.active {
+        border-left: 3px solid #24baff;
+    }
+}
+
+/* Tablet and Mobile - Active state adjustments */
+@media screen and (max-width: 1023px) {
+    .sidebar .menu.active {
+        border-left: 3px solid #24baff;
+        background: linear-gradient(90deg, rgba(62, 158, 196, 0.28), rgba(36, 186, 255, 0.18));
+    }
+    
+    .sidebar .menu.active a {
+        font-weight: 600;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .sidebar .menu.active {
+        border-left: 3px solid #24baff;
+    }
+    
+    .sidebar .menu {
+        padding: 1.2em 0.7em 0.7em 0.7em;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .sidebar .menu.active {
+        border-left: 2px solid #24baff;
+        background: linear-gradient(90deg, rgba(62, 158, 196, 0.3), rgba(36, 186, 255, 0.2));
+    }
+    
+    .sidebar .menu {
+        padding: 1em 0.6em 0.6em 0.6em;
     }
 }
 

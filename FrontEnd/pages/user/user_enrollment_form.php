@@ -568,18 +568,20 @@ $view = new getGradeLevels();
     </div>
     
     <!-- Language Switcher - Bottom Right -->
-    <div class="language-switcher-wrapper" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-      <button type="button" class="language-icon-button" id="language-toggle-btn" aria-label="Toggle Language Switcher">
-        <img src="../../assets/imgs/globe-icon.svg" alt="Language" class="language-icon">
-      </button>
-      <div class="language-switcher-container" id="language-switcher-dropdown">
-        <select id="language-switcher" class="language-switcher-select" aria-label="Select Language">
-          <?php foreach ($supportedLanguages as $code => $name): ?>
-            <option value="<?= htmlspecialchars($code) ?>" <?= $code === $currentLanguage ? 'selected' : '' ?>>
-              <?= htmlspecialchars($name) ?>
-            </option>
-          <?php endforeach; ?>
-        </select>
+    <div class="language-switcher-fixed-wrapper">
+      <div class="language-switcher-wrapper">
+        <button type="button" class="language-icon-button" id="language-toggle-btn" aria-label="Toggle Language Switcher">
+          <img src="../../assets/imgs/globe-icon.svg" alt="Language" class="language-icon">
+        </button>
+        <div class="language-switcher-container" id="language-switcher-dropdown">
+          <select id="language-switcher" class="language-switcher-select" aria-label="Select Language">
+            <?php foreach ($supportedLanguages as $code => $name): ?>
+              <option value="<?= htmlspecialchars($code) ?>" <?= $code === $currentLanguage ? 'selected' : '' ?>>
+                <?= htmlspecialchars($name) ?>
+              </option>
+            <?php endforeach; ?>
+          </select>
+        </div>
       </div>
     </div>
 </div>

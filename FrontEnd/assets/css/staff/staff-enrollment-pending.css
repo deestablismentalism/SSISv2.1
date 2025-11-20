@@ -276,19 +276,14 @@ letter-spacing: 1px;
 }
 
 .header-right input:hover {
-    border-color: #00bcd4;
+    border-color: var(--hover-accent);
     transition: ease-in-out 0.3s;
-    color: var(--hover);
+    color:var(--main-color);
     background: #dbf6ff66;
 }
 
 .header-right input::placeholder {
   color: rgba(255, 255, 255, 0.5);
-}
-
-.header-right input:focus {
-  border-color: var(--accent-color);
-  box-shadow: 0 0 10px rgba(79, 145, 255, 0.5);
 }
 
 /* === FILTER CONTAINER === */

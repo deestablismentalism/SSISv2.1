@@ -102,7 +102,7 @@ class OTPHandler extends Connect {
             }
             
             $fullName = trim($userData['First_Name'] . ' ' . ($userData['Middle_Name'] ?? '') . ' ' . $userData['Last_Name']);
-            $message = "Hello $fullName! Your OTP for password reset is: $otp. Valid for 5 minutes. Do not share this code with anyone.";
+            $message = "Hello $fullName! This message is from Lucena South II. Your OTP for password reset is: $otp. Valid for 5 minutes. Do not share this code with anyone.";
             
             $data = [
                 "message" => $message,

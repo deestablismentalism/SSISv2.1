@@ -13,12 +13,10 @@ ob_start();
             <div class="table-title-left">
                 <h2>Students</h2>
             </div>
-            <div>
+            <div class="table-title-right">                
                 <button class="add-student-btn" aria-label="Add new student">
                     <img src="../../assets/imgs/plus-solid.svg" alt="Add">
                 </button>
-            </div>
-            <div class="table-title-right">
                 <select id="filter-grade" class="filter-select" aria-label="Filter by grade">
                     <option value="">All Grades</option>
                 </select>

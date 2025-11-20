@@ -145,6 +145,39 @@ class TranslationHelper {
      */
     setupLanguageSwitcher() {
         const languageSwitcher = document.getElementById('language-switcher');
+        const toggleBtn = document.getElementById('language-toggle-btn');
+        const dropdown = document.getElementById('language-switcher-dropdown');
+        
+        // Setup toggle button functionality
+        if (toggleBtn && dropdown) {
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle('show');
+                toggleBtn.classList.toggle('active');
+                
+                // Haptic feedback
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(30);
+                }
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                    toggleBtn.classList.remove('active');
+                }
+            });
+            
+            // Close on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
+                    toggleBtn.classList.remove('active');
+                }
+            });
+        }
+        
         if (languageSwitcher) {
             console.log('Language switcher found, setting up event listener');
             
@@ -152,6 +185,14 @@ class TranslationHelper {
             languageSwitcher.addEventListener('change', (e) => {
                 console.log('Language changed via dropdown:', e.target.value);
                 this.setLanguage(e.target.value);
+                
+                // Close dropdown after selection
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                }
+                if (toggleBtn) {
+                    toggleBtn.classList.remove('active');
+                }
                 
                 // Provide haptic feedback on mobile
                 if ('vibrate' in navigator) {

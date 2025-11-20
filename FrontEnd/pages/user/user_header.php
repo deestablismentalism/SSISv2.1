@@ -58,7 +58,7 @@
         <div class="account-settings-wrapper">
             <?php
                 if (isset($_SESSION['User']) && isset($_SESSION['User']['First-Name']) && isset($_SESSION['User']['Last-Name']) && isset($_SESSION['User']['User-Type'])) {
-                    $name = $_SESSION['User']['First-Name'] . ", " . $_SESSION['User']['Last-Name'];
+                    $name = $_SESSION['User']['First-Name'];
                     
                     // Get profile picture path
                     $profilePicPath = null;

@@ -1,4 +1,11 @@
 /* Language Switcher Styles */
+.language-switcher-fixed-wrapper {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
 .language-switcher-wrapper {
     position: relative;
 }

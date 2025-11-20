@@ -25,7 +25,6 @@
     --success: #44d07b;
 }
 body {
-    display: flex;
     background-color: rgb(235, 231, 231);
 }
 .content {
