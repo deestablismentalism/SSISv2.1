@@ -7,10 +7,12 @@ class teacherStudentInformationView {
     protected $tableTemplate;
     protected $controller;
     protected $studentId;
+    protected $sectionId;
     public function __construct() {
         $this->controller = new teacherStudentInformationController();
         $this->tableTemplate = new TableCreator();
         $this->studentId = isset($_GET['student_id']) ? (int)$_GET['student_id'] : null;
+        $this->sectionId = isset($_GET['adv_id']) ? (int)$_GET['adv_id'] : null;
     }
     public function displayStudentInformation() {
         try {
@@ -28,10 +30,11 @@ class teacherStudentInformationView {
                 $lastName = $data['Last_Name'];
                 $hasMiddleInitial = !empty($data['Middle_Name']) ? $data['Middle_Name'] : '';
                 $hasSuffix = !empty($data['Suffix']) ? ', ' . $data['Suffix'] : '';
+                $lrn = !empty($data['LRN']) ? $data['LRN'] : 'No LRN yet';
                 $fullName = $lastName . ', ' . $firstName . ' ' . $hasMiddleInitial . $hasSuffix;
                 //echo associative table
                 echo $this->tableTemplate->returnVerticalTables(['Buong Pangalan','Petsa ng Kapanganakan','Edad','LRN','Kasarian','Baitang','Section'],
-                [$fullName,$data['Birthday'],$data['Age'],$data['LRN'],
+                [$fullName,$data['Birthday'],$data['Age'],$lrn,
                 $data['Sex'],$data['Grade_Level'], $data['Section_Name']
                 ], 'student-info-part');
 
@@ -48,8 +51,11 @@ class teacherStudentInformationView {
         try {
             if(is_null($this->studentId)) {
                 throw new IdNotFoundException('Student ID not recognized');
+            }
+            if(is_null($this->sectionId)) {
+                throw new IdNotFoundException('Section ID not recognized');
             } 
-            $grades = $this->controller->viewStudentGrades($this->studentId);
+            $grades = $this->controller->viewStudentGrades($this->studentId,$this->sectionId);
             if(!$grades['success']) {
                 echo '<div class="error-message">'.htmlspecialchars($studentInfo['message']).'</div>';
                 return;

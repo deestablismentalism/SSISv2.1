@@ -101,20 +101,58 @@ class studentClassModel {
             throw new DatabaseException('Failed to fetch student schedules',0,$e);
         }
     }
+    public function getStudentHistoricalGrades(int $studentId):array {
+        try {
+            $sql = "SELECT 
+                        sy.School_Year_Details_Id,
+                        sy.start_year,sy.end_year,
+                        ss.Section_Subjects_Id,
+                        su.Subject_Name,
+                        MAX(CASE WHEN sg.Quarter = 1 THEN sg.Grade_Value END) AS Q1,
+                        MAX(CASE WHEN sg.Quarter = 2 THEN sg.Grade_Value END) AS Q2,
+                        MAX(CASE WHEN sg.Quarter = 3 THEN sg.Grade_Value END) AS Q3,
+                        MAX(CASE WHEN sg.Quarter = 4 THEN sg.Grade_Value END) AS Q4
+                    FROM students st
+                    INNER JOIN section_subjects ss 
+                        ON ss.Section_Id = st.Section_Id
+                    INNER JOIN subjects su 
+                        ON su.Subject_Id = ss.Subject_Id
+                    LEFT JOIN student_grades sg 
+                        ON sg.Section_Subjects_Id = ss.Section_Subjects_Id
+                        AND sg.Student_Id = st.Student_Id
+                    INNER JOIN school_year_details sy ON sy.School_Year_Details_Id = sg.School_Year_Details_Id
+                    WHERE st.Student_Id = :studentId
+                    GROUP BY ss.Section_Subjects_Id, su.Subject_Name
+                    ORDER BY sy.start_year DESC";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':studentId'=>$studentId]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d')."]". $e->getMessage()."\n",3,__DIR__ . '/../../errorLogs.txt');
+            throw new DatabaseException('Failed to fetch student historical grades',0,$e);
+        }
+    }
     public function getStudentGrades(int $studentId):array {
         try {
             $sql = "SELECT 
-                    ss.Section_Subjects_Id,
-                    su.Subject_Name,
-                    MAX(CASE WHEN Quarter = 1 THEN Grade_Value END) AS Q1,
-                    MAX(CASE WHEN Quarter = 2 THEN Grade_Value END) AS Q2,
-                    MAX(CASE WHEN Quarter = 3 THEN Grade_Value END) AS Q3,
-                    MAX(CASE WHEN Quarter = 4 THEN Grade_Value END) AS Q4
-                    FROM student_grades AS sg
-                    INNER JOIN section_subjects AS ss ON ss.Section_Subjects_Id = sg.Section_Subjects_Id
-                    INNER JOIN subjects AS su ON su.Subject_Id = ss.Subject_Id
-                    WHERE sg.Student_Id = :studentId
-                    GROUP BY  su.Subject_Name,Section_Subjects_Id";
+                        ss.Section_Subjects_Id,
+                        su.Subject_Name,
+                        MAX(CASE WHEN sg.Quarter = 1 THEN sg.Grade_Value END) AS Q1,
+                        MAX(CASE WHEN sg.Quarter = 2 THEN sg.Grade_Value END) AS Q2,
+                        MAX(CASE WHEN sg.Quarter = 3 THEN sg.Grade_Value END) AS Q3,
+                        MAX(CASE WHEN sg.Quarter = 4 THEN sg.Grade_Value END) AS Q4
+                    FROM students st
+                    INNER JOIN section_subjects ss 
+                        ON ss.Section_Id = st.Section_Id
+                    INNER JOIN subjects su 
+                        ON su.Subject_Id = ss.Subject_Id
+                    LEFT JOIN student_grades sg 
+                        ON sg.Section_Subjects_Id = ss.Section_Subjects_Id
+                        AND sg.Student_Id = st.Student_Id
+                    WHERE st.Student_Id = :studentId
+                    GROUP BY ss.Section_Subjects_Id, su.Subject_Name";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([':studentId'=>$studentId]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

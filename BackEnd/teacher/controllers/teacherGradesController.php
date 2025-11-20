@@ -87,7 +87,7 @@ class teacherGradesController {
                     ];
                 }
                 
-                $this->gradesModel->saveOrUpdateGrade($studentId, $sectionSubjectId, $quarter, $gradeValue);
+                $this->gradesModel->upsertQueryStudentGrades($studentId, $sectionSubjectId, $quarter, $gradeValue);
             }
             
             $conn->commit();
