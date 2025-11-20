@@ -105,18 +105,13 @@ try {
                 <?php endif; ?>
                 
                 <?php 
-                $canResubmit = isset($transactionData['Can_Resubmit']) ? (int)$transactionData['Can_Resubmit'] : 0;
-                $needConsultation = isset($transactionData['Need_Consultation']) ? (int)$transactionData['Need_Consultation'] : 0;
+                // Check if already resubmitted (Transaction_Status = 3)
+                $transactionStatus = isset($transactionData['Transaction_Status']) ? (int)$transactionData['Transaction_Status'] : 0;
                 ?>
                 
-                <?php if ($canResubmit === 1): ?>
+                <?php if ($transactionStatus === 3): ?>
                     <div class="status-message info-message">
-                        <button class="edit-enrollment-form" data-id="<?php echo $enrolleeId; ?>" data-ajax="true">Edit Enrollment Form</button>
-                        <p class="resubmit-note">Note: You can only resubmit the form once</p>
-                    </div>
-                <?php elseif ($needConsultation === 1): ?>
-                    <div class="status-message info-message">
-                        <p>Your enrollment form is in need of further discussion. Please wait for the school to contact you.</p>
+                        <p>Your enrollment form has been resubmitted and is currently being reviewed. Please wait for the school to contact you.</p>
                     </div>
                 <?php else: ?>
                     <div class="status-message info-message">

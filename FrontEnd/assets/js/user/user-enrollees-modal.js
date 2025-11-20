@@ -1,5 +1,9 @@
 import {close,generateOptions, getRegions, getProvinces, getCities, getBarangays} from '../utils.js'
 
+// Report Card Validation State
+let reportCardValidationStatus = null;
+let isValidatingReportCard = false;
+
 // Global helper function for creating form fields
 function createFormField(label, data) {
     const fieldContainer = document.createElement('div');
@@ -7,50 +11,7 @@ function createFormField(label, data) {
     const labelElement = document.createElement('label');
     labelElement.textContent = label;
     let inputElement;
-    // Handle image type
-    if (data.type === 'image') {
-        const imageContainer = document.createElement('div');
-        imageContainer.className = 'image-container';
-        // Display current image if exists
-        if (data.value && data.value.path) {
-            const currentImage = document.createElement('img');
-            currentImage.src = data.value.path;
-            currentImage.alt = 'PSA Image';
-            currentImage.className = 'current-psa-image';
-            imageContainer.appendChild(currentImage);
-        }
-        // Add file input for new image
-        inputElement = document.createElement('input');
-        inputElement.type = 'file';
-        inputElement.accept = 'image/*';
-        inputElement.name = label.replace(/\s+/g, '_').toLowerCase();
-        inputElement.id = inputElement.name;
-        // Add preview functionality
-        inputElement.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    // Remove existing preview if any
-                    const existingPreview = imageContainer.querySelector('.image-preview');
-                    if (existingPreview) {
-                        existingPreview.remove();
-                    }
-                    // Create new preview
-                    const preview = document.createElement('img');
-                    preview.src = e.target.result;
-                    preview.alt = 'Image Preview';
-                    preview.className = 'image-preview';
-                    imageContainer.appendChild(preview);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-        imageContainer.appendChild(inputElement);
-        fieldContainer.appendChild(labelElement);
-        fieldContainer.appendChild(imageContainer);
-        return fieldContainer;
-    }
+    
     //Radio 
     if (data.type === 'radio') {
         const radioContainer = document.createElement('div');
@@ -59,14 +20,14 @@ function createFormField(label, data) {
         let options;
         if (label === 'School Type') {
             options = [
-                { label: 'Private', value: 'private' },
-                { label: 'Public', value: 'public' }
+                { label: 'Private', value: 'Private' },
+                { label: 'Public', value: 'Public' }
             ];
         } 
         else if (label === 'Sex') {
             options = [
-                { label: 'Male', value: 'male' },
-                { label: 'Female', value: 'female' }
+                { label: 'Male', value: 'Male' },
+                { label: 'Female', value: 'Female' }
             ];
         }
         else if (label.includes('4Ps Member')) {
@@ -312,7 +273,39 @@ function createFormField(label, data) {
                 inputElement.appendChild(option);
             });
         }
-    } else {
+    } 
+    // Handle report card file inputs
+    else if (label.includes('Report Card')) {
+        inputElement = document.createElement('input');
+        inputElement.type = 'file';
+        inputElement.accept = 'image/png, image/jpeg, image/jpg';
+        inputElement.name = label.replace(/\s+/g, '_').toLowerCase();
+        inputElement.id = inputElement.name;
+        inputElement.required = true;
+        
+        // Add file preview container
+        const previewContainer = document.createElement('div');
+        previewContainer.className = 'file-preview';
+        previewContainer.style.marginTop = '10px';
+        
+        inputElement.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewContainer.innerHTML = `<img src="${e.target.result}" style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; border-radius: 4px;">`;
+                };
+                reader.readAsDataURL(this.files[0]);
+                // Reset validation status when file changes
+                reportCardValidationStatus = null;
+            }
+        });
+        
+        fieldContainer.appendChild(labelElement);
+        fieldContainer.appendChild(inputElement);
+        fieldContainer.appendChild(previewContainer);
+        return fieldContainer;
+    }
+    else {
         inputElement = document.createElement('input');
         inputElement.type = data.type;
         inputElement.value = data.value;
@@ -405,6 +398,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 hiddenField.value = enrolleeId;
                 formFields.appendChild(hiddenField);
                 
+                // Check if Kinder 1 to determine if report card is needed
+                const isKinder1 = result.data['Enrolling Grade Level']?.value === '1';
+                
+                // Add report card upload section if not Kinder 1
+                if (!isKinder1) {
+                    const reportCardSection = document.createElement('div');
+                    reportCardSection.className = 'report-card-section';
+                    reportCardSection.style.borderTop = '2px solid #ddd';
+                    reportCardSection.style.marginTop = '20px';
+                    reportCardSection.style.paddingTop = '20px';
+                    
+                    const sectionTitle = document.createElement('h3');
+                    sectionTitle.textContent = 'Report Card Images (Required)';
+                    sectionTitle.style.marginBottom = '15px';
+                    reportCardSection.appendChild(sectionTitle);
+                    
+                    const note = document.createElement('p');
+                    note.style.color = '#666';
+                    note.style.fontSize = '14px';
+                    note.style.marginBottom = '15px';
+                    note.textContent = 'Please upload both front and back images of your report card. Images will be validated via OCR.';
+                    reportCardSection.appendChild(note);
+                    
+                    const frontField = createFormField('Report Card Front', { type: 'file', value: '' });
+                    const backField = createFormField('Report Card Back', { type: 'file', value: '' });
+                    
+                    reportCardSection.appendChild(frontField);
+                    reportCardSection.appendChild(backField);
+                    formFields.appendChild(reportCardSection);
+                }
+                
                 Object.entries(result.data).forEach(([key, value]) => {
                     if (key !== 'success') {
                         const fieldElement = createFormField(key, value);
@@ -454,334 +478,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    function createFormField(label, data) {
-        const fieldContainer = document.createElement('div');
-        fieldContainer.className = 'form-field';
-        const labelElement = document.createElement('label');
-        labelElement.textContent = label;
-        let inputElement;
-        // Handle image type
-        if (data.type === 'image') {
-            const imageContainer = document.createElement('div');
-            imageContainer.className = 'image-container';
-            // Display current image if exists
-            if (data.value && data.value.path) {
-                const currentImage = document.createElement('img');
-                currentImage.src = data.value.path;
-                currentImage.alt = 'PSA Image';
-                currentImage.className = 'current-psa-image';
-                imageContainer.appendChild(currentImage);
-            }
-            // Add file input for new image
-            inputElement = document.createElement('input');
-            inputElement.type = 'file';
-            inputElement.accept = 'image/*';
-            inputElement.name = label.replace(/\s+/g, '_').toLowerCase();
-            inputElement.id = inputElement.name;
-            // Add preview functionality
-            inputElement.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        // Remove existing preview if any
-                        const existingPreview = imageContainer.querySelector('.image-preview');
-                        if (existingPreview) {
-                            existingPreview.remove();
-                        }
-                        // Create new preview
-                        const preview = document.createElement('img');
-                        preview.src = e.target.result;
-                        preview.alt = 'Image Preview';
-                        preview.className = 'image-preview';
-                        imageContainer.appendChild(preview);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-            imageContainer.appendChild(inputElement);
-            fieldContainer.appendChild(labelElement);
-            fieldContainer.appendChild(imageContainer);
-            return fieldContainer;
-        }
-        //Radio 
-        if (data.type === 'radio') {
-            const radioContainer = document.createElement('div');
-            radioContainer.className = 'radio-group';
-            // Define radio options based on field name
-            let options;
-            if (label === 'School Type') {
-                options = [
-                    { label: 'Private', value: 'private' },
-                    { label: 'Public', value: 'public' }
-                ];
-            } 
-            else if (label === 'Sex') {
-                options = [
-                    { label: 'Male', value: 'male' },
-                    { label: 'Female', value: 'female' }
-                ];
-            }
-            else if (label.includes('4Ps Member')) {
-                options = [
-                    { label: 'Yes', value: '1' },
-                    { label: 'No', value: '0' }
-                ];
-            }
-            else {
-                options = [
-                    { label: 'Yes', value: '1' },
-                    { label: 'No', value: '0' }
-                ];
-            }
-            options.forEach(option => {
-                const radioWrapper = document.createElement('div');
-                inputElement = document.createElement('input');
-                inputElement.type = 'radio';
-                inputElement.name = label.replace(/\s+/g, '_').toLowerCase();
-                inputElement.value = option.value;
-                inputElement.id = `${inputElement.name}_${option.value}`;
-                inputElement.checked = String(data.value).toLowerCase() === String(option.value).toLowerCase();
-                
-                const radioLabel = document.createElement('label');
-                radioLabel.textContent = option.label;
-                radioLabel.htmlFor = inputElement.id;
-
-                radioWrapper.appendChild(inputElement);
-                radioWrapper.appendChild(radioLabel);
-                radioContainer.appendChild(radioWrapper);
-            });
-
-            fieldContainer.appendChild(labelElement);
-            fieldContainer.appendChild(radioContainer);
-            return fieldContainer;
-        }
-        //Select
-        if (data.type === 'select') {
-            inputElement = document.createElement('select');
-            inputElement.name = label.replace(/\s+/g, '_').toLowerCase();
-            inputElement.id = inputElement.name;
-            // Handle address fields
-            if (['Region', 'Province', 'City/Municipality', 'Barangay'].includes(label)) {
-                // Convert label to match expected IDs
-                const addressId = {
-                    'Region' : 'region',
-                    'Province' : 'province',
-                    'City/Municipality' : 'city-municipality',
-                    'Barangay' : 'barangay'
-                }[label]
-
-                inputElement.name = addressId;
-                inputElement.id = addressId;
-                // Add default option
-                const defaultOption = document.createElement('option');
-                defaultOption.value = "";
-                defaultOption.textContent = `Select ${label}`;
-                inputElement.appendChild(defaultOption);
-                // Add the current value as an option
-                if (data.value && data.code) {
-                    const currentOption = document.createElement('option');
-                    currentOption.value = data.code;
-                    currentOption.textContent = data.value;
-                    currentOption.selected = true;
-                    // Set the hidden name field with the current value
-                    const nameField = document.getElementById(`${addressId}-name`);
-                    if (nameField) nameField.value = data.value;
-                    inputElement.appendChild(currentOption);
-                }
-                // Add change event listeners for cascading dropdowns
-                if (addressId === 'region') {
-                    inputElement.addEventListener('change', async function() {
-                        //store the region value to the hidden field dynamically
-                        const regionCode = this.value;
-                        const selectedText = this.options[this.selectedIndex].text;
-                        document.getElementById(`${addressId}-name`).value = selectedText;
-                        // Reset region dependent dropdowns every change
-                        const provinceSelect = document.getElementById('province');
-                        const citySelect = document.getElementById('city-municipality');
-                        const barangaySelect = document.getElementById('barangay');   
-                        if(provinceSelect) provinceSelect.innerHTML = '<option value="">Select Province</option>';
-                        if(citySelect) citySelect.innerHTML = '<option value="">Select City/Municipality</option>';
-                        if(barangaySelect) barangaySelect.innerHTML = '<option value="">Select Barangay</option>';
-                        // Fetch provinces for selected region
-                        if (!regionCode) return;
-                            try {
-                                const provinces = await getProvinces(regionCode);
-                                const preSelectedProvince = provinceSelect.getAttribute('data-preselected');
-                                provinces.forEach(p=>{
-                                        const option = document.createElement('option');
-                                        option.value = p.code;
-                                        option.textContent = p.name;
-                                        // Check if this is the pre-selected province
-                                        if (preSelectedProvince === p.code) option.selected = true;
-                                        provinceSelect.appendChild(option);
-                                });
-                                if(provinceSelect) provinceSelect.dispatchEvent(new Event('change'));
-                            }   
-                            catch(error) {
-                                console.error(error.message);
-                            }
-                    });
-                } else if (addressId === 'province') {
-                    // Store the pre-selected value as a data attribute
-                    if (data.code) inputElement.setAttribute('data-preselected', data.code);
-                    inputElement.addEventListener('change', async function() {
-                        //Store province value in hidden field
-                        const provinceCode = this.value;
-                        const selectedText = this.options[this.selectedIndex].text;
-                        document.getElementById(`${addressId}-name`).value = selectedText;
-                        // Reset province dependent dropdowns every change
-                        const citySelect = document.getElementById('city-municipality');    
-                        const barangaySelect = document.getElementById('barangay');        
-                        if (citySelect) citySelect.innerHTML = '<option value="">Select City/Municipality</option>';
-                        if (barangaySelect) barangaySelect.innerHTML = '<option value="">Select Barangay</option>';
-                        // Fetch cities/municipalities for selected province
-                        if (!provinceCode) return;
-                            try {
-                                const cities = await getCities(provinceCode);
-                                const preSelectedCity = citySelect.getAttribute('data-preselected');
-                                cities.forEach(city=>{
-                                    const option = document.createElement('option');
-                                        option.value = city.code;
-                                        option.textContent = city.name;
-                                        // Initial select the pre selected value
-                                        if (preSelectedCity === city.code) option.selected = true;
-                                        citySelect.appendChild(option);
-                            });
-                            if(preSelectedCity) citySelect.dispatchEvent(new Event('change'));
-                        }
-                        catch(error) {
-                            console.error(error.message);
-                        }
-                    });
-                } else if (addressId === 'city-municipality') {
-                    // Store the pre-selected value as a data attribute
-                    if (data.code) inputElement.setAttribute('data-preselected', data.code);
-                    inputElement.addEventListener('change', async function() {
-                        const cityCode = this.value;
-                        const selectedText = this.options[this.selectedIndex].text;
-                        document.getElementById(`${addressId}-name`).value = selectedText;
-                        // Reset barangay dropdown
-                        const barangaySelect = document.getElementById('barangay');
-                        if (barangaySelect) barangaySelect.innerHTML = '<option value="">Select Barangay</option>';
-                        // Fetch barangays for selected city/municipality
-                        if (!cityCode) return; 
-                            try {
-                                const barangays = await getBarangays(cityCode);
-                                const preSelectedBarangay = barangaySelect.getAttribute('data-preselected') // get the pre-selected value
-                                barangays.forEach(barangay => {
-                                        const option = document.createElement('option');
-                                        option.value = barangay.code;
-                                        option.textContent = barangay.name;
-                                        // Check if this is the pre-selected barangay
-                                        if (preSelectedBarangay === barangay.code) option.selected = true;
-                                        barangaySelect.appendChild(option);
-                                    });
-                                if(preSelectedBarangay) barangaySelect.dispatchEvent(new Event('change'));
-                            }
-                            catch(error) {
-                                console.error(error.message);
-                            }
-                    });
-                } else if (addressId === 'barangay') {
-                    // Store the pre-selected value as a data attribute
-                    if (data.code) inputElement.setAttribute('data-preselected', data.code);
-                    inputElement.addEventListener('change', function() {
-                        const selectedText = this.options[this.selectedIndex].text;
-                        document.getElementById(`${addressId}-name`).value = selectedText;
-                    });
-                }
-                // Initial load of all regions
-                if (addressId === 'region') {
-                    (async()=> {
-                        try {
-                            const regions = await getRegions();
-                            regions.forEach(r=>{
-                                const option = document.createElement('option');
-                                option.value = r.code;
-                                option.textContent = r.name;
-                                // Check if this is the pre-selected region
-                                if (data.code === r.code) {
-                                    option.selected = true;
-                                }
-                                inputElement.appendChild(option);
-                            });
-                        }
-                        catch(error) {
-                            console.error(error.message);
-                        }
-                    })();
-                }
-                // If we have initial values, trigger the cascade
-                if (data.code) {
-                    if (addressId === 'region') {
-                        setTimeout(() => inputElement.dispatchEvent(new Event('change')), 500);
-                    } else if (addressId === 'province') {
-                        setTimeout(() => inputElement.dispatchEvent(new Event('change')), 1000);
-                    } else if (addressId === 'city-municipality') {
-                        setTimeout(() => inputElement.dispatchEvent(new Event('change')), 1500);
-                    }
-                }
-            }
-            // Handle educational attainment
-            else if (label.includes('Educational Attainment')) {
-                const educationOptions = [
-                    'Hindi Nakapag-aral',
-                    'Hindi Nakapag-aral pero marunong magbasa at magsulat',
-                    'Nakatuntong ng Elementarya',
-                    'Nakapagtapos ng Elementarya',
-                    'Nakatuntong ng Sekundarya',
-                    'Nakapagtapos ng Sekundarya',
-                    'Nakapag-aral Pagkatapos ng Sekundarya o ng Teknikal/Bokasyonal'
-                ];
-                inputElement.innerHTML = '<option value="">Select Educational Attainment</option>';
-                educationOptions.forEach(opt => {
-                    const option = document.createElement('option');
-                    option.value = opt;
-                    option.textContent = opt;
-                    option.selected = opt === data.value;
-                    inputElement.appendChild(option);
-                });
-            }
-            // Handle grade levels
-            else if (label.includes('Grade Level')) {
-                const gradeLevels = [
-                    {label:'Kinder I', value: '1'},
-                    {label:'Kinder II', value: '2'},
-                    {label:'Grade 1', value: '3'},
-                    {label:'Grade 2', value: '4'},
-                    {label:'Grade 3', value: '5'},
-                    {label:'Grade 4', value: '6'},
-                    {label:'Grade 5', value: '7'},
-                    {label:'Grade 6', value: '8'},
-
-                ];
-                inputElement.innerHTML = '<option value="">Select Grade Level</option>';
-                gradeLevels.forEach(grade => {
-                    const option = document.createElement('option');
-                    option.value = grade.value;
-                    option.textContent = grade.label;
-                    option.selected = grade.value == data.value;
-                    inputElement.appendChild(option);
-                });
-            }
-        } else {
-            inputElement = document.createElement('input');
-            inputElement.type = data.type;
-            inputElement.value = data.value;
-            inputElement.name = label.replace(/\s+/g, '_').toLowerCase();
-            inputElement.id = inputElement.name;
-        }
-        labelElement.htmlFor = inputElement.id;
-        fieldContainer.appendChild(labelElement);
-        if (data.type !== 'radio') {
-            fieldContainer.appendChild(inputElement);
-        }
-        return fieldContainer;
-    }
-    // Remove the old edit button handler from statusInfo
-    // The edit modal is now triggered from the first modal via openEditModal()
-    
     // Handle form submission
     // Make submitButton and isSubmitting available to submitFormData
     let submitButton = null;
@@ -789,55 +485,110 @@ document.addEventListener('DOMContentLoaded', function() {
     if (editForm) {
         submitButton = editForm.querySelector('button[type="submit"]');
 
-        editForm.addEventListener('submit', function(e) {
+        editForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             if (submitButton) submitButton.disabled = true;
             if (isSubmitting) return;
             isSubmitting = true;
-            // Create FormData object
-            const formData = new FormData();
-            // Add basic form fields
-            const formElements = formFields.querySelectorAll('input:not([type="file"]), select');
-            formElements.forEach(element => {
-                if (element.type === 'radio') {
-                    if (element.checked) {
+            
+            try {
+                // Get enrollee ID to check grade level
+                const enrolleeId = document.querySelector('input[name="enrolleeId"]').value;
+                const enrollingGradeLevel = document.getElementById('enrolling_grade_level')?.value;
+                const isKinder1 = enrollingGradeLevel === '1';
+                
+                // Check for report card files if not Kinder 1
+                const reportCardFront = document.getElementById('report_card_front');
+                const reportCardBack = document.getElementById('report_card_back');
+                
+                if (!isKinder1 && reportCardFront && reportCardBack) {
+                    if (!reportCardFront.files[0] || !reportCardBack.files[0]) {
+                        Notification.show({
+                            type: 'error',
+                            title: 'Missing Report Card',
+                            message: 'Please upload both front and back images of your report card'
+                        });
+                        if (submitButton) submitButton.disabled = false;
+                        isSubmitting = false;
+                        return;
+                    }
+                    
+                    // Validate report card via OCR
+                    Notification.show({
+                        type: 'success',
+                        title: 'Validating',
+                        message: 'Validating report card images... Please wait.'
+                    });
+                    
+                    const validation = await validateReportCard(reportCardFront.files[0], reportCardBack.files[0], enrolleeId);
+                    
+                    if (!validation.success) {
+                        Notification.show({
+                            type: 'error',
+                            title: 'Validation Failed',
+                            message: validation.message || 'Report card validation failed. Please check your images.'
+                        });
+                        if (submitButton) submitButton.disabled = false;
+                        isSubmitting = false;
+                        return;
+                    }
+                    
+                    if (validation.status === 'rejected') {
+                        Notification.show({
+                            type: 'error',
+                            title: 'Report Card Rejected',
+                            message: validation.flagReason || 'Your report card images were rejected. Please upload valid images.'
+                        });
+                        if (submitButton) submitButton.disabled = false;
+                        isSubmitting = false;
+                        return;
+                    }
+                }
+                
+                // Create FormData object
+                const formData = new FormData();
+                
+                // Add basic form fields
+                const formElements = formFields.querySelectorAll('input:not([type="file"]), select');
+                formElements.forEach(element => {
+                    if (element.type === 'radio') {
+                        if (element.checked) {
+                            formData.append(element.name, element.value);
+                        }
+                    } else {
                         formData.append(element.name, element.value);
                     }
-                } else {
-                    formData.append(element.name, element.value);
+                });
+                
+                // Add hidden address name fields
+                const hiddenAddressFields = document.querySelectorAll('input[type="hidden"][name$="_name"]');
+                hiddenAddressFields.forEach(field => {
+                    formData.append(field.name, field.value);
+                });
+                
+                // Add report card files if present
+                if (reportCardFront?.files[0]) {
+                    formData.append('report_card_front', reportCardFront.files[0]);
                 }
-            });
-            // Add hidden address name fields
-            const hiddenAddressFields = document.querySelectorAll('input[type="hidden"][name$="_name"]');
-            hiddenAddressFields.forEach(field => {
-                formData.append(field.name, field.value);
-            });
-            // Handle file upload
-            const fileInput = formFields.querySelector('input[type="file"]');
-            if (fileInput && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    // Remove the data URL prefix
-                    const base64String = e.target.result.split(',')[1];
-                    // Create the final data object
-                    const finalData = {
-                        ...Object.fromEntries(formData),
-                        psa_image: base64String
-                    };
-                    // Send data to server
-                    submitFormData(finalData);
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                // If no new image, submit without image data
-                const finalData = Object.fromEntries(formData);
-                submitFormData(finalData);
+                if (reportCardBack?.files[0]) {
+                    formData.append('report_card_back', reportCardBack.files[0]);
+                }
+                
+                await submitFormData(formData);
+            } catch (error) {
+                Notification.show({
+                    type: 'error',
+                    title: 'Error',
+                    message: error.message || 'An unexpected error occurred'
+                });
+                if (submitButton) submitButton.disabled = false;
+                isSubmitting = false;
             }
         });
     }
     async function submitFormData(formData) {
         // Debug: Log the form data being sent
-        console.log('Form data being sent:', formData);
+        console.log('Form data being sent:', formData instanceof FormData ? 'FormData with files' : formData);
         try {
             const result = await postUpdateUserForm(formData);
             if (result.success) {
@@ -871,11 +622,20 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 async function postUpdateUserForm(formData) {
     try {
-        const response = await fetch(`../../../BackEnd/api/user/postUpdateUserForm.php`,{
+        // Determine if formData contains files
+        const hasFiles = formData instanceof FormData;
+        
+        const fetchOptions = {
             method: 'POST',
-            headers: {'Content-Type' :'application/json'},
-            body: JSON.stringify(formData)
-        });
+            body: hasFiles ? formData : JSON.stringify(formData)
+        };
+        
+        // Only set Content-Type for JSON, let browser set it for FormData
+        if (!hasFiles) {
+            fetchOptions.headers = {'Content-Type': 'application/json'};
+        }
+        
+        const response = await fetch(`../../../BackEnd/api/user/postUpdateUserForm.php`, fetchOptions);
         let data;
         try {
             data = await response.json();
@@ -939,5 +699,54 @@ async function fetchFormValues(enrolleeId) {
             message: error.message || `There was an unexpected error`,
             data: null
         };
+    }
+}
+
+/**
+ * Validate report card images via OCR
+ */
+async function validateReportCard(frontFile, backFile, enrolleeId) {
+    if (isValidatingReportCard) {
+        return {
+            success: false,
+            status: 'validating',
+            message: 'Validation already in progress'
+        };
+    }
+    
+    isValidatingReportCard = true;
+    
+    try {
+        const validationData = new FormData();
+        validationData.append('enrollee_id', enrolleeId);
+        validationData.append('report-card-front', frontFile);
+        validationData.append('report-card-back', backFile);
+        
+        const response = await fetch('../../../BackEnd/api/user/validateReportCardEdit.php', {
+            method: 'POST',
+            body: validationData
+        });
+        
+        const result = await response.json();
+        reportCardValidationStatus = result.data?.status || null;
+        
+        return {
+            success: result.success,
+            status: result.data?.status || 'unknown',
+            message: result.message || 'Validation complete',
+            data: result.data || {},
+            flagReason: result.data?.flag_reason || null
+        };
+    }
+    catch (error) {
+        console.error('Report card validation error:', error);
+        return {
+            success: false,
+            status: 'error',
+            message: 'Network error during validation'
+        };
+    }
+    finally {
+        isValidatingReportCard = false;
     }
 }

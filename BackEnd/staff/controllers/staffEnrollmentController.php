@@ -180,6 +180,7 @@ class staffEnrollmentController {
         }
     }
     private function processResubmissionRequest(int $enrolleeId, string $transactionCode, int $staffId, string $remarks): array {
+        $conn = null;
         try {
             $conn = (new Connect())->getConnection();
             $conn->beginTransaction();
@@ -194,13 +195,17 @@ class staffEnrollmentController {
                 ];
             }
             // 2. Insert transaction with Transaction_Status=1 (allow resubmit), Is_Approved=0
-            if(!$this->transactionsModel->insertEnrolleeTransactionWithStatus($enrolleeId, $transactionCode, 3, $staffId, $remarks, self::BOOL_FALSE, 1)) {
+            if(!$this->transactionsModel->insertEnrolleeTransactionWithStatus($conn, $enrolleeId, $transactionCode, 3, $staffId, $remarks, self::BOOL_FALSE, 1)) {
+                $conn->rollBack();
                 return [
                     'httpcode'=> 500,
                     'success'=> false,
                     'message'=> 'Failed to create resubmission transaction'
                 ];
             }
+
+            $conn->commit();
+            
             // 3. Send SMS notification
             $smsResult = $this->sendResubmissionRequestSMS($enrolleeId, $remarks);
             return [
@@ -211,6 +216,9 @@ class staffEnrollmentController {
             ];
         }
         catch(Exception $e) {
+            if($conn) {
+                $conn->rollBack();
+            }
             error_log("[".date('Y-m-d H:i:s')."] Resubmission Error: ".$e->getMessage()."\n", 3, __DIR__ . '/../../errorLogs.txt');
             throw $e;
         }

@@ -1,11 +1,13 @@
 <?php 
 ob_start();
 require_once __DIR__ . '/../session_init.php';
-$pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-enrollees.css">
+$pageCss = '<link rel="stylesheet" href="../../assets/css/notifications.css">
+<link rel="stylesheet" href="../../assets/css/user/user-enrollees.css">
 <link rel="stylesheet" href="../../assets/css/user/user-enrollees-modal.css">
 <link rel="stylesheet" href="../../assets/css/user/user-enrollment-status.css">
 <link rel="stylesheet" href="../../assets/css/user/user-announcements.css">';
-$pageJs = '<script src="../../assets/js/user/user-enrollees-modal.js" type="module" defer></script>
+$pageJs = '<script src="../../assets/js/notifications.js" defer></script>
+<script src="../../assets/js/user/user-enrollees-modal.js" type="module" defer></script>
 <script src="../../assets/js/announcements.js" defer></script>';
 $pageTitle = 'My Enrollees';
 require_once __DIR__ . '/../../../BackEnd/user/views/userEnrolleesView.php';

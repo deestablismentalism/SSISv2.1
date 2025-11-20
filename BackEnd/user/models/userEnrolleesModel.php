@@ -68,7 +68,7 @@ class userEnrolleesModel {
                 FROM enrollee AS e
                 INNER JOIN educational_information AS ei ON  e.Educational_Information_Id = ei.Educational_Information_Id
                 INNER JOIN grade_level AS egl ON egl.Grade_Level_Id = ei.Enrolling_Grade_Level
-                INNER JOIN grade_level AS lgl ON lgl.Grade_Level_Id = ei.Last_Grade_Level 
+                LEFT JOIN grade_level AS lgl ON lgl.Grade_Level_Id = ei.Last_Grade_Level 
                 INNER JOIN educational_background AS eb ON e.Educational_Background_Id = eb.Educational_Background_Id
                 INNER JOIN enrollee_address AS ea ON e.Enrollee_Address_Id = ea.Enrollee_Address_Id
                 INNER JOIN disabled_student AS ds ON e.Disabled_Student_Id = ds.Disabled_Student_Id
@@ -78,6 +78,11 @@ class userEnrolleesModel {
             $stmt->bindValue(':id', $enrolleeId,PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Return empty array if no enrollee found
+            if(!$result) {
+                return [];
+            }
 
             $parents = $this->getParentInformation($enrolleeId);
             if(!empty($parents)) {
@@ -283,6 +288,32 @@ class userEnrolleesModel {
             throw new DatabaseException('Failed to fetch enrollee transaction',3114,$e);  
         }
     }
+    public function canResubmit(int $enrolleeId) : bool { //F 3.1.16
+        try {
+            $sql = "SELECT et.Transaction_Status, e.Enrollment_Status 
+                    FROM enrollment_transactions et
+                    INNER JOIN enrollee e ON et.Enrollee_Id = e.Enrollee_Id
+                    WHERE et.Enrollee_Id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $enrolleeId, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if(!$result) {
+                return false;
+            }
+            
+            // Allow resubmission if Enrollment_Status = 4 (Follow-up)
+            // Removed Transaction_Status check to allow multiple resubmissions
+            $enrollmentStatus = (int)$result['Enrollment_Status'];
+            
+            return $enrollmentStatus === 4;
+        }
+        catch(PDOException $e) {
+            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
+            throw new DatabaseException('Failed to check resubmission status',3116,$e);
+        }
+    }
     public function getPSAImageData($enrolleeId) : ?array { //F 3.1.15
         try {
             $sql = "SELECT pd.filename, pd.directory 
@@ -306,7 +337,9 @@ class userEnrolleesModel {
         $result = true;
         try {
             // Update transaction status to 3 (Resubmitted)
-            $sql = "UPDATE enrollment_transactions SET Transaction_Status = 3 WHERE Enrollee_ID = :enrolleeId";
+            $sql = "UPDATE enrollment_transactions 
+                    SET Transaction_Status = 3
+                    WHERE Enrollee_ID = :enrolleeId";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(':enrolleeId', $enrolleeId, PDO::PARAM_INT);
             if(!$stmt->execute()) {
@@ -331,6 +364,9 @@ class userEnrolleesModel {
     private function updateEducationalInformation(int $enrolleeId, array $data) : bool { //F 3.2.2
         $result = true;
         try {
+            // Convert empty last_grade_level to NULL for Kinder 1 students
+            $lastGradeLevel = !empty($data['last_grade_level']) ? $data['last_grade_level'] : null;
+            
             $sql = "UPDATE educational_information ei 
                 JOIN enrollee e ON e.Educational_Information_ID = ei.Educational_Information_ID
                 SET 
@@ -341,7 +377,7 @@ class userEnrolleesModel {
             $stmt = $this->conn->prepare($sql);
             if(!$stmt->execute([
                 ':enrollingGrade' => $data['enrolling_grade_level'],
-                ':lastGrade' => $data['last_grade_level'],
+                ':lastGrade' => $lastGradeLevel,
                 ':lastYear' => $data['last_year_attended'],
                 ':enrolleeId' => $enrolleeId
             ])) {
@@ -488,28 +524,8 @@ class userEnrolleesModel {
         }
     }
     private function updatePsaDirectory(int $enrolleeId, array $data) : bool { //F 3.2.7
-        $result = true;
-        if(!isset($data['psa_image']) || empty($data['psa_image']['filename'])) {
-            return $result;
-        }
-        try {
-            $sql = "UPDATE Psa_directory AS pd 
-            INNER JOIN enrollee AS e ON e.Psa_Image_Id = pd.Psa_Image_Id
-            SET  pd.filename = :filename, pd.directory = :directory WHERE e.Enrollee_Id = :enrolleeId";
-            $stmt = $this->conn->prepare($sql);
-            if(!$stmt->execute([
-                ':enrolleeId'=> $enrolleeId,
-                ':filename' => $data['psa_image']['filename'],
-                ':directory' => $data['psa_image']['filepath']
-            ])) {
-                $result = false;
-            }
-            return $result;
-        }
-        catch(PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__ . '/../../../errorLogs.txt');
-            throw new DatabaseException('Failed to update psa directory',327,$e);
-        }
+        // PSA is no longer used - keeping for backwards compatibility but does nothing
+        return true;
     }
     //OPERATIONS
     public function updateEnrollee(int $enrolleeId, int $status) : bool { //F 3.3.1
@@ -558,8 +574,10 @@ class userEnrolleesModel {
             $isSuccessEducationalBackground = $this->updateEducationalBackground($enrolleeId, $data);
             $isSuccessDisabledStudent = $this->updateDisabledEnrolleeInfo($enrolleeId, $data);
             $isSuccessEnrolleeAddress = $this->updateEnrolleeAddress($enrolleeId, $data);
-            $isSuccessPsaDirectory = $this->updatePsaDirectory($enrolleeId, $data);
-            //loop through each parent type
+            
+            // PSA directory update removed - not used anymore
+            
+            //loop through each parent type - only Guardian now
             foreach($data['parent_information'] as $relationship => $parents) {
                 if(empty(array_filter($parents))) continue;
                 if(!$this->updateParentInformation($enrolleeId, $parents, $relationship)) {
@@ -568,7 +586,7 @@ class userEnrolleesModel {
                 }
             }
            if (!$isSuccessEducationalInformation || !$isSuccessEducationalBackground ||
-            !$isSuccessDisabledStudent || !$isSuccessEnrolleeAddress || !$isSuccessPsaDirectory) {
+            !$isSuccessDisabledStudent || !$isSuccessEnrolleeAddress) {
                 $this->conn->rollBack();
                 return false;
             }
@@ -578,7 +596,6 @@ class userEnrolleesModel {
                 Student_Middle_Name = :middleName,
                 Student_Extension = :extension,
                 Learner_Reference_Number = :lrn,
-                Psa_Number = :psa,
                 Age = :age,
                 Birth_Date = :birthdate,
                 Sex = :sex,
@@ -595,7 +612,6 @@ class userEnrolleesModel {
                 ':middleName' => $data['middle_name'],
                 ':extension' => $data['extension'],
                 ':lrn' => $data['lrn'],
-                ':psa' => $data['psa'],
                 ':age' => $data['age'],
                 ':birthdate' => $data['birthdate'],
                 ':sex' => $data['sex'],

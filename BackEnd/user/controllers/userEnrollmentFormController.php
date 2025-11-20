@@ -232,7 +232,7 @@ class userEnrollmentFormController {
             ];
         }
     }
-    public function apiUpdateEnrolleeInfo(int $userId, ?array $formData) : array { //F 3.5.2
+    public function apiUpdateEnrolleeInfo(int $userId, ?array $formData, array $files = []) : array { //F 3.5.2
         try {
             $enrolleeId = !empty($formData['enrolleeId']) ? (int) $formData['enrolleeId'] : null;
             if(is_null($formData['enrolleeId'])) {
@@ -243,16 +243,29 @@ class userEnrollmentFormController {
                     'data'=> []
                 ];
             }
+            
+            // Check if resubmission is allowed
+            $canResubmit = $this->enrolleesModel->canResubmit($enrolleeId);
+            if(!$canResubmit) {
+                return [
+                    'httpcode'=> 403,
+                    'success'=> false,
+                    'message'=> 'Resubmission is not allowed. Your enrollment status must be marked for follow-up by the school.',
+                    'data'=> []
+                ];
+            }
+            
             if(empty($formData)) {
                 return [
                     'httpcode'=> 500,
                     'success'=> false,
-                    'message'=> 'The form recieved is empty',
+                    'message'=> 'The form received is empty',
                     'data'=> []
                 ];
             }
             $allData = $this->associateFormData($formData);
             if(empty($allData)) {
+                error_log("[" . date('Y-m-d H:i:s') . "] Form data processing failed. FormData: " . json_encode($formData) . "\n", 3, __DIR__ . '/../../errorLogs.txt');
                 return [
                     'httpcode'=> 500,
                     'success'=> false,
@@ -268,30 +281,22 @@ class userEnrollmentFormController {
                 }
             }
             if(!empty($missingFields)) {
+                error_log("[" . date('Y-m-d H:i:s') . "] Missing fields: " . implode(', ', $missingFields) . "\n", 3, __DIR__ . '/../../errorLogs.txt');
                 return [
                     'httpcode'=> 409,
                     'success'=> false,
-                    'message'=> 'Required fields are misssing',
+                    'message'=> 'Required fields are missing: ' . implode(', ', $missingFields),
                     'data'=> []
                 ];
             }
-            $isMatchingLrn = $this->postFormModel->checkLRN($allData['lrn'],$enrolleeId);
-            $psaImage = $formData['psa_image'] ?? null;
-            $psaData = $this->updateImage($userId, $enrolleeId, $psaImage);
-            if(!$psaData['success']) {
-                return [
-                    'httpcode'=> 500,
-                    'success'=> false,
-                    'message'=> $psaData['message']. 'is this directory modifiable: ' .$psaData['isWritable'],
-                    'data'=> []
-                ];
-            }
-            if($psaData['isUpload'] ?? true) {
-                $allData['psa_image'] = [
-                    'filename'=> $psaData['filename'],
-                    'filepath'=> $psaData['filepath']
-                ];   
-            }
+            // Check LRN is unique
+            // $isMatchingLrn = $this->postFormModel->checkLRN($allData['lrn'],$enrolleeId);
+            
+            // Handle report card file uploads if present
+            // Note: Report card validation should have already occurred via validateReportCardEdit.php
+            // The validated report cards are already stored in report_card_submissions table
+            // We don't need to update enrollee table as report cards are tracked separately
+            
             $insertData = $this->enrolleesModel->updateEnrolleeInformation($enrolleeId, $allData);
             if(!$insertData) {
                 return [
@@ -301,11 +306,22 @@ class userEnrollmentFormController {
                     'data'=> []
                 ];
             }
+            
+            // Set resubmission status - marks Can_Resubmit as 0 and changes status to Pending
             $setTransactionStatus = $this->enrolleesModel->setResubmitStatus($enrolleeId);
+            if(!$setTransactionStatus) {
+                return [
+                    'httpcode'=> 500,
+                    'success'=> false,
+                    'message'=> 'Failed to update transaction status',
+                    'data'=> []
+                ];
+            }
+            
             return [
                 'httpcode'=> 201,
                 'success'=> true,
-                'message'=> 'Successfully updated enrollee information',
+                'message'=> 'Successfully updated enrollee information. Your enrollment will be reviewed again.',
                 'data'=> $insertData
             ];
         }
