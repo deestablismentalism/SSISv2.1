@@ -111,7 +111,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
 // Function to view student details
 async function viewStudentDetails(studentId) {
     try {
@@ -145,41 +144,49 @@ async function viewStudentDetails(studentId) {
     }
 }
 function createModal(data, studentId) {
-    // Create main modal wrapper
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.style.display = 'flex';
-    
-    // Create modal content
+
+    // Create overlay container
+    const modalContainer = document.createElement('div');
+    modalContainer.className = 'modal';
+    modalContainer.style.display = 'flex';
+
+    // Create modal content box
     const modalContent = document.createElement('div');
     modalContent.className = 'modal-content';
-    
-    // Create modal header
+
+    // Header bar
     const modalHeader = document.createElement('div');
     modalHeader.className = 'modal-header';
-    
+
     const headerTitle = document.createElement('h2');
     headerTitle.textContent = 'Student Information';
-    
+
     const closeBtn = document.createElement('span');
     closeBtn.className = 'close';
     closeBtn.innerHTML = '&times;';
-    closeBtn.onclick = function() {
-        document.body.removeChild(modal);
+    closeBtn.onclick = () => {
+        document.body.removeChild(modalContainer);
     };
-    //CREATE HYPERLINK TO PDF GENERATED
-    const pdfButton  =  document.createElement('a');
-    pdfButton.href = `./student_pdf_info.php?student-id=${encodeURIComponent(studentId)}`;
-    pdfButton.target = '_blank';
-    pdfButton.rel = 'noopener noreferrer';
-    pdfButton.textContent = 'Generate PDF';
-    //APPEND TO MODAL CONTENTS
-    modalContent.appendChild(closeBtn);
-    modalContent.insertAdjacentHTML('beforeend', data);
-    modalContent.appendChild(pdfButton);
-    //APPEND TO MODAL AND APPEND TO BODY
+    // Append header items
+    modalHeader.appendChild(headerTitle);
+    modalHeader.appendChild(closeBtn);
+    // Insert the HTML data (student info from PHP)
+    const contentWrapper = document.createElement('div');
+    contentWrapper.className = 'modal-body';
+    contentWrapper.innerHTML = data;
+
+    // Assemble modal
+    modalContent.appendChild(modalHeader);
+    modalContent.appendChild(contentWrapper);
     modalContainer.appendChild(modalContent);
     document.body.appendChild(modalContainer);
+
+    // Closing when clicking backdrop
+    window.onclick = function(event) {
+        if (event.target === modalContainer) {
+            document.body.removeChild(modalContainer);
+        }
+    };
 }
 // Function to create and display the student details modal
 function createStudentDetailsModal(student) {

@@ -108,10 +108,11 @@ class adminEnrolleeInfo {
             $rows = $data['data']; 
             $acadYear = $rows['School_Year_Start'] . '-' . $rows['School_Year_End'];
             $lastGradeLevel = !is_null($rows['L_Grade_Level']) ? $rows['L_Grade_Level'] : 'No Last Grade Level';
+            $lastYearAttended = !empty($rows['Last_Year_Attended']) ? $rows['Last_Year_Attended'] : '--';
             echo '<table class="modal-table"></tbody>';
             echo $this->tableTemplate->returnVerticalTables(
                 ['taong panuruan','Baitang na nais ipatala','Huling baitang na natapos','Huling natapos na taon'],
-                [$acadYear,$rows['E_Grade_Level'],$lastGradeLevel,$rows['Last_Year_Attended']],
+                [$acadYear,$rows['E_Grade_Level'],$lastGradeLevel, $lastYearAttended],
                 'educational-info'
             );   
             echo '</tbody></table>';     

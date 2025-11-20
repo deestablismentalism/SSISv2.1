@@ -43,7 +43,7 @@ class userStudentsModel {
     public function reEnrollStudent(int $studentId, int $status):bool {
         try {
             $gLevel = $this->getThisStudentGradeLevel($studentId);
-            if(is_null($gLevel)) {
+            if(empty($gLevel)) {
                 throw new DatabaseException("Cannot update. Grade level not found");
             }
             $gLevel++;
