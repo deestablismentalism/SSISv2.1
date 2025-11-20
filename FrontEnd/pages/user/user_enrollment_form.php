@@ -517,11 +517,14 @@ $view = new getGradeLevels();
                     </div>
                 </div>
                 <div class="image-confirm">
-                    <p class="dfont">Ipasa ang malinaw na larawan ng <b>REPORT CARD <span class="required">*</span></b></p>
-                    <label for="report-card-front" style="display: block; margin-bottom: 8px;">Front Side <span class="required">*</span></label>
-                    <input type="file" id="report-card-front" name="report-card-front" accept="image/jpeg,image/jpg,image/png" required style="margin-bottom: 15px;"> 
-                    <label for="report-card-back" style="display: block; margin-bottom: 8px;">Back Side <span class="required">*</span></label>
-                    <input type="file" id="report-card-back" name="report-card-back" accept="image/jpeg,image/jpg,image/png" required> 
+                    <p class="dfont" id="report-card-label">Ipasa ang malinaw na larawan ng <b>REPORT CARD <span class="required" id="report-card-required">*</span></b></p>
+                    <p class="dfont" id="kinder1-exemption-message" style="display: none; color: #2196F3; font-weight: bold;">Kinder 1 students are not required to submit report cards.</p>
+                    <div id="report-card-inputs">
+                        <label for="report-card-front" style="display: block; margin-bottom: 8px;">Front Side <span class="required">*</span></label>
+                        <input type="file" id="report-card-front" name="report-card-front" accept="image/jpeg,image/jpg,image/png" required style="margin-bottom: 15px;"> 
+                        <label for="report-card-back" style="display: block; margin-bottom: 8px;">Back Side <span class="required">*</span></label>
+                        <input type="file" id="report-card-back" name="report-card-back" accept="image/jpeg,image/jpg,image/png" required>
+                    </div>
                 </div>
                 <?php if($set->isSet()): ?>
                     <button type="submit" class="submit-button" >Submit</button>

@@ -22,10 +22,25 @@ try {
     // Get student info for validation
     $studentName = $_POST['student_name'] ?? '';
     $studentLrn = $_POST['student_lrn'] ?? '';
+    $enrollingGradeLevel = isset($_POST['enrolling_grade_level']) ? (int)$_POST['enrolling_grade_level'] : null;
     
     // Get report card files
     $reportCardFront = $_FILES['report-card-front'] ?? null;
     $reportCardBack = $_FILES['report-card-back'] ?? null;
+    
+    // Check if Kinder 1 (grade level 1) - skip validation
+    if ($enrollingGradeLevel === 1) {
+        http_response_code(200);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Kinder 1 students are exempt from report card validation',
+            'data' => [
+                'status' => 'approved',
+                'exemption_reason' => 'Kinder 1 - No report card required'
+            ]
+        ]);
+        exit();
+    }
     
     if (empty($studentName)) {
         throw new Exception('Student name is required');

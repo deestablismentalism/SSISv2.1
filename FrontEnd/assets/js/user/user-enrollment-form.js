@@ -283,6 +283,35 @@ document.addEventListener('DOMContentLoaded',function(){
             }
         }
     }
+    function toggleReportCardRequirement() {
+        const selectedIndex = enrollingGradeLevel.selectedIndex;
+        const isKinder1 = selectedIndex === 1;
+        const reportCardInputsDiv = document.getElementById('report-card-inputs');
+        const kinder1ExemptionMsg = document.getElementById('kinder1-exemption-message');
+        const reportCardRequired = document.getElementById('report-card-required');
+        
+        if (isKinder1) {
+            // Hide report card inputs
+            if (reportCardInputsDiv) reportCardInputsDiv.style.display = 'none';
+            // Show exemption message
+            if (kinder1ExemptionMsg) kinder1ExemptionMsg.style.display = 'block';
+            // Hide required asterisk
+            if (reportCardRequired) reportCardRequired.style.display = 'none';
+            // Remove required attribute from file inputs
+            if (reportCardFront) reportCardFront.removeAttribute('required');
+            if (reportCardBack) reportCardBack.removeAttribute('required');
+        } else {
+            // Show report card inputs
+            if (reportCardInputsDiv) reportCardInputsDiv.style.display = 'block';
+            // Hide exemption message
+            if (kinder1ExemptionMsg) kinder1ExemptionMsg.style.display = 'none';
+            // Show required asterisk
+            if (reportCardRequired) reportCardRequired.style.display = 'inline';
+            // Add required attribute to file inputs
+            if (reportCardFront) reportCardFront.setAttribute('required', 'required');
+            if (reportCardBack) reportCardBack.setAttribute('required', 'required');
+        }
+    }
     function validateEnrollingLevel() { //OK
         const enrollingLevelSelected = enrollingGradeLevel.selectedIndex
         if( enrollingLevelSelected === 0) {
@@ -1071,6 +1100,7 @@ document.addEventListener('DOMContentLoaded',function(){
         if(!lastGradeLevel.disabled) syncSelects(this,lastGradeLevel);
         validateEnrollingLevel();
         validateEnrollingAndLastGradeLevel();
+        toggleReportCardRequirement();
     });
     lastGradeLevel.addEventListener('change', function() {
         if(this.disabled) return;
@@ -1329,6 +1359,7 @@ document.addEventListener('DOMContentLoaded',function(){
             const validationData = new FormData();
             validationData.append('student_name', `${fname.value} ${mname.value ? mname.value + ' ' : ''}${lname.value}`);
             validationData.append('student_lrn', lrn.value || '000000000000');
+            validationData.append('enrolling_grade_level', enrollingGradeLevel.value);
             validationData.append('report-card-front', reportCardFront.files[0]);
             validationData.append('report-card-back', reportCardBack.files[0]);
             
@@ -1449,51 +1480,59 @@ document.addEventListener('DOMContentLoaded',function(){
             return;
         }
         
-        // VALIDATE REPORT CARD WITH NOTIFICATION MODAL
-        errorMessage.style.display = 'block';
-        errorMessage.style.backgroundColor = '#2196F3';
-        errorMessage.innerHTML = 'Validating report card... Please wait.';
+        // CHECK IF KINDER 1 - SKIP REPORT CARD VALIDATION
+        const isKinder1 = enrollingGradeLevel.selectedIndex === 1;
         
-        const reportCardValidation = await validateReportCard();
-        errorMessage.style.display = 'none';
-        
-        // Show notification modal based on validation result
-        if (reportCardValidation.status === 'rejected') {
-            Notification.show({
-                type: 'error',
-                title: 'Report Card Rejected',
-                message: reportCardValidation.flagReason || reportCardValidation.message || 'Your report card images were rejected. Please re-upload valid images and try again.'
-            });
-            isSubmittingForm = false;
-            return;
-        }
-        
-        if (!reportCardValidation.success) {
-            Notification.show({
-                type: 'error',
-                title: 'Validation Failed',
-                message: reportCardValidation.message || 'Failed to validate report card. Please check your images and try again.'
-            });
-            isSubmittingForm = false;
-            return;
-        }
-        
-        if (reportCardValidation.status === 'flagged_for_review') {
-            Notification.show({
-                type: 'success',
-                title: 'Report Card Accepted',
-                message: 'Your report card has been accepted and will be manually reviewed. Submitting enrollment form...'
-            });
+        if (!isKinder1) {
+            // VALIDATE REPORT CARD WITH NOTIFICATION MODAL
+            errorMessage.style.display = 'block';
+            errorMessage.style.backgroundColor = '#2196F3';
+            errorMessage.innerHTML = 'Validating report card... Please wait.';
+            
+            const reportCardValidation = await validateReportCard();
+            errorMessage.style.display = 'none';
+            
+            // Show notification modal based on validation result
+            if (reportCardValidation.status === 'rejected') {
+                Notification.show({
+                    type: 'error',
+                    title: 'Report Card Rejected',
+                    message: reportCardValidation.flagReason || reportCardValidation.message || 'Your report card images were rejected. Please re-upload valid images and try again.'
+                });
+                isSubmittingForm = false;
+                return;
+            }
+            
+            if (!reportCardValidation.success) {
+                Notification.show({
+                    type: 'error',
+                    title: 'Validation Failed',
+                    message: reportCardValidation.message || 'Failed to validate report card. Please check your images and try again.'
+                });
+                isSubmittingForm = false;
+                return;
+            }
+            
+            if (reportCardValidation.status === 'flagged_for_review') {
+                Notification.show({
+                    type: 'success',
+                    title: 'Report Card Accepted',
+                    message: 'Your report card has been accepted and will be manually reviewed. Submitting enrollment form...'
+                });
+            } else {
+                Notification.show({
+                    type: 'success',
+                    title: 'Report Card Verified',
+                    message: 'Your report card has been verified successfully. Submitting enrollment form...'
+                });
+            }
+            
+            // Wait briefly for user to see notification before proceeding
+            await new Promise(resolve => setTimeout(resolve, 2000));
         } else {
-            Notification.show({
-                type: 'success',
-                title: 'Report Card Verified',
-                message: 'Your report card has been verified successfully. Submitting enrollment form...'
-            });
+            // Kinder 1 - Skip report card validation
+            console.log('Kinder 1 detected - skipping report card validation');
         }
-        
-        // Wait briefly for user to see notification before proceeding
-        await new Promise(resolve => setTimeout(resolve, 2000));
         
         // Process address values
         try {
