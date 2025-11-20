@@ -290,13 +290,6 @@ $view = new getGradeLevels();
                 </div>
                 <!--ROW 1-->
                 <div class="student-info-row-1">
-                    <div class="PSA-number">
-                        <div class="error-msg">
-                            <span class="em-PSA-number"></span>
-                        </div>
-                        <p class="dfont"><span data-translate="Numero na nakalagay sa Sertipiko ng Kapanganakan (Birth Certificate) mula sa PSA (kung may dala na kopya)">PSA Birth Certificate Number (if available)</span> <span class="required">*</span></p>
-                        <input type="number" name="PSA-number" id="PSA-number" class="textbox">
-                    </div>
                     <div class="LRN">
                         <div class="error-msg">
                             <span class="em-LRN"></span>
@@ -560,11 +553,14 @@ $view = new getGradeLevels();
                     </div>
                 </div>
                 <div class="image-confirm">
-                    <p class="dfont" data-translate="Ipasa ang malinaw na larawan ng REPORT CARD">Upload clear image of <b>REPORT CARD <span class="required">*</span></b></p>
-                    <label for="report-card-front" style="display: block; margin-bottom: 8px;" data-translate="Front Side">Front Side <span class="required">*</span></label>
-                    <input type="file" id="report-card-front" name="report-card-front" accept="image/jpeg,image/jpg,image/png" required style="margin-bottom: 15px;"> 
-                    <label for="report-card-back" style="display: block; margin-bottom: 8px;" data-translate="Back Side">Back Side <span class="required">*</span></label>
-                    <input type="file" id="report-card-back" name="report-card-back" accept="image/jpeg,image/jpg,image/png" required> 
+                    <p class="dfont" id="report-card-label">Ipasa ang malinaw na larawan ng <b>REPORT CARD <span class="required" id="report-card-required">*</span></b></p>
+                    <p class="dfont" id="kinder1-exemption-message" style="display: none; color: #2196F3; font-weight: bold;">Kinder 1 students are not required to submit report cards.</p>
+                    <div id="report-card-inputs">
+                        <label for="report-card-front" style="display: block; margin-bottom: 8px;">Front Side <span class="required">*</span></label>
+                        <input type="file" id="report-card-front" name="report-card-front" accept="image/jpeg,image/jpg,image/png" required style="margin-bottom: 15px;"> 
+                        <label for="report-card-back" style="display: block; margin-bottom: 8px;">Back Side <span class="required">*</span></label>
+                        <input type="file" id="report-card-back" name="report-card-back" accept="image/jpeg,image/jpg,image/png" required>
+                    </div>
                 </div>
                 <?php if($set->isSet()): ?>
                     <button type="submit" class="submit-button" data-translate="Isumite">Submit</button>

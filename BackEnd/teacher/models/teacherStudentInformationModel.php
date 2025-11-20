@@ -24,7 +24,7 @@ class teacherStudentInformationModel {
             throw new DatabaseException('Failed to fetch student information',0,$e);
         }
     }
-    public function getStudentgrades(int $studentId):array {
+    public function getStudentgrades(int $studentId,int $sectionId):array {
         try {
             $sql = "SELECT s.Subject_Name, 
                 MAX(CASE WHEN sg.Quarter = 1 THEN sg.Grade_Value END) AS 1st,
@@ -33,11 +33,12 @@ class teacherStudentInformationModel {
                 MAX(CASE WHEN sg.Quarter = 4 THEN sg.Grade_Value END) AS 4th
                 FROM section_subjects AS ss
                 INNER JOIN subjects AS s ON s.Subject_Id = ss.Subject_Id
-                LEFT JOIN student_grades AS sg ON sg.Section_Subjects_Id = ss.Section_Subjects_Id AND sg.Student_Id = :studentId 
-                GROUP BY s.Subject_Name
+                LEFT JOIN student_grades AS sg ON sg.Section_Subjects_Id = ss.Section_Subjects_Id AND sg.Student_Id = :studentId
+                WHERE ss.Section_Id = :sectionId 
+                GROUP BY ss.Section_Subjects_Id,s.Subject_Name
                 ORDER BY s.Subject_Name";
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute([':studentId'=> $studentId]);
+            $stmt->execute([':studentId'=> $studentId,':sectionId'=>$sectionId]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }

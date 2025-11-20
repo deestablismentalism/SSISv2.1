@@ -22,22 +22,14 @@ if (file_exists($vendorPath) && file_exists($translationConfigPath)) {
     $translationEnabled = true;
 }
 
-$pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-enrollees.css">
+$pageCss = '<link rel="stylesheet" href="../../assets/css/notifications.css">
+<link rel="stylesheet" href="../../assets/css/user/user-enrollees.css">
 <link rel="stylesheet" href="../../assets/css/user/user-enrollees-modal.css">
 <link rel="stylesheet" href="../../assets/css/user/user-enrollment-status.css">
-<link rel="stylesheet" href="../../assets/css/user/user-announcements.css">
-<link rel="stylesheet" href="../../assets/css/language-switcher.css">
-<style>
-    .language-switcher-fixed-wrapper {
-        z-index: 1001 !important;
-    }
-    .language-switcher-container {
-        z-index: 1002 !important;
-    }
-</style>';
-$pageJs = '<script src="../../assets/js/user/user-enrollees-modal.js" type="module"></script>
-<script src="../../assets/js/announcements.js"></script>
-<script src="../../assets/js/translation.js"></script>';
+<link rel="stylesheet" href="../../assets/css/user/user-announcements.css">';
+$pageJs = '<script src="../../assets/js/notifications.js" defer></script>
+<script src="../../assets/js/user/user-enrollees-modal.js" type="module" defer></script>
+<script src="../../assets/js/announcements.js" defer></script>';
 $pageTitle = 'My Enrollees';
 require_once __DIR__ . '/../../../BackEnd/user/views/userEnrolleesView.php';
 $enrollee = new displayEnrollmentForms();

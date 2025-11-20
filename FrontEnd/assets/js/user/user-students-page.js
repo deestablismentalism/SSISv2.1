@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded',function(){
     async function loadContent(value) {
         dynamicContent.innerHTML = loadingText;
         switch(value) {
-            case "schedules":
-                endpoint = '../../../BackEnd/templates/student/fetchedClassSchedule.php';
+            case "historical-grades":
+                endpoint = '../../../BackEnd/templates/student/fetchedHistoricalGrades.php';
                 break;
             case "section": 
                 endpoint = '../../../BackEnd/templates/student/fetchedClassSectionDetails.php';
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded',function(){
                 endpoint = '../../../BackEnd/templates/student/fetchedStudentGrades.php';
                 break;
             default:
-                endpoint = '../../../BackEnd/templates/student/fetchedClassSchedule.php';
+                endpoint = '../../../BackEnd/templates/student/fetchedHistoricalGrades.php';
                 break;
         }
         const finalURL = `${endpoint}?student-id=${parseInt(studentId)}`;
@@ -30,7 +30,20 @@ document.addEventListener('DOMContentLoaded',function(){
         }
         else {
             dynamicContent.innerHTML = result.data;
+            if(value="historical-grades") {
+                loadScript("../../assets/js/student/student-historical-grades.js");
+            }
         }
+    }
+    //DYNAMIC JAVASCRIPT LOADER FOR HISTORICAL GRADES
+    function loadScript(src) {
+        // Avoid loading the same script multiple times
+        if(document.querySelector(`script[src="${src}"]`)) return;
+
+        const script = document.createElement('script');
+        script.src = src;
+        script.defer = true;
+        document.body.appendChild(script);
     }
     const currentChecked = document.querySelector('input[name="student-content"]:checked');
     loadContent(currentChecked);

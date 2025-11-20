@@ -87,9 +87,10 @@ class teacherSectionAdvisersModel {
     }
     public function getSectionMaleStudents(int $sectionId): array {
         try {
-            $sql = "SELECT s.Section_Id, st.Section_Id, e.Student_First_Name, e.Student_Middle_Name, e.Student_Last_Name FROM sections AS s 
+            $sql = "SELECT s.Section_Id, st.Section_Id, st.First_Name, st.Middle_Name, st.Last_Name FROM sections AS s 
                     LEFT JOIN students AS st ON s.Section_Id = st.Section_Id 
-                    LEFT JOIN enrollee AS e ON st.Enrollee_Id = e.Enrollee_Id WHERE st.Section_Id = :sectionId AND st.Sex = 'Male'";
+                    LEFT JOIN enrollee AS e ON st.Enrollee_Id = e.Enrollee_Id WHERE st.Section_Id = :sectionId 
+                    AND st.Sex = 'Male' ORDER BY st.Last_Name ASC, st.First_Name ASC, st.Middle_Name ASC";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':sectionId', $sectionId, PDO::PARAM_INT);
             $stmt->execute();
@@ -101,12 +102,12 @@ class teacherSectionAdvisersModel {
             throw new DatabaseException('Failed to fetch male students', 0, $e);
         }
     }
-    
     public function getSectionFemaleStudents(int $sectionId): array {
         try {
-            $sql = "SELECT s.Section_Id, st.Section_Id, e.Student_First_Name, e.Student_Middle_Name, e.Student_Last_Name FROM sections AS s 
+            $sql = "SELECT s.Section_Id, st.Section_Id, st.First_Name, st.Middle_Name, st.Last_Name FROM sections AS s 
                     LEFT JOIN students AS st ON s.Section_Id = st.Section_Id 
-                    LEFT JOIN enrollee AS e ON st.Enrollee_Id = e.Enrollee_Id WHERE st.Section_Id = :sectionId AND st.Sex = 'Female'";
+                    LEFT JOIN enrollee AS e ON st.Enrollee_Id = e.Enrollee_Id WHERE st.Section_Id = :sectionId 
+                    AND st.Sex = 'Female' ORDER BY st.Last_Name ASC, st.First_Name ASC, st.Middle_Name ASC ";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':sectionId', $sectionId, PDO::PARAM_INT);
             $stmt->execute();

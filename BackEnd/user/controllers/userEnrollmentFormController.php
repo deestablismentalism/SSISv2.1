@@ -92,7 +92,10 @@ class userEnrollmentFormController {
                 ];
             }
             
-            if(empty($reportCardFront)) {
+            // Check report card requirement - skip for Kinder 1 (grade level 1)
+            $isKinder1 = ($enrollGLevel === 1);
+            
+            if(!$isKinder1 && empty($reportCardFront)) {
                 return [
                     'httpcode'=> 400,
                     'success'=> false,
@@ -101,7 +104,7 @@ class userEnrollmentFormController {
                 ];
             }
             
-            if(empty($reportCardBack)) {
+            if(!$isKinder1 && empty($reportCardBack)) {
                 return [
                     'httpcode'=> 400,
                     'success'=> false,
@@ -129,51 +132,66 @@ class userEnrollmentFormController {
             $stuFName,$stuLName,$stuMName,$stuSuffix,$lrn,$birthDate,$age,$sex,$religion,
             $natLang,$isCultural,$culturalG,$studentEmail,$enrollStat);
             if($enrolleeId > 0) {
-                // Process report card with OCR verification
-                require_once __DIR__ . '/../../admin/controllers/reportCardController.php';
-                $reportCardController = new reportCardController();
-                
-                $studentFullName = trim($stuFName . ' ' . ($stuMName ? $stuMName . ' ' : '') . $stuLName);
-                $studentLrnStr = $lrn !== null ? str_pad((string)$lrn, 12, '0', STR_PAD_LEFT) : '000000000000';
-                
-                // Generate session ID for tracking
-                $sessionId = session_id();
-                
-                // Delete any previous validation-only submissions from this session
-                require_once __DIR__ . '/../../admin/models/reportCardModel.php';
-                $reportCardModel = new reportCardModel();
-                $reportCardModel->deleteValidationSubmissions($sessionId);
-                
-                // Process final report card submission (not validation_only)
-                $reportCardResult = $reportCardController->processReportCardUpload(
-                    $uId, 
-                    $studentFullName, 
-                    $studentLrnStr, 
-                    $reportCardFront, 
-                    $reportCardBack, 
-                    $enrolleeId,
-                    $sessionId,
-                    0  // validation_only = 0 (this is final submission)
-                );
-                
-                // Update Report_Card_Id in enrollee table if submission was created
-                if (isset($reportCardResult['data']['submission_id']) && $reportCardResult['data']['submission_id'] > 0) {
-                    $reportCardSubmissionId = (int)$reportCardResult['data']['submission_id'];
-                    $updateResult = $this->postFormModel->updateReportCardId($enrolleeId, $reportCardSubmissionId);
+                // Process report card with OCR verification (skip for Kinder 1)
+                if (!$isKinder1) {
+                    require_once __DIR__ . '/../../admin/controllers/reportCardController.php';
+                    $reportCardController = new reportCardController();
                     
-                    if (!$updateResult) {
-                        error_log("[".date('Y-m-d H:i:s')."] Warning: Failed to update Report_Card_Id for Enrollee_Id: {$enrolleeId}\n", 3, __DIR__ . '/../../../errorLogs.txt');
+                    $studentFullName = trim($stuFName . ' ' . ($stuMName ? $stuMName . ' ' : '') . $stuLName);
+                    $studentLrnStr = $lrn !== null ? str_pad((string)$lrn, 12, '0', STR_PAD_LEFT) : '000000000000';
+                    
+                    // Generate session ID for tracking
+                    $sessionId = session_id();
+                    
+                    // Delete any previous validation-only submissions from this session
+                    require_once __DIR__ . '/../../admin/models/reportCardModel.php';
+                    $reportCardModel = new reportCardModel();
+                    $reportCardModel->deleteValidationSubmissions($sessionId);
+                    
+                    // Process final report card submission (not validation_only)
+                    $reportCardResult = $reportCardController->processReportCardUpload(
+                        $uId, 
+                        $studentFullName, 
+                        $studentLrnStr, 
+                        $reportCardFront, 
+                        $reportCardBack, 
+                        $enrolleeId,
+                        $sessionId,
+                        0  // validation_only = 0 (this is final submission)
+                    );
+                    
+                    // Update Report_Card_Id in enrollee table if submission was created
+                    if (isset($reportCardResult['data']['submission_id']) && $reportCardResult['data']['submission_id'] > 0) {
+                        $reportCardSubmissionId = (int)$reportCardResult['data']['submission_id'];
+                        $updateResult = $this->postFormModel->updateReportCardId($enrolleeId, $reportCardSubmissionId);
+                        
+                        if (!$updateResult) {
+                            error_log("[".date('Y-m-d H:i:s')."] Warning: Failed to update Report_Card_Id for Enrollee_Id: {$enrolleeId}\n", 3, __DIR__ . '/../../../errorLogs.txt');
+                        }
                     }
+                } else {
+                    // Kinder 1 - skip report card processing
+                    error_log("[".date('Y-m-d H:i:s')."] Info: Kinder 1 enrollment - skipping report card validation for Enrollee_Id: {$enrolleeId}\n", 3, __DIR__ . '/../../../errorLogs.txt');
+                    $reportCardResult = [
+                        'data' => [
+                            'status' => 'exempt',
+                            'submission_id' => null
+                        ]
+                    ];
                 }
                 
                 // Even if OCR fails, enrollment is still created (just flagged for review)
+                $reportCardStatus = $reportCardResult['data']['status'] ?? 'pending_review';
+                $statusMessage = $isKinder1 ? 'Kinder 1 - no report card required' : 
+                                 ($reportCardStatus === 'approved' ? 'auto-approved' : 'flagged for review');
+                
                 return [
                     'httpcode'=> 201,
                     'success'=> true,
-                    'message'=> 'Enrollment form submitted successfully. Report card ' . ($reportCardResult['data']['status'] === 'approved' ? 'auto-approved' : 'flagged for review'),
+                    'message'=> 'Enrollment form submitted successfully. Report card ' . $statusMessage,
                     'data'=> [
                         'enrollee_id' => $enrolleeId,
-                        'report_card_status' => $reportCardResult['data']['status'] ?? 'pending_review',
+                        'report_card_status' => $reportCardStatus,
                         'report_card_submission_id' => $reportCardResult['data']['submission_id'] ?? null
                     ]
                 ];
@@ -214,7 +232,7 @@ class userEnrollmentFormController {
             ];
         }
     }
-    public function apiUpdateEnrolleeInfo(int $userId, ?array $formData) : array { //F 3.5.2
+    public function apiUpdateEnrolleeInfo(int $userId, ?array $formData, array $files = []) : array { //F 3.5.2
         try {
             $enrolleeId = !empty($formData['enrolleeId']) ? (int) $formData['enrolleeId'] : null;
             if(is_null($formData['enrolleeId'])) {
@@ -225,16 +243,29 @@ class userEnrollmentFormController {
                     'data'=> []
                 ];
             }
+            
+            // Check if resubmission is allowed
+            $canResubmit = $this->enrolleesModel->canResubmit($enrolleeId);
+            if(!$canResubmit) {
+                return [
+                    'httpcode'=> 403,
+                    'success'=> false,
+                    'message'=> 'Resubmission is not allowed. Your enrollment status must be marked for follow-up by the school.',
+                    'data'=> []
+                ];
+            }
+            
             if(empty($formData)) {
                 return [
                     'httpcode'=> 500,
                     'success'=> false,
-                    'message'=> 'The form recieved is empty',
+                    'message'=> 'The form received is empty',
                     'data'=> []
                 ];
             }
             $allData = $this->associateFormData($formData);
             if(empty($allData)) {
+                error_log("[" . date('Y-m-d H:i:s') . "] Form data processing failed. FormData: " . json_encode($formData) . "\n", 3, __DIR__ . '/../../errorLogs.txt');
                 return [
                     'httpcode'=> 500,
                     'success'=> false,
@@ -250,30 +281,22 @@ class userEnrollmentFormController {
                 }
             }
             if(!empty($missingFields)) {
+                error_log("[" . date('Y-m-d H:i:s') . "] Missing fields: " . implode(', ', $missingFields) . "\n", 3, __DIR__ . '/../../errorLogs.txt');
                 return [
                     'httpcode'=> 409,
                     'success'=> false,
-                    'message'=> 'Required fields are misssing',
+                    'message'=> 'Required fields are missing: ' . implode(', ', $missingFields),
                     'data'=> []
                 ];
             }
-            $isMatchingLrn = $this->postFormModel->checkLRN($allData['lrn'],$enrolleeId);
-            $psaImage = $formData['psa_image'] ?? null;
-            $psaData = $this->updateImage($userId, $enrolleeId, $psaImage);
-            if(!$psaData['success']) {
-                return [
-                    'httpcode'=> 500,
-                    'success'=> false,
-                    'message'=> $psaData['message']. 'is this directory modifiable: ' .$psaData['isWritable'],
-                    'data'=> []
-                ];
-            }
-            if($psaData['isUpload'] ?? true) {
-                $allData['psa_image'] = [
-                    'filename'=> $psaData['filename'],
-                    'filepath'=> $psaData['filepath']
-                ];   
-            }
+            // Check LRN is unique
+            // $isMatchingLrn = $this->postFormModel->checkLRN($allData['lrn'],$enrolleeId);
+            
+            // Handle report card file uploads if present
+            // Note: Report card validation should have already occurred via validateReportCardEdit.php
+            // The validated report cards are already stored in report_card_submissions table
+            // We don't need to update enrollee table as report cards are tracked separately
+            
             $insertData = $this->enrolleesModel->updateEnrolleeInformation($enrolleeId, $allData);
             if(!$insertData) {
                 return [
@@ -283,11 +306,22 @@ class userEnrollmentFormController {
                     'data'=> []
                 ];
             }
+            
+            // Set resubmission status - marks Can_Resubmit as 0 and changes status to Pending
             $setTransactionStatus = $this->enrolleesModel->setResubmitStatus($enrolleeId);
+            if(!$setTransactionStatus) {
+                return [
+                    'httpcode'=> 500,
+                    'success'=> false,
+                    'message'=> 'Failed to update transaction status',
+                    'data'=> []
+                ];
+            }
+            
             return [
                 'httpcode'=> 201,
                 'success'=> true,
-                'message'=> 'Successfully updated enrollee information',
+                'message'=> 'Successfully updated enrollee information. Your enrollment will be reviewed again.',
                 'data'=> $insertData
             ];
         }

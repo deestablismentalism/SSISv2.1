@@ -5,3 +5,15 @@
 [2025-11-15 13:54:38]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'flag_reason' in 'INSERT INTO'
 [2025-11-16 18:18:14]SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
 [2025-11-16 18:40:37]SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+[2025-11-20 14:50:35] Info: Kinder 1 enrollment - skipping report card validation for Enrollee_Id: 148
+[2025-11-20 15:02:00] Info: Kinder 1 enrollment - skipping report card validation for Enrollee_Id: 149
+[2025-11-20 17:17:17] Info: Kinder 1 enrollment - skipping report card validation for Enrollee_Id: 150
+[2025-11-20 17:24:55]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Psa_Number' in 'SELECT'
+[2025-11-20 17:25:40]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Psa_Number' in 'SELECT'
+[2025-11-20 17:27:23]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Psa_Number' in 'SELECT'
+[2025-11-20 17:27:49]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Psa_Number' in 'SELECT'
+[2025-11-20 17:30:12]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'ei.Initial_School_Choice' in 'SELECT'
+[2025-11-20 17:43:42]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Can_Resubmit' in 'SELECT'
+[2025-11-20 17:44:27]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Can_Resubmit' in 'SELECT'
+[2025-11-20 18:11:52]SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`ssis-test_database`.`educational_information`, CONSTRAINT `educational_information_ibfk_2` FOREIGN KEY (`Last_Grade_Level`) REFERENCES `grade_level` (`Grade_Level_Id`))
+[2025-11-20 18:40:42]SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Report_Card_Front' in 'SET'

@@ -930,10 +930,6 @@ body {
     background: rgba(62, 158, 196, 0.15) !important;
     transition: background var(--transition-fast);
   }
-  
-  .student-dynamic-content tbody tr:hover td {
-    color: var(--hover-accent);
-  }
 }
 
 /* ===== SMALL DESKTOP (1024px+) ===== */

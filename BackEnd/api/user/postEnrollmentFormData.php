@@ -85,25 +85,30 @@ try {
     $reportCardFront = $_FILES['report-card-front'] ?? null;
     $reportCardBack = $_FILES['report-card-back'] ?? null;
     
+    // Check if Kinder 1 - allow null report cards
+    $isKinder1 = ($Enrolling_Grade_Level === 1);
+    
     // Get session ID to check for existing validation
     $sessionId = session_id();
     
-    // Check if report card was pre-validated in this session
-    require_once __DIR__ . '/../../admin/models/reportCardModel.php';
-    $reportCardModel = new reportCardModel();
-    $existingValidation = $reportCardModel->getSubmissionBySessionId($sessionId);
-    
-    // If validation exists and status is 'rejected', prevent enrollment
-    if ($existingValidation && $existingValidation['status'] === 'rejected') {
-        http_response_code(400);
-        echo json_encode([
-            'success' => false, 
-            'message' => 'Report card was rejected. Please resubmit valid images.',
-            'data' => [
-                'flag_reason' => $existingValidation['flag_reason'] ?? 'Report card images do not meet requirements'
-            ]
-        ]);
-        exit();
+    // Check if report card was pre-validated in this session (skip for Kinder 1)
+    if (!$isKinder1) {
+        require_once __DIR__ . '/../../admin/models/reportCardModel.php';
+        $reportCardModel = new reportCardModel();
+        $existingValidation = $reportCardModel->getSubmissionBySessionId($sessionId);
+        
+        // If validation exists and status is 'rejected', prevent enrollment
+        if ($existingValidation && $existingValidation['status'] === 'rejected') {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Report card was rejected. Please resubmit valid images.',
+                'data' => [
+                    'flag_reason' => $existingValidation['flag_reason'] ?? 'Report card images do not meet requirements'
+                ]
+            ]);
+            exit();
+        }
     }
     
     // Insert the values into the database
