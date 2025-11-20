@@ -18,9 +18,9 @@ $view = new studentClassDetailsView();
     </div>
         <nav class="student-navigation-list-wrapper">
             <ul class="student-navigation-list">
-                <li><label for="sched"> <input type="radio" id="sched" name="student-content" value="schedules" checked> My Schedules </label></li>
+                <li><label for="sched"> <input type="radio" id="sched" name="student-content" value="historical-grades" checked> My Grades By Year </label></li>
                 <li><label for="sec">  <input type="radio" id="sec" name="student-content" value="section"> My Section </label></li>
-                <li><label for="grades"> <input type="radio" id="grades" name="student-content" value="grades"> My Grades </label></li> 
+                <li><label for="grades"> <input type="radio" id="grades" name="student-content" value="grades"> My Current Grades </label></li> 
             </ul>
         </nav>
     </div>

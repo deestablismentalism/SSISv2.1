@@ -605,3 +605,9 @@ Stack trace:
 #0 {main}
 [2025-11-18 07:56:47]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
 [2025-11-18 07:59:26]SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'Is_Archived' in WHERE is ambiguous
+[2025-11-20]SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ':studentId
+                    GROUP BY ss.Section_Subjects_Id, su.Subject_N...' at line 19
+[2025-11-20]SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ':studentId
+                    GROUP BY ss.Section_Subjects_Id, su.Subject_N...' at line 19
+[2025-11-20]SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ':studentId
+                    GROUP BY ss.Section_Subjects_Id, su.Subject_N...' at line 19

@@ -8,6 +8,63 @@ class studentClassController {
         $this->studentModel = new studentClassModel();
     }
     //API
+    public function apiHistoricalStudentGradeRecords(int $studentId):array {
+        try {
+            if(is_null($studentId)) {
+                throw new IdNotFoundException('Student ID not found');
+            }
+            $data = $this->studentModel->getStudentHistoricalGrades($studentId);
+            if(empty($data)) {
+                return [
+                    'httpcode'=> 200,
+                    'success'=> false,
+                    'message'=> 'No historical grade found',
+                    'data'=> []
+                ];
+            }
+            $grouped = [];
+            foreach($data as $row) {
+                $schoolYearId = $row['School_Year_Details_Id'];
+                if(!isset($grouped[$schoolYearId])) {
+                    $grouped[$schoolYearId] = [
+                        'start_year'=> $row['start_year'],
+                        'end_year'=> $row['end_year'],
+                        'grades'=> []
+                    ];
+                }
+                $grouped[$schoolYearId]['grades'][]= [
+                    'Section_Subjects_Id' => $row['Section_Subjects_Id'],
+                    'Subject_Name'=> $row['Subject_Name'],
+                    'Q1' => $row['Q1'] ?? null,
+                    'Q2' => $row['Q2'] ?? null,
+                    'Q3' => $row['Q3'] ?? null,
+                    'Q4' => $row['Q4'] ?? null
+                ];
+            }
+            return [
+                'httpcode' => 200,
+                'success'  => true,
+                'message'  => 'Historical grades retrieved successfully',
+                'data' => array_values($grouped)
+            ];
+        }
+        catch(DatabaseException $e) {
+            return [
+                'httpcode'=> 500,
+                'success'=> false,
+                'message'=> 'There was a server problem. '.$e->getMessage(),
+                'data'=> []
+            ];
+        }
+        catch(Exception $e) {
+            return [
+                'httpcode'=> 400,
+                'success'=> false,
+                'message'=> 'There was an unexpected problem. Please wait for it to be fixed',
+                'data'=> []
+            ];
+        }
+    }
     //HELPERS
     private function returnPivotedSchedule(array $data) : array {
         try {
