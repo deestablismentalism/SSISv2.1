@@ -74,6 +74,23 @@ class teacherGradesModel {
             throw new DatabaseException('Failed to fetch students in sections: ' . $e->getMessage(), 212, $e);
         }
     }
+    private function getActiveSchoolYear() : ?array {
+        try {
+            $sql = "SELECT School_Year_Details_Id, start_year, end_year 
+                    FROM school_year_details 
+                    WHERE Is_Expired = 0 
+                    ORDER BY School_Year_Details_Id DESC 
+                    LIMIT 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $result ?: null;
+        }
+        catch(PDOException $e) {
+            throw new DatabaseException('Failed to fetch active school year', 0, $e);
+        }
+    }
     public function saveOrUpdateGrade(int $studentId, int $sectionSubjectId, int $quarter, float $gradeValue): bool {
         try {
             // Check if grade already exists using composite key
@@ -136,7 +153,6 @@ class teacherGradesModel {
             throw new DatabaseException('Failed to save grade: ' . $e->getMessage() . ' (SQL State: ' . $sqlState . ')', 0, $e);
         }
     }
-
     public function getStudentGrades(int $sectionSubjectId, int $studentId): array {
         try {
             $sql = "SELECT Quarter, Grade_Value FROM student_grades 
@@ -176,22 +192,40 @@ class teacherGradesModel {
             return false;
         }
     }
-    private function upsertQueryStudentGrades(array $data):bool { //F 2.2.2
+    public function upsertQueryStudentGrades(int $studentId, int $sectionSubjectId, int $quarter, float $gradeValue):bool { //F 2.2.2
         try {
-            $sql = "INSERT INTO student_grades (Section_Subjects_Id, Student_Id, Quarter, Grade_Value) 
-                    VALUES (:section_subject_id, :student_id, :quarter, :grade_value)
+            $schoolYear = $this->getActiveSchoolYear();
+            $schoolYearId = $schoolYear ? (int)$schoolYear['School_Year_Details_Id'] : null;
+            $sql = "INSERT INTO student_grades (Section_Subjects_Id, Student_Id, Quarter, Grade_Value,School_Year_Details_Id) 
+                    VALUES (:section_subject_id, :student_id, :quarter, :grade_value,:syId)
                     ON DUPLICATE KEY UPDATE 
                     Grade_Value = :grade_value";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindValue(':section_subject_id', $data['sec-sub-id'], PDO::PARAM_INT);
-            $stmt->bindValue(':student_id', $data['student-id'], PDO::PARAM_INT);
-            $stmt->bindValue(':quarter', $data['quarter'], PDO::PARAM_INT);
-            $stmt->bindValue(':grade_value', $data['grade-value']);
-            
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            error_log("[".date('Y-m-d H:i:s')."]" . $e->getMessage() . "\n", 3, __DIR__  . '/../../errorLogs.txt');
-            return false; //RETURN FALSE INSTEAD TO PINPOINT FAILED OP
+            $stmt->bindValue(':section_subject_id', $sectionSubjectId, PDO::PARAM_INT);
+            $stmt->bindValue(':student_id', $studentId, PDO::PARAM_INT);
+            $stmt->bindValue(':quarter', $quarter, PDO::PARAM_INT);
+            $stmt->bindValue(':grade_value', $gradeValue);
+            $stmt->bindValue(':syId',$schoolYearId);
+
+            $result = $stmt->execute();
+            if (!$result) {
+                $errorInfo = $stmt->errorInfo();
+                error_log('saveOrUpdateGrade execute failed. Error: ' . print_r($errorInfo, true));
+                error_log('SQL: ' . $sql);
+                error_log('Params: studentId=' . $studentId . ', sectionSubjectId=' . $sectionSubjectId . ', quarter=' . $quarter . ', gradeValue=' . $gradeValue);
+                throw new PDOException('Execute failed: ' . ($errorInfo[2] ?? 'Unknown error'));
+            }     
+            return $result;
+        } 
+        catch (PDOException $e) {
+            $errorInfo = $e->errorInfo ?? [];
+            error_log('saveOrUpdateGrade PDOException: ' . $e->getMessage());
+            error_log('Error Code: ' . $e->getCode());
+            error_log('SQL State: ' . ($errorInfo[0] ?? 'N/A'));
+            error_log('Driver Error: ' . ($errorInfo[1] ?? 'N/A'));
+            error_log('Error Message: ' . ($errorInfo[2] ?? $e->getMessage()));
+            $sqlState = $errorInfo[0] ?? 'N/A';
+            throw new DatabaseException('Failed to save grade: ' . $e->getMessage() . ' (SQL State: ' . $sqlState . ')', 0, $e);
         }
     }
     //OPERATIONS
