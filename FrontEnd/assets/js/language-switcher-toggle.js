@@ -4,13 +4,18 @@
  * Optimized for mobile devices
  */
 
-document.addEventListener('DOMContentLoaded', function() {
+(function() {
+    'use strict';
+    
     const toggleBtn = document.getElementById('language-toggle-btn');
     const dropdown = document.getElementById('language-switcher-dropdown');
     
     if (!toggleBtn || !dropdown) {
+        console.warn('Language switcher elements not found');
         return; // Exit if elements don't exist on the page
     }
+    
+    console.log('Language switcher initialized');
     
     let isTouch = false;
     
@@ -151,4 +156,4 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = '';
         }
     }
-});
+})();

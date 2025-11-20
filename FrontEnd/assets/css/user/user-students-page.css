@@ -157,7 +157,6 @@ body {
 .back-button img {
   width: clamp(1rem, 2vw, 1.2rem);
   height: clamp(1rem, 2vw, 1.2rem);
-  filter: invert(1);
   flex-shrink: 0;
 }
 
@@ -802,11 +801,6 @@ body {
   .student-dynamic-content .student-grades {
     overflow-x: auto;
     /* Restore scroll indicators */
-    background: 
-      linear-gradient(to right, white 30%, rgba(255,255,255,0)) 0 0,
-      linear-gradient(to right, rgba(255,255,255,0), white 70%) 100% 0,
-      radial-gradient(farthest-side at 0% 50%, rgba(0,0,0,.2), transparent) 0 0,
-      radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.2), transparent) 100% 0;
     background-repeat: no-repeat;
     background-color: transparent;
     background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;

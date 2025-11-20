@@ -152,6 +152,8 @@
     line-height: 1.3;
     /* Prevent overlap with close button */
     padding-right: 3rem;
+    font-weight: 700;
+
 }
 
 /* Status body - flexible layout */

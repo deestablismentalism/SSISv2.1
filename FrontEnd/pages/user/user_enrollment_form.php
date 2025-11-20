@@ -1,4 +1,9 @@
 <?php
+// Start session first before accessing $_SESSION
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 ob_start();
 
 // Initialize translation configuration
@@ -25,11 +30,19 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-f
 $pageCss2 = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form-errors.css" media="all">';
 $pageCss3 = '<link rel="stylesheet" href="../../assets/css/user/user-enrollment-form-mq.css" media="all">';
 $pageCss4 = '<link rel="stylesheet" href="../../assets/css/notifications.css" media="all">
-<link rel="stylesheet" href="../../assets/css/language-switcher.css">';
+<link rel="stylesheet" href="../../assets/css/language-switcher.css">
+<style>
+    /* Override z-index for enrollment form to ensure language switcher appears above modals */
+    .language-switcher-fixed-wrapper {
+        z-index: 10001 !important;
+    }
+    .language-switcher-container {
+        z-index: 10002 !important;
+    }
+</style>';
 $pageJs = '<script type="module" src="../../assets/js/user/user-enrollment-form.js" defer></script>';
-$pageJs2 = '<script src="../../assets/js/notifications.js" defer></script>
-<script src="../../assets/js/translation.js"></script>
-<script src="../../assets/js/language-switcher-toggle.js"></script>';
+$pageJs2 = '<script src="../../assets/js/notifications.js"></script>
+<script src="../../assets/js/translation.js"></script>';
 require_once __DIR__ .'/../../../BackEnd/common/getGradeLevels.php';
 require_once __DIR__ . '/../../../BackEnd/common/isAcademicYearSet.php';
 $set = new isAcademicYearSet();
@@ -113,9 +126,10 @@ $view = new getGradeLevels();
                 <p data-translate="Mangyaring makipag-ugnayan sa aming tanggapan upang matulungan kayo sa proseso ng enrollment. Mayroon kaming espesyal na tulong at gabay para sa inyong sitwasyon.">Please contact our office for assistance with the enrollment process. We have special support and guidance for your situation.</p>
                 <p><strong data-translate="Mga Contact Details:">Contact Details:</strong></p>
                 <ul>
-                    <li data-translate="Telepono: [School Contact Number]">Phone: [School Contact Number]</li>
-                    <li data-translate="Email: [School Email]">Email: [School Email]</li>
-                    <li data-translate="Oras ng Tanggapan: Lunes - Biyernes, 8:00 AM - 5:00 PM">Office Hours: Monday - Friday, 8:00 AM - 5:00 PM</li>
+                    <li data-translate="Telepono: 09354876649">Phone: 09354876649</li>
+                    <li data-translate="Email: 109732@deped.gov.ph">Email: 109732@deped.gov.ph</li>
+                    <li data-translate="Oras ng Tanggapan: Lunes - Biyernes, 8:00 AM - 4:00 PM / Sabado - Linggo, 10:00 AM - 2:00 PM">Office Hours: Monday - Friday, 8:00 AM - 4:00 PM / Saturday - Sunday, 10:00 AM - 2:00 PM</li>
+                                                                                                                
                 </ul>
                 <p data-translate="Salamat sa inyong pag-unawa.">Thank you for your understanding.</p>
             </div>
@@ -276,27 +290,21 @@ $view = new getGradeLevels();
                 </div>
                 <!--ROW 1-->
                 <div class="student-info-row-1">
+                    <div class="PSA-number">
+                        <div class="error-msg">
+                            <span class="em-PSA-number"></span>
+                        </div>
+                        <p class="dfont"><span data-translate="Numero na nakalagay sa Sertipiko ng Kapanganakan (Birth Certificate) mula sa PSA (kung may dala na kopya)">PSA Birth Certificate Number (if available)</span> <span class="required">*</span></p>
+                        <input type="number" name="PSA-number" id="PSA-number" class="textbox">
+                    </div>
                     <div class="LRN">
                         <div class="error-msg">
                             <span class="em-LRN"></span>
                         </div>
-                        <p class="dfont">Learner's Reference Number (LRN) kung mayroon <span class="required">*</span></p>
+                        <p class="dfont"><span data-translate="Learner's Reference Number (LRN) kung mayroon">Learner's Reference Number (LRN) if available</span> <span class="required">*</span></p>
                         <input type="number" name="LRN" id="LRN" class="textbox">
                     </div>
                 </div>
-                            <span class="em-PSA-number"></span>
-                        </div>
-                            <p class="dfont"><span data-translate="Numero na nakalagay sa Sertipiko ng Kapanganakan (Birth Certificate) mula sa PSA (kung may dala na kopya)">PSA Birth Certificate Number (if available)</span> <span class="required">*</span></p>
-                            <input type="number" name="PSA-number" id="PSA-number" class="textbox">
-                        </div>
-                        <div class="LRN">
-                            <div class="error-msg">
-                                <span class="em-LRN"></span>
-                            </div>
-                            <p class="dfont"><span data-translate="Learner's Reference Number (LRN) kung mayroon">Learner's Reference Number (LRN) if available</span> <span class="required">*</span></p>
-                            <input type="number" name="LRN" id="LRN" class="textbox">
-                        </div>
-                    </div>
                 <div class="student-information-wrapper">
                     <!--ROW 2-->
                     <div class="student-info-row-2">

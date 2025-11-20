@@ -637,9 +637,7 @@ body {
   
   .students thead {
     display: table-header-group;
-    position: sticky;
-    top: 0;
-    z-index: var(--z-sticky);
+    position: inherit;
     background: rgb(97 206 255);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     /* Restore visibility */

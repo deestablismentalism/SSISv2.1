@@ -26,11 +26,18 @@ $pageCss = '<link rel="stylesheet" href="../../assets/css/user/user-enrollees.cs
 <link rel="stylesheet" href="../../assets/css/user/user-enrollees-modal.css">
 <link rel="stylesheet" href="../../assets/css/user/user-enrollment-status.css">
 <link rel="stylesheet" href="../../assets/css/user/user-announcements.css">
-<link rel="stylesheet" href="../../assets/css/language-switcher.css">';
-$pageJs = '<script src="../../assets/js/user/user-enrollees-modal.js" type="module" defer></script>
-<script src="../../assets/js/announcements.js" defer></script>
-<script src="../../assets/js/translation.js"></script>
-<script src="../../assets/js/language-switcher-toggle.js"></script>';
+<link rel="stylesheet" href="../../assets/css/language-switcher.css">
+<style>
+    .language-switcher-fixed-wrapper {
+        z-index: 1001 !important;
+    }
+    .language-switcher-container {
+        z-index: 1002 !important;
+    }
+</style>';
+$pageJs = '<script src="../../assets/js/user/user-enrollees-modal.js" type="module"></script>
+<script src="../../assets/js/announcements.js"></script>
+<script src="../../assets/js/translation.js"></script>';
 $pageTitle = 'My Enrollees';
 require_once __DIR__ . '/../../../BackEnd/user/views/userEnrolleesView.php';
 $enrollee = new displayEnrollmentForms();
@@ -76,18 +83,20 @@ $enrollee = new displayEnrollmentForms();
     </div>
 
     <!-- Language Switcher - Bottom Right -->
-    <div class="language-switcher-wrapper" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-      <button type="button" class="language-icon-button" id="language-toggle-btn" aria-label="Toggle Language Switcher">
-        <img src="../../assets/imgs/globe-icon.svg" alt="Language" class="language-icon">
-      </button>
-      <div class="language-switcher-container" id="language-switcher-dropdown">
-        <select id="language-switcher" class="language-switcher-select" aria-label="Select Language">
-          <?php foreach ($supportedLanguages as $code => $name): ?>
-            <option value="<?= htmlspecialchars($code) ?>" <?= $code === $currentLanguage ? 'selected' : '' ?>>
-              <?= htmlspecialchars($name) ?>
-            </option>
-          <?php endforeach; ?>
-        </select>
+    <div class="language-switcher-fixed-wrapper">
+      <div class="language-switcher-wrapper">
+        <button type="button" class="language-icon-button" id="language-toggle-btn" aria-label="Toggle Language Switcher">
+          <img src="../../assets/imgs/globe-icon.svg" alt="Language" class="language-icon">
+        </button>
+        <div class="language-switcher-container" id="language-switcher-dropdown">
+          <select id="language-switcher" class="language-switcher-select" aria-label="Select Language">
+            <?php foreach ($supportedLanguages as $code => $name): ?>
+              <option value="<?= htmlspecialchars($code) ?>" <?= $code === $currentLanguage ? 'selected' : '' ?>>
+                <?= htmlspecialchars($name) ?>
+              </option>
+            <?php endforeach; ?>
+          </select>
+        </div>
       </div>
     </div>
 

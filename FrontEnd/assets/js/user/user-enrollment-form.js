@@ -893,8 +893,8 @@ document.addEventListener('DOMContentLoaded',function(){
                     canEnable = hasDesc && hasTech;
                 }
             } else if (canReadWriteNo && canReadWriteNo.checked) {
-                // Cannot read/write - popup will handle redirect
-                canEnable = false;
+                // Cannot read/write - allow to proceed (popup shown as notice)
+                canEnable = true;
             }
         }
 
